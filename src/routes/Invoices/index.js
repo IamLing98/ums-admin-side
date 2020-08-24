@@ -4,7 +4,10 @@ import {Redirect, Route, Switch} from "react-router-dom";
 import React from "react";
 import {AsyncInvoicesCreateComponent} from "Components/AsyncComponent/AsyncComponent";
 
-const InvoicesCreate = ({ match }) => (
+const InvoicesCreate = ({ match }) => {
+    
+    console.log("masd", match.url)
+    return( 
     <div className="content-wrapper">
         <Helmet>
             <title>Polucon | Invoices</title>
@@ -15,6 +18,6 @@ const InvoicesCreate = ({ match }) => (
             <Route path={`${match.url}/create-invoices`} component={AsyncInvoicesCreateComponent} />
         </Switch>
     </div>
-);
+);}
 
 export default InvoicesCreate;

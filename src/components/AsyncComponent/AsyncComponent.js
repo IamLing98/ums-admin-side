@@ -18,6 +18,14 @@ const AsyncClientHomeDashboardComponent = Loadable({
    loading: () => <RctPageLoader />,
 });
 
+
+// module -
+const AsyncModuleComponent = Loadable({
+   loader: () => import("Routes/EducationProgram/module"),
+   loading: () => <RctPageLoader />,
+});
+
+
 //tasks
 const AysncTasksApprovedComponent = Loadable({
    loader: () => import('Routes/tasks/approved'),
@@ -109,7 +117,9 @@ const AsyncInvoicesCreateComponent = Loadable({
 });
 
 
-export {AsyncForgotPassComponent,
+export {
+   AsyncModuleComponent,
+   AsyncForgotPassComponent,
    AsyncInvoicesCreateComponent,
    AsyncHomeDashboardComponent,
    AsyncFormBuilderComponent,

@@ -5,12 +5,16 @@ import Users from "Routes/users";
 import Maps from "Routes/maps";
 import FormBuilder from "Routes/form-builder";
 import InvoicesCreate from "Routes/Invoices";
-
+import EducationProgram from "Routes/EducationProgram"
 
 export default [
    {
       path: 'dashboard',
       component: Dashboard
+   },
+   {
+      path: 'education-program',
+      component: EducationProgram
    },
    {
       path: 'tasks',

@@ -39,7 +39,8 @@ import {userLoginSuccess} from "Actions";
 
 
 const InitialPath = ({ component: Component,authToken,...rest }) =>{
-    return(   <Route
+    return(   
+    <Route
        {...rest}
        render={props =><Component {...props}/> }
    />);

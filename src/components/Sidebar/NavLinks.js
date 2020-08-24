@@ -38,21 +38,7 @@ export default {
                "new_item": false,
                "path": "/students/student-list",
             },
-            {
-               "menu_title": "sidebar.rejected",
-               "new_item": false,
-               "path": "/app/tasks/rejected",
-            },
-            {
-               "menu_title": "sidebar.completed",
-               "new_item": false,
-               "path": "/app/tasks/completed",
-            },
-            {
-               "menu_title": "sidebar.inProgress",
-               "new_item": false,
-               "path": "/app/tasks/in-progress",
-            }
+ 
 
          ]
       },
@@ -65,28 +51,13 @@ export default {
             {
                "menu_title": "Học Phần",
                "new_item": false,
-               "path": "/app/tasks/approved",
+               "path": "/education-program/module",
             },
             {
                "menu_title": "Danh Sách",
                "new_item": false,
-               "path": "/app/tasks/pending",
-            },
-            {
-               "menu_title": "sidebar.rejected",
-               "new_item": false,
-               "path": "/app/tasks/rejected",
-            },
-            {
-               "menu_title": "sidebar.completed",
-               "new_item": false,
-               "path": "/app/tasks/completed",
-            },
-            {
-               "menu_title": "sidebar.inProgress",
-               "new_item": false,
-               "path": "/app/tasks/in-progress",
-            }
+               "path": "/education-program/as",
+            }, 
 
          ]
       },
@@ -101,17 +72,17 @@ export default {
             {
                "menu_title": "sidebar.createUser",
                "new_item": false,
-               "path": "/app/users/user-management/create-user",
+               "path": "/users/user-management/create-user",
             },
             {
                "menu_title": "sidebar.clientList",
                "new_item": false,
-               "path": "/app/users/client-list",
+               "path": "/users/client-list",
             },
             {
                "menu_title": "sidebar.surveyorList",
                "new_item": false,
-               "path": "/app/users/surveyor-list",
+               "path": "/users/surveyor-list",
             }
 
          ]
@@ -128,7 +99,7 @@ export default {
             {
                "menu_title": "sidebar.createForm",
                "new_item": false,
-               "path": "/app/form-builder/create-form",
+               "path": "/form-builder/create-form",
             }
          ]
       }

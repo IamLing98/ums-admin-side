@@ -40,7 +40,7 @@ const PageTitleBar = ({ title, match, enableBreadCrumb }) => {
                <h2 className="">{title}</h2>
             </div>
          }
-         {enableBreadCrumb &&
+         {/* {enableBreadCrumb &&
             <Breadcrumb className="mb-0 tour-step-7" tag="nav">
                {subPath.map((sub, index) => {
                   return <BreadcrumbItem active={subPath.length === index + 1}
@@ -49,7 +49,7 @@ const PageTitleBar = ({ title, match, enableBreadCrumb }) => {
                }
                )}
             </Breadcrumb>
-         }
+         } */}
       </div>
    )
 };
