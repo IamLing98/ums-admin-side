@@ -25,6 +25,7 @@
 }
 
 .header-icon {
+ 
    height: $navbar-icon-height;
    width: $navbar-icon-width;
    @include border(1px solid, $input-border-color, top bottom left right);
@@ -40,13 +41,13 @@
    &:focus,
    &.active {
       border-color: $primary !important;
+      border-radius: 0px;
       color: $primary !important;
       a {
          color: $primary;
       }
    }
-}
-
+} 
 .quciklink-dropdown,
 .notification-dropdown,
 .language-dropdown,
@@ -150,7 +151,8 @@
 
 .humburger {
    color: $hamburger-icon-color !important;
-   border: 1px solid $input-border-color !important;
+   //border: 1px solid $input-border-color !important;
+   border-radius: 0px !important;
    height: 2.5rem !important;
    width: 2.5rem !important;
 }

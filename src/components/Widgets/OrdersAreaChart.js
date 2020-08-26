@@ -5,10 +5,7 @@ import React from 'react';
 import CountUp from 'react-countup';
 
 // chart
-import TinyAreaChart from 'Components/Charts/TinyAreaChart';
-
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
+import TinyAreaChart from 'Components/Charts/TinyAreaChart'; 
 
 // chart config
 import ChartConfig from 'Constants/chart-config';
@@ -24,14 +21,14 @@ const OrdersAreaChart = ({ data }) => (
         <RctCardContent>
             <div className="clearfix">
                 <div className="float-left">
-                    <h3 className="mb-15 fw-semi-bold"><IntlMessages id="widgets.orders" /></h3>
+                    <h3 className="mb-15 fw-semi-bold"><span>Đặt hàng</span></h3>
                     <div className="d-flex">
                         <div className="mr-50">
-                            <span className="fs-14 d-block"><IntlMessages id="widgets.today" /></span>
+                            <span className="fs-14 d-block"><span>Hôm nay</span></span>
                             <CountUp separator="," className="counter-point" start={0} end={data.today} duration={5} useEasing={true} />
                         </div>
                         <div className="">
-                            <span className="fs-14 d-block"><IntlMessages id="widgets.totalRevenue" /></span>
+                            <span className="fs-14 d-block"><span>totalRevenue</span></span>
                             <CountUp separator="," className="counter-point" start={0} end={data.totalRevenue} duration={5} useEasing={true} />
                         </div>
                     </div>

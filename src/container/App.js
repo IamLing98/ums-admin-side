@@ -44,8 +44,8 @@ const InitialPath = ({ component: Component,authToken,...rest }) =>{
        {...rest}
        render={props =>{
            console.log("props", props);
-           const subPath = props.location.pathname.split('/');
-           console.log("sub path", subPath)
+        //    const subPath = props.location.pathname.split('/');
+        //    console.log("sub path", subPath)
            return  <Component {...props}/>   
     } }
    />);

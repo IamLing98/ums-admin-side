@@ -71,7 +71,7 @@ class Sidebar extends Component {
 			ROLE = userData.roles[0];
 		}
 		console.log("side bar render");
-		console.log()
+		console.log(this.props)
 		return (
 			<Fragment>
 				<div

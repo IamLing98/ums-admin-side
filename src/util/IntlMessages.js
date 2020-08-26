@@ -2,12 +2,12 @@
  * Language Provider Helper Component
  * Used to Display Localised Strings
  */
-import React from 'react';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import React from 'react'; 
 
-// Injected message
-const InjectMassage = props => <FormattedMessage {...props} />;
-
-export default injectIntl(InjectMassage, {
-    withRef: false
-});
+// Injected message 
+const formatMessage = (props) => {
+    return(
+        <span>{props.id}</span>
+    )
+}
+export default formatMessage;

@@ -16,9 +16,6 @@ import {api} from 'Api';
 // card component
 import { RctCardFooter } from 'Components/RctCard';
 
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-
 // rct section loader
 import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
 
@@ -89,7 +86,7 @@ export default class ActivityBoard extends Component {
                         <h3 className="mb-0">Reactify Redesign</h3>
                      </div>
                      <div className="activity-description p-4">
-                        <h4 className="mb-4"><IntlMessages id="widgets.description" /></h4>
+                        <h4 className="mb-4"><span>Mo ta</span></h4>
                         <div className="comment-box mb-4">
                            <p className="small-text">
                               Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod

@@ -91,7 +91,7 @@ class Header extends Component {
 								{!horizontalMenu ?
 									<li className="list-inline-item" onClick={(e) => this.onToggleNavCollapsed(e)}>
 										<Tooltip title="Thu nhỏ" placement="bottom">
-											<IconButton color="inherit" mini="true" aria-label="Menu" className="humburger p-0">
+											<IconButton  color="inherit" mini="true" aria-label="Menu" style ={{border:"none !important"}}className="humburger p-0">
 												<MenuIcon /> 
 											</IconButton>
 										</Tooltip>

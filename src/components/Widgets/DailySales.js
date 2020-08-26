@@ -10,10 +10,7 @@ import SalesChart from 'Components/Charts/SalesChart';
 import { RctCardFooter } from 'Components/RctCard';
 
 // constants
-import ChartConfig from 'Constants/chart-config';
-
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
+import ChartConfig from 'Constants/chart-config'; 
 
 const DailySales = ({ label, chartdata, labels,today }) => (
 	<div>
@@ -39,7 +36,7 @@ const DailySales = ({ label, chartdata, labels,today }) => (
 		<RctCardFooter>
 			<span className="fs-12 text-base">
 				<i className="mr-5 zmdi zmdi-refresh"></i>
-				<IntlMessages id="widgets.updated10Minago" />
+				<span>Minago</span>
 			</span>
 		</RctCardFooter>
 	</div>

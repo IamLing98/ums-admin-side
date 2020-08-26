@@ -17,10 +17,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { withRouter } from 'react-router-dom';
 
 // api
-import {api} from 'Api';
-
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
+import {api} from 'Api'; 
 
 // rct section loader
 import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
@@ -146,7 +143,7 @@ class NewEmails extends Component {
                                        <Input />
                                        <InputGroupAddon addonType="append">
                                           <Button variant="contained" color="primary" className="text-white" onClick={() => this.replyEmail(email)}>
-                                             <IntlMessages id="button.reply" />
+                                            <span>reply</span>
                                           </Button>
                                        </InputGroupAddon>
                                     </InputGroup>
@@ -189,10 +186,10 @@ class NewEmails extends Component {
                </DialogContent>
                <DialogActions>
                   <Button variant="contained" className="btn-danger text-white" onClick={this.handleCloseConfirmationAlert}>
-                     <IntlMessages id="button.cancel" />
+                  <span>cancel</span>
                   </Button>
                   <Button variant="contained" color="primary" className="text-white" onClick={() => this.deleteEmail()}>
-                     <IntlMessages id="button.delete" />
+                    <span>delete</span>
                   </Button>
                </DialogActions>
             </Dialog>

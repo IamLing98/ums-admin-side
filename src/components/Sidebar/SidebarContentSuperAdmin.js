@@ -25,7 +25,7 @@ class SidebarContentSuperAdmin extends Component {
     render() {
         const { sidebarMenus } = this.props.sidebar;
         const {userData} = this.props;
-
+        console.log("side bar admin", this.props)
         return (
             <div className="rct-sidebar-nav">
                 <nav className="navigation">

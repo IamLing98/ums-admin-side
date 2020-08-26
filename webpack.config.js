@@ -22,6 +22,9 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
+//SOURCE MAP
+const { SourceMapDevToolPlugin } = require("webpack");
+
 // the path(s) that should be cleaned
 let pathsToClean = [
     'dist',
@@ -164,6 +167,10 @@ module.exports = {
         hints: process.env.NODE_ENV === 'production' ? "warning" : false
     },
     plugins: [
+        //SOURCE MAP
+        new SourceMapDevToolPlugin({
+            filename: "[file].map"
+        }),
         new FriendlyErrorsWebpackPlugin(),
         new CleanWebpackPlugin(pathsToClean, cleanOptions),
         new HtmlWebPackPlugin({

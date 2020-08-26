@@ -14,7 +14,8 @@ const theme = createMuiTheme({
             "Arial",
             "sans-serif"
         ].join(","),
-        useNextVariants: true
+        useNextVariants: true,
+        suppressDeprecationWarnings: true
     },
     palette: {
         primary: {

@@ -5,9 +5,6 @@ import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import SweetAlert from 'react-bootstrap-sweetalert'
 
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-
 class ContactRequestWidget extends Component {
 
    state = {
@@ -47,8 +44,8 @@ class ContactRequestWidget extends Component {
                   </div>
                </div>
                <div className="card-foot d-flex align-self-end">
-                  <Button variant="contained" size="small" onClick={() => this.onAccept()} className="btn-primary mr-5 mb-10 text-white"><IntlMessages id="button.accept" /></Button>
-                  <Button variant="contained" size="small" onClick={() => this.onReject()} className="btn-warning mb-10 text-white"><IntlMessages id="button.reject" /></Button>
+                  <Button variant="contained" size="small" onClick={() => this.onAccept()} className="btn-primary mr-5 mb-10 text-white"><span>Đồng ý</span></Button>
+                  <Button variant="contained" size="small" onClick={() => this.onReject()} className="btn-warning mb-10 text-white"><span>Từ chối</span></Button>
                </div>
             </div>
             <SweetAlert success show={this.state.successAlert} title="Contact Request Accecpted" onConfirm={() => this.onConfirm('success')}>

@@ -30,10 +30,7 @@ import { getTheDate, convertDateToTimeStamp } from 'Helpers/helpers';
 import { RctCardFooter } from 'Components/RctCard';
 
 // rct section loader
-import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
-
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
+import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader'; 
 
 export default class LatestPost extends Component {
 
@@ -221,11 +218,11 @@ export default class LatestPost extends Component {
             </Scrollbars>
             <RctCardFooter customClasses="d-flex justify-content-between align-items-center">
                <Button variant="contained" color="primary" className="text-white" onClick={() => this.addNewPost()}>
-                  <IntlMessages id="widgets.addNew" />
+                 <span>addNew</span>
                </Button>
                <span className="fs-12 text-base">
                   <i className="mr-15 zmdi zmdi-refresh"></i>
-                  <IntlMessages id="widgets.updated10Minago" />
+                  <span>updated10Minago</span>
                </span>
             </RctCardFooter>
             {editPostModal &&
@@ -287,11 +284,11 @@ export default class LatestPost extends Component {
                   <ModalFooter>
                      {addNewPostForm ?
                         <div>
-                           <Button variant="contained" color="primary" className="text-white" onClick={() => this.onSubmitAddNewPostForm()}><IntlMessages id="button.add" /></Button>{' '}
-                           <Button variant="contained" className="btn-danger text-white" onClick={this.toggleEditPostModal}><IntlMessages id="button.cancel" /></Button>
+                           <Button variant="contained" color="primary" className="text-white" onClick={() => this.onSubmitAddNewPostForm()}><span>Add</span></Button>{' '}
+                           <Button variant="contained" className="btn-danger text-white" onClick={this.toggleEditPostModal}><span>cancel</span></Button>
                         </div>
-                        : <div><Button variant="contained" color="primary" className="text-white" onClick={() => this.onSubmitPostEditDetailForm()}><IntlMessages id="button.update" /></Button>{' '}
-                           <Button variant="contained" className="btn-danger text-white" onClick={this.toggleEditPostModal}><IntlMessages id="button.cancel" /></Button></div>
+                        : <div><Button variant="contained" color="primary" className="text-white" onClick={() => this.onSubmitPostEditDetailForm()}><span>update</span></Button>{' '}
+                           <Button variant="contained" className="btn-danger text-white" onClick={this.toggleEditPostModal}><span>cancel</span></Button></div>
                      }
                   </ModalFooter>
                </Modal>

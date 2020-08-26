@@ -3,9 +3,6 @@
  */
 import React, { Component } from 'react';
 
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-
 // rct card box
 import { RctCardContent } from 'Components/RctCard';
 
@@ -57,7 +54,7 @@ class CurrentTimeLocation extends Component {
                 <RctCardContent>
                     <div className="d-flex justify-content-between">
                         <div className="align-items-start">
-                            <h3 className="mb-10"><IntlMessages id="widgets.currentTime" /></h3>
+                            <h3 className="mb-10"><span>Thời gian hiện tại</span></h3>
                             <h2 className="mb-0">{`${hours} : ${minutes} : ${seconds}`}</h2>
                         </div>
                         <div className="align-items-end">

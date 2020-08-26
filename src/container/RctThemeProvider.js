@@ -3,11 +3,7 @@
  */
 import React, { Component, Fragment } from 'react';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
-import { IntlProvider } from 'react-intl';
-
-// App locale
-import AppLocale from '../lang';
+import { connect } from 'react-redux'; 
 
 // themes
 import primaryTheme from './themes/primaryTheme';
@@ -20,8 +16,7 @@ import successTheme from './themes/successTheme';
 
 class RctThemeProvider extends Component {
 	render() {
-		const { locale, darkMode,  activeTheme, children } = this.props;
-		const currentAppLocale = AppLocale[locale.locale];
+		const { locale, darkMode,  activeTheme, children } = this.props; 
 		// theme changes
 		let theme = '';
 		switch (activeTheme.id) {
@@ -52,15 +47,10 @@ class RctThemeProvider extends Component {
 		}
 		theme.direction = 'ltr';
 		return (
-			<MuiThemeProvider theme={theme}>
-				<IntlProvider
-					locale={currentAppLocale.locale}
-					messages={currentAppLocale.messages}
-				>
+			<MuiThemeProvider theme={theme}> 
 					<Fragment>
 						{children}
-					</Fragment>
-				</IntlProvider>
+					</Fragment> 
 			</MuiThemeProvider>
 		);
 	}

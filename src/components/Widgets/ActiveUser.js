@@ -63,10 +63,10 @@ export default class ActiveUser extends Component {
             <Fragment>
                 <div className="rct-block-title border-0 text-white bg-primary">
                     <h3 className="d-flex justify-content-between mb-0 font-weight-light">
-                        <span><IntlMessages id="widgets.activeUsers" /></span>
+                        <span><span>Active User</span></span>
                         <span>250</span>
                     </h3>
-                    <p className="fs-12 mb-0 font-weight-light"><IntlMessages id="widgets.updated10Minago" /></p>
+                    <p className="fs-12 mb-0 font-weight-light"><span>Minago</span></p>
                 </div>
                 <Scrollbars className="rct-scroll" autoHeight autoHeightMin={100} autoHeightMax={380} autoHide>
                     <List className="list-unstyled p-0">

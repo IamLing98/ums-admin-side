@@ -3,10 +3,7 @@
  */
 import React, { Component } from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
+import Button from '@material-ui/core/Button'; 
 
 export default class UserProfile extends Component {
    render() {
@@ -45,14 +42,14 @@ export default class UserProfile extends Component {
                      color="primary"
                      className="text-white mr-10 mb-10 btn-xs"
                   >
-                     <IntlMessages id="button.viewProfile" />
+                     <span>Xem chi tiết</span>
                   </Button>
                   <Button
                      variant="contained"
                      color="secondary"
                      className="text-white btn-xs mb-10"
                   >
-                     <IntlMessages id="button.sendMessage" />
+                     <span>Gửi tin nhắn</span>
                   </Button>
                </div>
             </div>

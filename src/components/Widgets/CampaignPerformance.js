@@ -8,9 +8,6 @@ import ChartConfig from 'Constants/chart-config';
 // chart
 import CampaignBarChart from 'Components/Charts/CampaignBarChart';
 
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-
 const campaigns = {
 	yesterday: [
 		{ name: '12:00 AM', websiteViews: 600, emailSubscription: 400 },
@@ -105,7 +102,7 @@ export default class CampaignPerformance extends Component {
 					</div>
 					<span className="fs-12 text-base">
 						<i className="mr-5 zmdi zmdi-refresh"></i>
-						<IntlMessages id="widgets.updated10Minago" />
+						<span>Minago</span>
 					</span>
 				</div>
 			</div>

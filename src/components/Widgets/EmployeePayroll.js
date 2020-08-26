@@ -9,10 +9,7 @@ import { Badge } from 'reactstrap';
 import {api} from 'Api';
 
 // rct section loader
-import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
-
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
+import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader'; 
 
 class EmployPayroll extends Component {
 
@@ -93,8 +90,8 @@ class EmployPayroll extends Component {
                                     <td>${employee.salary}</td>
                                     <td>
                                         {employee.status === 1 ?
-                                            <Badge color="primary"><IntlMessages id="widgets.done" /></Badge>
-                                            : <Badge color="warning"><IntlMessages id="widgets.pending" /></Badge>
+                                            <Badge color="primary"><span>Hoàn thành</span></Badge>
+                                            : <Badge color="warning"><span>Pending</span></Badge>
                                         }
                                     </td>
                                     <td className="table-action">

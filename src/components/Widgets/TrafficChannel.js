@@ -8,10 +8,7 @@ import Button from '@material-ui/core/Button';
 import { RctCardFooter } from 'Components/RctCard';
 
 // chart
-import HorizontalBarChart from 'Components/Charts/HorizontalBarChart';
-
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
+import HorizontalBarChart from 'Components/Charts/HorizontalBarChart'; 
 
 const TrafficChannel = ({ label, chartdata, labels }) => (
    <div className="sales-chart-wrap">
@@ -24,10 +21,10 @@ const TrafficChannel = ({ label, chartdata, labels }) => (
          />
       </div>
       <RctCardFooter customClasses="d-flex justify-content-between align-items-center">
-         <Button size="small" variant="contained" color="primary" className="text-white"> <IntlMessages id="button.goToCampaign" /></Button>
+         <Button size="small" variant="contained" color="primary" className="text-white"> <span>goToCampaign</span></Button>
          <p className="fs-12 mb-0 text-base">
             <span><i className="mr-5 zmdi zmdi-refresh"></i></span>
-            <IntlMessages id="widgets.updated10Minago" />
+            <span>updated10Minago</span>
          </p>
       </RctCardFooter >
    </div >

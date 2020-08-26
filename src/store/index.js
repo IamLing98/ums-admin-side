@@ -2,13 +2,14 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import Thunk from 'redux-thunk';
 import reducers from '../reducers';
 import {tokenMiddleWare} from "./tokenMiddleware";
+import loggerMiddleware from './logger-middleware';
 
 export function configureStore(initialState) {
 
     const store = createStore(
         reducers,
         initialState,
-        compose(applyMiddleware(Thunk,tokenMiddleWare))
+        compose(applyMiddleware(Thunk,tokenMiddleWare,loggerMiddleware))
     );
 
     if (module.hot) {

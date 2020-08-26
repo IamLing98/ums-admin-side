@@ -9,6 +9,18 @@ import AppConfig from 'Constants/AppConfig';
 const { darkBgColor } = AppConfig.darkThemeColors;
 
 const theme = createMuiTheme({
+    typography: {
+        fontFamily: [
+            "Roboto",
+            "-apple-system",
+            "BlinkMacSystemFont",
+            "Segoe UI",
+            "Arial",
+            "sans-serif"
+        ].join(","),
+        useNextVariants: true,
+        suppressDeprecationWarnings: true
+    },
     palette: {
         type: 'dark',
         types: {

@@ -7,10 +7,7 @@ import classnames from 'classnames';
 
 // chart component
 import TinyLineChart from 'Components/Charts/TinyLineChart';
-import TinyAreaChart from 'Components/Charts/TinyAreaChart';
-
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
+import TinyAreaChart from 'Components/Charts/TinyAreaChart'; 
 
 // chart config
 import ChartConfig from 'Constants/chart-config';
@@ -39,17 +36,17 @@ export default class EmailStatics extends Component {
         <Nav tabs className="custom-tabs p-10">
           <NavItem>
             <NavLink className={classnames({ active: this.state.activeTabForTableSection === '1' })}
-              onClick={() => { this.toggleTableTabs('1'); }}> <IntlMessages id="widgets.open" />
+              onClick={() => { this.toggleTableTabs('1'); }}> <span>Mở</span>
             </NavLink>
           </NavItem>
           <NavItem>
             <NavLink className={classnames({ active: this.state.activeTabForTableSection === '2' })}
-              onClick={() => { this.toggleTableTabs('2'); }}> <IntlMessages id="widgets.bounced" />
+              onClick={() => { this.toggleTableTabs('2'); }}><span>Bounced</span>
             </NavLink>
           </NavItem>
           <NavItem>
             <NavLink className={classnames({ active: this.state.activeTabForTableSection === '3' })}
-              onClick={() => { this.toggleTableTabs('3'); }}> <IntlMessages id="widgets.unsubscribe" />
+              onClick={() => { this.toggleTableTabs('3'); }}> <span>Ngừng theo dõi</span>
             </NavLink>
           </NavItem>
         </Nav>

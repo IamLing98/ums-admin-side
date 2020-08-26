@@ -14,10 +14,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { Badge } from 'reactstrap';
-
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
+import { Badge } from 'reactstrap'; 
 
 function TabContainer({ children, dir }) {
    return (
@@ -59,9 +56,9 @@ class TransactionList extends Component {
                   textColor="primary"
                   variant="scrollable"
                >
-                  <Tab label={<IntlMessages id="widgets.transactionList" />} />
-                  <Tab label={<IntlMessages id="widgets.transferReport" />} />
-                  <Tab label={<IntlMessages id="widgets.expenseCategory" />} />
+                  <Tab label={ <span>transactionList</span>} />
+                  <Tab label={<span>transferReport</span>} />
+                  <Tab label={<span>category</span>} />
                </Tabs>
             </AppBar>
             <Scrollbars className="rct-scroll" autoHeight autoHeightMin={100} autoHeightMax={420} autoHide>

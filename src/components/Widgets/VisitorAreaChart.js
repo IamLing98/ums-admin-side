@@ -5,10 +5,7 @@ import React from 'react';
 import CountUp from 'react-countup';
 
 // chart
-import TinyAreaChart from 'Components/Charts/TinyAreaChart';
-
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
+import TinyAreaChart from 'Components/Charts/TinyAreaChart'; 
 
 // rct card box
 import { RctCard, RctCardContent } from 'Components/RctCard';
@@ -24,10 +21,10 @@ const VisitorAreaChart = ({ data }) => (
         <RctCardContent>
             <div className="clearfix">
                 <div className="float-left">
-                    <h3 className="mb-15 fw-semi-bold"><IntlMessages id="widgets.visitors" /></h3>
+                    <h3 className="mb-15 fw-semi-bold"><span>Người ghé thăm</span></h3>
                     <div className="d-flex">
                         <div className="mr-50">
-                            <span className="fs-14 d-block"><IntlMessages id="widgets.weekly" /></span>
+                            <span className="fs-14 d-block"><span>Hàng tuần</span></span>
                             <CountUp 
                                 separator=","
                                 className="counter-point" 
@@ -38,7 +35,7 @@ const VisitorAreaChart = ({ data }) => (
                             />
                         </div>
                         <div className="">
-                            <span className="fs-14 d-block"><IntlMessages id="widgets.monthly" /></span>
+                            <span className="fs-14 d-block"><span>Hàng tháng</span></span>
                             <CountUp separator="," className="counter-point" start={0} end={data.monthly} duration={5} useEasing={true} />
                         </div>
                     </div>

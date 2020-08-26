@@ -76,7 +76,7 @@ class Notifications extends Component {
 					</div>
 					<div className="dropdown-foot p-2 bg-white rounded-bottom">
 						<Button
-							variant="raised"
+							variant="contained"
 							color="primary"
 							className="mr-10 btn-xs bg-primary"
 						>

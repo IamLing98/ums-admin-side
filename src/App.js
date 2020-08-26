@@ -18,7 +18,7 @@ import {AsyncSessionPage404Component} from "Components/AsyncComponent/AsyncCompo
 
 
 
-const MainApp = () => (
+const MainApp = (props) => (
 	<Provider store={configureStore()}>
 		<MuiPickersUtilsProvider utils={MomentUtils}>
 			<Router>

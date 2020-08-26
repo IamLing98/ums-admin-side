@@ -102,6 +102,7 @@ export const ModuleHome = (props) => {
           });
           setData(data);
     },[])
+    console.log("render")
     return (
         <div className="data-table-wrapper">
             <PageTitleBar title={<span>Học Phần</span>} match={props.match} />

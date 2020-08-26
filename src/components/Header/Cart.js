@@ -98,7 +98,7 @@ class Carts extends Component {
 									<div className="dropdown-foot d-flex justify-content-between align-items-center p-2 bg-white rounded-bottom">
 										<div>
 											<Button
-												variant="raised"
+												variant="contained"
 												component={Link}
 												to={`/${getAppLayout(location)}/ecommerce/cart`}
 												color="primary"
@@ -107,7 +107,7 @@ class Carts extends Component {
 												<span>Giỏ hàng</span>
 											</Button>
 											<Button
-												variant="raised"
+												variant="contained"
 												component={Link}
 												to={`/${getAppLayout(location)}/ecommerce/checkout`}
 												color="secondary"

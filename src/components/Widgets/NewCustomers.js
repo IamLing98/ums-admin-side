@@ -19,10 +19,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 // api
-import {api} from 'Api';
-
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
+import {api} from 'Api'; 
 
 // rct section loader
 import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
@@ -223,7 +220,7 @@ class NewCustomers extends Component {
                </ul>
             </Scrollbars>
             <div className="d-flex p-3">
-               <Button variant="contained" color="primary" className="text-white" onClick={() => this.addNewCustomer()}><IntlMessages id="widgets.addNew" /></Button>
+               <Button variant="contained" color="primary" className="text-white" onClick={() => this.addNewCustomer()}><span>addNew</span></Button>
             </div>
             {/* Delete Customer Confirmation Dialog */}
             <DeleteConfirmationDialog
@@ -302,11 +299,11 @@ class NewCustomers extends Component {
                   <ModalFooter>
                      {addNewCustomerForm ?
                         <div>
-                           <Button variant="contained" color="primary" className="text-white" onClick={() => this.onSubmitAddNewCustomerForm()}><IntlMessages id="button.add" /></Button>{' '}
-                           <Button variant="contained" className="btn-danger text-white" onClick={this.toggleEditCustomerModal}><IntlMessages id="button.cancel" /></Button>
+                           <Button variant="contained" color="primary" className="text-white" onClick={() => this.onSubmitAddNewCustomerForm()}><span>add</span></Button>{' '}
+                           <Button variant="contained" className="btn-danger text-white" onClick={this.toggleEditCustomerModal}><span>cancel</span></Button>
                         </div>
-                        : <div><Button variant="contained" color="primary" className="text-white" onClick={() => this.onSubmitCustomerEditDetailForm()}><IntlMessages id="button.update" /></Button>{' '}
-                           <Button variant="contained" className="btn-danger text-white" onClick={this.toggleEditCustomerModal}><IntlMessages id="button.cancel" /></Button></div>
+                        : <div><Button variant="contained" color="primary" className="text-white" onClick={() => this.onSubmitCustomerEditDetailForm()}><span>update</span></Button>{' '}
+                           <Button variant="contained" className="btn-danger text-white" onClick={this.toggleEditCustomerModal}><span>cancel</span></Button></div>
                      }
                   </ModalFooter>
                </Modal>

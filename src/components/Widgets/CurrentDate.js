@@ -2,10 +2,7 @@
  * Current Date/Time Location Widget
  */
 import React, { Component } from 'react';
-import moment from 'moment';
-
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
+import moment from 'moment'; 
 
 // rct card box
 import { RctCardContent } from 'Components/RctCard';
@@ -17,7 +14,7 @@ class CurrentDate extends Component {
                 <RctCardContent>
                     <div className="d-flex justify-content-between">
                         <div className="align-items-start">
-                            <h3 className="mb-10"><IntlMessages id="widgets.currentDate" /></h3>
+                            <h3 className="mb-10"><span>Thời gian hiện tại</span></h3>
                             <h2 className="mb-0">{moment().format('DD MMM YYYY')}</h2>
                         </div>
                         <div className="align-items-end">
