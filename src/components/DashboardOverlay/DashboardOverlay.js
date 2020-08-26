@@ -4,9 +4,6 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-
 // component
 import OrdersStats from './Orders';
 import UsersStats from './Users';
@@ -25,7 +22,7 @@ class DashboardOverlay extends Component {
             <div className="dashboard-overlay p-4">
                 <div className="overlay-head d-flex justify-content-between mb-40">
                     <div className="dash-user-info">
-                        <h2 className="fw-bold mb-0"><IntlMessages id="components.summary" /></h2>
+                        <h2 className="fw-bold mb-0"><span>Tổng</span></h2>
                     </div>
                     <a href="javascript:void(0)" onClick={onClose} className="closed">
                         <i className="ti-close"></i>

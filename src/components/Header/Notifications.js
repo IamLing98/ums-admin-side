@@ -12,9 +12,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 // api
 import api from 'Api';
 
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-
 class Notifications extends Component {
 
 	state = {

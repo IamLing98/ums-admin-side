@@ -231,7 +231,7 @@ class UserProfile extends Component {
       return (
 
           <div className="user-management">
-             <NotificationContainer />
+             {/* <NotificationContainer />
              <Helmet>
                 <title>Polucon | Users Management</title>
                 <meta name="description" content="Polucon User Management" />
@@ -266,11 +266,11 @@ class UserProfile extends Component {
                   <DepartmentForm/>
                </div>
                 <br/>
-             </RctCollapsibleCard>
+             </RctCollapsibleCard> */}
              <RctCollapsibleCard  heading={<IntlMessages id="register.registerUser" />}
                                   collapsible fullBlock>
                 <div className="table-responsive">
-                   <div className="d-flex justify-content-between py-20 px-10 border-bottom">
+                   {/* <div className="d-flex justify-content-between py-20 px-10 border-bottom">
                       <div>
                          <a href="javascript:void(0)" onClick={() => this.onReload()} className="btn-outline-default mr-10"><i className="ti-reload"></i></a>
                       </div>
@@ -304,7 +304,7 @@ class UserProfile extends Component {
                          }} color="primary" className="caret btn-sm mr-10">Add New User <i className="zmdi zmdi-plus"></i></a>
                       </div>
 
-                   </div>
+                   </div> */}
                    <table className="table table-middle table-hover mb-0">
                       <thead>
                       <tr>

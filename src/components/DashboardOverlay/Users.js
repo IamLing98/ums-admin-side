@@ -13,12 +13,9 @@ import TinyAreaChart from 'Components/Charts/TinyAreaChart';
 // collapsible card
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-
 const Users = () => (
     <RctCollapsibleCard
-        heading={<IntlMessages id="sidebar.users" />}
+        heading={<span>Người dùng</span>}
         fullBlock
     >
         <div className="d-flex justify-content-between p-20">

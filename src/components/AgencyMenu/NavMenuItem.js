@@ -5,7 +5,6 @@ import React, { Fragment, Component } from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
 import $ from 'jquery';
 import classnames from 'classnames';
-import IntlMessages from 'Util/IntlMessages';
 import Chip from '@material-ui/core/Chip';
 
 //Helper
@@ -41,7 +40,7 @@ class NavMenuItem extends Component {
                <Fragment>
                   <a href="javascript:void(0);" className="nav-link">
                      <i className={menu.menu_icon}></i>
-                     <IntlMessages id={menu.menu_title} />
+                     <span>{menu.menu_title}  </span>
                      {menu.new_item && menu.new_item === true ?
                         <Chip label="new" className="new-item" color="secondary" />
                         :
@@ -55,7 +54,7 @@ class NavMenuItem extends Component {
                               <li className='nav-item' key={subKey}>
                                  <NavLink to={!subMenu.exact ? `/${this.getLayoutHandler() + subMenu.path}` : subMenu.path}
                                     className="nav-link no-arrow" activeClassName="active">
-                                    <IntlMessages id={subMenu.menu_title} />
+                                    <span>{subMenu.menu_title} </span>
                                     {subMenu.new_item && subMenu.new_item === true ?
                                        <Chip label="new" className="new-item" color="secondary" />
                                        :
@@ -68,13 +67,13 @@ class NavMenuItem extends Component {
                         return (
                            <li className='nav-item' key={subKey}>
                               <a href="javascript:void(0);" className="nav-link">
-                                 <IntlMessages id={subMenu.menu_title} />
+                                 <span>{subMenu.menu_title}  </span>
                               </a>
                               <ul className="list-unstyled sub-menu-sub-child">
                                  {subMenu.child_routes.map((nestedMenu, nestedKey) => (
                                     <li className="nav-item" key={nestedKey}>
                                        <NavLink to={nestedMenu.path} className="nav-link" activeClassName="active">
-                                          <IntlMessages id={nestedMenu.menu_title} />
+                                          <span>{nestedMenu.menu_title} </span>
                                        </NavLink>
                                     </li>
                                  ))}
@@ -86,7 +85,7 @@ class NavMenuItem extends Component {
                </Fragment> :
                <NavLink to={!menu.exact ? `/${this.getLayoutHandler() + menu.path}` : menu.path} className="nav-link no-arrow">
                   <i className={menu.menu_icon}></i>
-                  <IntlMessages id={menu.menu_title} />
+                  <span>{menu.menu_title}</span>
                </NavLink>
             }
          </li>

@@ -7,8 +7,6 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import IntlMessages from 'Util/IntlMessages';
-
 import AgencySidebarMenuItem from './AgencySidebarMenuItem';
 
 // redux actions
@@ -33,7 +31,7 @@ class AgencySidebar extends Component {
                   className="rct-mainMenu p-0 m-0 list-unstyled"
                   subheader={
                      <ListSubheader className="side-title" component="li">
-                        <IntlMessages id="sidebar.general" />
+                        <span>Chung</span>
                      </ListSubheader>}
                >
                   {agencySidebarMenu.category1.map((menu, key) => (

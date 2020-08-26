@@ -42,7 +42,12 @@ const InitialPath = ({ component: Component,authToken,...rest }) =>{
     return(   
     <Route
        {...rest}
-       render={props =><Component {...props}/> }
+       render={props =>{
+           console.log("props", props);
+           const subPath = props.location.pathname.split('/');
+           console.log("sub path", subPath)
+           return  <Component {...props}/>   
+    } }
    />);
 };
 
@@ -57,6 +62,7 @@ class App extends Component {
 
 
    render() {
+       console.log("this,props", this.props);
       const { location,match,token } = this.props;
        if (location.pathname === '/') {
            if(token !== null){
@@ -91,7 +97,8 @@ class App extends Component {
 
 // map state to props
 const mapStateToProps = state =>({
-    ...state.auth
+    ...state.auth,
+    sideBar: state.sidebar.sidebarMenus
 });
 
 

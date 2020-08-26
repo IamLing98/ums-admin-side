@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import {profilePicUpload} from "Actions/AddUserActions";
 import Cropper from 'react-cropper';
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import IntlMessages from "Util/IntlMessages";
 import {Button} from "reactstrap";
 import {fetchUserError} from "Actions/AuthActions";
 import Label from "reactstrap/es/Label";
@@ -73,7 +72,7 @@ class UserProfilePic extends React.Component{
                 <br></br>
                 <div className="d-flex align-items-center justify-content-center mb-10">
                     <Button onClick={this.cropImage.bind(this)} variant="contained" color="primary" outline>
-                        <IntlMessages id="button.cropImage" />
+                        <span>Cắt ảnh</span>
                     </Button>
                 </div>
             </div>}

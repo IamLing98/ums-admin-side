@@ -7,8 +7,6 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import IntlMessages from 'Util/IntlMessages';
-
 import NavMenuItemAdmin from './NavMenuItemAdmin';
 
 // redux actions
@@ -35,7 +33,7 @@ class SidebarContentAdmin extends Component {
                         className="rct-mainMenu p-0 m-0 list-unstyled"
                         subheader={
                             <ListSubheader className="side-title" component="li">
-                                <IntlMessages id="sidebar.general" />
+                               <span>Chung</span>
                             </ListSubheader>}
                     >
                         {AdminSidebarMenu.Admincategory1.map((menu, key) => (
@@ -50,7 +48,7 @@ class SidebarContentAdmin extends Component {
                         className="rct-mainMenu p-0 m-0 list-unstyled"
                         subheader={
                             <ListSubheader className="side-title" component="li">
-                                <IntlMessages id="sidebar.tasks" />
+                                <span>Task</span>
                             </ListSubheader>}
                     >
                         {AdminSidebarMenu.Admincategory2.map((menu, key) => (
@@ -66,7 +64,7 @@ class SidebarContentAdmin extends Component {
                         className="rct-mainMenu p-0 m-0 list-unstyled"
                         subheader={
                             <ListSubheader className="side-title" component="li">
-                                <IntlMessages id="sidebar.users" />
+                                <span>Người dùng</span>
                             </ListSubheader>}
                     >
                         {AdminSidebarMenu.Admincategory3.map((menu, key) => (

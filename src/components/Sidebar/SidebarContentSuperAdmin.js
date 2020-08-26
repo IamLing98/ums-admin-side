@@ -5,10 +5,7 @@ import React, { Component } from 'react';
 import List from '@material-ui/core/List';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-
-import IntlMessages from 'Util/IntlMessages';
-
+import { connect } from 'react-redux'; 
 import NavMenuItem from './NavMenuItem';
 
 // redux actions
@@ -21,6 +18,7 @@ class SidebarContentSuperAdmin extends Component {
             menu,
             stateCategory
         };
+        console.log("data", data)
         this.props.onSupToggleMenu(data);
     }
 
@@ -42,7 +40,11 @@ class SidebarContentSuperAdmin extends Component {
                             <NavMenuItem
                                 menu={menu}
                                 key={key}
-                                onSupToggleMenu={() => this.toggleMenu(menu, 'SupAdmincategory1')}
+                                onSupToggleMenu={
+                                    () => {
+                                        this.toggleMenu(menu, 'SupAdmincategory1')
+                                    }
+                                }
                             />
                         ))}
                     </List>
@@ -66,7 +68,7 @@ class SidebarContentSuperAdmin extends Component {
                         className="rct-mainMenu p-0 m-0 list-unstyled"
                         subheader={
                             <ListSubheader className="side-title" component="li">
-                                <IntlMessages id="sidebar.users" />
+                           <span>Người dùng</span>
                             </ListSubheader>}
                     >
                         {sidebarMenus.SupAdmincategory3.map((menu, key) => (
@@ -81,7 +83,7 @@ class SidebarContentSuperAdmin extends Component {
                         className="rct-mainMenu p-0 m-0 list-unstyled"
                         subheader={
                             <ListSubheader className="side-title" component="li">
-                                <IntlMessages id="sidebar.formBuilder" />
+                               <span>Xây dựng form</span>
                             </ListSubheader>}
                     >
                         {sidebarMenus.SupAdmincategory4.map((menu, key) => (
@@ -96,7 +98,7 @@ class SidebarContentSuperAdmin extends Component {
                         className="rct-mainMenu p-0 m-0 list-unstyled"
                         subheader={
                             <ListSubheader className="side-title" component="li">
-                                <IntlMessages id="sidebar.invoices" />
+                                <span>Invoice</span>
                             </ListSubheader>}
                     >
                         {sidebarMenus.SupAdmincategory5.map((menu, key) => (
@@ -111,7 +113,7 @@ class SidebarContentSuperAdmin extends Component {
                         className="rct-mainMenu p-0 m-0 list-unstyled"
                         subheader={
                             <ListSubheader className="side-title" component="li">
-                                <IntlMessages id="sidebar.location" />
+                            <span>Vị trí</span>
                             </ListSubheader>}
                     >
                         {sidebarMenus.SupAdmincategory6.map((menu, key) => (

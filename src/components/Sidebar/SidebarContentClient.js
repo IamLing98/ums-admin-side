@@ -5,9 +5,7 @@ import React, { Component } from 'react';
 import List from '@material-ui/core/List';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-
-import IntlMessages from 'Util/IntlMessages';
+import { connect } from 'react-redux'; 
 
 import NavMenuItemClient from './NavMenuItemClient';
 
@@ -35,7 +33,7 @@ class SidebarContentClient extends Component {
                         className="rct-mainMenu p-0 m-0 list-unstyled"
                         subheader={
                             <ListSubheader className="side-title" component="li">
-                                <IntlMessages id="sidebar.general" />
+                               <span>Chung</span>
                             </ListSubheader>}
                     >
                         {ClientSidebarMenu.Clientcategory1.map((menu, key) => (
@@ -50,7 +48,7 @@ class SidebarContentClient extends Component {
                         className="rct-mainMenu p-0 m-0 list-unstyled"
                         subheader={
                             <ListSubheader className="side-title" component="li">
-                                <IntlMessages id="sidebar.tasks" />
+                               <span>Nhiệm vụ</span>
                             </ListSubheader>}
                     >
                         {ClientSidebarMenu.Clientcategory2.map((menu, key) => (
@@ -66,7 +64,7 @@ class SidebarContentClient extends Component {
                         className="rct-mainMenu p-0 m-0 list-unstyled"
                         subheader={
                             <ListSubheader className="side-title" component="li">
-                                <IntlMessages id="sidebar.users" />
+                                <span>Người dùng</span>
                             </ListSubheader>}
                     >
                         {ClientSidebarMenu.Clientcategory3.map((menu, key) => (

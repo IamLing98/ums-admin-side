@@ -12,10 +12,7 @@ import { NotificationManager } from 'react-notifications';
 import SupportPage from '../Support/Support';
 
 // redux action
-import {fetchUserDetails, userLogoutAction} from 'Actions';
-
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
+import {fetchUserDetails, userLogoutAction} from 'Actions'; 
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {api} from "Api";
 import {SERVER_PATH} from "Actions/types";

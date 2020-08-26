@@ -10,9 +10,6 @@ import StarRatingComponent from 'react-star-rating-component';
 // rct card
 import { RctCard, RctCardContent, RctCardFooter } from '../RctCard';
 
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-
 // app config
 import AppConfig from 'Constants/AppConfig';
 
@@ -31,7 +28,7 @@ class RatingsStats extends Component {
         return (
             <RctCard
                 customClasses="overflow-hidden"
-                heading={<IntlMessages id="widgets.ratings" />}
+                heading={<span>Đánh giá</span>}
             >
                 <RctCardContent noPadding>
                     <div className="p-20 d-flex justify-content-between">

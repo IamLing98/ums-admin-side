@@ -10,9 +10,6 @@ import ListItem from '@material-ui/core/ListItem';
 // Api
 import {api} from 'Api';
 
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-
 // card component
 import { RctCardFooter } from 'Components/RctCard';
 import { Fab } from '@material-ui/core';
@@ -73,7 +70,7 @@ export default class Comments extends Component {
                </List>
             </Scrollbars>
             <RctCardFooter customClasses="d-flex justify-content-between align-items-center rounded-bottom">
-               <Button variant="contained" color="primary" className="px-3 btn-xs bg-primary"><IntlMessages id="button.viewAll" /></Button>
+               <Button variant="contained" color="primary" className="px-3 btn-xs bg-primary"><span>Xem tất cả</span></Button>
             </RctCardFooter >
          </Fragment>
       );

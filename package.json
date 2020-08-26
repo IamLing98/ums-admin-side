@@ -1,5 +1,5 @@
 {
-   "name": "Polucon",
+   "name": "PDU-ERP",
    "version": "4.3.1",
    "description": "ADMIN DASHBOARD",
    "scripts": {
@@ -44,7 +44,7 @@
       "webpack-cli": "^3.1.2",
       "webpack-dev-server": "^3.2.1"
    },
-   "dependencies": {
+   "dependencies": { 
       "@amcharts/amcharts4": "^4.2.1",
       "@material-ui/core": "^3.9.2",
       "@material-ui/icons": "^1.1.1",

@@ -18,9 +18,6 @@ import { textTruncate, getAppLayout } from "Helpers/helpers";
 //Actions
 import { deleteItemFromCart } from "Actions";
 
-//intl Messages
-import IntlMessages from 'Util/IntlMessages';
-
 class Carts extends Component {
 
 	//Get Total Price
@@ -61,13 +58,13 @@ class Carts extends Component {
 				<DropdownMenu>
 					<div className="dropdown-content">
 						<div className="dropdown-top d-flex justify-content-between rounded-top bg-primary">
-							<span className="text-white font-weight-bold"><IntlMessages id="components.cart" /></span>
+							<span className="text-white font-weight-bold"><span>Giỏ hàng</span></span>
 							<Badge color="warning">4 NEW</Badge>
 						</div>
 						{this.isCartEmpty() ? (
 							<div className="text-center p-4">
 								<span className="d-block font-3x mb-15 text-danger"><i className="zmdi zmdi-shopping-cart"></i></span>
-								<h3><IntlMessages id="components.CartEmptyText" /></h3>
+								<h3><span>Rỗng</span></h3>
 							</div>
 						) : (
 								<Fragment>
@@ -107,7 +104,7 @@ class Carts extends Component {
 												color="primary"
 												className="mr-10 btn-xs bg-primary text-white"
 											>
-												<IntlMessages id="components.viewCart" />
+												<span>Giỏ hàng</span>
 											</Button>
 											<Button
 												variant="raised"
@@ -116,11 +113,11 @@ class Carts extends Component {
 												color="secondary"
 												className="btn-xs text-white"
 											>
-												<IntlMessages id="components.checkout" />
+												<span>Check out</span>
 											</Button>
 										</div>
 										<span className="fw-normal text-dark font-weight-bold font-xs">
-											<IntlMessages id="widgets.total" /> $ {this.getTotalPrice()}
+											<span>Tổng tiền</span> $ {this.getTotalPrice()}
 										</span>
 									</div>
 								</Fragment>

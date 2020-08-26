@@ -2,7 +2,6 @@
  * Pricing Block V2
  */
 import React from 'react';
-import IntlMessages from 'Util/IntlMessages';
 import ReactTooltip from 'react-tooltip';
 import { Button } from 'reactstrap';
 
@@ -10,7 +9,7 @@ const PricingBlockV2 = ({ type, responses, color, features }) => (
    <div className="pricing-box">
       <div className="pricing-head">
          <h2 className={`text-${color} pricing-title mb-0`}>
-            <IntlMessages id={type} />
+            <span>{type}</span>
          </h2>
       </div>
       <div className="plan-info">
@@ -29,7 +28,7 @@ const PricingBlockV2 = ({ type, responses, color, features }) => (
             ))}
          </ul>
          <Button color={color} className='btn-block btn-lg'>
-            <IntlMessages id="widgets.startToBasic" />
+            <span>Bắt đầu đơn giản</span>
          </Button>
       </div>
    </div>

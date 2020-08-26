@@ -12,9 +12,6 @@ import { withRouter } from "react-router-dom";
 // helpers
 import { getAppLayout } from "Helpers/helpers";
 
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-
 const QuickLinks = ({ location }) => (
 	<UncontrolledDropdown nav className="list-inline-item quciklink-dropdown tour-step-1">
 		<DropdownToggle nav className="header-icon p-0">
@@ -33,37 +30,37 @@ const QuickLinks = ({ location }) => (
 						<li>
 							<Link to={`/${getAppLayout(location)}/pages/report`}>
 								<i className="ti-notepad text-primary mr-10"></i>
-								<IntlMessages id="sidebar.report" />
+								<span>báo cáo</span>
 							</Link>
 						</li>
 						<li>
 							<Link to={`/${getAppLayout(location)}/tables/data-table`}>
 								<i className="ti-layout text-danger mr-10"></i>
-								<IntlMessages id="sidebar.tables" />
+								<span>bảng</span>
 							</Link>
 						</li>
 						<li>
 							<Link to={`/${getAppLayout(location)}/users/user-management`}>
 								<i className="ti-user text-success mr-10"></i>
-								<IntlMessages id="sidebar.userManagement" />
+								<span>Quản lý tài khoản</span>
 							</Link>
 						</li>
 						<li>
 							<Link to={`/${getAppLayout(location)}/ecommerce/invoice`}>
 								<i className="text-info ti-agenda mr-10"></i>
-								<IntlMessages id="sidebar.invoice" />
+								<span>Invoice</span>
 							</Link>
 						</li>
 						<li>
 							<Link to={`/${getAppLayout(location)}/mail/folder/inbox`}>
 								<i className="ti-email text-danger  mr-10"></i>
-								<IntlMessages id="sidebar.inbox" />
+								<span>Tin nhắn</span>
 							</Link>
 						</li>
 						<li>
 							<Link to={`/${getAppLayout(location)}/calendar/basic`}>
 								<i className="text-warning ti-calendar mr-10"></i>
-								<IntlMessages id="sidebar.calendar" />
+								<span>Lịch</span>
 							</Link>
 						</li>
 

@@ -72,7 +72,8 @@ const INIT_STATE = {
 		require('Assets/img/sidebar-3.jpg'),
 		require('Assets/img/sidebar-4.jpg'),
 	],
-	enableSidebarBackgroundImage: AppConfig.enableSidebarBackgroundImage, // default enable sidebar background
+	//enableSidebarBackgroundImage: AppConfig.enableSidebarBackgroundImage, // default enable sidebar background
+	enableSidebarBackgroundImage: false,
 	selectedSidebarImage: AppConfig.sidebarImage, // default sidebar background image
 	locale: AppConfig.locale,
 	languages: [

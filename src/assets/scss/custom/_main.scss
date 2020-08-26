@@ -1,7 +1,8 @@
 /*======== App Global (Main Structure) Mention Here =======*/
-#root, .app, {
+#root, .app {
 	height: 100%;
 	width: 100%;
+	background-color: #EFF0F1;
 }
 .app-main-container {
 	display: flex;

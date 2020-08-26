@@ -10,9 +10,6 @@ import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 import Chip from '@material-ui/core/Chip';
 
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-
 class NavMenuItemClient extends Component {
 
    state = {
@@ -49,7 +46,7 @@ class NavMenuItemClient extends Component {
                      <i className={menu.menu_icon}></i>
                   </ListItemIcon>
                   <span className="menu text-capitalize">
-                     <IntlMessages id={menu.menu_title} />
+                     <span>{menu.menu_title}</span>
                   </span>
                   {menu.new_item && menu.new_item === true ?
                      <Chip label="new" className="new-item" color="secondary" />
@@ -66,7 +63,7 @@ class NavMenuItemClient extends Component {
                                  <ListItem button component="li" key={index}>
                                     <NavLink to={subMenu.path} activeClassName="item-active" >
                                        <span className="menu">
-                                          <IntlMessages id={subMenu.menu_title} />
+                                          <span>{subMenu.menu_title}</span>
                                        </span>
                                        {subMenu.new_item && subMenu.new_item === true ?
                                           <Chip label="new" className="new-item" color="secondary" />
@@ -89,7 +86,7 @@ class NavMenuItemClient extends Component {
                                        className={`list-item ${classNames({ 'item-active': subMenuOpen === index })}`}
                                     >
                                        <span className="menu">
-                                          <IntlMessages id={subMenu.menu_title} />
+                                          <span>{subMenu.menu_title}</span>
                                        </span>
                                     </ListItem>
                                     <Collapse in={subMenuOpen === index} timeout="auto">
@@ -98,7 +95,7 @@ class NavMenuItemClient extends Component {
                                              <ListItem button component="li" key={nestedKey}>
                                                 <NavLink activeClassName="item-active" to={nestedMenu.path}>
                                                    <span className="menu pl-10 d-inline-block">
-                                                      <IntlMessages id={nestedMenu.menu_title} />
+                                                      <span>{nestedMenu.menu_title}</span>
                                                    </span>
                                                 </NavLink>
                                              </ListItem>
@@ -122,7 +119,7 @@ class NavMenuItemClient extends Component {
                   <i className={menu.menu_icon}></i>
                </ListItemIcon>
                <span className="menu">
-                  <IntlMessages id={menu.menu_title} />
+                <span>{menu.menu_title}</span>
                </span>
             </NavLink>
          </ListItem>

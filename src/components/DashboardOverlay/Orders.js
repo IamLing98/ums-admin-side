@@ -13,12 +13,9 @@ import TinyAreaChart from 'Components/Charts/TinyAreaChart';
 // collapsible card
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-
 const OrdersStats = () => (
     <RctCollapsibleCard
-        heading={<IntlMessages id="widgets.orders" />}
+        heading={<span>Đặt hàng</span>}
         fullBlock
     >
         <div className="d-flex justify-content-between p-20">

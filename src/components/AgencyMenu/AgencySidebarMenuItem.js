@@ -13,8 +13,6 @@ import Chip from '@material-ui/core/Chip';
 //Helper
 import { getAppLayout } from "Helpers/helpers";
 
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
 
 class AgencySidebarMenuItem extends Component {
 
@@ -47,7 +45,7 @@ class AgencySidebarMenuItem extends Component {
                      <i className={menu.menu_icon}></i>
                   </ListItemIcon>
                   <span className="menu">
-                     <IntlMessages id={menu.menu_title} />
+                     <span>{menu.menu_title}</span>
                   </span>
                   {menu.new_item && menu.new_item === true ?
                      <Chip label="new" className="new-item" color="secondary" />
@@ -63,7 +61,7 @@ class AgencySidebarMenuItem extends Component {
                               <ListItem button component="li" key={index}>
                                  <NavLink activeClassName="item-active" to={!subMenu.exact ? `/${this.getLayoutHandler() + subMenu.path}` : subMenu.path}>
                                     <span className="menu">
-                                       <IntlMessages id={subMenu.menu_title} />
+                                       <span>{subMenu.menu_title}</span>
                                     </span>
                                     {subMenu.new_item && subMenu.new_item === true ?
                                        <Chip label="new" className="new-item" color="secondary" />
@@ -78,7 +76,7 @@ class AgencySidebarMenuItem extends Component {
                            <Fragment key={index}>
                               <ListItem button component="li" onClick={() => this.onToggleCollapseMenu()} className={`list-item ${classNames({ 'item-active': subMenuOpen })}`}>
                                  <span className="menu">
-                                    <IntlMessages id={subMenu.menu_title} />
+                                    <span>{subMenu.menu_title}</span>
                                  </span>
                               </ListItem>
                               <Collapse in={subMenuOpen} timeout="auto">
@@ -86,7 +84,7 @@ class AgencySidebarMenuItem extends Component {
                                     <ListItem button component="li" key={nestedKey}>
                                        <NavLink activeClassName="item-active" to={nestedMenu.path}>
                                           <span className="menu pl-20">
-                                             <IntlMessages id={nestedMenu.menu_title} />
+                                             <span>{nestedMenu.menu_title}  </span>
                                           </span>
                                        </NavLink>
                                     </ListItem>
@@ -107,7 +105,7 @@ class AgencySidebarMenuItem extends Component {
                   <i className={menu.menu_icon}></i>
                </ListItemIcon>
                <span className="menu">
-                  <IntlMessages id={menu.menu_title} />
+                  <span>{menu.menu_title} </span> 
                </span>
             </NavLink>
          </ListItem>

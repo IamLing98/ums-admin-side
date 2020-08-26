@@ -10,9 +10,6 @@ import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 import Chip from '@material-ui/core/Chip';
 
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-
 class NavMenuItem extends Component {
 
    state = {

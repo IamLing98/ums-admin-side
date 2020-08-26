@@ -47,6 +47,7 @@ export default {
          "menu_icon": "zmdi zmdi-label-heart",
          "new_item": false,
          "type_multi": null,
+         "base_path":"/education-program",
          "child_routes": [
             {
                "menu_title": "Học Phần",

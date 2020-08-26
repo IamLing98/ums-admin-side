@@ -3,8 +3,6 @@
  */
 import React, { Component } from 'react';
 
-import IntlMessages from 'Util/IntlMessages';
-
 import navLinks from './NavLinks';
 
 import NavMenuItem from './NavMenuItem';
@@ -17,7 +15,7 @@ class HorizontalMenu extends Component {
                     <li className="nav-item">
                         <a href="javascript:void(0);" className="nav-link">
                             <i className="zmdi zmdi-view-dashboard"></i>
-                            <span className="menu-title"><IntlMessages id="sidebar.general" /></span>
+                            <span className="menu-title"><span>Chung</span></span>
                         </a>
                         <ul className="list-unstyled sub-menu">
                             {navLinks.category1.map((menu, key) => (

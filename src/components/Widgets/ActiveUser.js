@@ -6,9 +6,6 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import { Scrollbars } from 'react-custom-scrollbars';
 
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-
 const data = [
     {
         id: 1,

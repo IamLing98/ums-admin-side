@@ -10,9 +10,6 @@ import 'react-quill/dist/quill.snow.css';
 // rct card box
 import { RctCardFooter } from 'Components/RctCard';
 
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-
 const modules = {
 	toolbar: [
 		[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
@@ -79,10 +76,10 @@ class ComposeEmailWidget extends Component {
 				<ReactQuill modules={modules} formats={formats} placeholder="Enter Your Message.." />
 				<RctCardFooter>
 					<a href="javascript:void(0)" onClick={() => this.onClickSend()} className="btn btn-success btn-sm mr-10">
-						<IntlMessages id="widgets.send" />
+						<span>Gửi</span>
 					</a>
 					<a href="javascript:void(0)" onClick={() => this.onClickSaveToDraft()} className="btn btn-secondary btn-sm mr-10">
-						<IntlMessages id="widgets.saveAsDrafts" />
+						<span>Lưu</span>
 					</a>
 				</RctCardFooter>
 			</Fragment>

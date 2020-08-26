@@ -8,9 +8,6 @@ import $ from 'jquery';
 import Drawer from '@material-ui/core/Drawer';
 import { withRouter } from 'react-router-dom';
 
-//Intl Meassages
-import IntlMessages from 'Util/IntlMessages';
-
 import navLinks from './NavLinks';
 import NavMenuItem from './NavMenuItem';
 import Sidebar from 'Components/Sidebar';
@@ -50,7 +47,7 @@ class AgencyMenu extends Component {
                <li className="nav-item">
                   <a href="javascript:void(0);" className="nav-link">
                      <i className="zmdi zmdi-view-dashboard"></i>
-                     <span className="menu-title"><IntlMessages id="sidebar.general" /></span>
+                     <span className="menu-title"><span>Chung</span></span>
                      <span className="arrow-icon"></span>
                   </a>
                   <ul className="list-unstyled sub-menu">

@@ -63,14 +63,15 @@ class Sidebar extends Component {
 		this.setState({ windowWidth: $(window).width(), windowHeight: $(window).height() });
 	}
 
-	render() {
+	render() { 
 		const { enableSidebarBackgroundImage, selectedSidebarImage, isDarkSidenav } = this.props;
 		const {userData} = this.props.auth;
 		var ROLE = null;
 		if (userData){
 			ROLE = userData.roles[0];
 		}
-
+		console.log("side bar render");
+		console.log()
 		return (
 			<Fragment>
 				<div
