@@ -12,7 +12,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import MenuIcon from '@material-ui/icons/Menu';
 import { withRouter } from 'react-router-dom';
 import $ from 'jquery';
-
+import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 // actions
 import { collapsedSidebarAction } from 'Actions';
 
@@ -114,10 +114,14 @@ class Header extends Component {
 										onClose={() => this.setState({ isMobileSearchFormVisible: false })}
 									/>  */}
 								</li>
+								<li className="list-inline-item search-icon d-inline-block">
+								<PageTitleBar title={<span style={{height:"100%", verticalAlign:"middle"}}>{this.props.currentLocationPathName.pageTitle}</span>} match={this.props.match} />
+								</li>
 							</ul>
 						}
 					</div>
-					<ul className="navbar-right list-inline mb-0">
+					
+ 					<ul className="navbar-right list-inline mb-0">
 						<Notifications />
 						<li className="list-inline-item">
 							<Tooltip title="Hòm thư" placement="bottom">
@@ -150,8 +154,9 @@ class Header extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ settings }) => {
-	return settings;
+const mapStateToProps = ({ settings, sidebar }) => {
+	const {currentLocationPathName} = sidebar;
+	return {...settings, currentLocationPathName};
 };
 
 export default withRouter(connect(mapStateToProps, {

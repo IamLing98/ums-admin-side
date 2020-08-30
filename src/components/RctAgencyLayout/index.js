@@ -63,7 +63,7 @@ class RctAgencyLayout extends Component {
                         <AgencyMenu />
                         {this.renderPage()}
                      </div>
-                     <ThemeOptions />
+                     {/* <ThemeOptions /> */}
                      <Footer />
                   </div>
                </div>

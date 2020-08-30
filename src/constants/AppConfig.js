@@ -2,25 +2,19 @@
  * App Config File
  */
 const AppConfig = {
-   appLogo: require('Assets/img/site-logo.png'),          // App Logo
+   appLogo: require('Assets/img/pdu-logo.png'),          // App Logo
    brandName: 'PDU',                                    // Brand Name
    navCollapsed: false,                                      // Sidebar collapse
    darkMode: false,                                          // Dark Mode
    boxLayout: false,                                         // Box Layout
    rtlLayout: false,                                         // RTL Layout
    miniSidebar: false,                                       // Mini Sidebar
-   enableSidebarBackgroundImage: true,                      // Enable Sidebar Background Image
+   enableSidebarBackgroundImage: false,                      // Enable Sidebar Background Image
    sidebarImage: require('Assets/img/sidebar-1.jpg'),     // Select sidebar image
-   isDarkSidenav: true,                                   // Set true to dark sidebar
-   enableThemeOptions: true,                              // Enable Theme Options
-   locale: {
-      languageId: 'english',
-      locale: 'en',
-      name: 'English',
-      icon: 'en',
-   },
+   isDarkSidenav: false,                                   // Set true to dark sidebar
+   enableThemeOptions: true,       
    enableUserTour: process.env.NODE_ENV === 'production' ? false : false,  // Enable / Disable User Tour
-   copyRightText: 'Polucon © 2019 All Rights Reserved.',      // Copy Right Text
+   copyRightText: 'PDU ERP © 2020 All Rights Reserved.',      // Copy Right Text
    // light theme colors
    themeColors: {
       'primary': '#5D92F4',

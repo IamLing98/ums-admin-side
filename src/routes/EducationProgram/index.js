@@ -1,7 +1,7 @@
 import React from "react";
 import { Helmet } from "react-helmet";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { AsyncModuleComponent } from "Components/AsyncComponent/AsyncComponent";
+import { AsyncModuleComponent, AsyncProgramsComponent } from "Components/AsyncComponent/AsyncComponent";
 
 const EducationProgram = ({ match }) => (
     <div className="content-wrapper">
@@ -12,6 +12,7 @@ const EducationProgram = ({ match }) => (
         <Switch>
             <Redirect exact from={`${match.url}/`} to={`${match.url}/module`} />
             <Route path={`${match.url}/module`} component={AsyncModuleComponent} />
+            <Route path={`${match.url}/programs`} component={AsyncProgramsComponent} />
         </Switch>
     </div>
 );

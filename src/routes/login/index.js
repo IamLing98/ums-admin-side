@@ -71,7 +71,7 @@ class AdminLoginPage extends Component{
                                 <div className="d-flex justify-content-between">
                                     <div className="session-logo">
                                         <Link to="/">
-                                            <img src={AppConfig.appLogo} alt="session-logo" className="img-fluid" width="110" height="35" />
+                                            {/* <img src={AppConfig.appLogo} alt="session-logo" className="img-fluid" width="110" height="35" /> */}
                                         </Link>
                                     </div>
 
@@ -82,16 +82,16 @@ class AdminLoginPage extends Component{
                     <div className="session-inner-wrapper">
                         <div className="container">
                             <div className="row row-eq-height">
-                                <div className="col-sm-7 col-md-7 col-lg-8">
+                                <div className="col-sm-12 col-md-12 col-lg-6" style={{margin:"0 auto"}}>
                                     <div className="session-body text-center">
                                         <div className="session-head mb-30">
-                                            <h2 className="font-weight-bold">Polucon Admin-Dashboard Login</h2>
-                                            <p className="mb-0">Please provide details to authenticate</p>
+                                            <h2 className="font-weight-bold">Phần Mềm Quản Lý Trường Đại Học Dân Lập Phương Đông</h2>
+                                            <p className="mb-0">Vui lòng xác thực</p>
                                         </div>
                                         <Form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                                             {error && <div className="alert alert-danger">{error}</div>}
-                                            <Field name="username" type="text" placeholder="Username" spanIcon="ti-email" component={renderForm}/>
-                                            <Field name="password" type="Password" placeholder="Password" spanIcon="ti-lock" component={renderForm}/>
+                                            <Field name="username" type="text" placeholder="Tài Khoản" spanIcon="ti-email" component={renderForm}/>
+                                            <Field name="password" type="Password" placeholder="Mật khẩu" spanIcon="ti-lock" component={renderForm}/>
                                             <FormGroup className="mb-15">
                                                 <Button
                                                     type="submit"
@@ -99,11 +99,11 @@ class AdminLoginPage extends Component{
                                                     className="btn-block text-white w-100"
                                                     variant="contained"
                                                     size="large">
-                                                    Sign In
+                                                    Đăng Nhập
                                                 </Button>
                                             </FormGroup>
                                         </Form>
-                                        <p><a href="javascript:void(0)" onClick={() => this.props.history.push('/forgot-password')} className="text-muted">Forgot Password?</a></p>
+                                        <p><a href="javascript:void(0)" onClick={() => this.props.history.push('/forgot-password')} className="text-muted">Quên Mật Khẩu?</a></p>
                                     </div>
                                 </div>
 

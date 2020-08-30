@@ -120,6 +120,11 @@ module.exports = {
                     "css-loader",
                     "sass-loader"
                 ]
+            },
+            //json loader
+            {
+                test: /\.json$/,
+                loader: 'json-loader'
             }
         ]
     },

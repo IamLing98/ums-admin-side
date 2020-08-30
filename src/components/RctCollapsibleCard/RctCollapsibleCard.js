@@ -4,7 +4,7 @@
 import React, { Component, Fragment } from 'react';
 import { Collapse, Badge } from 'reactstrap';
 import classnames from 'classnames';
-
+import { Tooltip } from "antd";
 // rct section loader
 import RctSectionLoader from '../RctSectionLoader/RctSectionLoader';
 
@@ -43,7 +43,13 @@ class RctCollapsibleCard extends Component {
                             <h4>{heading} {badge && <Badge className="p-1 ml-10" color={badge.class}>{badge.name}</Badge>}</h4>
                             {(collapsible || reloadable || closeable) &&
                                 <div className="contextual-link">
-                                    {collapsible && <a href="javascript:void(0)" onClick={() => this.onCollapse()}><i className="ti-minus"></i></a>}
+                                    <input type="text" className="search-input-lg form-control" />
+
+                                    {collapsible &&
+                                        <Tooltip placement="top" title={"Thu gọn"}>
+                                            <a href="javascript:void(0)" onClick={() => this.onCollapse()}><i className="ti-minus"></i></a>
+                                        </Tooltip>
+                                    }
                                     {reloadable && <a href="javascript:void(0)" onClick={() => this.onReload()}><i className="ti-reload"></i></a>}
                                     {closeable && <a href="javascript:void(0)" onClick={() => this.onCloseSection()}><i className="ti-close"></i></a>}
                                 </div>

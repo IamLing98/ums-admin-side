@@ -30,14 +30,14 @@ const PageTitleBar = ({ title, match, enableBreadCrumb }) => {
    const path = match.path.substr(1);
    const subPath = path.split('/');
    return (
-      <div className="page-title d-flex justify-content-between align-items-center">
+      <div className="page-title d-flex justify-content-between align-items-center" style={{height:"100%", verticalAlign:"middle", margin:"auto"}}>
          {title &&
-            <div className="page-title-wrap">
-               <i className="ti-angle-left"></i>
-               <h2 className="">{title}</h2>
+            <div className="page-title-wrap" style={{verticalAlign:"middle"}}>
+               {/* <i className="ti-angle-left"></i> */}
+               <h3 className="" style={{height:"100%", verticalAlign:"middle"}}>{title}</h3>
             </div>
          }
-         {enableBreadCrumb &&
+         {/* {enableBreadCrumb &&
             <Breadcrumb className="mb-0 tour-step-7" tag="nav">
                {subPath.map((sub, index) => {
                   return <BreadcrumbItem active={subPath.length === index + 1}
@@ -46,7 +46,7 @@ const PageTitleBar = ({ title, match, enableBreadCrumb }) => {
                }
                )}
             </Breadcrumb>
-         }
+         } */}
       </div>
    )
 };

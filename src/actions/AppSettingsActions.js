@@ -16,9 +16,14 @@ import {
     STOP_USER_TOUR,
     TOGGLE_DARK_SIDENAV,
     AGENCY_TOGGLE_MENU,
-    CHANGE_AGENCY_LAYOUT_BG, TOGGLE_SUP_MENU, TOGGLE_SUB_MENU
+    CHANGE_AGENCY_LAYOUT_BG,
+    TOGGLE_SUP_MENU,
+    TOGGLE_SUB_MENU,
+    CHANGE_CURRENT_LOCATION_PATH_NAME,
+    TOGGLE_ADMIN_MENU,
+    TOGGLE_CLIENT_MENU
 } from './types';
-import {TOGGLE_ADMIN_MENU, TOGGLE_CLIENT_MENU} from "Actions/types";
+// import { TOGGLE_ADMIN_MENU, TOGGLE_CLIENT_MENU } from "Actions/types";
 
 /**
  * Redux Action To Emit Collapse Sidebar
@@ -159,4 +164,10 @@ export const toggleDarkSidebar = () => ({
 export const agencyLayoutBgHandler = (color) => ({
     type: CHANGE_AGENCY_LAYOUT_BG,
     payload: color
+})
+
+// Redux Action For Current Location
+export const setCurrentLocationPathNameAction = (locationPathName) => ({
+    type : CHANGE_CURRENT_LOCATION_PATH_NAME,
+    payload : locationPathName
 })

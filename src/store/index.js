@@ -4,6 +4,9 @@ import reducers from '../reducers';
 import {tokenMiddleWare} from "./tokenMiddleware";
 import loggerMiddleware from './logger-middleware';
 
+//delete in packed json please
+import logger from 'redux-logger';
+
 export function configureStore(initialState) {
 
     const store = createStore(

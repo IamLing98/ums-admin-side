@@ -151,7 +151,7 @@ class MainApp extends Component {
                      </div>
                   </div>
                </Sidebar>
-               <ThemeOptions />
+               {/* <ThemeOptions /> */}
             </div>
          </div>
       );

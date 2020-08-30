@@ -41,7 +41,7 @@ class Sidebar extends Component {
 		window.addEventListener("resize", this.updateDimensions);
 		const {user_id} = this.props.auth;
 		if (user_id !== null){
-			this.props.fetchUserDetails(user_id);
+			//this.props.fetchUserDetails(user_id);
 		}
 	}
 
@@ -70,8 +70,6 @@ class Sidebar extends Component {
 		if (userData){
 			ROLE = userData.roles[0];
 		}
-		console.log("side bar render");
-		console.log(this.props)
 		return (
 			<Fragment>
 				<div
@@ -79,10 +77,11 @@ class Sidebar extends Component {
 					style={{ backgroundImage: enableSidebarBackgroundImage ? `url(${selectedSidebarImage})` : 'none' }}
 				>
 					<div className={classNames("rct-sidebar-content", { "sidebar-overlay-dark": isDarkSidenav, 'sidebar-overlay-light': !isDarkSidenav })}>
-						<div className="site-logo">
+						<div className="site-logo" style={{justifyContent:"center"}}>
 
-							<Link to="/" className="logo-normal">
-								<img src={require('Assets/img/appLogoFull.png')} className="img-fluid" alt="site-logo" width="67" height="17" />
+							<Link to="/" className="logo-normal"  >
+								{/* <img src={require('Assets/img/pdu-logo.png')} className="img-fluid" alt="site-logo" width="53" height="17px" /> */}
+								<h1 style={{textAlign:"center"}}>PDU ERP</h1>
 							</Link>
 						</div>
 						<div className="rct-sidebar-wrap">

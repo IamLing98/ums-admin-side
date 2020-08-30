@@ -117,7 +117,8 @@
                   transition: all 0.2s ease-in-out;
                }
                &.item-active {
-                  background-color: rgba(0, 0, 0, 0.2);
+                  background-color: #CBCACA; 
+                  font-weight: bolder !important;
                   &:after {
                      transform: rotate(90deg);
                   }
@@ -149,7 +150,7 @@
                      text-transform: capitalize;
                      &.item-active {
                         font-weight: $fw-semi-bold;
-                        background:rgba(0, 0, 0, 0.4);
+                        background:#f0e9e9;
                      }
                   }
                   &.list-item {

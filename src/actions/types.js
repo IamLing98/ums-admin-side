@@ -53,6 +53,8 @@ export const TOGGLE_SUP_MENU = 'TOGGLE_SUP_MENU';
 export const TOGGLE_SUB_MENU = 'TOGGLE_SUB_MENU';
 export const TOGGLE_CLIENT_MENU = 'TOGGLE_CLIENT_MENU';
 export const TOGGLE_ADMIN_MENU = 'TOGGLE_ADMIN_MENU';
+export const CHANGE_CURRENT_LOCATION_PATH_NAME = "CHANGE_CURRENT_LOCATION_PATH_NAME";
+
 // ToDo App
 export const GET_TODOS = 'GET_TODOS';
 export const FETCH_TODOS = 'FETCH_TODOS';
@@ -192,4 +194,4 @@ export const USER_UPDATE_SUCCESS ='USER_UPDATE_SUCCESS';
 export const USER_UPDATE_FAILURE ='USER_UPDATE_FAILURE';
 
 //SERVER_IMAGE_PATH
-export const SERVER_PATH = 'http://localhost:8000';
+export const SERVER_PATH = 'http://localhost:8080';

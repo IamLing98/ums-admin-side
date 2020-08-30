@@ -11,12 +11,8 @@ export default {
                "menu_title": "Thống Kê",
                "new_item": false,
                "path": "/dashboard/home",
-            },
-            {
-               "menu_title": "sidebar.settings",
-               "new_item": false,
-               "path": "/app/dashboard/settings",
-            }
+               "isActive": false
+            } 
          ]
       }
    ],
@@ -29,48 +25,76 @@ export default {
          "type_multi": null,
          "child_routes": [
             {
+               "isActive": false,
                "menu_title": "Tuyển Sinh",
                "new_item": false,
-               "path": "/studens/admission",
+               "path": "/students/admission",
             },
             {
+               "isActive": false,
                "menu_title": "Danh Sách",
                "new_item": false,
                "path": "/students/student-list",
             },
- 
+
 
          ]
       },
       {
-         "menu_title": "Chương Trình Đào Tạo",
+         "menu_title": "Giảng Viên",
          "menu_icon": "zmdi zmdi-label-heart",
          "new_item": false,
          "type_multi": null,
-         "base_path":"/education-program",
+         "base_path": "/education-program",
          "child_routes": [
             {
+               "isActive" : false,
                "menu_title": "Học Phần",
                "new_item": false,
                "path": "/education-program/module",
             },
             {
-               "menu_title": "Danh Sách",
+               "isActive" : false,
+               "menu_title": "Chương Trình Đào Tạo",
                "new_item": false,
-               "path": "/education-program/as",
-            }, 
+               "path": "/education-program/programs",
+            },
 
          ]
       },
+      {
+         "menu_title": "Đào Tạo",
+         "menu_icon": "zmdi zmdi-account-box-mail",
+         "new_item": false,
+         "type_multi": null,
+         "base_path": "/education-program",
+         "child_routes": [
+            {
+               "isActive" : false,
+               "menu_title": "Học Phần",
+               "new_item": false,
+               "path": "/education-program/module",
+            },
+            {
+               "isActive" : false,
+               "menu_title": "Chương Trình Đào Tạo",
+               "new_item": false,
+               "path": "/app/education-program/programs",
+            },
+
+         ]
+      },
+ 
 
    ],
    SupAdmincategory3: [
       {
-         "menu_title": "Chương Trình Đào Tạo",
+         "menu_title": "Tài Khoản",
          "new_item": false,
          "menu_icon": "zmdi zmdi-accounts-add",
-         "child_routes":[
+         "child_routes": [
             {
+               "menu_icon": "zmdi zmdi-accounts-add",
                "menu_title": "sidebar.createUser",
                "new_item": false,
                "path": "/users/user-management/create-user",
@@ -105,34 +129,5 @@ export default {
          ]
       }
    ],
-   SupAdmincategory5: [
-      {
-         "menu_title": "sidebar.invoices",
-         "menu_icon": "zmdi zmdi-file-text",
-         "new_item": false,
-         "type_multi": null,
-         "child_routes": [
-            {
-               "menu_title": "sidebar.createInvoices",
-               "new_item": false,
-               "path": "/app/invoices/create-invoices",
-            }
-         ]
-      }
-   ],
-   SupAdmincategory6: [
-      {
-         "menu_title": "sidebar.location",
-         "menu_icon": "zmdi zmdi-gps-dot",
-         "new_item": false,
-         "type_multi": null,
-         "child_routes": [
-            {
-               "menu_title": "sidebar.maps",
-               "new_item": false,
-               "path": "/app/location/map",
-            }
-         ]
-      }
-   ]
+
 }

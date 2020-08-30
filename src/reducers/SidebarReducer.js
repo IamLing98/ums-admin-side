@@ -7,7 +7,8 @@ import {
 	TOGGLE_ADMIN_MENU,
 	TOGGLE_CLIENT_MENU,
 	TOGGLE_SUB_MENU,
-	TOGGLE_SUP_MENU
+	TOGGLE_SUP_MENU,
+	CHANGE_CURRENT_LOCATION_PATH_NAME
 } from 'Actions/types';
 
 // nav links
@@ -23,6 +24,10 @@ const INIT_STATE = {
 	AdminSidebarMenu: AdminNavLinks,
 	ClientSidebarMenu: ClientNavLinks,
 	agencySidebarMenu: agencyNavLinks,
+	currentLocationPathName: {
+		pathName : "/",
+		pageTitle: ""
+	}
 };
 
 export default (state = INIT_STATE, action) => {
@@ -267,6 +272,11 @@ export default (state = INIT_STATE, action) => {
 					}
 				}
 			});
+		case CHANGE_CURRENT_LOCATION_PATH_NAME:
+			return {
+				...state,
+				currentLocationPathName: {...action.payload}
+			}
 		default:
 			return { ...state };
 	}

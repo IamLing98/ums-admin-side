@@ -22,34 +22,21 @@ import {userLoginSuccess} from "Actions";
 /**
  * Initial Path To Check Whether User Is Logged In Or Not
  */
-// const InitialPath = ({ component: Component,authToken,...rest }) =>{
-//     return(   <Route
-//        {...rest}
-//        render={props =>
-//            authToken
-//                ? <Component {...props}/>
-//                : <Redirect
-//                    to={{
-//                        pathname: '/admin-login',
-//                        state: { from: props.location }
-//                    }}
-//                />}
-//    />);
-// };
-
-
 const InitialPath = ({ component: Component,authToken,...rest }) =>{
-    return(   
-    <Route
+    return(   <Route
        {...rest}
-       render={props =>{
-           console.log("props", props);
-        //    const subPath = props.location.pathname.split('/');
-        //    console.log("sub path", subPath)
-           return  <Component {...props}/>   
-    } }
+       render={props =>
+           authToken
+               ? <Component {...props}/>
+               : <Redirect
+                   to={{
+                       pathname: '/login',
+                       state: { from: props.location }
+                   }}
+               />}
    />);
 };
+
 
 class App extends Component {
     constructor(props){
@@ -62,27 +49,26 @@ class App extends Component {
 
 
    render() {
-       console.log("this,props", this.props);
       const { location,match,token } = this.props;
        if (location.pathname === '/') {
-           if(token !== null){
-              return (<Redirect to={'/admin-login'}/>);
+           if(token === null){
+              return (<Redirect to={'/login'}/>);
            } else {
-              return (<Redirect to={'/dashboard/home'}/>)
+              return (<Redirect to={'/app/dashboard/home'}/>)
            }
        }
       return (
          <RctThemeProvider>
             <NotificationContainer />
              <InitialPath
-                 path={``}
+                 path={`${match.url}app`}
                  authToken = {token}
                  component={RctDefaultLayout}
              />
 
              <Switch>
 
-                 <Route exact path="/admin-login" component={AsyncAdminLoginComponent}/>
+                 <Route exact path="/login" component={AsyncAdminLoginComponent}/>
                  <Route path="/session/404" component={AsyncSessionPage404Component} />
                  <Route path="/session/500" component={AsyncSessionPage500Component} />
                  <Route path="/forgot-password" component={AsyncForgotPassComponent}/>
@@ -97,8 +83,7 @@ class App extends Component {
 
 // map state to props
 const mapStateToProps = state =>({
-    ...state.auth,
-    sideBar: state.sidebar.sidebarMenus
+    ...state.auth
 });
 
 

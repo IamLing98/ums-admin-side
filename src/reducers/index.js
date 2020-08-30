@@ -16,6 +16,7 @@ import createTask from './CreateTaskReducer'
 import formBuilderReducer from './UploadFormBuilder'
 import assignTaskReducer from './AssignTaskReducer';
 import UpdateUserReducer from './UpdateUserReducer';
+import EducationProgramReducer from './EducationProgramReducer';
 import {
   ADD_DEPARTMENT_SUCCESS_ADD,
   ADD_USER_SUCCESS,
@@ -23,6 +24,7 @@ import {
   CREATE_TASK_SUCCESS,
   LOGIN_USER_FAILURE
 } from "Actions/types";
+
 const reducers = combineReducers({
   settings,
   chatAppReducer,
@@ -36,6 +38,7 @@ const reducers = combineReducers({
   createTaskReducer:createTask,
   assignTask:assignTaskReducer,
   updateUserRed:UpdateUserReducer,
+  educationProgram:EducationProgramReducer,
   form: formReducer.plugin({
     addUserForm: (state,action)=>{
       switch (action.type) {
