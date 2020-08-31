@@ -30,8 +30,8 @@ export const CreateEducationProgram = (props) => {
         props.onOk(formData);
     }
     useEffect(() => {
-        console.log(props.educationProgram.listBranch)
-    }, [])
+        // console.log(props.educationProgram.listBranch)
+    }, [JSON.stringify(props.visible)])
 
     return (
         <Modal
@@ -52,7 +52,7 @@ export const CreateEducationProgram = (props) => {
             <div className="form-group">
                 <label htmlFor="educationProgramId" >
                     Mã Chương Trình Đào Tạo
-          </label>
+                </label>
                 <input
                     name="educationProgramsId"
                     id="educationProgramsId"
@@ -66,7 +66,7 @@ export const CreateEducationProgram = (props) => {
             <div className="form-group">
                 <label htmlFor="educationProgramName" >
                     Tên Chương Trình Đào Tạo
-          </label>
+                </label>
                 <input
                     name="educationProgramName"
                     id="educationProgramName"

@@ -3,6 +3,13 @@
   display: block;
   width: 100%;
   overflow-x: auto;
+  padding:0.9375rem 20px;
+}
+.tableListOperator{
+  margin-bottom: 16px;
+  button {
+    margin-right: 8px;
+  }
 }
 table {
   thead, tbody {

@@ -71,15 +71,15 @@ export default {
          "child_routes": [
             {
                "isActive" : false,
-               "menu_title": "Học Phần",
+               "menu_title": "C.Trình Đào Tạo",
                "new_item": false,
-               "path": "/education-program/module",
+               "path": "/app/education-program/programs",
             },
             {
                "isActive" : false,
-               "menu_title": "Chương Trình Đào Tạo",
+               "menu_title": "Thời Khoá Biểu",
                "new_item": false,
-               "path": "/app/education-program/programs",
+               "path": "/education-program/module",
             },
 
          ]

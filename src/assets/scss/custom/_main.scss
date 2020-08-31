@@ -9,12 +9,13 @@
 	flex-wrap: nowrap;
 }
 .rct-page-content {
-  padding: $grid-gutter-width; //24px;
+ // padding: $grid-gutter-width; //24px;
+ padding: 10px 20px;
 }
 .rct-footer {
 	box-shadow: $footer-box-shadow;
 	background-color: $footer-bg;
-	padding: 1.25rem; //20px;
+	padding: 1rem; //20px;
 	z-index: 9;
 	h5 {
 		margin-bottom: 0;
@@ -123,3 +124,23 @@
 		}
 	}
 }
+//scroll 
+/* width */
+::-webkit-scrollbar {
+	width: 2px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+	background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+	background: #888;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+	background: #555;
+  }

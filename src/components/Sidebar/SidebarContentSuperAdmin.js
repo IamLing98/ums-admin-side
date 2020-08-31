@@ -29,9 +29,11 @@ const SidebarContentSuperAdmin = (props) => {
                 <List
                     className="rct-mainMenu p-0 m-0 list-unstyled"
                     subheader={
-                        <ListSubheader className="side-title" component="li">
-                            <span>THỐNG KÊ</span>
-                        </ListSubheader>}
+                        // <ListSubheader className="side-title" component="li">
+                        //     <span>THỐNG KÊ</span>
+                        // </ListSubheader>
+                        <></>
+                    }
                 >
                     {sidebarMenus.SupAdmincategory1.map((menu, key) => (
                         <NavMenuItem
@@ -49,9 +51,11 @@ const SidebarContentSuperAdmin = (props) => {
                 <List
                     className="rct-mainMenu p-0 m-0 list-unstyled"
                     subheader={
-                        <ListSubheader className="side-title" component="li">
-                            <span>PHÒNG ĐÀO TẠO</span>
-                        </ListSubheader>}
+                        // <ListSubheader className="side-title" component="li">
+                        //     <span>PHÒNG ĐÀO TẠO</span>
+                        // </ListSubheader>
+                        <></>
+                    }
                 >
                     {sidebarMenus.SupAdmincategory2.map((menu, key) => (
                         <NavMenuItem
@@ -66,9 +70,11 @@ const SidebarContentSuperAdmin = (props) => {
                 <List
                     className="rct-mainMenu p-0 m-0 list-unstyled"
                     subheader={
-                        <ListSubheader className="side-title" component="li">
-                            <span>Người dùng</span>
-                        </ListSubheader>}
+                        // <ListSubheader className="side-title" component="li">
+                        //     <span>Người dùng</span>
+                        // </ListSubheader>
+                        <></>
+                    }
                 >
                     {sidebarMenus.SupAdmincategory3.map((menu, key) => (
                         <NavMenuItem
@@ -82,9 +88,11 @@ const SidebarContentSuperAdmin = (props) => {
                 <List
                     className="rct-mainMenu p-0 m-0 list-unstyled"
                     subheader={
-                        <ListSubheader className="side-title" component="li">
-                            <span>Xây dựng form</span>
-                        </ListSubheader>}
+                        // <ListSubheader className="side-title" component="li">
+                        //     <span>Xây dựng form</span>
+                        // </ListSubheader>
+                        <></>
+                    }
                 >
                     {sidebarMenus.SupAdmincategory4.map((menu, key) => (
                         <NavMenuItem

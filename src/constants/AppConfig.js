@@ -12,7 +12,7 @@ const AppConfig = {
    enableSidebarBackgroundImage: false,                      // Enable Sidebar Background Image
    sidebarImage: require('Assets/img/sidebar-1.jpg'),     // Select sidebar image
    isDarkSidenav: false,                                   // Set true to dark sidebar
-   enableThemeOptions: true,       
+   enableThemeOptions: false,       
    enableUserTour: process.env.NODE_ENV === 'production' ? false : false,  // Enable / Disable User Tour
    copyRightText: 'PDU ERP © 2020 All Rights Reserved.',      // Copy Right Text
    // light theme colors

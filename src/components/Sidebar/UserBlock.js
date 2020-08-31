@@ -17,7 +17,8 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import {api} from "Api";
 import {SERVER_PATH} from "Actions/types";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 
 
 class UserBlock extends Component {
@@ -78,36 +79,14 @@ class UserBlock extends Component {
 							className="d-flex align-items-center"
 						>
 							{userData ? <div className="user-profile">
-									{
-										(userData.profilePic !== null)?
-											<img
-												//src={`${SERVER_PATH}${userData.profilePic.url}`}
-												src={userData.profilePic}
-												alt="user profile"
-												className="img-fluid rounded-circle"
-												width="50"
-												height="100"
-											/>
-											: <img
-												src={require('Assets/avatars/profile.jpg')}
-												alt="user profile"
-												className="img-fluid rounded-circle bg-light"
-												width="50"
-												height="100"
-											/>
-
-									}
+							<Tooltip title="Tài khoản cá nhân" placement="bottom">
+								<IconButton aria-label="settings" onClick={() => {}}>
+									<i className="zmdi zmdi-account-box"></i>
+								</IconButton>
+							</Tooltip>
 							</div>
 								:<CircularProgress className="w-10 mr-30 mb-10 progress-primary" thickness={2.5} />
 							}
-							<div className="user-info">
-								{userData ?
-									<div>
-										<span className="user-name ml-4">{userData.username}</span><i className="zmdi zmdi-chevron-down dropdown-icon mx-4"></i>
-									</div>
-									:<RctSectionLoader/>}
-
-							</div>
 						</DropdownToggle>
 						<DropdownMenu>
 							<ul className="list-unstyled mb-0">

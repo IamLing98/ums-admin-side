@@ -41,7 +41,8 @@ class Sidebar extends Component {
 		window.addEventListener("resize", this.updateDimensions);
 		const {user_id} = this.props.auth;
 		if (user_id !== null){
-			//this.props.fetchUserDetails(user_id);
+		//	this.props.fetchUserDetails(user_id);
+		 
 		}
 	}
 
@@ -81,7 +82,7 @@ class Sidebar extends Component {
 
 							<Link to="/" className="logo-normal"  >
 								{/* <img src={require('Assets/img/pdu-logo.png')} className="img-fluid" alt="site-logo" width="53" height="17px" /> */}
-								<h1 style={{textAlign:"center"}}>PDU ERP</h1>
+								<h3 style={{textAlign:"center", margin:"auto"}}>PDU ERP</h3>
 							</Link>
 						</div>
 						<div className="rct-sidebar-wrap">
@@ -89,9 +90,9 @@ class Sidebar extends Component {
 								className="rct-scroll"
 								autoHide
 								autoHideDuration={100}
-								style={{ height: 'calc(100vh - 60px)' }}
+								style={{ height: 'calc(100vh - 52px)' }}
 							>
-								<UserBlock userData={userData}/>
+								{/* <UserBlock userData={userData}/> */}
 								{userData?
 									(ROLE === ROLE_SUPERADMIN)?<SidebarContentSuperAdmin userData={userData}/>
 									:(ROLE === ROLE_ADMIN)?<SidebarContentAdmin userData={userData}/>

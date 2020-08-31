@@ -8,7 +8,7 @@ import { Tabs } from 'antd';
 import { StickyContainer, Sticky } from 'react-sticky';
 import { api } from 'Api';
 import EducationProgramList from 'Routes/EducationProgram/Programs/Components/EducationProgramList';
-import ModuleList from 'Routes/EducationProgram/Programs/Components/ModuleList';
+import SubjectList from 'Routes/EducationProgram/Programs/Components/SubjectList';
 import { Helmet } from "react-helmet";
 import { connect } from 'react-redux';
 import { setListBranch } from "Actions/EducationProgramActions";
@@ -17,6 +17,7 @@ import { NotificationManager } from 'react-notifications';
 const { TabPane } = Tabs;
 
 const renderTabBar = (props, DefaultTabBar) => (
+
   <Sticky bottomOffset={80}>
     {({ style }) => (
       <DefaultTabBar {...props} className="site-custom-tab-bar" style={{ ...style }} />
@@ -28,6 +29,7 @@ const renderTabBar = (props, DefaultTabBar) => (
 
 export const ProgramsHome = (props) => {
 
+  const [tabChange, setChangeTab] = useState(false);
 
   useEffect(() => {
 
@@ -56,12 +58,12 @@ export const ProgramsHome = (props) => {
         <meta name="description" content="User Profile" />
       </Helmet>
       <StickyContainer>
-        <Tabs defaultActiveKey="1" renderTabBar={renderTabBar}>
+        <Tabs defaultActiveKey="1" renderTabBar={renderTabBar} onChange = {()=> setChangeTab(value => value = !value)}>
           <TabPane tab="Ngành/Chuyên Ngành" key="1"  >
-            < EducationProgramList  />
+            < EducationProgramList />
           </TabPane>
-          <TabPane tab="Học Phần" key="2">
-            < ModuleList />
+          <TabPane tab="Học Phần" key="2"    >
+            < SubjectList tabIsChange = {tabChange} />
           </TabPane>
         </Tabs>
       </StickyContainer>

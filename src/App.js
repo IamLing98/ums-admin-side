@@ -8,7 +8,7 @@ import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 // css
 import './lib/reactifyCss';
-
+import 'antd/dist/antd.css';
 // app component
 import App from './container/App';
 

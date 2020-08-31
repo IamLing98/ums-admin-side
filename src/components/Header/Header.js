@@ -4,15 +4,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { Link } from 'react-router-dom';
 import screenfull from 'screenfull';
-import Tooltip from '@material-ui/core/Tooltip';
 import MenuIcon from '@material-ui/icons/Menu';
 import { withRouter } from 'react-router-dom';
 import $ from 'jquery';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
+import UserBlock from "Components/Sidebar/UserBlock";
 // actions
 import { collapsedSidebarAction } from 'Actions';
 
@@ -138,13 +139,8 @@ class Header extends Component {
 							</Tooltip>
 						</li>
 						<li className="list-inline-item">
-							<Tooltip title="Toàn màn hình" placement="bottom">
-								<IconButton aria-label="settings" onClick={() => {}}>
-									<i className="zmdi zmdi-crop-free"></i>
-								</IconButton>
-							</Tooltip>
+							<UserBlock userData={this.props.userData} />
 						</li>
-
 
 					</ul>
 				</Toolbar>
@@ -154,9 +150,9 @@ class Header extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ settings, sidebar }) => {
+const mapStateToProps = ({ settings, sidebar,auth }) => {
 	const {currentLocationPathName} = sidebar;
-	return {...settings, currentLocationPathName};
+	return {...settings,...auth, currentLocationPathName};
 };
 
 export default withRouter(connect(mapStateToProps, {

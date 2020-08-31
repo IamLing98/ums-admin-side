@@ -43,7 +43,8 @@ export default (state = INIT_STATE, action) => {
                 loading: false,
                 userData: action.user,
                 token: action.token,
-                isAuthenticated: true
+                isAuthenticated: true,
+                user_id:action.user.userId
             };
         case LOGIN_USER_FAILURE:
             return { ...state, loading: false };

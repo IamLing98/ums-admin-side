@@ -41,14 +41,14 @@ export const UpdateEducationProgram = (props) => {
 
     return (
         <Modal
-            title="Tạo Mới CTĐT"
+            title="Chỉnh Sửa CTDT"
             visible={props.visible}
             onOk={() => handleSubmitFormCreate()}
             onCancel={props.onCancel}
             okButtonProps={{ disabled: false }}
             cancelButtonProps={{ disabled: false }}
             maskClosable={false}
-            okText="Tạo Mới"
+            okText="Chỉnh Sửa"
             cancelText="Đóng"
             destroyOnClose={true}
             centered

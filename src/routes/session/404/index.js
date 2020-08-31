@@ -17,11 +17,11 @@ export default class NotFound extends Component {
                         <div className="d-flex justify-content-between">
                            <div className="session-logo">
                               <Link to="/">
-                                 <img src={require('Assets/img/site-logo.png')} alt="session-logo" className="img-fluid" width="110" height="35" />
+                                 {/* <img src={require('Assets/img/site-logo.png')} alt="session-logo" className="img-fluid" width="110" height="35" /> */}
                               </Link>
                            </div>
                            <div className="session-social-icon">
-                              <IconButton className="text-white" aria-label="facebook">
+                              {/* <IconButton className="text-white" aria-label="facebook">
                                  <i className="zmdi zmdi-facebook"></i>
                               </IconButton>
                               <IconButton className="text-white" aria-label="twitter">
@@ -29,7 +29,7 @@ export default class NotFound extends Component {
                               </IconButton>
                               <IconButton className="text-white" aria-label="google">
                                  <i className="zmdi zmdi-google"></i>
-                              </IconButton>
+                              </IconButton> */}
                            </div>
                         </div>
                      </div>
@@ -39,12 +39,12 @@ export default class NotFound extends Component {
                   <div className="row">
                      <div className="col-sm-12 col-md-12 col-lg-9 mx-auto">
                         <div className="error-body text-center">
-                           <h2 className="oops">Oops.. </h2>
+                           <h2 className="oops">Oop.. </h2>
                            <h2 className="bold mb-0">404</h2>
-                           <h2 className="error-msg mb-30">Sorry, page not found</h2>
-                           <h4 className="mb-50"> Looks like you have navigated too far from Federation Space. Our Application <br />
-                              cannot help you here.</h4>
-                           <Button component={Link} to="/" variant="contained" className="btn-light btn-lg">Go To Home Page</Button>
+                           <h2 className="error-msg mb-30">Không tìm thấy trang này</h2>
+                           <h4 className="mb-50"> Quay về trang trước <br />
+                               .</h4>
+                           <Button component={Link} to="/" variant="contained" className="btn-light btn-lg">Trang Chủ</Button>
                         </div>
                      </div>
                   </div>

@@ -29,6 +29,11 @@ const AsyncProgramsComponent = Loadable({
    loader: () => import("Routes/EducationProgram/Programs"),
    loading: () => <RctPageLoader />,
 });
+
+const AsyncEducationProgramDetailComponent = Loadable({
+   loader: () => import('Routes/EducationProgram/Programs/Components/EducationProgramDetails'),
+   loading: () => <RctPageLoader/>
+});
 //tasks
 const AysncTasksApprovedComponent = Loadable({
    loader: () => import('Routes/tasks/approved'),
@@ -121,6 +126,7 @@ const AsyncInvoicesCreateComponent = Loadable({
 
 
 export {
+   AsyncEducationProgramDetailComponent,
    AsyncModuleComponent,
    AsyncProgramsComponent,
    AsyncForgotPassComponent,

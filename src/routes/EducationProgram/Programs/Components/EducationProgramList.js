@@ -3,17 +3,25 @@
  */
 
 import React, { useState, useEffect } from 'react'
-import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import { Table, Tag, Space, Button, Modal } from 'antd';
+import { Table, Tag, Space, Button, Popconfirm, Input } from 'antd';
 import { NotificationManager } from 'react-notifications';
 import {
   DeleteFilled,
   EditFilled,
-  RetweetOutlined
+  RetweetOutlined,
+  EditOutlined,
+  PlusOutlined,
+  DiffOutlined,
+  DeleteOutlined,
+  SearchOutlined
 } from '@ant-design/icons';
 import CreateEducationProgram from 'Routes/EducationProgram/Programs/Components/CreateEducationProgram';
 import UpdateEducationProgram from 'Routes/EducationProgram/Programs/Components/UpdateEducationProgram';
+import UpdateEducationProgramSubject from 'Routes/EducationProgram/Programs/Components/UpdateEducationProgramSubject';
+import EducationProgramDetails from 'Routes/EducationProgram/Programs/Components/EducationProgramDetails';
 import { api } from 'Api';
+import { Link } from 'react-router-dom';
+import { Row, Col } from 'reactstrap'
 
 const defaultRecord = {
   branchId: "",
@@ -24,15 +32,30 @@ const defaultRecord = {
   educationProgramStatus: "",
   educationProgramType: "",
 }
+
 export const EducationProgramList = (props) => {
 
+  const [currentTitle, setCurrentTitle] = useState("Danh Mục Chương Trình Đào Tạo");
+
+  const [toUpdateEducationProgramSubject, setToUpdateEducationProgramSubject] = useState(false);
+
   const [educationProgramList, setEducationProgramsList] = useState([]);
+
+  const [subjectList, setSubjectList] = useState([]);
 
   const [showModalCreate, setShowModalCreate] = useState(false);
 
   const [showModalUpdate, setShowModalUpdate] = useState(false);
 
-  const [recordUpdate, setRecordUpdate] = useState(defaultRecord)
+  const [showDetails, setShowDetails] = useState(false);
+
+  const [recordUpdate, setRecordUpdate] = useState(defaultRecord);
+
+  const [recordUpdateSubject, setRecordUpdateSubject] = useState(defaultRecord);
+
+  const [recordShowDetails, setRecordShowDetails] = useState(defaultRecord);
+
+  const [optionsToUpdateSubject, setOptionsToUpdateSubject] = useState([]);
 
   const [rerender, setRerender] = useState(false);
 
@@ -73,6 +96,52 @@ export const EducationProgramList = (props) => {
     setRecordUpdate(defaultRecord);
   }
 
+  const handleDeleteRecord = (values) => {
+    let formData = new FormData();
+    formData.append("educationProgramId", values.educationProgramId);
+    formData.append("educationProgramName", values.educationProgramName);
+    formData.append("branchId", values.branchId);
+    formData.append("educationProgramLevel", values.educationProgramLevel);
+    formData.append("educationProgramType", values.educationProgramType);
+    formData.append("educationProgramStatus", "2");
+    api.post('/education-program/delete', formData, true).then(
+      response => {
+        NotificationManager.success("Xoá thành công");
+        setRerender(value => value = !value);
+      }).catch(error => {
+
+        NotificationManager.error("Không thành công")
+        if (error.message === 'Forbidden') {
+          NotificationManager.error("Did you forget something? Please activate your account");
+        }
+        else if (error.message === 'Unauthorized') {
+          throw new SubmissionError({ _error: "Username or Password Invalid" });
+        }
+      });
+  };
+
+  const handleSubmitUpdateEducationProgramSubject = (values) => {
+    setCurrentTitle("Danh Mục Chương Trình Đào Tạo");
+    console.log(values);
+    api.post('/education-program/updateSubject', values, true).then(
+      response => {
+        NotificationManager.success("Cập nhật thành công");
+        setToUpdateEducationProgramSubject(false);
+        setRecordUpdateSubject(defaultRecord);
+        setRerender(value => value = !value);
+      }).catch(error => {
+        setToUpdateEducationProgramSubject(false);
+        setRecordUpdateSubject(defaultRecord);
+        NotificationManager.error("Không thành công");
+        if (error.message === 'Forbidden') {
+          NotificationManager.error("Did you forget something? Please activate your account");
+        }
+        else if (error.message === 'Unauthorized') {
+          throw new SubmissionError({ _error: "Username or Password Invalid" });
+        }
+      });
+  }
+
   useEffect(() => {
     api.get('/education-program/getAllProgram', true).then(
       response => {
@@ -89,6 +158,33 @@ export const EducationProgramList = (props) => {
       });
   }, [rerender]);
 
+  useEffect(() => {
+    api.get('/subject/getAll', true).then(
+      response => {
+        setSubjectList(response);
+        var options = [];
+        response.map(
+          item => {
+            var option = {
+              value: item.subjectId,
+              label: item.subjectName
+            };
+            options.push(option);
+          }
+        );
+        setOptionsToUpdateSubject(options);
+      }).catch(error => {
+
+        console.log(error.message);
+        if (error.message === 'Forbidden') {
+          NotificationManager.error("Did you forget something? Please activate your account");
+        }
+        else if (error.message === 'Unauthorized') {
+          throw new SubmissionError({ _error: "Username or Password Invalid" });
+        }
+      });
+  }, [])
+
   const columns = [
     {
       title: 'Mã CTDT ',
@@ -97,7 +193,19 @@ export const EducationProgramList = (props) => {
     {
       title: 'Tên Chương Trình ',
       dataIndex: 'educationProgramName',
-      render: text => <a href="google.com">{text}</a>,
+      render: (text, record) => <a
+        // className="ant-anchor-link-title ant-anchor-link-title-active"
+        href="javascript:void(0)"
+        onClick={
+          () => {
+            setShowDetails(true);
+            setRecordShowDetails(record);
+            setCurrentTitle("Thông Tin CTĐT")
+          }
+        }
+      >
+        {text}
+      </a>,
     },
     {
       title: 'Trình Độ Đào Tạo',
@@ -179,13 +287,20 @@ export const EducationProgramList = (props) => {
         <Space size="middle">
           {
             record.educationProgramStatus === '2' ?
-            <Button type="">
-              <RetweetOutlined />
-            </Button>
-            :
-            <Button type="" disabled>
-              <RetweetOutlined />
-            </Button>
+              <Button
+                type=""
+                onClick={() => {
+                  setCurrentTitle("Cập Nhật Chương Trình Đào Tạo");
+                  setRecordUpdateSubject(record);
+                  setToUpdateEducationProgramSubject(true);
+                }}
+              >
+                <RetweetOutlined />
+              </Button>
+              :
+              <Button type="" disabled>
+                <RetweetOutlined />
+              </Button>
           }
           <Button type=""
             onClick={
@@ -197,122 +312,129 @@ export const EducationProgramList = (props) => {
             <EditFilled
             />
           </Button>
-          <Button type="">
-            <DeleteFilled />
-          </Button>
+          <Popconfirm placement="left" title={"Chắc chắn xoá?"} onConfirm={() => handleDeleteRecord(record)} okText="Ok" cancelText="Không">
+            <Button type="">
+              <DeleteFilled />
+            </Button>
+          </Popconfirm>
         </Space>
       ),
     },
   ];
 
   return (
-    <RctCollapsibleCard
-      heading={<span>Chương Trình Đào Tạo</span>}
-      collapsible
-      fullBlock
-      closeable
-    >
-      <button onClick={() => setShowModalCreate(true)}>  Thêm chương trình đào tạo</button>
-      {/* <div className="MuiToolbar-root MuiToolbar-regular MTableToolbar-root-5 MuiToolbar-gutters">
-                  <div className="MTableToolbar-title-9">
-                    <h6
-                      className="MuiTypography-root MuiTypography-h6"
-                      style={{
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      Editable Example
-                    </h6>
-                  </div>
-                  <div className="MTableToolbar-spacer-7" />
-                  <div className="MuiFormControl-root MuiTextField-root MTableToolbar-searchField-10">
-                    <div className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl MuiInputBase-adornedStart MuiInputBase-adornedEnd">
-                      <div className="MuiInputAdornment-root MuiInputAdornment-positionStart">
-                        <span
-                          className="material-icons MuiIcon-root MuiIcon-fontSizeSmall"
-                          aria-hidden="true"
-                        >
-                          search
-                   </span>
-                      </div>
-                      <input
-                        aria-invalid="false"
-                        placeholder="Search"
-                        type="text"
-                        aria-label="Search"
-                        className="MuiInputBase-input MuiInput-input MuiInputBase-inputAdornedStart MuiInputBase-inputAdornedEnd"
-                        defaultValue
-                      />
-                      <div className="MuiInputAdornment-root MuiInputAdornment-positionEnd">
-                        <button
-                          className="MuiButtonBase-root MuiIconButton-root Mui-disabled Mui-disabled"
-                          tabIndex={-1}
-                          type="button"
-                          aria-label="Clear Search"
-                          disabled
-                        >
-                          <span className="MuiIconButton-label">
-                            <span
-                              className="material-icons MuiIcon-root MuiIcon-fontSizeSmall"
-                              aria-hidden="true"
-                              aria-label="clear"
-                            >
-                              clear
-            </span>
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="MTableToolbar-actions-8">
-                    <div>
-                      <div>
-                        <span>
-                          <button
-                            className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit"
-                            tabIndex={0}
-                            type="button"
-                          >
-                            <span className="MuiIconButton-label">
-                              <span className="material-icons MuiIcon-root" aria-hidden="true">
-                                add_box
-              </span>
-                            </span>
-                            <span className="MuiTouchRipple-root" />
+    <div >
+      <div className="rct-block ">
+        <div className="rct-block-title ">
+          <h4>
+            <span>{currentTitle}</span>{" "}
+          </h4>
+          <div className="contextual-link" style={{ top: "15px" }}>
+          </div>
+          <div>
+            {toUpdateEducationProgramSubject === true ?
+              <h4>{"CTĐT: " + recordUpdateSubject.educationProgramName}</h4>
+              : (showDetails === true ? <h4>{"CTĐT: " + recordShowDetails.educationProgramName}</h4> : "")
+            }
+          </div>
+        </div>
+        <div className="collapse show">
+          <div className="rct-full-block">
+            {
+              toUpdateEducationProgramSubject === false ?
+                (showDetails === false ?
+                  <div className="table-responsive">
+                    <Row>
+                      <Col md={6} sm={12} style={{ display: "flex", flexDirection: "column" }}>
+                        <Row>
+                          <Col md={4}>
+                            <Input placeholder="Mã CTDT..." size="middle" />
+                          </Col  >
+                          <Col md={4}>
+                            <Input placeholder="Tên CTDT..." size="middle" />
+                          </Col>
+                          <Col md={4} style={{ display: "block", flexDirection: "column" }}>
+                            <button type="button" className="ant-btn ant-btn-primary" onClick={() => setShowModalCreate(true)}>
+                            <SearchOutlined />
+                              <span>Tìm Kiếm</span>
+                            </button>
+                          </Col>
+                        </Row>
+                      </Col>
+                      <Col md={6} sm={12} xs={12}>
+                        <div className="tableListOperator" style={{ textAlign: "right", width: "100%" }}>
+                          <button type="button" className="ant-btn ant-btn-primary" onClick={() => setShowModalCreate(true)}>
+                            <PlusOutlined></PlusOutlined>
+                            <span>Tạo Mới</span>
                           </button>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
-      <div className="table-responsive">
-        <Table
-          columns={columns}
-          dataSource={educationProgramList}
-          pagination={false}
-          bordered
-          rowKey="educationProgramId"
-        />
-      </div >
+                          <button type="button" className="ant-btn ant-btn-danger">
+                            <DeleteOutlined />
+                            <span>Xoá Nhiều</span>
+                          </button>
+                          <a
+                            href="https://demo.doublechaintech.com/freshchain/platformManager/exportExcelFromList/P000001/productList/"
+                            className="ant-btn"
+                          >
+                            <DiffOutlined />
+                            <span>In Exel</span>
+                          </a>
+                        </div>
+                      </Col>
+                    </Row>
+                    <Table
+                      columns={columns}
+                      dataSource={educationProgramList}
+                      pagination={false}
+                      bordered
+                      rowKey="educationProgramId"
+                      size="small"
+                      rowSelection={true}
+                    />
+                  </div > :
+                  <EducationProgramDetails
+                    record={recordShowDetails}
+                    back={
+                      () => {
+                        setCurrentTitle("Danh Mục Chương Trình Đào Tạo");
+                        setShowDetails(false);
+                        setRecordShowDetails(defaultRecord)
+                      }
+                    } />
+                ) :
+                <UpdateEducationProgramSubject
+                  record={recordUpdateSubject}
+                  options={optionsToUpdateSubject}
+                  back={() => {
+                    setCurrentTitle("Danh Mục Chương Trình Đào Tạo");
+                    setToUpdateEducationProgramSubject(false);
+                    setRecordUpdateSubject(defaultRecord);
+                  }}
+                  onOk={
+                    (values) => handleSubmitUpdateEducationProgramSubject(values)
+                  }
+                />
+            }
+            <CreateEducationProgram
+              visible={showModalCreate}
+              onOk={(values) => handleSubmitFormCreate(values)}
+              onCancel={() => setShowModalCreate(false)}
+            />
 
-      <CreateEducationProgram
-        visible={showModalCreate}
-        onOk={(values) => handleSubmitFormCreate(values)}
-        onCancel={() => setShowModalCreate(false)}
-      />
+            <UpdateEducationProgram
+              visible={showModalUpdate}
+              onOk={(values) => handleSubmitFormUpdate(values)}
+              onCancel={() => {
+                setShowModalUpdate(false);
+                setRecordUpdate(defaultRecord);
+              }}
+              record={recordUpdate}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
 
-      <UpdateEducationProgram
-        visible={showModalUpdate}
-        onOk={(values) => handleSubmitFormUpdate(values)}
-        onCancel={() => {
-          setShowModalUpdate(false);
-          setRecordUpdate(defaultRecord);
-        }}
-        record={recordUpdate}
-      />
-    </RctCollapsibleCard>
+
 
   )
 
