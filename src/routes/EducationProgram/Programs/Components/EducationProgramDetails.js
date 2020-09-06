@@ -1,170 +1,332 @@
-import React, { useEffect, useState } from 'react';
-import { api } from 'Api';
-import { NotificationManager } from 'react-notifications';
+import React, { useEffect, useState } from "react";
+import { api } from "Api";
+import { NotificationManager } from "react-notifications";
 import {
-    DeleteFilled,
-    EditFilled,
-    RetweetOutlined,
-    PlusOutlined,
-    EditOutlined,
-    DeleteOutlined,
-    DiffOutlined
-} from '@ant-design/icons';
-import { Table, Tag, Space, Button, Popconfirm } from 'antd';
-import { Row, Col } from 'reactstrap';
+  DeleteFilled,
+  EditFilled,
+  RetweetOutlined,
+  PlusOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  DiffOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
+import { Table, Tag, Space, Button, Popconfirm, Alert, Input } from "antd";
+import { Row, Col } from "reactstrap";
+import UpdateEducationProgramSubject from "Routes/EducationProgram/Programs/Components/UpdateEducationProgramSubject";
+
+const defaultRecord = {
+  branchId: "",
+  branchName: "",
+  educationProgramId: "",
+  educationProgramLevel: "3",
+  educationProgramName: "",
+  educationProgramStatus: "",
+  educationProgramType: "",
+};
+
+function roughScale(x, base) {
+  const parsed = parseInt(x, base);
+  if (isNaN(parsed)) {
+    return 0;
+  }
+  return parsed;
+}
 
 const EducationProgramDetail = (props) => {
+  const [subjectList, setSubjectList] = useState([]);
 
-    const [subjectList, setSubjectList] = useState([]);
+  const [toUpdateSubject, setToUpdateSubject] = useState(false);
 
-    useEffect(() => {
-        console.log(props.record);
-        api.post('/education-program/getDetails', props.record, true).then(
-            response => {
+  const [totalCredit, setTotalCredit] = useState(0);
 
-                setSubjectList(response.subjectList);
-            }).catch(error => {
+  const [selected1, setSelected1] = useState([]);
 
-                if (error.message === 'Forbidden') {
-                    NotificationManager.error("Did you forget something? Please activate your account");
-                }
-                else if (error.message === 'Unauthorized') {
-                    throw new SubmissionError({ _error: "Username or Password Invalid" });
-                }
-            });
-    }, [])
+  const [selected2, setSelected2] = useState([]);
 
-    const columns = [
-        {
-            title: 'Mã Học Phần ',
-            dataIndex: 'subjectId',
-            render: text => <a>{text}</a>,
+  const [selected3, setSelected3] = useState([]);
+
+  const [selected4, setSelected4] = useState([]);
+
+  const [recordUpdateSubject, setRecordUpdateSubject] = useState(defaultRecord);
+
+  const [optionsToUpdateSubject, setOptionsToUpdateSubject] = useState([]);
+
+  const [render, setRerender] = useState(false);
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  const onSelectChange = (selectedRowKeys) => {
+    console.log("selectedRowKeys changed: ", selectedRowKeys);
+    setSelectedRowKeys(selectedRowKeys);
+  };
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+    selections: [
+      Table.SELECTION_ALL,
+      Table.SELECTION_INVERT,
+      {
+        key: "odd",
+        text: "Select Odd Row",
+        onSelect: (changableRowKeys) => {
+          let newSelectedRowKeys = [];
+          newSelectedRowKeys = changableRowKeys.filter((key, index) => {
+            if (index % 2 !== 0) {
+              return false;
+            }
+            return true;
+          });
+          setSelectedRowKeys(newSelectedRowKeys);
         },
-        {
-            title: 'Tên Học Phần ',
-            dataIndex: 'subjectName',
+      },
+      {
+        key: "even",
+        text: "Select Even Row",
+        onSelect: (changableRowKeys) => {
+          let newSelectedRowKeys = [];
+          newSelectedRowKeys = changableRowKeys.filter((key, index) => {
+            if (index % 2 !== 0) {
+              return true;
+            }
+            return false;
+          });
+          setSelectedRowKeys(newSelectedRowKeys);
         },
-        {
-            title: 'Số Tín Chỉ',
-            dataIndex: "eachSubject",
-        },
-        {
-            title: 'Môn Học Tiên Quyết',
-            dataIndex: 'tags',
-            render: tags => (
-                <>
+      },
+    ],
+  };
 
-                </>
-            ),
-        },
-        {
-            title: 'Trình Độ Đào Tạo',
-            dataIndex: 'subjectForLevel',
-            render: text => {
-                if (text === "1") {
-                    return <span>Đào Tạo Tiến Sỹ</span>
-                }
-                else if (text === "2") {
-                    return <span>Đào Tạo Thạc Sỹ</span>
-                }
-                else if (text === "3") {
-                    return <span>Đại học</span>
-                }
-                else {
-                    return <span></span>
-                }
-            },
-        },
-        {
-            title: 'Thao Tác',
-            key: 'action',
-            render: (text, record) => (
-                <Space size="middle">
-                    {/* <Button type=""
-                        onClick={
-                            () => {
-                                console.log(record)
-                                setRecordUpdate(record);
-                                setShowModalUpdate(true);
-                            }
-                        }>
-                        <EditFilled
-                        />
-                    </Button> */}
-                    <Popconfirm placement="left" title={"Chắc chắn xoá?"} onConfirm={() => handleDeleteRecord(record)} okText="Ok" cancelText="Không">
-
-                        <Button
-                            type=""
-                        >
-                            <DeleteFilled />
-                        </Button>
-                    </Popconfirm>
-                </Space>
-            ),
+  const handleSubmitUpdateEducationProgramSubject = (values) => {
+    console.log(values);
+    api
+      .post("/education-program/updateSubject", values, true)
+      .then((response) => {
+        NotificationManager.success("Cập nhật thành công");
+        setToUpdateSubject(false);
+        setRecordUpdateSubject(defaultRecord);
+        setRerender((value) => (value = !value));
+      })
+      .catch((error) => {
+        setToUpdateSubject(false);
+        setRecordUpdateSubject(defaultRecord);
+        NotificationManager.error("Không thành công");
+        if (error.message === "Forbidden") {
+          NotificationManager.error(
+            "Did you forget something? Please activate your account"
+          );
+        } else if (error.message === "Unauthorized") {
+          throw new SubmissionError({ _error: "Username or Password Invalid" });
         }
-    ]
+      });
+  };
 
+  useEffect(() => {
+    api
+      .get("/subject/getAll", true)
+      .then((response) => {
+        var options = [];
+        response.map((item) => {
+          var option = {
+            value: item.subjectId,
+            label: item.subjectName,
+          };
+          options.push(option);
+        });
+        setOptionsToUpdateSubject(options);
+      })
+      .catch((error) => {
+        console.log(error.message);
+        if (error.message === "Forbidden") {
+          NotificationManager.error(
+            "Did you forget something? Please activate your account"
+          );
+        } else if (error.message === "Unauthorized") {
+          throw new SubmissionError({ _error: "Username or Password Invalid" });
+        }
+      });
+  }, []);
 
-    return (
-        <>
-            <div className="table-responsive">
-                <Row><Col md={6}>
+  useEffect(() => {
+    props.record !== null
+      ? (props.record.subjectList = props.record.subjectList)
+      : (props.record.subjectList = []);
+    console.log("props. recored", props.record);
+    api
+      .post("/education-program/getDetails", props.record, true)
+      .then((response) => {
+        console.log("response.subjectList", response.subjectList);
+        var total = 0;
+        response.subjectList.map((item) => {
+          let eachCredit = roughScale(item.subject.eachSubject, "10");
+          total += eachCredit;
+        });
+        setTotalCredit(total);
+        setSubjectList(response.subjectList);
+      })
+      .catch((error) => {
+        if (error.message === "Forbidden") {
+          NotificationManager.error(
+            "Did you forget something? Please activate your account"
+          );
+        } else if (error.message === "Unauthorized") {
+          throw new SubmissionError({ _error: "Username or Password Invalid" });
+        }
+      });
+  }, [render]);
 
-                </Col>
-                    <Col md={6}>
-                        <div className="tableListOperator" style={{textAlign:"right"}}>
-                            <button type="button" className="ant-btn">
-                                <EditOutlined />
-                                <span>Chỉnh Sửa</span>
-                            </button>
-                            <button type="button" className="ant-btn ant-btn-primary">
-                                <PlusOutlined></PlusOutlined>
-                                <span>Thêm </span>
-                            </button>
-                            <button type="button" className="ant-btn ant-btn-danger">
-                                <DeleteOutlined />
-                                <span>Xoá Nhiều</span>
-                            </button>
-                            <a
-                                href="https://demo.doublechaintech.com/freshchain/platformManager/exportExcelFromList/P000001/productList/"
-                                className="ant-btn"
-                            >
-                                <DiffOutlined />
-                                <span>In Exel</span>
-                            </a>
-                        </div>
-                    </Col>
-                    </Row>
+  const columns = [
+    {
+      title: "Mã Học Phần ",
+      render: (text, record) => <a>{record.subject.subjectId}</a>,
+    },
+    {
+      title: "Tên Học Phần ",
+      render: (text, record) => <a>{record.subject.subjectName}</a>,
+      width: "20%",
+    },
+    {
+      title: "Số Tín Chỉ",
+      render: (text, record) => <a>{record.subject.eachSubject}</a>,
+    },
+    {
+      title: "Tự Chọn",
+      dataIndex: "eachSubject",
+    },
+    {
+      title: "Môn Học Tiên Quyết",
+      dataIndex: "tags",
+      render: (tags) => <></>,
+    },
+    {
+      title: "Học Phần Học Trước",
+      render: (text, record) => <a>{record.subject.subjectId}</a>,
+    },
+    {
+      title: "Song Hành Với Học Phần",
+      render: (text, record) => <a>{record.subject.subjectId}</a>,
+    },
+    {
+      title: "Thao Tác",
+      key: "action",
+      render: (text, record) => (
+        <Space size="middle">
+          <Button
+            type=""
+            onClick={() => {
+              setCurrentTitle("Cập Nhật Chương Trình Đào Tạo");
+              setRecordUpdateSubject(record);
+              setToUpdateSubject(true);
+            }}
+          >
+            <RetweetOutlined />
+          </Button>
+          <Popconfirm
+            placement="left"
+            title={"Chắc chắn xoá?"}
+            onConfirm={() => handleDeleteRecord(record)}
+            okText="Ok"
+            cancelText="Không"
+          >
+            <Button type="">
+              <DeleteFilled />
+            </Button>
+          </Popconfirm>
+        </Space>
+      ),
+    },
+  ];
 
-
-                <Table
-                    columns={columns}
-                    dataSource={subjectList}
-                    rowKey="subjectId"
-                    bordered
-                    scroll={{
-                        y: "400px"
-                    }}
-                    pagination={{ pageSize: 5 }}
-                    size="small"
-                    rowSelection={true}
-                />
-            </div >
-            <Row style={{ padding: " 0.9375rem 1.25rem ", margin: "0" }}>
-                <Space size="middle">
-                    <Button type="" onClick={() => props.back()}>Quay Lại</Button>
-                    {" "}
-                    {/* <Button
-                        type="primary"
-                        onClick={() => handleOkOnClick()}
-                    >
-                        Cập Nhật
-                         </Button> */}
-                </Space>
+  return (
+    <>
+      <div className="table-responsive">
+        <Row>
+          <Col
+            md={6}
+            sm={12}
+            style={{ display: "flex", flexDirection: "column" }}
+          >
+            <Row>
+              <Col md={4}>
+                <Input placeholder="Mã Học Phần..." size="middle" />
+              </Col>
+              <Col md={4}>
+                <Input placeholder="Tên Học Phần..." size="middle" />
+              </Col>
+              <Col md={4} style={{ display: "block", flexDirection: "column" }}>
+                <button
+                  type="button"
+                  className="ant-btn ant-btn-primary"
+                  onClick={() => {}}
+                >
+                  <SearchOutlined />
+                  <span>Tìm Kiếm</span>
+                </button>
+              </Col>
             </Row>
-        </>
+          </Col>
+          <Col md={6}>
+            <div className="tableListOperator" style={{ textAlign: "right" }}>
+              <button
+                type="button"
+                className="ant-btn"
+                onClick={() => {
+                  setToUpdateSubject(true);
+                  setRecordUpdateSubject(props.record);
+                }}
+              >
+                <EditFilled />
+                <span>Cập Nhật</span>
+              </button>
+              <button type="button" className="ant-btn ant-btn-danger" disabled={selectedRowKeys.length !== 0 ? false : true}>
+                <DeleteOutlined />
+                <span>Xoá Nhiều</span>
+              </button>
+              <a
+                href="https://demo.doublechaintech.com/freshchain/platformManager/exportExcelFromList/P000001/productList/"
+                className="ant-btn"
+              >
+                <DiffOutlined />
+                <span>In Exel</span>
+              </a>
+            </div>
+          </Col>
+        </Row>
 
-    )
-}
+        <Alert
+          message={`Chương Trình Đạo Tạo: ${props.record.educationProgramName}. Tổng số học phần: ${subjectList.length}. Tổng số tín chỉ: ${totalCredit} `}
+          type="info"
+          showIcon
+          style={{ marginBottom: "15px" }}
+        />
+        <Table
+          columns={columns}
+          dataSource={subjectList}
+          rowKey="id"
+          bordered
+          scroll={{
+            y: "400px",
+          }}
+          pagination={{ pageSize: 10 }}
+          size="small"
+          rowSelection={true}
+          rowSelection={rowSelection}
+        />
+      </div>
+      <UpdateEducationProgramSubject
+        visible={toUpdateSubject}
+        record={recordUpdateSubject}
+        options={optionsToUpdateSubject}
+        selectedSubjectList={subjectList}
+        back={() => {
+          setToUpdateSubject(false);
+          setRecordUpdateSubject(defaultRecord);
+        }}
+        onOk={(values) => handleSubmitUpdateEducationProgramSubject(values)}
+      />
+    </>
+  );
+};
 
 export default EducationProgramDetail;

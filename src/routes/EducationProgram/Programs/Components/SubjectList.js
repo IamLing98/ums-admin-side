@@ -49,6 +49,50 @@ export const SubjectList = (props) => {
 
   const [render, setRerender] = useState(false);
 
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  const onSelectChange = (selectedRowKeys) => {
+    console.log("selectedRowKeys changed: ", selectedRowKeys);
+    setSelectedRowKeys(selectedRowKeys);
+  };
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+    selections: [
+      Table.SELECTION_ALL,
+      Table.SELECTION_INVERT,
+      {
+        key: "odd",
+        text: "Select Odd Row",
+        onSelect: (changableRowKeys) => {
+          let newSelectedRowKeys = [];
+          newSelectedRowKeys = changableRowKeys.filter((key, index) => {
+            if (index % 2 !== 0) {
+              return false;
+            }
+            return true;
+          });
+          setSelectedRowKeys(newSelectedRowKeys);
+        },
+      },
+      {
+        key: "even",
+        text: "Select Even Row",
+        onSelect: (changableRowKeys) => {
+          let newSelectedRowKeys = [];
+          newSelectedRowKeys = changableRowKeys.filter((key, index) => {
+            if (index % 2 !== 0) {
+              return true;
+            }
+            return false;
+          });
+          setSelectedRowKeys(newSelectedRowKeys);
+        },
+      },
+    ],
+  };
+
   const handleSubmitFormCreate = (values) => {
     console.log(values);
     setShowModalCreate(false);
@@ -89,17 +133,19 @@ export const SubjectList = (props) => {
 
   const handleDeleteRecord = (values) => {
     console.log(values)
-    let formData = new FormData();
-    formData.append("subjectId", values.subjectId);
-    formData.append("subjectName", values.subjectName);
-    formData.append("eachSubject", values.eachSubject);
-    formData.append("theoryNumber", values.theoryNumber);
-    formData.append("exerciseNumber", values.exerciseNumber);
-    formData.append("discussNumber", values.discussNumber);
-    formData.append("practiceNumber", values.practiceNumber);
-    formData.append("selfLearningNumber", values.selfLearningNumber);
-    formData.append("subjectForLevel", values.subjectForLevel);
-    api.post('/subject/delete', formData, true).then(
+    var object = [];
+    object.push(values);
+    // let formData = new FormData();
+    // formData.append("subjectId", values.subjectId);
+    // formData.append("subjectName", values.subjectName);
+    // formData.append("eachSubject", values.eachSubject);
+    // formData.append("theoryNumber", values.theoryNumber);
+    // formData.append("exerciseNumber", values.exerciseNumber);
+    // formData.append("discussNumber", values.discussNumber);
+    // formData.append("practiceNumber", values.practiceNumber);
+    // formData.append("selfLearningNumber", values.selfLearningNumber);
+    // formData.append("subjectForLevel", values.subjectForLevel);
+    api.post('/subject/delete', object, true).then(
       response => {
         NotificationManager.success("Xoá thành công");
         setRerender(value => value = !value);
@@ -113,6 +159,39 @@ export const SubjectList = (props) => {
           throw new SubmissionError({ _error: "Username or Password Invalid" });
         }
       });
+  }
+
+  const handleDeleteMultipleRecord = (values) => {
+    console.log(values)
+    var object = [];
+    values.map(item=>{
+      object.push({subjectId: item})
+    });
+    // let formData = new FormData();
+    // formData.append("subjectId", values.subjectId);
+    // formData.append("subjectName", values.subjectName);
+    // formData.append("eachSubject", values.eachSubject);
+    // formData.append("theoryNumber", values.theoryNumber);
+    // formData.append("exerciseNumber", values.exerciseNumber);
+    // formData.append("discussNumber", values.discussNumber);
+    // formData.append("practiceNumber", values.practiceNumber);
+    // formData.append("selfLearningNumber", values.selfLearningNumber);
+    // formData.append("subjectForLevel", values.subjectForLevel);
+    api.post('/subject/delete', object, true).then(
+      response => {
+        NotificationManager.success("Xoá thành công");
+        setRerender(value => value = !value);
+      }).catch(error => {
+
+        NotificationManager.error("Không thành công")
+        if (error.message === 'Forbidden') {
+          NotificationManager.error("Did you forget something? Please activate your account");
+        }
+        else if (error.message === 'Unauthorized') {
+          throw new SubmissionError({ _error: "Username or Password Invalid" });
+        }
+      });
+      setSelectedRowKeys([]);
   }
 
   useEffect(() => {
@@ -146,7 +225,7 @@ export const SubjectList = (props) => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 800);
+    }, 500);
     return () => {
       console.log("cc")
       setLoading(true)
@@ -161,6 +240,7 @@ export const SubjectList = (props) => {
     {
       title: 'Tên Học Phần ',
       dataIndex: 'subjectName',
+      width:"20%",
     },
     {
       title: 'Số Tín Chỉ',
@@ -297,7 +377,7 @@ export const SubjectList = (props) => {
                       <PlusOutlined></PlusOutlined>
                       <span>Tạo Mới </span>
                     </button>
-                    <button type="button" className="ant-btn ant-btn-danger">
+                    <button type="button" className="ant-btn ant-btn-danger" disabled={selectedRowKeys.length > 0 ? false : true} onClick={()=>handleDeleteMultipleRecord(selectedRowKeys)}>
                       <DeleteOutlined />
                       <span>Xoá Nhiều</span>
                     </button>
@@ -319,9 +399,10 @@ export const SubjectList = (props) => {
                 scroll={{
                   y: "600px"
                 }}
-                pagination={{ pageSize: 5 }}
+                pagination={{ pageSize: 10 }}
                 size="small"
                 rowSelection={true}
+                rowSelection={rowSelection}
               />
             </div >
 

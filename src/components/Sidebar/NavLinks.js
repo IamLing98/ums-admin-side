@@ -81,6 +81,12 @@ export default {
                "new_item": false,
                "path": "/education-program/module",
             },
+            {
+               "isActive" : false,
+               "menu_title": "Kết Quả Học Tập",
+               "new_item": false,
+               "path": "/education-program/module",
+            },
 
          ]
       },

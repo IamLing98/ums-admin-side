@@ -21,7 +21,7 @@ export const api = {
       return superagent.get(`${API_ROOT}${url}`).use(tokenPlugin(secured)).then(responseBody)
    },
    post:(url,body = null,secured = true)=>{
-      return superagent.post(`${API_ROOT}${url}`,body).use(tokenPlugin(secured)).then(responseBody)
+      return superagent.post(`${API_ROOT}${url}`,body).use(tokenPlugin(secured)).then(responseBody) 
    },
    put:(url,body = null,secured = true)=>{
       return superagent.put(`${API_ROOT}${url}`,body).use(tokenPlugin(secured)).then(responseBody)
