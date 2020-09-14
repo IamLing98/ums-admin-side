@@ -17,6 +17,9 @@ import formBuilderReducer from './UploadFormBuilder'
 import assignTaskReducer from './AssignTaskReducer';
 import UpdateUserReducer from './UpdateUserReducer';
 import EducationProgramReducer from './EducationProgramReducer';
+import DepartmentReducer from './DepartmentReducer';
+
+
 import {
   ADD_DEPARTMENT_SUCCESS_ADD,
   ADD_USER_SUCCESS,
@@ -39,6 +42,7 @@ const reducers = combineReducers({
   assignTask:assignTaskReducer,
   updateUserRed:UpdateUserReducer,
   educationProgram:EducationProgramReducer,
+  departmentReducer: DepartmentReducer,
   form: formReducer.plugin({
     addUserForm: (state,action)=>{
       switch (action.type) {

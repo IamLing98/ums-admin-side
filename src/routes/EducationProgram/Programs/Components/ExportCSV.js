@@ -1,21 +1,11 @@
 import React from "react";
 import { Table, Tag, Space, Button, Popconfirm, Input } from "antd";
 import { NotificationManager } from "react-notifications";
-import {
-  DeleteFilled,
-  EditFilled,
-  RetweetOutlined,
-  EditOutlined,
-  PlusOutlined,
-  DiffOutlined,
-  DeleteOutlined,
-  SearchOutlined,
-  DoubleLeftOutlined,
-} from "@ant-design/icons";
+import { DiffOutlined } from "@ant-design/icons";
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 
- const ExportCSV = ({ csvData, fileName }) => {
+const ExportCSV = ({ csvData, fileName }) => {
   const fileType =
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
   const fileExtension = ".xlsx";
@@ -35,7 +25,7 @@ import * as XLSX from "xlsx";
       onClick={(e) => exportToCSV(csvData, fileName)}
     >
       <DiffOutlined />
-      <span>In Exel</span>
+      <span>ExportCSV</span>
     </a>
   );
 };

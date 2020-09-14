@@ -141,7 +141,7 @@
                }
 
                &.item-active {
-                  background-color: #CBCACA;
+                  background-color: #e0f3ff;
                   font-weight: bolder !important;
 
                   &:after {
@@ -177,12 +177,13 @@
 
                   a {
                      display: block;
-                     padding: 0.75rem 1.5rem 0.75rem 3.4rem;
+                     padding: 0.75rem 1.5rem 0.75rem 1.8rem;
                      text-transform: capitalize;
 
                      &.item-active {
                         font-weight: $fw-semi-bold;
-                        background: #f0e9e9;
+                        background: #e0f3ff;
+                        color: #3f6ad8 !important;
                      }
                   }
 

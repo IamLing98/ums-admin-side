@@ -28,13 +28,13 @@ export default {
                "isActive": false,
                "menu_title": "Tuyển Sinh",
                "new_item": false,
-               "path": "/students/admission",
+               "path": "/app/students/admission",
             },
             {
                "isActive": false,
                "menu_title": "Danh Sách",
                "new_item": false,
-               "path": "/students/student-list",
+               "path": "/app/students/student-list",
             },
 
 
@@ -68,20 +68,37 @@ export default {
          "new_item": false,
          "type_multi": null,
          "base_path": "/education-program",
-         "child_routes": [
+         "child_routes": [ 
             {
+               "menu_icon": "zmdi zmdi-group",
+               "isActive": false,
+               "menu_title": "Hồ Sơ Sinh Viên",
+               "new_item": false,
+               "path": "/app/class/class-list",
+            },
+            {
+               "menu_icon": "zmdi zmdi-group",
+               "isActive": false,
+               "menu_title": "Hồ Sơ Giảng Viên",
+               "new_item": false,
+               "path": "/app/classs/class-list",
+            },
+            {
+               "menu_icon": "zmdi zmdi-collection-text",
                "isActive" : false,
                "menu_title": "C.Trình Đào Tạo",
                "new_item": false,
                "path": "/app/education-program/programs",
             },
             {
+               "menu_icon": "zmdi zmdi-border-all",
                "isActive" : false,
                "menu_title": "Thời Khoá Biểu",
                "new_item": false,
                "path": "/education-program/module",
             },
             {
+               "menu_icon": "zmdi zmdi-layers",
                "isActive" : false,
                "menu_title": "Kết Quả Học Tập",
                "new_item": false,
@@ -99,41 +116,25 @@ export default {
          "new_item": false,
          "menu_icon": "zmdi zmdi-accounts-add",
          "child_routes": [
-            {
-               "menu_icon": "zmdi zmdi-accounts-add",
-               "menu_title": "sidebar.createUser",
-               "new_item": false,
-               "path": "/users/user-management/create-user",
-            },
-            {
-               "menu_title": "sidebar.clientList",
-               "new_item": false,
-               "path": "/users/client-list",
-            },
-            {
-               "menu_title": "sidebar.surveyorList",
-               "new_item": false,
-               "path": "/users/surveyor-list",
-            }
-
+             
          ]
       },
 
    ],
-   SupAdmincategory4: [
-      {
-         "menu_title": "sidebar.formBuilder",
-         "menu_icon": "zmdi zmdi-plus-circle",
-         "new_item": false,
-         "type_multi": null,
-         "child_routes": [
-            {
-               "menu_title": "sidebar.createForm",
-               "new_item": false,
-               "path": "/form-builder/create-form",
-            }
-         ]
-      }
-   ],
+   // SupAdmincategory4: [
+   //    {
+   //       "menu_title": "sidebar.formBuilder",
+   //       "menu_icon": "zmdi zmdi-plus-circle",
+   //       "new_item": false,
+   //       "type_multi": null,
+   //       "child_routes": [
+   //          {
+   //             "menu_title": "sidebar.createForm",
+   //             "new_item": false,
+   //             "path": "/form-builder/create-form",
+   //          }
+   //       ]
+   //    }
+   // ],
 
 }

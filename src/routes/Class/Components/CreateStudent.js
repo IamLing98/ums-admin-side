@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import { Row, Col } from "reactstrap";
 import MultiSelect from "react-multi-select-component";
 
-export const CreateSubject = (props) => {
+export const CreateStudent = (props) => {
   const [subjectId, setSubjectId] = useState("");
 
   const [subjectName, setSubjectName] = useState("");
@@ -51,7 +51,7 @@ export const CreateSubject = (props) => {
 
   return (
     <Modal
-      title="Tạo Mới Học Phần"
+      title="Tạo Mới Sinh Viên"
       visible={props.visible}
       onOk={() => handleSubmitFormCreate()}
       onCancel={props.onCancel}
@@ -63,9 +63,28 @@ export const CreateSubject = (props) => {
       destroyOnClose={true}
       centered
       closable={false}
-      width={"60%"}
+      width={"75%"}
       // confirmLoading={true}
     >
+      <div className="ant-row ant-form-item" style={{ margin: "0rem 0rem" }}>
+        <div className="ant-col ant-col-8">
+          <div className="ant-row">
+            <div
+              className="ant-col ant-col-8 ant-form-item-label"
+              style={{ flex: "none" }}
+            >
+              <label title="Kỳ học: " style={{ fontWeight: "500" }}>
+                Khoa:{" "}
+              </label>
+            </div>
+            <div className="ant-col ant-col-16 ant-form-item-control">
+              <select className="ant-input">
+                <option>Kỳ 1</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
       <Row style={{ display: "flex", flexDirection: "row" }}>
         <Col md={8} style={{ display: "flex", flexDirection: "column" }}>
           <div className="form-group row  type-TEXT">
@@ -237,82 +256,7 @@ export const CreateSubject = (props) => {
             flexDirection: "column",
           }}
           className="update-subject-divide-col-4"
-        >
-          <div className="subject-column-header">Học Phần Tương Đương</div>
-          <div className="update-subject-select">
-            <MultiSelect
-              options={props.options}
-              value={selected}
-              onChange={setSelected}
-              labelledBy={"Học Phần Tương Đương..."}
-              style={{ width: "100%" }}
-              overrideStrings={{
-                selectSomeItems: "Học Phần Tương Đương...",
-                allItemsAreSelected: "Đã Chọn Tất Cả.",
-                selectAll: "Chọn Hết",
-                search: "Tìm Kiếm",
-              }}
-            />
-          </div>
-          <div className="update-subject-result">
-            <ul className="MuiList-root MuiList-padding">
-              {selected.map((item, index) => (
-                <>
-                  <li className="MuiListItem-container" key={"li" + item.value}>
-                    <div
-                      className="MuiButtonBase-root MuiListItem-root MuiListItem-gutters MuiListItem-button MuiListItem-secondaryAction"
-                      tabIndex={0}
-                      role="button"
-                      aria-disabled="false"
-                    >
-                      <div className="MuiListItemAvatar-root">
-                        {/* <div className="MuiAvatar-root MuiAvatar-circle bg-primary MuiAvatar-colorDefault">
-                                                        <i className="zmdi zmdi-star" />  
-                                                    </div> */}
-                        {`${"\t" + index + ". "}`}
-                      </div>
-                      <div className="MuiListItemText-root">
-                        <span className="MuiTypography-root MuiListItemText-primary MuiTypography-body1">
-                          {item.label}
-                        </span>
-                      </div>
-                      <span className="MuiTouchRipple-root" />
-                    </div>
-                    <div
-                      className="MuiListItemSecondaryAction-root"
-                      key={"spannn" + item.value}
-                    >
-                      <button
-                        className="MuiButtonBase-root MuiIconButton-root"
-                        tabIndex={0}
-                        type="button"
-                        aria-label="Delete"
-                      >
-                        <span
-                          className="MuiIconButton-label"
-                          onClick={() => {
-                            console.log(selected);
-                            const value = item.value;
-                            var newSelected = selected.filter(function(
-                              element
-                            ) {
-                              return element.value !== value;
-                            });
-                            setSelected(newSelected);
-                          }}
-                        >
-                          <i className="zmdi zmdi-delete text-primary" />
-                        </span>
-                        <span className="MuiTouchRipple-root" />
-                      </button>
-                    </div>
-                  </li>
-                  <hr style={{ margin: "0" }} />
-                </>
-              ))}
-            </ul>
-          </div>
-        </Col>
+        ></Col>
       </Row>
     </Modal>
   );
@@ -325,4 +269,4 @@ const mapStateToProps = ({ educationProgram }) => {
 export default connect(
   mapStateToProps,
   {}
-)(CreateSubject);
+)(CreateStudent);

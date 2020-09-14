@@ -85,24 +85,6 @@ const SidebarContentSuperAdmin = (props) => {
                         />
                     ))}
                 </List>
-                <List
-                    className="rct-mainMenu p-0 m-0 list-unstyled"
-                    subheader={
-                        // <ListSubheader className="side-title" component="li">
-                        //     <span>Xây dựng form</span>
-                        // </ListSubheader>
-                        <></>
-                    }
-                >
-                    {sidebarMenus.SupAdmincategory4.map((menu, key) => (
-                        <NavMenuItem
-                            menu={menu}
-                            key={key}
-                            location={props.location}
-                            onSupToggleMenu={() => toggleMenu(menu, 'SupAdmincategory4')}
-                        />
-                    ))}
-                </List>
 
             </nav>
         </div>

@@ -1,5 +1,5 @@
 /**
- * Module Dashboard
+ * Class Dashboard
  */
 
 import React, { useState, useEffect } from "react";
@@ -7,12 +7,12 @@ import React, { useState, useEffect } from "react";
 import { Tabs } from "antd";
 import { StickyContainer, Sticky } from "react-sticky";
 import { api } from "Api";
-import EducationProgramList from "Routes/EducationProgram/Programs/Components/EducationProgramList";
-import SubjectList from "Routes/EducationProgram/Programs/Components/SubjectList";
 import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
-import { setListBranch } from "Actions/EducationProgramActions";
+import { getDepartmentList } from "Actions/DepartmentActions";
 import { NotificationManager } from "react-notifications";
+import YearClassList from "Routes/Class/Components/YearClassList";
+import StudentList from "Routes/Class/Components/StudentList";
 
 const { TabPane } = Tabs;
 
@@ -28,15 +28,15 @@ const renderTabBar = (props, DefaultTabBar) => (
   </Sticky>
 );
 
-export const ProgramsHome = (props) => {
+export const ClassHome = (props) => {
   const [tabChange, setChangeTab] = useState(false);
 
   useEffect(() => {
     // get list branch
     api
-      .get("/branch/getAllBranch", true)
+      .get("/department/getAll", true)
       .then((res) => {
-        props.setListBranch(res);
+        props.getDepartmentList(res);
       })
       .catch((err) => {
         console.log(err);
@@ -53,20 +53,20 @@ export const ProgramsHome = (props) => {
   return (
     <div className="data-table-wrapper">
       <Helmet>
-        <title>Chương Trình Đào Tạo</title>
+        <title>Danh Sách Lớp</title>
         <meta name="description" content="User Profile" />
       </Helmet>
       <StickyContainer>
         <Tabs
-          defaultActiveKey="1"
+          defaultActiveKey="2"
           renderTabBar={renderTabBar}
           onChange={() => setChangeTab((value) => (value = !value))}
         >
-          <TabPane tab="Ngành/Chuyên Ngành" key="1">
-            <EducationProgramList />
+          <TabPane tab="Danh Sách Tổng Hợp" key="2">
+            <StudentList tabIsChange={tabChange} />
           </TabPane>
-          <TabPane tab="Học Phần" key="2">
-            <SubjectList tabIsChange={tabChange} />
+          <TabPane tab="Danh Sách Lớp Sinh Viên" key="1">
+            <YearClassList />
           </TabPane>
         </Tabs>
       </StickyContainer>
@@ -74,13 +74,13 @@ export const ProgramsHome = (props) => {
   );
 };
 
-const mapStateToProps = ({ educationProgram }) => {
-  return { educationProgram };
+const mapStateToProps = ({}) => {
+  return {};
 };
 
 export default connect(
   mapStateToProps,
   {
-    setListBranch,
+    getDepartmentList,
   }
-)(ProgramsHome);
+)(ClassHome);

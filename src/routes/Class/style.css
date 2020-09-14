@@ -1,0 +1,32 @@
+.ant-descriptions-item-label {
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: bolder;
+  font-size: 14px;
+  line-height: 1.5715;
+  text-align: start;
+}
+
+.ant-descriptions-item-content {
+  display: table-cell;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1;
+          flex: 1 1;
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 14px;
+  line-height: 1.5715;
+}
+
+.student-description-wrapper {
+  padding: 15px;
+}
+
+.ant-descriptions-item {
+  padding: 12px;
+  padding-bottom: 0;
+  vertical-align: top;
+}
+
+.ant-descriptions-item-container {
+  border-bottom: 1px inset;
+}
+/*# sourceMappingURL=style.css.map */

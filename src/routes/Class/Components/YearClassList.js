@@ -1,5 +1,5 @@
 /**
- * Module Dashboard
+ * Year Class Dashboard
  */
 
 import React, { useState, useEffect } from "react";
@@ -23,21 +23,19 @@ import ExportCSV from "Routes/EducationProgram/Programs/Components/ExportCSV";
 import { api } from "Api";
 import { Link } from "react-router-dom";
 import { Row, Col } from "reactstrap";
-
 const defaultRecord = {
+  classId: "",
+  className: "",
+  totalMember: "",
+  startYear: "3",
+  endYear: "",
+  courseNumber: "",
   branchId: "",
-  branchName: "",
-  educationProgramId: "",
-  educationProgramLevel: "3",
-  educationProgramName: "",
-  educationProgramStatus: "",
-  educationProgramType: "",
+  adviserId: "",
 };
 
-export const EducationProgramList = (props) => {
-  const [currentTitle, setCurrentTitle] = useState(
-    "Danh Mục Chương Trình Đào Tạo"
-  );
+export const YearClassList = (props) => {
+  const [currentTitle, setCurrentTitle] = useState("Danh Sách Lớp Niên Khoá");
 
   const [educationProgramList, setEducationProgramsList] = useState([]);
 
@@ -239,11 +237,11 @@ export const EducationProgramList = (props) => {
 
   const columns = [
     {
-      title: "Mã CTDT ",
+      title: "Mã Lớp ",
       dataIndex: "educationProgramId",
     },
     {
-      title: "Tên Chương Trình ",
+      title: "Tên Lớp ",
       dataIndex: "educationProgramName",
       render: (text, record) => (
         <a
@@ -273,7 +271,7 @@ export const EducationProgramList = (props) => {
       ),
     },
     {
-      title: "Trình Độ Đào Tạo",
+      title: "Khoa Đào Tạo",
       dataIndex: "educationProgramLevel",
       render: (text) => {
         if (text === "1") {
@@ -293,7 +291,7 @@ export const EducationProgramList = (props) => {
     },
 
     {
-      title: "Số Tín Chỉ",
+      title: "Trình Độ Đào Tạo",
       dataIndex: "branchName",
     },
     {
@@ -318,27 +316,12 @@ export const EducationProgramList = (props) => {
       },
     },
     {
-      title: "Trạng Thái",
+      title: "GVCN",
+      dataIndex: "branchName",
+    },
+    {
+      title: "Niên Khoá",
       dataIndex: "educationProgramStatus",
-      render: (status) => {
-        let color;
-        let text = "";
-        if (status === "1") {
-          color = "geekblue";
-          text = "Đang Triển Khai";
-        } else if (status === "2") {
-          color = "volcano";
-          text = "Chờ Cập Nhật";
-        } else if (status === "3") {
-          color = "green";
-          text = "Chờ Cập Nhật";
-        }
-        return (
-          <Tag color={color} key={text}>
-            {text.toUpperCase()}
-          </Tag>
-        );
-      },
     },
     {
       title: "Thao Tác",
@@ -402,7 +385,7 @@ export const EducationProgramList = (props) => {
                   >
                     <Row>
                       <Col md={4}>
-                        <Input placeholder="Mã CTDT..." size="middle" />
+                        <Input placeholder="Mã Lớp..." size="middle" />
                       </Col>
                       <Col md={4}>
                         <Input placeholder="Tên CTDT..." size="middle" />
@@ -503,4 +486,4 @@ export const EducationProgramList = (props) => {
   );
 };
 
-export default EducationProgramList;
+export default YearClassList;

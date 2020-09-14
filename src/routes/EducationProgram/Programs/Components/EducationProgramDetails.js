@@ -240,6 +240,7 @@ const EducationProgramDetail = (props) => {
 
   return (
     <>
+      <hr style={{ margin: "0px" }} />
       <div className="table-responsive">
         <Row>
           <Col
@@ -279,7 +280,11 @@ const EducationProgramDetail = (props) => {
                 <EditFilled />
                 <span>Cập Nhật</span>
               </button>
-              <button type="button" className="ant-btn ant-btn-danger" disabled={selectedRowKeys.length !== 0 ? false : true}>
+              <button
+                type="button"
+                className="ant-btn ant-btn-danger"
+                disabled={selectedRowKeys.length !== 0 ? false : true}
+              >
                 <DeleteOutlined />
                 <span>Xoá Nhiều</span>
               </button>

@@ -1,0 +1,15 @@
+.ant-descriptions-item-label {
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: bolder;
+  font-size: 14px;
+  line-height: 1.5715;
+  text-align: start;
+}
+
+.ant-descriptions-item-content {
+  display: table-cell;
+  flex: 1 1;
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 14px;
+  line-height: 1.5715;
+}

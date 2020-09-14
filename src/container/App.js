@@ -12,6 +12,8 @@ import RctThemeProvider from './RctThemeProvider';
 //Main App
 import RctDefaultLayout from './DefaultLayout';
 
+import RctHorizontalLayout from "./RctHorizontalLayout";
+
 import {
     AsyncAdminLoginComponent, AsyncForgotPassComponent,
     AsyncSessionPage404Component,

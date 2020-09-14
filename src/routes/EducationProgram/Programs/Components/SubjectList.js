@@ -1,13 +1,13 @@
 /**
- * Subject Home 
+ * Subject Home
  */
 
-import React, { useState, useEffect } from 'react'
-import { Table, Tag, Space, Button, Popconfirm ,Input} from 'antd';
-import { api } from 'Api';
-import CreateSubject from 'Routes/EducationProgram/Programs/Components/CreateSubject';
-import UpdateSubject from 'Routes/EducationProgram/Programs/Components/UpdateSubject'
-import { NotificationManager } from 'react-notifications';
+import React, { useState, useEffect } from "react";
+import { Table, Tag, Space, Button, Popconfirm, Input } from "antd";
+import { api } from "Api";
+import CreateSubject from "Routes/EducationProgram/Programs/Components/CreateSubject";
+import UpdateSubject from "Routes/EducationProgram/Programs/Components/UpdateSubject";
+import { NotificationManager } from "react-notifications";
 import {
   DeleteFilled,
   EditFilled,
@@ -16,11 +16,10 @@ import {
   PlusOutlined,
   DiffOutlined,
   DeleteOutlined,
-  SearchOutlined
-} from '@ant-design/icons';
-import {Row, Col} from 'reactstrap';
-import RctPageLoader from 'Components/RctPageLoader/RctPageLoader';
-
+  SearchOutlined,
+} from "@ant-design/icons";
+import { Row, Col } from "reactstrap";
+import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 
 const defaultRecord = {
   discussNumber: "",
@@ -32,9 +31,8 @@ const defaultRecord = {
   subjectId: "",
   subjectName: "",
   theoryNumber: "",
-}
+};
 export const SubjectList = (props) => {
-
   const [loading, setLoading] = useState(true);
 
   const [subjectList, setSubjectList] = useState([]);
@@ -96,17 +94,19 @@ export const SubjectList = (props) => {
   const handleSubmitFormCreate = (values) => {
     console.log(values);
     setShowModalCreate(false);
-    api.post('/subject/create', values, true).then(
-      response => {
+    api
+      .post("/subject/create", values, true)
+      .then((response) => {
         NotificationManager.success("Tạo mới thành công");
-        setRerender(value => value = !value);
-      }).catch(error => {
-
-        NotificationManager.error("Không thành công")
-        if (error.message === 'Forbidden') {
-          NotificationManager.error("Did you forget something? Please activate your account");
-        }
-        else if (error.message === 'Unauthorized') {
+        setRerender((value) => (value = !value));
+      })
+      .catch((error) => {
+        NotificationManager.error("Không thành công");
+        if (error.message === "Forbidden") {
+          NotificationManager.error(
+            "Did you forget something? Please activate your account"
+          );
+        } else if (error.message === "Unauthorized") {
           throw new SubmissionError({ _error: "Username or Password Invalid" });
         }
       });
@@ -114,17 +114,19 @@ export const SubjectList = (props) => {
 
   const handleSubmitFormUpdate = (values) => {
     setShowModalUpdate(false);
-    api.post('/subject/update', values, true).then(
-      response => {
+    api
+      .post("/subject/update", values, true)
+      .then((response) => {
         NotificationManager.success("Chỉnh sửa thành công");
-        setRerender(value => value = !value);
-      }).catch(error => {
-
-        NotificationManager.error("Không thành công")
-        if (error.message === 'Forbidden') {
-          NotificationManager.error("Did you forget something? Please activate your account");
-        }
-        else if (error.message === 'Unauthorized') {
+        setRerender((value) => (value = !value));
+      })
+      .catch((error) => {
+        NotificationManager.error("Không thành công");
+        if (error.message === "Forbidden") {
+          NotificationManager.error(
+            "Did you forget something? Please activate your account"
+          );
+        } else if (error.message === "Unauthorized") {
           throw new SubmissionError({ _error: "Username or Password Invalid" });
         }
       });
@@ -132,7 +134,7 @@ export const SubjectList = (props) => {
   };
 
   const handleDeleteRecord = (values) => {
-    console.log(values)
+    console.log(values);
     var object = [];
     object.push(values);
     // let formData = new FormData();
@@ -145,27 +147,29 @@ export const SubjectList = (props) => {
     // formData.append("practiceNumber", values.practiceNumber);
     // formData.append("selfLearningNumber", values.selfLearningNumber);
     // formData.append("subjectForLevel", values.subjectForLevel);
-    api.post('/subject/delete', object, true).then(
-      response => {
+    api
+      .post("/subject/delete", object, true)
+      .then((response) => {
         NotificationManager.success("Xoá thành công");
-        setRerender(value => value = !value);
-      }).catch(error => {
-
-        NotificationManager.error("Không thành công")
-        if (error.message === 'Forbidden') {
-          NotificationManager.error("Did you forget something? Please activate your account");
-        }
-        else if (error.message === 'Unauthorized') {
+        setRerender((value) => (value = !value));
+      })
+      .catch((error) => {
+        NotificationManager.error("Không thành công");
+        if (error.message === "Forbidden") {
+          NotificationManager.error(
+            "Did you forget something? Please activate your account"
+          );
+        } else if (error.message === "Unauthorized") {
           throw new SubmissionError({ _error: "Username or Password Invalid" });
         }
       });
-  }
+  };
 
   const handleDeleteMultipleRecord = (values) => {
-    console.log(values)
+    console.log(values);
     var object = [];
-    values.map(item=>{
-      object.push({subjectId: item})
+    values.map((item) => {
+      object.push({ subjectId: item });
     });
     // let formData = new FormData();
     // formData.append("subjectId", values.subjectId);
@@ -177,49 +181,50 @@ export const SubjectList = (props) => {
     // formData.append("practiceNumber", values.practiceNumber);
     // formData.append("selfLearningNumber", values.selfLearningNumber);
     // formData.append("subjectForLevel", values.subjectForLevel);
-    api.post('/subject/delete', object, true).then(
-      response => {
+    api
+      .post("/subject/delete", object, true)
+      .then((response) => {
         NotificationManager.success("Xoá thành công");
-        setRerender(value => value = !value);
-      }).catch(error => {
-
-        NotificationManager.error("Không thành công")
-        if (error.message === 'Forbidden') {
-          NotificationManager.error("Did you forget something? Please activate your account");
-        }
-        else if (error.message === 'Unauthorized') {
+        setRerender((value) => (value = !value));
+      })
+      .catch((error) => {
+        NotificationManager.error("Không thành công");
+        if (error.message === "Forbidden") {
+          NotificationManager.error(
+            "Did you forget something? Please activate your account"
+          );
+        } else if (error.message === "Unauthorized") {
           throw new SubmissionError({ _error: "Username or Password Invalid" });
         }
       });
-      setSelectedRowKeys([]);
-  }
+    setSelectedRowKeys([]);
+  };
 
   useEffect(() => {
-    api.get('/subject/getAll', true).then(
-      response => {
+    api
+      .get("/subject/getAll", true)
+      .then((response) => {
         setSubjectList(response);
         var options = [];
-        response.map(
-          item => {
-            var option = {
-              value: item.subjectId,
-              label: item.subjectName
-            };
-            options.push(option);
-          }
-        );
+        response.map((item) => {
+          var option = {
+            value: item.subjectId,
+            label: item.subjectName,
+          };
+          options.push(option);
+        });
         setPrerequisitesSubject(options);
-      }).catch(error => {
-
+      })
+      .catch((error) => {
         console.log(error.message);
-        if (error.message === 'Forbidden') {
-          NotificationManager.error("Did you forget something? Please activate your account");
-        }
-        else if (error.message === 'Unauthorized') {
+        if (error.message === "Forbidden") {
+          NotificationManager.error(
+            "Did you forget something? Please activate your account"
+          );
+        } else if (error.message === "Unauthorized") {
           throw new SubmissionError({ _error: "Username or Password Invalid" });
         }
       });
-
   }, [render]);
 
   useEffect(() => {
@@ -227,26 +232,25 @@ export const SubjectList = (props) => {
       setLoading(false);
     }, 500);
     return () => {
-      console.log("cc")
-      setLoading(true)
-    }
-  }, [props.tabIsChange])
+      console.log("cc");
+      setLoading(true);
+    };
+  }, [props.tabIsChange]);
 
   const columns = [
     {
-      title: 'Mã Học Phần ',
-      dataIndex: 'subjectId'
+      title: "Mã Học Phần ",
+      dataIndex: "subjectId",
     },
     {
-      title: 'Tên Học Phần ',
-      dataIndex: 'subjectName',
-      width:"20%",
+      title: "Tên Học Phần ",
+      dataIndex: "subjectName",
+      width: "20%",
     },
     {
-      title: 'Số Tín Chỉ',
+      title: "Số Tín Chỉ",
       children: [
         {
-
           title: "Từng Môn Học",
           dataIndex: "eachSubject",
         },
@@ -255,73 +259,70 @@ export const SubjectList = (props) => {
           children: [
             {
               title: "Lý Thuyết",
-              dataIndex: "theoryNumber"
+              dataIndex: "theoryNumber",
             },
             {
               title: "Bài Tập (x2)",
-              dataIndex: "exerciseNumber"
+              dataIndex: "exerciseNumber",
             },
             {
               title: "Thảo Luận (x2)",
-              dataIndex: "practiceNumber"
-            }
-          ]
+              dataIndex: "practiceNumber",
+            },
+          ],
         },
         {
           title: "Thực Hành",
-          dataIndex: "exerciseNumber"
+          dataIndex: "exerciseNumber",
         },
         {
           title: "Tự Học",
-          dataIndex: "selfLearningNumber"
-        }
-
-      ]
+          dataIndex: "selfLearningNumber",
+        },
+      ],
     },
     {
-      title: 'Môn Học Tiên Quyết',
-      dataIndex: 'tags'
-
+      title: "Môn Học Tiên Quyết",
+      dataIndex: "tags",
     },
     {
-      title: 'Trình Độ Đào Tạo',
-      dataIndex: 'subjectForLevel',
-      render: text => {
+      title: "Trình Độ Đào Tạo",
+      dataIndex: "subjectForLevel",
+      render: (text) => {
         if (text === "1") {
-          return <span>Đào Tạo Tiến Sỹ</span>
-        }
-        else if (text === "2") {
-          return <span>Đào Tạo Thạc Sỹ</span>
-        }
-        else if (text === "3") {
-          return <span>Đại học</span>
-        }
-        else {
-          return <span></span>
+          return <span>Đào Tạo Tiến Sỹ</span>;
+        } else if (text === "2") {
+          return <span>Đào Tạo Thạc Sỹ</span>;
+        } else if (text === "3") {
+          return <span>Đại học</span>;
+        } else {
+          return <span></span>;
         }
       },
     },
     {
-      title: 'Thao Tác',
-      key: 'action',
+      title: "Thao Tác",
+      key: "action",
       render: (text, record) => (
         <Space size="middle">
-          <Button type=""
-            onClick={
-              () => {
-                console.log(record)
-                setRecordUpdate(record);
-                setShowModalUpdate(true);
-              }
-            }>
-            <EditFilled
-            />
+          <Button
+            type=""
+            onClick={() => {
+              console.log(record);
+              setRecordUpdate(record);
+              setShowModalUpdate(true);
+            }}
+          >
+            <EditFilled />
           </Button>
-          <Popconfirm placement="left" title={"Chắc chắn xoá?"} onConfirm={() => handleDeleteRecord(record)} okText="Ok" cancelText="Không">
-
-            <Button
-              type=""
-            >
+          <Popconfirm
+            placement="left"
+            title={"Chắc chắn xoá?"}
+            onConfirm={() => handleDeleteRecord(record)}
+            okText="Ok"
+            cancelText="Không"
+          >
+            <Button type="">
               <DeleteFilled />
             </Button>
           </Popconfirm>
@@ -331,11 +332,10 @@ export const SubjectList = (props) => {
   ];
 
   if (loading === true) {
-    return <RctPageLoader />
+    return <RctPageLoader />;
   }
   return (
-
-    < >
+    <>
       <div className="rct-block ">
         <div className="rct-block-title ">
           <h4>
@@ -352,19 +352,29 @@ export const SubjectList = (props) => {
         </div>
         <div className="collapse show">
           <div className="rct-full-block">
-
             <div className="table-responsive">
               <Row>
-                <Col md={6} sm={12} style={{ display: "flex", flexDirection: "column" }}>
+                <Col
+                  md={6}
+                  sm={12}
+                  style={{ display: "flex", flexDirection: "column" }}
+                >
                   <Row>
                     <Col md={4}>
                       <Input placeholder="Mã Học Phần..." size="middle" />
-                    </Col  >
+                    </Col>
                     <Col md={4}>
                       <Input placeholder="Tên Học Phần..." size="middle" />
                     </Col>
-                    <Col md={4} style={{ display: "block", flexDirection: "column" }}>
-                      <button type="button" className="ant-btn ant-btn-primary" onClick={() => setShowModalCreate(true)}>
+                    <Col
+                      md={4}
+                      style={{ display: "block", flexDirection: "column" }}
+                    >
+                      <button
+                        type="button"
+                        className="ant-btn ant-btn-primary"
+                        onClick={() => setShowModalCreate(true)}
+                      >
                         <SearchOutlined />
                         <span>Tìm Kiếm</span>
                       </button>
@@ -372,12 +382,26 @@ export const SubjectList = (props) => {
                   </Row>
                 </Col>
                 <Col md={6} sm={12} xs={12}>
-                  <div className="tableListOperator" style={{ textAlign: "right", width: "100%" }}>
-                    <button type="button" className="ant-btn ant-btn-primary" onClick={() => setShowModalCreate(true)}>
+                  <div
+                    className="tableListOperator"
+                    style={{ textAlign: "right", width: "100%" }}
+                  >
+                    <button
+                      type="button"
+                      className="ant-btn ant-btn-primary"
+                      onClick={() => setShowModalCreate(true)}
+                    >
                       <PlusOutlined></PlusOutlined>
                       <span>Tạo Mới </span>
                     </button>
-                    <button type="button" className="ant-btn ant-btn-danger" disabled={selectedRowKeys.length > 0 ? false : true} onClick={()=>handleDeleteMultipleRecord(selectedRowKeys)}>
+                    <button
+                      type="button"
+                      className="ant-btn ant-btn-danger"
+                      disabled={selectedRowKeys.length > 0 ? false : true}
+                      onClick={() =>
+                        handleDeleteMultipleRecord(selectedRowKeys)
+                      }
+                    >
                       <DeleteOutlined />
                       <span>Xoá Nhiều</span>
                     </button>
@@ -397,14 +421,14 @@ export const SubjectList = (props) => {
                 rowKey="subjectId"
                 bordered
                 scroll={{
-                  y: "600px"
+                  y: "600px",
                 }}
                 pagination={{ pageSize: 10 }}
                 size="small"
                 rowSelection={true}
                 rowSelection={rowSelection}
               />
-            </div >
+            </div>
 
             <CreateSubject
               visible={showModalCreate}
@@ -427,9 +451,7 @@ export const SubjectList = (props) => {
         </div>
       </div>
     </>
-  )
-
-
-}
+  );
+};
 
 export default SubjectList;

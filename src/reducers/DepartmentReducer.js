@@ -1,23 +1,23 @@
 /**
- * Education Programs Reducer
+ * Department   Reducer
  */
 //action types
 import {
-    UPDATE_LIST_BRANCH
- } from '../actions/EducationProgramActions'; 
+    GET_DEPARTMENT_LIST
+ } from '../actions/DepartmentActions'; 
  
  const INITIAL_STATE = {
-    listBranch: [],
+    departmentList: [],
 
  }
  
  export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
        // add product to cart 
-       case UPDATE_LIST_BRANCH:
+       case GET_DEPARTMENT_LIST:
           return {
              ...state,
-             listBranch: [...action.payload]
+             departmentList: [...action.payload]
           }
        // default case	
        default:

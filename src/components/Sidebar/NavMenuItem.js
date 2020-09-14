@@ -75,6 +75,9 @@ const NavMenuItem = (props) => {
                            return (
                               <ListItem button component="li" key={index}>
                                  <NavLink to={subMenu.path} className={subMenu.path === props.currentLocationPathName.pathName ? "item-active" : ""} onClick={() => onClickNavItem(subMenu.path, subMenu.menu_title)}  >
+                                    <ListItemIcon className="menu-icon">
+                                       <i className={subMenu.menu_icon}></i>
+                                    </ListItemIcon>
                                     <span className="menu">
                                        <span>{subMenu.menu_title} </span>
                                     </span>
@@ -98,6 +101,9 @@ const NavMenuItem = (props) => {
                                     onClick={() => onToggleCollapseMenu(index)}
                                     className={`list-item ${classNames({ 'item-active': subMenuOpen === index })}`}
                                  >
+                                    <ListItemIcon className="menu-icon">
+                                       <i className={subMenu.menu_icon}></i>
+                                    </ListItemIcon>
                                     <span className="menu">
                                        <span>{subMenu.menu_title}</span>
                                     </span>

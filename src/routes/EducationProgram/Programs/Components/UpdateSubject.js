@@ -91,7 +91,7 @@ export const UpdateSubject = (props) => {
                 className="ant-input"
                 placeholder="Mã Học Phần"
                 type="text"
-                onChange={e => setSubjectId(e.target.value)}
+                onChange={(e) => setSubjectId(e.target.value)}
                 value={subjectId}
                 disabled
               />
@@ -111,7 +111,7 @@ export const UpdateSubject = (props) => {
                 type="text"
                 className="ant-input"
                 onChange={(e) => setSubjectName(e.target.value)}
-              value={subjectName}
+                value={subjectName}
               />
             </div>
           </div>
@@ -179,7 +179,7 @@ export const UpdateSubject = (props) => {
                 type="text"
                 placeholder="Số Giờ Thảo Luận..."
                 value={discussNumber}
-              onChange={(e) => setDiscussNumber(e.target.value)}
+                onChange={(e) => setDiscussNumber(e.target.value)}
               />
             </div>
           </div>
@@ -324,7 +324,6 @@ export const UpdateSubject = (props) => {
           </div>
         </Col>
       </Row>
-      
     </Modal>
   );
 };

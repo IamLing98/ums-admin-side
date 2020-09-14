@@ -1,11 +1,9 @@
 
 import Dashboard from 'Routes/dashboard';
-import Tasks from "Routes/tasks";
-import Users from "Routes/users";
-import Maps from "Routes/maps";
 import FormBuilder from "Routes/form-builder";
-import InvoicesCreate from "Routes/Invoices";
 import EducationProgram from "Routes/EducationProgram"
+import Students from "Routes/Students";
+import Class from "Routes/Class";
 
 export default [
    {
@@ -16,24 +14,17 @@ export default [
       path: 'education-program',
       component: EducationProgram
    },
+   
    {
-      path: 'tasks',
-      component: Tasks
+      path: 'class',
+      component: Class
    },
    {
-      path: 'users',
-      component: Users
-   },
-   {
-      path: 'location',
-      component: Maps
+      path: 'students',
+      component: Students
    },
    {
       path: 'form-builder',
       component: FormBuilder
-   },
-   {
-      path: 'invoices',
-      component: InvoicesCreate
    }
 ]
