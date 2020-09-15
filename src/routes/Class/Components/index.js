@@ -2,17 +2,17 @@
  * Class Dashboard
  */
 
-import React, { useState, useEffect } from "react";
+import { getDepartmentList } from "Actions/DepartmentActions";
 // page title bar
 import { Tabs } from "antd";
-import { StickyContainer, Sticky } from "react-sticky";
 import { api } from "Api";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { connect } from "react-redux";
-import { getDepartmentList } from "Actions/DepartmentActions";
 import { NotificationManager } from "react-notifications";
-import YearClassList from "Routes/Class/Components/YearClassList";
+import { connect } from "react-redux";
+import { Sticky, StickyContainer } from "react-sticky";
 import StudentList from "Routes/Class/Components/StudentList";
+import YearClassList from "Routes/Class/Components/YearClassList";
 
 const { TabPane } = Tabs;
 
@@ -65,7 +65,7 @@ export const ClassHome = (props) => {
           <TabPane tab="Danh Sách Tổng Hợp" key="2">
             <StudentList tabIsChange={tabChange} />
           </TabPane>
-          <TabPane tab="Danh Sách Lớp Sinh Viên" key="1">
+          <TabPane tab="Danh Sách Lớp Sinh Viên" tabIsChange={tabChange} key="1">
             <YearClassList />
           </TabPane>
         </Tabs>

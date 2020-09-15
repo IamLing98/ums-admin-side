@@ -1,42 +1,20 @@
-import React, { useEffect, useState } from "react";
+import { Col, Row, Tabs } from "antd";
 import { api } from "Api";
-import { NotificationManager } from "react-notifications";
-import {
-  DeleteFilled,
-  EditFilled,
-  RetweetOutlined,
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  DiffOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
-import {
-  Table,
-  Tag,
-  Tabs,
-  Space,
-  Button,
-  Popconfirm,
-  Alert,
-  Input,
-  Descriptions,
-} from "antd";
+import React, { useEffect, useState } from "react";
 import StudentProfile from "Routes/Class/Components/StudentDetailsComponents/StudentProfile";
-import { Row, Col } from "antd";
+
 const { TabPane } = Tabs;
 
-const defaultRecord = {
-  branchId: "",
-  branchName: "",
-  educationProgramId: "",
-  educationProgramLevel: "3",
-  educationProgramName: "",
-  educationProgramStatus: "",
-  educationProgramType: "",
-};
-
 const StudentDetails = (props) => {
+  const [record, setRecord] = useState(null);
+
+  useEffect(() => {
+    api
+      .get("/student/getDetail?studentId=" + props.record.studentId, true)
+      .then((response) => {
+        setRecord(response);
+      });
+  }, []);
   const size = "small";
   return (
     <>
@@ -52,7 +30,7 @@ const StudentDetails = (props) => {
               />
             </div>
             <br />
- 
+
             <ul className="list-group">
               <li className="list-group-item text-muted">
                 Activity <i className="fa fa-dashboard fa-1x" />
@@ -81,12 +59,12 @@ const StudentDetails = (props) => {
                 </span>{" "}
                 78
               </li>
-            </ul> 
+            </ul>
           </Col>
           <Col span={20}>
             <Tabs defaultActiveKey="1" type="card" size={size}>
-              <TabPane  tab="Hồ Sơ Lý Lịch" key="1">
-                <StudentProfile record = {props.record} />
+              <TabPane tab="Sơ Yếu Lý Lịch" key="1">
+                <StudentProfile record={record} />
               </TabPane>
               <TabPane tab="Thông Tin Gia Đình" key="2">
                 Content of card tab 2

@@ -2,37 +2,37 @@
  * Year Class Dashboard
  */
 
-import React, { useState, useEffect } from "react";
-import {
-  Table,
-  Tag,
-  Space,
-  Button,
-  Popconfirm,
-  Input,
-  Select,
-  Alert,
-} from "antd";
-import { NotificationManager } from "react-notifications";
 import {
   DeleteFilled,
-  EditFilled,
-  RetweetOutlined,
   DeleteOutlined,
-  SearchOutlined,
   DoubleLeftOutlined,
   DownloadOutlined,
   DownOutlined,
+  EditFilled,
+  RetweetOutlined,
+  SearchOutlined,
   UpOutlined,
 } from "@ant-design/icons";
+import {
+  Alert,
+  Button,
+  Input,
+  Popconfirm,
+  Select,
+  Space,
+  Table,
+  DatePicker,
+} from "antd";
+import { api } from "Api";
+import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
+import React, { useEffect, useState } from "react";
+import { NotificationManager } from "react-notifications";
+import { connect } from "react-redux";
+import { Col, Row } from "reactstrap";
 import ImportStudent from "Routes/Class/Components/ImportStudent";
-import UpdateEducationProgram from "Routes/EducationProgram/Programs/Components/UpdateEducationProgram";
 import StudentDetails from "Routes/Class/Components/StudentDetails";
 import ExportCSV from "Routes/EducationProgram/Programs/Components/ExportCSV";
-import { api } from "Api";
-import { Row, Col } from "reactstrap";
-import { connect } from "react-redux";
-import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
+import UpdateEducationProgram from "Routes/EducationProgram/Programs/Components/UpdateEducationProgram";
 
 const defaultRecord = {
   admissionType: null,
@@ -117,6 +117,14 @@ export const StudentList = (props) => {
 
   const [page, setPage] = useState(1);
 
+  const [studentId, setStudentId] = useState(null);
+
+  const [departmentId, setDepartmentId] = useState(null);
+
+  const [startYear, setStartYear] = useState(null);
+
+  const [classId, setClassId] = useState(null);
+
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -140,12 +148,32 @@ export const StudentList = (props) => {
   const onChange = (data) => {
     setValue(data);
   };
-  const onSearch = (searchText) => {
-    setOptions(
-      !searchText
-        ? []
-        : [mockVal(searchText), mockVal(searchText, 2), mockVal(searchText, 3)]
-    );
+  const onSearch = () => {
+    api
+      .post(
+        "/student/getAllStudent",
+        {
+          studentId: studentId,
+          startYear:startYear,
+          departmentId:departmentId,
+          classId:classId
+        },
+        true
+      )
+      .then((response) => {
+        setStudentList(response.content);
+        setTotalElements(response.totalElements);
+      })
+      .catch((error) => {
+        console.log(error.message);
+        if (error.message === "Forbidden") {
+          NotificationManager.error(
+            "Did you forget something? Please activate your account"
+          );
+        } else if (error.message === "Unauthorized") {
+          throw new SubmissionError({ _error: "Username or Password Invalid" });
+        }
+      });
   };
 
   const rowSelection = {
@@ -277,8 +305,10 @@ export const StudentList = (props) => {
   };
 
   useEffect(() => {
+    var formData = new FormData();
+    formData.append("studentId", studentId);
     api
-      .post("/student/getAllStudent", { defaultRecord }, true)
+      .post("/student/getAllStudent", { studentId: studentId }, true)
       .then((response) => {
         setStudentList(response.content);
         setTotalElements(response.totalElements);
@@ -429,8 +459,11 @@ export const StudentList = (props) => {
                         <Row>
                           <Col md={4}>
                             <Select
+                            allowClear
                               placeholder="Khoa..."
-                              onChange={(e) => {}}
+                              onClear={()=> onSearch()}
+                              onPressEnter={()=> onSearch()}
+                              onChange={(e) => setDepartmentId(e)}
                               // value={educationProgramLevel}
                             >
                               {props.departmentReducer.departmentList.map(
@@ -451,6 +484,9 @@ export const StudentList = (props) => {
                             <Select
                               style={{ width: "100%" }}
                               placeholder="Lớp..."
+                              allowClear
+                              onClear={()=> onSearch()}
+                              onChange={(e) => setClassId(e)}
                             >
                               {props.departmentReducer.departmentList.map(
                                 (item) => {
@@ -495,8 +531,28 @@ export const StudentList = (props) => {
                       style={{ display: "flex", flexDirection: "column" }}
                     >
                       <Row>
-                        <Col md={8}>
-                          <Input placeholder="Mã Sinh Viên..." size="middle" />
+                        <Col md={4}>
+                          <Input
+                            placeholder="Mã sinh viên..."
+                            size="middle"
+                            value={studentId}
+                            onPressEnter={()=> onSearch()}
+                            allowClear
+                            onChange={  (e) => {
+                                setStudentId(e.target.value);
+                              
+                            }}
+                          />
+                        </Col>
+                        <Col md={4}>
+                          <DatePicker
+                            onChange={(date, dateString) => {
+                              setStartYear(dateString);
+                              console.log(dateString);
+                            }}
+                            picker="year"
+                            placeholder="Niên khoá..."
+                          />
                         </Col>
                         <Col
                           md={4}
@@ -519,7 +575,7 @@ export const StudentList = (props) => {
                           <button
                             type="button"
                             className="ant-btn ant-btn-primary"
-                            onClick={() => setShowModalCreate(true)}
+                            onClick={() => onSearch()}
                           >
                             <SearchOutlined />
                             <span>Tìm Kiếm</span>

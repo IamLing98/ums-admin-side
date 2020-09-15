@@ -2,9 +2,8 @@
  * Module Dashboard
  */
 
-import React, { useState, useEffect } from "react";
-import { Table, Tag, Space, Button, Modal } from "antd";
-import { CustomInput, Input, Form, FormGroup, Label } from "reactstrap";
+import { Modal } from "antd";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 export const UpdateEducationProgram = (props) => {

@@ -2,11 +2,10 @@
  * Module Dashboard
  */
 
-import React, { useState, useEffect } from "react";
-import { Table, Tag, Space, Button, Modal, Upload, Select } from "antd";
-import { CustomInput, Input, Form, FormGroup, Label } from "reactstrap";
-import { connect } from "react-redux";
 import { InboxOutlined } from "@ant-design/icons";
+import { Modal, Select, Upload } from "antd";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 
 const { Dragger } = Upload;
 

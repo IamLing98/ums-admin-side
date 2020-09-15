@@ -2,27 +2,24 @@
  * Module Dashboard
  */
 
-import React, { useState, useEffect } from "react";
-import { Table, Tag, Space, Button, Popconfirm, Input } from "antd";
-import { NotificationManager } from "react-notifications";
 import {
   DeleteFilled,
-  EditFilled,
-  RetweetOutlined,
-  EditOutlined,
-  PlusOutlined,
-  DiffOutlined,
   DeleteOutlined,
-  SearchOutlined,
   DoubleLeftOutlined,
+  EditFilled,
+  PlusOutlined,
+  RetweetOutlined,
+  SearchOutlined,
 } from "@ant-design/icons";
+import { Button, Input, Popconfirm, Space, Table, Tag } from "antd";
+import { api } from "Api";
+import React, { useEffect, useState } from "react";
+import { NotificationManager } from "react-notifications";
+import { Col, Row } from "reactstrap";
 import CreateEducationProgram from "Routes/EducationProgram/Programs/Components/CreateEducationProgram";
-import UpdateEducationProgram from "Routes/EducationProgram/Programs/Components/UpdateEducationProgram";
 import EducationProgramDetails from "Routes/EducationProgram/Programs/Components/EducationProgramDetails";
 import ExportCSV from "Routes/EducationProgram/Programs/Components/ExportCSV";
-import { api } from "Api";
-import { Link } from "react-router-dom";
-import { Row, Col } from "reactstrap";
+import UpdateEducationProgram from "Routes/EducationProgram/Programs/Components/UpdateEducationProgram";
 
 const defaultRecord = {
   branchId: "",

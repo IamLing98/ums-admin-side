@@ -2,24 +2,22 @@
  * Subject Home
  */
 
-import React, { useState, useEffect } from "react";
-import { Table, Tag, Space, Button, Popconfirm, Input } from "antd";
-import { api } from "Api";
-import CreateSubject from "Routes/EducationProgram/Programs/Components/CreateSubject";
-import UpdateSubject from "Routes/EducationProgram/Programs/Components/UpdateSubject";
-import { NotificationManager } from "react-notifications";
 import {
   DeleteFilled,
-  EditFilled,
-  RetweetOutlined,
-  EditOutlined,
-  PlusOutlined,
-  DiffOutlined,
   DeleteOutlined,
+  DiffOutlined,
+  EditFilled,
+  PlusOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import { Row, Col } from "reactstrap";
+import { Button, Input, Popconfirm, Space, Table } from "antd";
+import { api } from "Api";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
+import React, { useEffect, useState } from "react";
+import { NotificationManager } from "react-notifications";
+import { Col, Row } from "reactstrap";
+import CreateSubject from "Routes/EducationProgram/Programs/Components/CreateSubject";
+import UpdateSubject from "Routes/EducationProgram/Programs/Components/UpdateSubject";
 
 const defaultRecord = {
   discussNumber: "",
