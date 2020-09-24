@@ -14,4 +14,4 @@ npm start
 # build for production with minification
 npm run build
 ``` 
-![alt text](https://ibb.co/F7nqSxX) 
+![alt text](https://i.ibb.co/mzSFLD0/Capture.png) 
