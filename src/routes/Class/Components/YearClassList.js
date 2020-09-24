@@ -16,8 +16,8 @@ import { api } from "Api";
 import React, { useEffect, useState } from "react";
 import { NotificationManager } from "react-notifications";
 import { Col, Row } from "reactstrap";
-import CreateEducationProgram from "Routes/EducationProgram/Programs/Components/CreateEducationProgram";
-import EducationProgramDetails from "Routes/EducationProgram/Programs/Components/EducationProgramDetails";
+import CreateYearClass from "Routes/Class/Components/CreateYearClass";
+import YearClassDetails from "Routes/Class/Components/YearClassDetails";
 import ExportCSV from "Routes/EducationProgram/Programs/Components/ExportCSV";
 import UpdateEducationProgram from "Routes/EducationProgram/Programs/Components/UpdateEducationProgram";
 const defaultRecord = {
@@ -34,7 +34,7 @@ const defaultRecord = {
 export const YearClassList = (props) => {
   const [currentTitle, setCurrentTitle] = useState("Danh Sách Lớp Niên Khoá");
 
-  const [educationProgramList, setEducationProgramsList] = useState([]);
+  const [classList, setClassList] = useState([]);
 
   const [showModalCreate, setShowModalCreate] = useState(false);
 
@@ -56,7 +56,6 @@ export const YearClassList = (props) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const onSelectChange = (selectedRowKeys) => {
-    console.log("selectedRowKeys changed: ", selectedRowKeys);
     setSelectedRowKeys(selectedRowKeys);
   };
 
@@ -106,7 +105,6 @@ export const YearClassList = (props) => {
         setRerender((value) => (value = !value));
       })
       .catch(function(err) {
-        console.log(err.response.body.message);
         if (err.response.body.message === "Đã tồn tại") {
           NotificationManager.error("Đã Tồn Tại !!!");
         } else if (error.message === "Unauthorized") {
@@ -114,10 +112,8 @@ export const YearClassList = (props) => {
         }
       });
     //   {
-    //   console.log(parseApiErrors(error));
     //   NotificationManager.error("Không thành công" + error.message)
     //   if (error.message === 'Đã tồn tại') {
-    //     console.log(error.message)
     //     NotificationManager.error("Did you forget something? Please activate your account");
     //   }
     //   else if (error.message === 'Unauthorized') {
@@ -151,7 +147,6 @@ export const YearClassList = (props) => {
   const handleDeleteRecord = (values) => {
     var object = [];
     object.push(values);
-    console.log(values);
     // let formData = new FormData();
     // formData.append("educationProgramId", values.educationProgramId);
     // formData.append("educationProgramName", values.educationProgramName);
@@ -182,7 +177,6 @@ export const YearClassList = (props) => {
     values.map((item) => {
       object.push({ educationProgramId: item });
     });
-    console.log(values);
     // let formData = new FormData();
     // formData.append("educationProgramId", values.educationProgramId);
     // formData.append("educationProgramName", values.educationProgramName);
@@ -210,18 +204,16 @@ export const YearClassList = (props) => {
   };
 
   const handleChangeTable = (pagination) => {
-    console.log(pagination);
     setPagination(pagination);
   };
 
   useEffect(() => {
     api
-      .get("/education-program/getAllProgram", true)
+      .get("/yearClasses", true)
       .then((response) => {
-        setEducationProgramsList(response);
+        setClassList(response.content);
       })
       .catch((error) => {
-        console.log(error.message);
         if (error.message === "Forbidden") {
           NotificationManager.error(
             "Did you forget something? Please activate your account"
@@ -235,11 +227,11 @@ export const YearClassList = (props) => {
   const columns = [
     {
       title: "Mã Lớp ",
-      dataIndex: "educationProgramId",
+      dataIndex: "classId",
     },
     {
       title: "Tên Lớp ",
-      dataIndex: "educationProgramName",
+      dataIndex: "className",
       render: (text, record) => (
         <a
           // className="ant-anchor-link-title ant-anchor-link-title-active"
@@ -252,35 +244,30 @@ export const YearClassList = (props) => {
                 <a
                   href="javascript:void(0)"
                   onClick={() => {
-                    setCurrentTitle(<span>Danh Mục Chương Trình Đào Tạo</span>);
+                    setCurrentTitle(<span>Danh Sách Lớp Niên Khoá</span>);
                     setShowDetails(false);
                   }}
                 >
                   <DoubleLeftOutlined />
                 </a>{" "}
-                Thông Tin Chi Tiết Chương Trình Đào Tạo
+                Thông Tin Chi Tiết Lớp:{" "}
+                {record.classId +
+                  " | " +
+                  record.className +
+                  " - " +
+                  "K" +
+                  record.courseNumber}
               </span>
             );
           }}
         >
-          {text}
+          {record.className + " - " + "K" + record.courseNumber}
         </a>
       ),
     },
     {
       title: "Khoa Đào Tạo",
-      dataIndex: "educationProgramLevel",
-      render: (text) => {
-        if (text === "1") {
-          return <span>Đào Tạo Tiến Sỹ</span>;
-        } else if (text === "2") {
-          return <span>Đào Tạo Thạc Sỹ</span>;
-        } else if (text === "3") {
-          return <span>Đại học</span>;
-        } else {
-          return <span></span>;
-        }
-      },
+      dataIndex: "departmentName",
     },
     {
       title: "Ngành Đào Tạo",
@@ -289,27 +276,44 @@ export const YearClassList = (props) => {
 
     {
       title: "Trình Độ Đào Tạo",
-      dataIndex: "branchName",
+      dataIndex: "educationProgramLevel",
+      render: (text) => {
+        if (text === 1) {
+          return <span>Đào Tạo Tiến Sỹ</span>;
+        } else if (text === 2) {
+          return <span>Đào Tạo Thạc Sỹ</span>;
+        } else if (text === 3) {
+          return <span>Đại học</span>;
+        } else {
+          return <span></span>;
+        }
+      },
     },
     {
       title: "Hình Thức Đào Tạo",
       dataIndex: "educationProgramType",
       render: (text) => {
-        if (text === "1") {
+        if (text === 1) {
           return <span>Đại học chính quy</span>;
-        } else if (text === "2") {
+        } else if (text === 2) {
           return <span>Đại học vừa làm vừa học </span>;
-        } else if (text === "3") {
+        } else if (text === 3) {
           return <span>Văn bằng 2</span>;
-        } else if (text === "4") {
+        } else if (text === 4) {
           return <span>L.thông từ Cao đẳng lên Đại học</span>;
-        } else if (text === "5") {
+        } else if (text === 5) {
           return <span>L.thông từ Trung cấp lên Đại học</span>;
-        } else if (text === "6") {
+        } else if (text === 6) {
           return <span>Liên kết đào tạo quốc tế</span>;
-        } else if (text === "7") {
+        } else if (text === 7) {
           return <span>Đại học từ xa</span>;
         }
+      },
+    },
+    {
+      title: "Niên Khoá",
+      render: (text, record) => {
+        return <>{record.startYear + " - " + record.endYear}</>;
       },
     },
     {
@@ -317,8 +321,8 @@ export const YearClassList = (props) => {
       dataIndex: "branchName",
     },
     {
-      title: "Niên Khoá",
-      dataIndex: "educationProgramStatus",
+      title: "Tình Trạng",
+      dataIndex: "branchName",
     },
     {
       title: "Thao Tác",
@@ -382,10 +386,10 @@ export const YearClassList = (props) => {
                   >
                     <Row>
                       <Col md={4}>
-                        <Input placeholder="Mã Lớp..." size="middle" />
+                        <Input placeholder="Mã lớp..." size="middle" />
                       </Col>
                       <Col md={4}>
-                        <Input placeholder="Tên CTDT..." size="middle" />
+                        <Input placeholder="Tên lớp..." size="middle" />
                       </Col>
                       <Col
                         md={4}
@@ -432,7 +436,7 @@ export const YearClassList = (props) => {
                         <span>Xoá Nhiều</span>
                       </button>
                       <ExportCSV
-                        csvData={educationProgramList}
+                        csvData={classList}
                         fileName={"educationList"}
                       />
                     </div>
@@ -440,9 +444,9 @@ export const YearClassList = (props) => {
                 </Row>
                 <Table
                   columns={columns}
-                  dataSource={educationProgramList}
+                  dataSource={classList}
                   bordered
-                  rowKey="educationProgramId"
+                  rowKey="classId"
                   size="small"
                   rowSelection={true}
                   pagination={pagination}
@@ -452,7 +456,7 @@ export const YearClassList = (props) => {
                 />
               </div>
             ) : (
-              <EducationProgramDetails
+              <YearClassDetails
                 record={recordShowDetails}
                 back={() => {
                   setCurrentTitle("Danh Mục Chương Trình Đào Tạo");
@@ -461,7 +465,7 @@ export const YearClassList = (props) => {
                 }}
               />
             )}
-            <CreateEducationProgram
+            <CreateYearClass
               visible={showModalCreate}
               onOk={(values) => handleSubmitFormCreate(values)}
               onCancel={() => setShowModalCreate(false)}

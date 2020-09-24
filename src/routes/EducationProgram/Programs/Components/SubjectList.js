@@ -47,8 +47,7 @@ export const SubjectList = (props) => {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-  const onSelectChange = (selectedRowKeys) => {
-    console.log("selectedRowKeys changed: ", selectedRowKeys);
+  const onSelectChange = (selectedRowKeys) => { 
     setSelectedRowKeys(selectedRowKeys);
   };
 
@@ -89,8 +88,7 @@ export const SubjectList = (props) => {
     ],
   };
 
-  const handleSubmitFormCreate = (values) => {
-    console.log(values);
+  const handleSubmitFormCreate = (values) => { 
     setShowModalCreate(false);
     api
       .post("/subject/create", values, true)
@@ -131,8 +129,7 @@ export const SubjectList = (props) => {
     setRecordUpdate(defaultRecord);
   };
 
-  const handleDeleteRecord = (values) => {
-    console.log(values);
+  const handleDeleteRecord = (values) => { 
     var object = [];
     object.push(values);
     // let formData = new FormData();
@@ -163,8 +160,7 @@ export const SubjectList = (props) => {
       });
   };
 
-  const handleDeleteMultipleRecord = (values) => {
-    console.log(values);
+  const handleDeleteMultipleRecord = (values) => { 
     var object = [];
     values.map((item) => {
       object.push({ subjectId: item });
@@ -213,8 +209,7 @@ export const SubjectList = (props) => {
         });
         setPrerequisitesSubject(options);
       })
-      .catch((error) => {
-        console.log(error.message);
+      .catch((error) => { 
         if (error.message === "Forbidden") {
           NotificationManager.error(
             "Did you forget something? Please activate your account"
@@ -229,8 +224,7 @@ export const SubjectList = (props) => {
     setTimeout(() => {
       setLoading(false);
     }, 500);
-    return () => {
-      console.log("cc");
+    return () => { 
       setLoading(true);
     };
   }, [props.tabIsChange]);
@@ -305,8 +299,7 @@ export const SubjectList = (props) => {
         <Space size="middle">
           <Button
             type=""
-            onClick={() => {
-              console.log(record);
+            onClick={() => { 
               setRecordUpdate(record);
               setShowModalUpdate(true);
             }}

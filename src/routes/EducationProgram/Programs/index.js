@@ -34,12 +34,11 @@ export const ProgramsHome = (props) => {
   useEffect(() => {
     // get list branch
     api
-      .get("/branch/getAllBranch", true)
+      .get("/branches", true)
       .then((res) => {
         props.setListBranch(res);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((err) => { 
         if (error.message === "Forbidden") {
           NotificationManager.error(
             "Did you forget something? Please activate your account"
@@ -66,6 +65,9 @@ export const ProgramsHome = (props) => {
             <EducationProgramList />
           </TabPane>
           <TabPane tab="Học Phần" key="2">
+            <SubjectList tabIsChange={tabChange} />
+          </TabPane>
+          <TabPane tab="Phân Công Giảng Dạy" key="3">
             <SubjectList tabIsChange={tabChange} />
           </TabPane>
         </Tabs>

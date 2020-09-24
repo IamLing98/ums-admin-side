@@ -10,6 +10,7 @@ import {
   DeleteOutlined,
   DiffOutlined,
   SearchOutlined,
+  DownloadOutlined
 } from "@ant-design/icons";
 import { Table, Tag, Space, Button, Popconfirm, Alert, Input } from "antd";
 import { Row, Col } from "reactstrap";
@@ -56,8 +57,7 @@ const EducationProgramDetail = (props) => {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-  const onSelectChange = (selectedRowKeys) => {
-    console.log("selectedRowKeys changed: ", selectedRowKeys);
+  const onSelectChange = (selectedRowKeys) => { 
     setSelectedRowKeys(selectedRowKeys);
   };
 
@@ -98,8 +98,7 @@ const EducationProgramDetail = (props) => {
     ],
   };
 
-  const handleSubmitUpdateEducationProgramSubject = (values) => {
-    console.log(values);
+  const handleSubmitUpdateEducationProgramSubject = (values) => { 
     api
       .post("/education-program/updateSubject", values, true)
       .then((response) => {
@@ -136,8 +135,7 @@ const EducationProgramDetail = (props) => {
         });
         setOptionsToUpdateSubject(options);
       })
-      .catch((error) => {
-        console.log(error.message);
+      .catch((error) => { 
         if (error.message === "Forbidden") {
           NotificationManager.error(
             "Did you forget something? Please activate your account"
@@ -151,12 +149,10 @@ const EducationProgramDetail = (props) => {
   useEffect(() => {
     props.record !== null
       ? (props.record.subjectList = props.record.subjectList)
-      : (props.record.subjectList = []);
-    console.log("props. recored", props.record);
+      : (props.record.subjectList = []); 
     api
       .post("/education-program/getDetails", props.record, true)
-      .then((response) => {
-        console.log("response.subjectList", response.subjectList);
+      .then((response) => { 
         var total = 0;
         response.subjectList.map((item) => {
           let eachCredit = roughScale(item.subject.eachSubject, "10");
@@ -269,6 +265,14 @@ const EducationProgramDetail = (props) => {
           </Col>
           <Col md={6}>
             <div className="tableListOperator" style={{ textAlign: "right" }}>
+              <button
+                type="button"
+                className="ant-btn ant-btn-primary"
+               // onClick={() => setShowModalCreate(true)}
+              >
+                <DownloadOutlined />
+                <span>Import</span>
+              </button>
               <button
                 type="button"
                 className="ant-btn"

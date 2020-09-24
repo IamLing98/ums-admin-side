@@ -28,8 +28,7 @@ export const CreateEducationProgram = (props) => {
     formData.append("educationProgramStatus", "2");
     props.onOk(formData);
   };
-  useEffect(() => {
-    // console.log(props.educationProgram.listBranch)
+  useEffect(() => { 
   }, [JSON.stringify(props.visible)]);
 
   return (

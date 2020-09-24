@@ -300,8 +300,7 @@ export const UpdateSubject = (props) => {
                       >
                         <span
                           className="MuiIconButton-label"
-                          onClick={() => {
-                            console.log(selected);
+                          onClick={() => { 
                             const value = item.value;
                             var newSelected = selected.filter(function(
                               element

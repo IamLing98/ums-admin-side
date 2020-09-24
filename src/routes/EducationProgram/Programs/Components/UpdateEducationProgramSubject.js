@@ -167,8 +167,7 @@ const UpdateEducationProgramSubject = (props) => {
                       >
                         <span
                           className="MuiIconButton-label"
-                          onClick={() => {
-                            console.log(selected1);
+                          onClick={() => { 
                             const value = item.value;
                             var newSelected = selected1.filter(function(
                               element

@@ -57,8 +57,7 @@ export const EducationProgramList = (props) => {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-  const onSelectChange = (selectedRowKeys) => {
-    console.log("selectedRowKeys changed: ", selectedRowKeys);
+  const onSelectChange = (selectedRowKeys) => { 
     setSelectedRowKeys(selectedRowKeys);
   };
 
@@ -107,26 +106,13 @@ export const EducationProgramList = (props) => {
         NotificationManager.success("Tạo mới thành công");
         setRerender((value) => (value = !value));
       })
-      .catch(function(err) {
-        console.log(err.response.body.message);
+      .catch(function(err) { 
         if (err.response.body.message === "Đã tồn tại") {
           NotificationManager.error("Đã Tồn Tại !!!");
         } else if (error.message === "Unauthorized") {
           throw new SubmissionError({ _error: "Username or Password Invalid" });
         }
-      });
-    //   {
-    //   console.log(parseApiErrors(error));
-    //   NotificationManager.error("Không thành công" + error.message)
-    //   if (error.message === 'Đã tồn tại') {
-    //     console.log(error.message)
-    //     NotificationManager.error("Did you forget something? Please activate your account");
-    //   }
-    //   else if (error.message === 'Unauthorized') {
-    //     throw new SubmissionError({ _error: "Username or Password Invalid" });
-    //   }
-    // }
-    // );
+      }); 
   };
 
   const handleSubmitFormUpdate = (values) => {
@@ -152,8 +138,7 @@ export const EducationProgramList = (props) => {
 
   const handleDeleteRecord = (values) => {
     var object = [];
-    object.push(values);
-    console.log(values);
+    object.push(values); 
     // let formData = new FormData();
     // formData.append("educationProgramId", values.educationProgramId);
     // formData.append("educationProgramName", values.educationProgramName);
@@ -183,8 +168,7 @@ export const EducationProgramList = (props) => {
     var object = [];
     values.map((item) => {
       object.push({ educationProgramId: item });
-    });
-    console.log(values);
+    }); 
     // let formData = new FormData();
     // formData.append("educationProgramId", values.educationProgramId);
     // formData.append("educationProgramName", values.educationProgramName);
@@ -211,19 +195,17 @@ export const EducationProgramList = (props) => {
     setSelectedRowKeys([]);
   };
 
-  const handleChangeTable = (pagination) => {
-    console.log(pagination);
+  const handleChangeTable = (pagination) => { 
     setPagination(pagination);
   };
 
   useEffect(() => {
     api
-      .get("/education-program/getAllProgram", true)
+      .get("/education-programs", true)
       .then((response) => {
         setEducationProgramsList(response);
       })
-      .catch((error) => {
-        console.log(error.message);
+      .catch((error) => { 
         if (error.message === "Forbidden") {
           NotificationManager.error(
             "Did you forget something? Please activate your account"
@@ -273,11 +255,11 @@ export const EducationProgramList = (props) => {
       title: "Trình Độ Đào Tạo",
       dataIndex: "educationProgramLevel",
       render: (text) => {
-        if (text === "1") {
+        if (text === 1) {
           return <span>Đào Tạo Tiến Sỹ</span>;
-        } else if (text === "2") {
+        } else if (text === 2) {
           return <span>Đào Tạo Thạc Sỹ</span>;
-        } else if (text === "3") {
+        } else if (text === 3) {
           return <span>Đại học</span>;
         } else {
           return <span></span>;
@@ -297,19 +279,19 @@ export const EducationProgramList = (props) => {
       title: "Hình Thức Đào Tạo",
       dataIndex: "educationProgramType",
       render: (text) => {
-        if (text === "1") {
+        if (text === 1) {
           return <span>Đại học chính quy</span>;
-        } else if (text === "2") {
+        } else if (text === 2) {
           return <span>Đại học vừa làm vừa học </span>;
-        } else if (text === "3") {
+        } else if (text === 3) {
           return <span>Văn bằng 2</span>;
-        } else if (text === "4") {
+        } else if (text === 4) {
           return <span>L.thông từ Cao đẳng lên Đại học</span>;
-        } else if (text === "5") {
+        } else if (text === 5) {
           return <span>L.thông từ Trung cấp lên Đại học</span>;
-        } else if (text === "6") {
+        } else if (text === 6) {
           return <span>Liên kết đào tạo quốc tế</span>;
-        } else if (text === "7") {
+        } else if (text === 7) {
           return <span>Đại học từ xa</span>;
         }
       },
@@ -320,13 +302,13 @@ export const EducationProgramList = (props) => {
       render: (status) => {
         let color;
         let text = "";
-        if (status === "1") {
+        if (status === 1) {
           color = "geekblue";
           text = "Đang Triển Khai";
-        } else if (status === "2") {
+        } else if (status === 2) {
           color = "volcano";
           text = "Chờ Cập Nhật";
-        } else if (status === "3") {
+        } else if (status === 3) {
           color = "green";
           text = "Chờ Cập Nhật";
         }

@@ -1,50 +1,117 @@
 /**
  * Agency Menu
  */
-import React, { Component } from 'react';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import $ from 'jquery';
-import Drawer from '@material-ui/core/Drawer';
-import { withRouter } from 'react-router-dom';
+import React, { Component } from "react";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import $ from "jquery";
+import Drawer from "@material-ui/core/Drawer";
+import { withRouter } from "react-router-dom";
 
-import navLinks from './NavLinks';
-import NavMenuItem from './NavMenuItem';
-import Sidebar from 'Components/Sidebar';
+import navLinks from "./NavLinks";
+import NavMenuItem from "./NavMenuItem";
+import Sidebar from "Components/Sidebar";
 
 //Component
-import SearchForm from 'Components/Header/SearchForm';
-import MobileSearchForm from 'Components/Header/MobileSearchForm';
+import SearchForm from "Components/Header/SearchForm";
+import MobileSearchForm from "Components/Header/MobileSearchForm";
 
 class AgencyMenu extends Component {
+  state = {
+    isMobileSearchFormVisible: false,
+    mobileMenu: false,
+  };
 
-   state = {
-      isMobileSearchFormVisible: false,
-      mobileMenu: false
-   }
-
-   componentDidMount() {
-      $('.agency-menu .nav > .nav-item').children().click(function (e) {
-         $(this).parent().addClass('nav-item-active');
-         if ($('.agency-menu .nav > .nav-item').hasClass('nav-item-active')) {
-            $('.agency-menu .nav > .nav-item').removeClass('nav-item-active');
-            $(this).parent().addClass('nav-item-active');
-         }
+  componentDidMount() {
+    $(".agency-menu .nav > .nav-item")
+      .children()
+      .click(function(e) {
+        $(this)
+          .parent()
+          .addClass("nav-item-active");
+        if ($(".agency-menu .nav > .nav-item").hasClass("nav-item-active")) {
+          $(".agency-menu .nav > .nav-item").removeClass("nav-item-active");
+          $(this)
+            .parent()
+            .addClass("nav-item-active");
+        }
       });
-      $('.agency-menu .nav .nav-item .active').parents('.agency-menu .nav > .nav-item').addClass('nav-item-active');
-   }
+    $(".agency-menu .nav .nav-item .active")
+      .parents(".agency-menu .nav > .nav-item")
+      .addClass("nav-item-active");
+  }
 
-   // mobile search form
-   openMobileSearchForm() {
-      this.setState({ isMobileSearchFormVisible: true });
-   }
+  // mobile search form
+  openMobileSearchForm() {
+    this.setState({ isMobileSearchFormVisible: true });
+  }
 
-   render() {
-      const { isMobileSearchFormVisible, mobileMenu } = this.state;
-      return (
-         <div className="horizontal-menu agency-menu justify-content-between align-items-center">
-            <ul className="list-unstyled nav">
-               <li className="nav-item">
+  render() {
+    const { isMobileSearchFormVisible, mobileMenu } = this.state;
+    return (
+      <div className="horizontal-menu agency-menu justify-content-between align-items-center">
+        <ul className="list-unstyled nav">
+          <li className="nav-item">
+            <a href="javascript:void(0);" className="nav-link">
+              <i className="zmdi zmdi-view-dashboard"></i>
+              <span className="menu-title">
+                <span>
+                  <a>Trang Chủ</a>
+                </span>
+              </span>
+            </a>
+          </li>
+          <li className="nav-item">
+            <a href="javascript:void(0);" className="nav-link">
+              <i className="zmdi zmdi-view-dashboard"></i>
+              <span className="menu-title">
+                <span>
+                  <a>Đăng Ký Học Phần</a>
+                </span>
+              </span>
+            </a>
+          </li>
+          <li className="nav-item">
+            <a href="javascript:void(0);" className="nav-link">
+              <i className="zmdi zmdi-view-dashboard"></i>
+              <span className="menu-title">
+                <span>
+                  <a>Thời Khoá Biểu</a>
+                </span>
+              </span>
+            </a>
+          </li>
+          <li className="nav-item">
+            <a href="javascript:void(0);" className="nav-link">
+              <i className="zmdi zmdi-view-dashboard"></i>
+              <span className="menu-title">
+                <span>
+                  <a>Xin Giấy Xác Nhận</a>
+                </span>
+              </span>
+            </a>
+          </li>
+          <li className="nav-item">
+            <a href="javascript:void(0);" className="nav-link">
+              <i className="zmdi zmdi-view-dashboard"></i>
+              <span className="menu-title">
+                <span>
+                  <a>Góp Ý Kiến</a>
+                </span>
+              </span>
+            </a>
+          </li>
+          <li className="nav-item">
+            <a href="javascript:void(0);" className="nav-link">
+              <i className="zmdi zmdi-view-dashboard"></i>
+              <span className="menu-title">
+                <span>
+                  <a>Hỏi Đáp</a>
+                </span>
+              </span>
+            </a>
+          </li>
+          {/* <li className="nav-item">
                   <a href="javascript:void(0);" className="nav-link">
                      <i className="zmdi zmdi-view-dashboard"></i>
                      <span className="menu-title"><span>Chung</span></span>
@@ -58,26 +125,38 @@ class AgencyMenu extends Component {
                         />
                      ))}
                   </ul>
-               </li>
-            </ul>
-            <IconButton className="hamburger-icon" color="inherit" aria-label="Menu" onClick={() => this.setState({ mobileMenu: true })}>
-               <MenuIcon />
-            </IconButton>
-            <div className="search-icon">
-               <SearchForm />
-               <IconButton mini="true" className="search-icon-btn" onClick={() => this.openMobileSearchForm()}>
-                  <i className="zmdi zmdi-search"></i>
-               </IconButton>
-               <MobileSearchForm
-                  isOpen={isMobileSearchFormVisible}
-                  onClose={() => this.setState({ isMobileSearchFormVisible: false })}
-               />
-               <Drawer open={mobileMenu} onClose={() => this.setState({ mobileMenu: false })}>
-                  <Sidebar agencySidebar />
-               </Drawer>
-            </div>
-         </div>
-      );
-   }
+               </li> */}
+        </ul>
+        <IconButton
+          className="hamburger-icon"
+          color="inherit"
+          aria-label="Menu"
+          onClick={() => this.setState({ mobileMenu: true })}
+        >
+          <MenuIcon />
+        </IconButton>
+        <div className="search-icon">
+          <SearchForm />
+          <IconButton
+            mini="true"
+            className="search-icon-btn"
+            onClick={() => this.openMobileSearchForm()}
+          >
+            <i className="zmdi zmdi-search"></i>
+          </IconButton>
+          <MobileSearchForm
+            isOpen={isMobileSearchFormVisible}
+            onClose={() => this.setState({ isMobileSearchFormVisible: false })}
+          />
+          <Drawer
+            open={mobileMenu}
+            onClose={() => this.setState({ mobileMenu: false })}
+          >
+            <Sidebar agencySidebar />
+          </Drawer>
+        </div>
+      </div>
+    );
+  }
 }
 export default withRouter(AgencyMenu);

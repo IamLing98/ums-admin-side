@@ -1,95 +1,122 @@
 /**
  * App.js Layout Start Here
  */
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import {Redirect, Route, Switch} from 'react-router-dom';
-import { NotificationContainer } from 'react-notifications';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Redirect, Route, Switch } from "react-router-dom";
+import { NotificationContainer } from "react-notifications";
 
+import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 // rct theme provider
-import RctThemeProvider from './RctThemeProvider';
+import RctThemeProvider from "./RctThemeProvider";
 
 //Main App
-import RctDefaultLayout from './DefaultLayout';
-
+import RctDefaultLayout from "./DefaultLayout";
+import { collapsedSidebarAction, fetchUserDetails } from "Actions";
 import RctHorizontalLayout from "./RctHorizontalLayout";
-
 import {
-    AsyncAdminLoginComponent, AsyncForgotPassComponent,
-    AsyncSessionPage404Component,
-    AsyncSessionPage500Component
+  AsyncAdminLoginComponent,
+  AsyncForgotPassComponent,
+  AsyncSessionPage404Component,
+  AsyncSessionPage500Component,
 } from "Components/AsyncComponent/AsyncComponent";
-import {api} from "Api";
-import {userLoginSuccess} from "Actions";
+import { api } from "Api";
+import { userLoginSuccess } from "Actions";
+import AgencyLayout from "./AgencyLayout";
+
 /**
  * Initial Path To Check Whether User Is Logged In Or Not
  */
-const InitialPath = ({ component: Component,authToken,...rest }) =>{
-    return(   <Route
-       {...rest}
-       render={props =>
-           authToken
-               ? <Component {...props}/>
-               : <Redirect
-                   to={{
-                       pathname: '/login',
-                       state: { from: props.location }
-                   }}
-               />}
-   />);
+const InitialPath = ({ component: Component, authToken, ...rest }) => {
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        authToken ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: props.location },
+            }}
+          />
+        )
+      }
+    />
+  );
 };
 
-
 class App extends Component {
-    constructor(props){
-        super(props);
-        const tokenJwt = localStorage.getItem('jwtToken');
-        if(tokenJwt){
-            api.setToken(tokenJwt);
-        }
+  constructor(props) {
+    super(props);
+    const tokenJwt = localStorage.getItem("jwtToken");
+    if (tokenJwt) {
+      api.setToken(tokenJwt);
+      const username = localStorage.getItem("username");
+      this.props.fetchUserDetails(username);
     }
+  }
+  componentDidMount() {}
 
+  render() {
+    const { location, match, token, userData } = this.props;
+    console.log(userData);
+    if (location.pathname === "/") {
+      if (token === null) {
+        return <Redirect to={"/login"} />;
+      } else {
+        return <Redirect to={"/app/class/class-list"} />;
+      }
+    }
+    return (
+      <RctThemeProvider>
+        <NotificationContainer />
+        {userData !== null ? (
+          userData.roles[0].roleName === "PDT" ? (
+            <InitialPath
+              path={`${match.url}app`}
+              authToken={token}
+              // component={
+              //   AgencyLayout
+              // }
+              component={RctDefaultLayout}
+            />
+          ) : (
+            <InitialPath
+              path={`${match.url}app`}
+              authToken={token}
+              // component={
+              //   AgencyLayout
+              // }
+              component={AgencyLayout}
+            />
+          )
+        ) : (
+          <RctPageLoader/>
+        )}
 
-   render() {
-      const { location,match,token } = this.props;
-       if (location.pathname === '/') {
-           if(token === null){
-              return (<Redirect to={'/login'}/>);
-           } else {
-              return (<Redirect to={'/app/dashboard/home'}/>)
-           }
-       }
-      return (
-         <RctThemeProvider>
-            <NotificationContainer />
-             <InitialPath
-                 path={`${match.url}app`}
-                 authToken = {token}
-                 component={RctDefaultLayout}
-             />
-
-             <Switch>
-
-                 <Route exact path="/login" component={AsyncAdminLoginComponent}/>
-                 <Route path="/session/404" component={AsyncSessionPage404Component} />
-                 <Route path="/session/500" component={AsyncSessionPage500Component} />
-                 <Route path="/forgot-password" component={AsyncForgotPassComponent}/>
-                 <Route path="*" component={AsyncSessionPage404Component}/>
-
-             </Switch>
-         </RctThemeProvider>
-
-      );
-   }
+        <Switch>
+          <Route exact path="/login" component={AsyncAdminLoginComponent} />
+          <Route path="/session/404" component={AsyncSessionPage404Component} />
+          <Route path="/session/500" component={AsyncSessionPage500Component} />
+          <Route path="/forgot-password" component={AsyncForgotPassComponent} />
+          <Route path="*" component={AsyncSessionPage404Component} />
+        </Switch>
+      </RctThemeProvider>
+    );
+  }
 }
 
 // map state to props
-const mapStateToProps = state =>({
-    ...state.auth
+const mapStateToProps = (state) => ({
+  ...state.auth,
 });
 
-
-
-export default connect(mapStateToProps,{
-    userLoginSuccess
-})(App);
+export default connect(
+  mapStateToProps,
+  {
+    userLoginSuccess,
+    fetchUserDetails,
+  }
+)(App);

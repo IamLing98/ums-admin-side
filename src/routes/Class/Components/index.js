@@ -10,10 +10,8 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { NotificationManager } from "react-notifications";
 import { connect } from "react-redux";
-import { Sticky, StickyContainer } from "react-sticky";
-import StudentList from "Routes/Class/Components/StudentList";
+import { Sticky, StickyContainer } from "react-sticky"; 
 import YearClassList from "Routes/Class/Components/YearClassList";
-
 const { TabPane } = Tabs;
 
 const renderTabBar = (props, DefaultTabBar) => (
@@ -39,7 +37,6 @@ export const ClassHome = (props) => {
         props.getDepartmentList(res);
       })
       .catch((err) => {
-        console.log(err);
         if (error.message === "Forbidden") {
           NotificationManager.error(
             "Did you forget something? Please activate your account"
@@ -56,20 +53,7 @@ export const ClassHome = (props) => {
         <title>Danh Sách Lớp</title>
         <meta name="description" content="User Profile" />
       </Helmet>
-      <StickyContainer>
-        <Tabs
-          defaultActiveKey="2"
-          renderTabBar={renderTabBar}
-          onChange={() => setChangeTab((value) => (value = !value))}
-        >
-          <TabPane tab="Danh Sách Tổng Hợp" key="2">
-            <StudentList tabIsChange={tabChange} />
-          </TabPane>
-          <TabPane tab="Danh Sách Lớp Sinh Viên" tabIsChange={tabChange} key="1">
-            <YearClassList />
-          </TabPane>
-        </Tabs>
-      </StickyContainer>
+      <YearClassList />
     </div>
   );
 };

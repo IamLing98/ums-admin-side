@@ -17,8 +17,7 @@ export default class AdminHome extends Component {
 
 
 
-   render() {
-       console.log("render")
+   render() { 
       const { match } = this.props;
 
       return (

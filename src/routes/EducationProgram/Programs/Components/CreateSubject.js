@@ -45,8 +45,7 @@ export const CreateSubject = (props) => {
     formData.append("subjectForLevel", subjectForLevel);
     props.onOk(formData);
   };
-  useEffect(() => {
-    // console.log(props.educationProgram.listBranch)
+  useEffect(() => { 
   }, [JSON.stringify(props.visible)]);
 
   return (
@@ -290,8 +289,7 @@ export const CreateSubject = (props) => {
                       >
                         <span
                           className="MuiIconButton-label"
-                          onClick={() => {
-                            console.log(selected);
+                          onClick={() => { 
                             const value = item.value;
                             var newSelected = selected.filter(function(
                               element
