@@ -9,12 +9,8 @@ import sidebarReducer from './SidebarReducer';
 import authUserReducer from './AuthUserReducer';
 import addUserReducer from './AddUserReducer';
 import feedbacksReducer from './FeedbacksReducer';
-import ecommerceReducer from './EcommerceReducer';
 import {reducer as formReducer} from 'redux-form'
 import {routerReducer} from 'react-router-redux'
-import createTask from './CreateTaskReducer'
-import formBuilderReducer from './UploadFormBuilder'
-import assignTaskReducer from './AssignTaskReducer';
 import UpdateUserReducer from './UpdateUserReducer';
 import EducationProgramReducer from './EducationProgramReducer';
 import DepartmentReducer from './DepartmentReducer';
@@ -34,12 +30,8 @@ const reducers = combineReducers({
   emailApp: emailAppReducer,
   sidebar: sidebarReducer,
   feedback: feedbacksReducer,
-  ecommerce: ecommerceReducer,
   auth: authUserReducer,
   addUser: addUserReducer,
-  formBuilderRed : formBuilderReducer,
-  createTaskReducer:createTask,
-  assignTask:assignTaskReducer,
   updateUserRed:UpdateUserReducer,
   educationProgram:EducationProgramReducer,
   departmentReducer: DepartmentReducer,
@@ -68,16 +60,6 @@ const reducers = combineReducers({
           return state;
       }
     },
-    createTaskForm: (state,action) =>{
-      switch (action.type) {
-        case CREATE_TASK_CATEGORY_SUCCESS:
-          return undefined;
-        case CREATE_TASK_SUCCESS:
-          return undefined;
-        default:
-          return state;
-      }
-    }
   }),
   router: routerReducer
 });

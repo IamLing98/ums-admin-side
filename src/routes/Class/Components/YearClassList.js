@@ -110,17 +110,7 @@ export const YearClassList = (props) => {
         } else if (error.message === "Unauthorized") {
           throw new SubmissionError({ _error: "Username or Password Invalid" });
         }
-      });
-    //   {
-    //   NotificationManager.error("Không thành công" + error.message)
-    //   if (error.message === 'Đã tồn tại') {
-    //     NotificationManager.error("Did you forget something? Please activate your account");
-    //   }
-    //   else if (error.message === 'Unauthorized') {
-    //     throw new SubmissionError({ _error: "Username or Password Invalid" });
-    //   }
-    // }
-    // );
+      }); 
   };
 
   const handleSubmitFormUpdate = (values) => {
@@ -146,14 +136,7 @@ export const YearClassList = (props) => {
 
   const handleDeleteRecord = (values) => {
     var object = [];
-    object.push(values);
-    // let formData = new FormData();
-    // formData.append("educationProgramId", values.educationProgramId);
-    // formData.append("educationProgramName", values.educationProgramName);
-    // formData.append("branchId", values.branchId);
-    // formData.append("educationProgramLevel", values.educationProgramLevel);
-    // formData.append("educationProgramType", values.educationProgramType);
-    // formData.append("educationProgramStatus", "2");
+    object.push(values); 
     api
       .post("/education-program/delete", object, true)
       .then((response) => {
@@ -176,14 +159,7 @@ export const YearClassList = (props) => {
     var object = [];
     values.map((item) => {
       object.push({ educationProgramId: item });
-    });
-    // let formData = new FormData();
-    // formData.append("educationProgramId", values.educationProgramId);
-    // formData.append("educationProgramName", values.educationProgramName);
-    // formData.append("branchId", values.branchId);
-    // formData.append("educationProgramLevel", values.educationProgramLevel);
-    // formData.append("educationProgramType", values.educationProgramType);
-    // formData.append("educationProgramStatus", "2");
+    }); 
     api
       .post("/education-program/delete", object, true)
       .then((response) => {
@@ -367,12 +343,7 @@ export const YearClassList = (props) => {
       <div className="rct-block ">
         <div className="rct-block-title ">
           <h4>{currentTitle}</h4>
-          <div className="contextual-link" style={{ top: "15px" }}></div>
-          {/* <div>
-            {
-              showDetails === true ? <h4>{"CTĐT: " + recordShowDetails.educationProgramName}</h4> : ""
-            }
-          </div> */}
+          <div className="contextual-link" style={{ top: "15px" }}></div> 
         </div>
         <div className="collapse show">
           <div className="rct-full-block">

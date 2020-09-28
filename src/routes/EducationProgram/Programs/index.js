@@ -16,18 +16,6 @@ import { NotificationManager } from "react-notifications";
 
 const { TabPane } = Tabs;
 
-const renderTabBar = (props, DefaultTabBar) => (
-  <Sticky bottomOffset={80}>
-    {({ style }) => (
-      <DefaultTabBar
-        {...props}
-        className="site-custom-tab-bar"
-        style={{ ...style }}
-      />
-    )}
-  </Sticky>
-);
-
 export const ProgramsHome = (props) => {
   const [tabChange, setChangeTab] = useState(false);
 
@@ -55,10 +43,11 @@ export const ProgramsHome = (props) => {
         <title>Chương Trình Đào Tạo</title>
         <meta name="description" content="User Profile" />
       </Helmet>
-      <StickyContainer>
-        <Tabs
-          defaultActiveKey="1"
-          renderTabBar={renderTabBar}
+ 
+      <Tabs
+          onChange={() => {}}
+          type="card"
+          animated={{ inkBar: true, tabPane: false }}
           onChange={() => setChangeTab((value) => (value = !value))}
         >
           <TabPane tab="Ngành/Chuyên Ngành" key="1">
@@ -66,12 +55,8 @@ export const ProgramsHome = (props) => {
           </TabPane>
           <TabPane tab="Học Phần" key="2">
             <SubjectList tabIsChange={tabChange} />
-          </TabPane>
-          <TabPane tab="Phân Công Giảng Dạy" key="3">
-            <SubjectList tabIsChange={tabChange} />
-          </TabPane>
+          </TabPane> 
         </Tabs>
-      </StickyContainer>
     </div>
   );
 };

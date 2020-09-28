@@ -410,10 +410,7 @@ export const SubjectList = (props) => {
                 columns={columns}
                 dataSource={subjectList}
                 rowKey="subjectId"
-                bordered
-                scroll={{
-                  y: "600px",
-                }}
+                bordered 
                 pagination={{ pageSize: 10 }}
                 size="small"
                 rowSelection={true}

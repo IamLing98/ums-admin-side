@@ -71,12 +71,12 @@ const UpdateEducationProgramSubject = (props) => {
     props.selectedSubjectList.map((item) => {
       let subject = {
         transactionType: item.transactionType,
-        value: item.subject.subjectId,
-        label: item.subject.subjectName,
+        value: item.subjectId,
+        label: item.subjectName,
         ...item.subject,
       };
-      if (item.transactionType === "1") selected1.push(subject);
-      if (item.transactionType === "2") selected2.push(subject);
+      if (item.transactionType === 1) selected1.push(subject);
+      if (item.transactionType === 2) selected2.push(subject);
     });
     setSelected1(selected1);
     setSelected2(selected2);

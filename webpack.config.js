@@ -72,10 +72,18 @@ module.exports = {
             Constants: path.resolve(__dirname, 'src/constants/'),
             Helpers: path.resolve(__dirname, 'src/helpers/'),
             Api: path.resolve(__dirname, 'src/api/')
-        }
+        },
+        extensions: [ '.tsx', '.ts', '.js','jsx' ],
     },
     module: {
         rules: [
+            {
+                test: /\.(ts|tsx)$/,
+                use: {
+                    loader: "ts-loader",
+                },
+                exclude: /node_modules/
+            },
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,

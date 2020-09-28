@@ -7,8 +7,7 @@ import {
  } from '../actions/EducationProgramActions'; 
  
  const INITIAL_STATE = {
-    listBranch: [],
-
+    listBranch: [], 
  }
  
  export default (state = INITIAL_STATE, action) => {

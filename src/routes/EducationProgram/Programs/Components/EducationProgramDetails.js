@@ -10,11 +10,25 @@ import {
   DeleteOutlined,
   DiffOutlined,
   SearchOutlined,
-  DownloadOutlined
+  DownloadOutlined,
 } from "@ant-design/icons";
-import { Table, Tag, Space, Button, Popconfirm, Alert, Input } from "antd";
+import {
+  Table,
+  Tag,
+  Space,
+  Button,
+  Popconfirm,
+  Alert,
+  Input,
+  Tabs,
+} from "antd";
 import { Row, Col } from "reactstrap";
 import UpdateEducationProgramSubject from "Routes/EducationProgram/Programs/Components/UpdateEducationProgramSubject";
+import SubjectList from "Routes/EducationProgram/Programs/Components/EducationProgramDetailsComponents/SubjectList";
+import TermSchedule from "Routes/EducationProgram/Programs/Components/EducationProgramDetailsComponents/TermSchedule";
+import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
+
+const { TabPane } = Tabs;
 
 const defaultRecord = {
   branchId: "",
@@ -26,16 +40,10 @@ const defaultRecord = {
   educationProgramType: "",
 };
 
-function roughScale(x, base) {
-  const parsed = parseInt(x, base);
-  if (isNaN(parsed)) {
-    return 0;
-  }
-  return parsed;
-}
-
 const EducationProgramDetail = (props) => {
   const [subjectList, setSubjectList] = useState([]);
+
+  const [detail, setDetail] = useState(null);
 
   const [toUpdateSubject, setToUpdateSubject] = useState(false);
 
@@ -57,7 +65,9 @@ const EducationProgramDetail = (props) => {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-  const onSelectChange = (selectedRowKeys) => { 
+  const [loading, setLoading] = useState(true);
+
+  const onSelectChange = (selectedRowKeys) => {
     setSelectedRowKeys(selectedRowKeys);
   };
 
@@ -98,7 +108,7 @@ const EducationProgramDetail = (props) => {
     ],
   };
 
-  const handleSubmitUpdateEducationProgramSubject = (values) => { 
+  const handleSubmitUpdateEducationProgramSubject = (values) => {
     api
       .post("/education-program/updateSubject", values, true)
       .then((response) => {
@@ -135,7 +145,7 @@ const EducationProgramDetail = (props) => {
         });
         setOptionsToUpdateSubject(options);
       })
-      .catch((error) => { 
+      .catch((error) => {
         if (error.message === "Forbidden") {
           NotificationManager.error(
             "Did you forget something? Please activate your account"
@@ -149,19 +159,25 @@ const EducationProgramDetail = (props) => {
   useEffect(() => {
     props.record !== null
       ? (props.record.subjectList = props.record.subjectList)
-      : (props.record.subjectList = []); 
+      : (props.record.subjectList = []);
     api
-      .post("/education-program/getDetails", props.record, true)
-      .then((response) => { 
+      .get(
+        "/education-program/details?educationProgramId=" +
+          props.record.educationProgramId,
+        true
+      )
+      .then((response) => {
+        setDetail(response); 
         var total = 0;
-        response.subjectList.map((item) => {
-          let eachCredit = roughScale(item.subject.eachSubject, "10");
-          total += eachCredit;
-        });
+        total = response.subjectList.reduce(function(a, b) {
+          return a + b;
+        }, 0);
         setTotalCredit(total);
         setSubjectList(response.subjectList);
+        setLoading(false);
       })
       .catch((error) => {
+        console.log("loi");
         if (error.message === "Forbidden") {
           NotificationManager.error(
             "Did you forget something? Please activate your account"
@@ -175,16 +191,16 @@ const EducationProgramDetail = (props) => {
   const columns = [
     {
       title: "Mã Học Phần ",
-      render: (text, record) => <a>{record.subject.subjectId}</a>,
+      render: (text, record) => <a>{record.subjectId}</a>,
     },
     {
       title: "Tên Học Phần ",
-      render: (text, record) => <a>{record.subject.subjectName}</a>,
+      render: (text, record) => <a>{record.subjectName}</a>,
       width: "20%",
     },
     {
       title: "Số Tín Chỉ",
-      render: (text, record) => <a>{record.subject.eachSubject}</a>,
+      render: (text, record) => <a>{record.eachSubject}</a>,
     },
     {
       title: "Tự Chọn",
@@ -197,11 +213,11 @@ const EducationProgramDetail = (props) => {
     },
     {
       title: "Học Phần Học Trước",
-      render: (text, record) => <a>{record.subject.subjectId}</a>,
+      render: (text, record) => <a>{record.subjectId}</a>,
     },
     {
       title: "Song Hành Với Học Phần",
-      render: (text, record) => <a>{record.subject.subjectId}</a>,
+      render: (text, record) => <a>{record.subjectId}</a>,
     },
     {
       title: "Thao Tác",
@@ -234,108 +250,35 @@ const EducationProgramDetail = (props) => {
     },
   ];
 
-  return (
-    <>
-      <hr style={{ margin: "0px" }} />
-      <div className="table-responsive">
-        <Row>
-          <Col
-            md={6}
-            sm={12}
-            style={{ display: "flex", flexDirection: "column" }}
+  if (loading === true) {
+    return <RctPageLoader />;
+  } else
+    return (
+      <>
+        <hr style={{ margin: "0px" }} />
+        <div className="table-responsive">
+          <Tabs
+            onChange={() => {}}
+            type="card"
+            animated={{ inkBar: true, tabPane: false }}
           >
-            <Row>
-              <Col md={4}>
-                <Input placeholder="Mã Học Phần..." size="middle" />
-              </Col>
-              <Col md={4}>
-                <Input placeholder="Tên Học Phần..." size="middle" />
-              </Col>
-              <Col md={4} style={{ display: "block", flexDirection: "column" }}>
-                <button
-                  type="button"
-                  className="ant-btn ant-btn-primary"
-                  onClick={() => {}}
-                >
-                  <SearchOutlined />
-                  <span>Tìm Kiếm</span>
-                </button>
-              </Col>
-            </Row>
-          </Col>
-          <Col md={6}>
-            <div className="tableListOperator" style={{ textAlign: "right" }}>
-              <button
-                type="button"
-                className="ant-btn ant-btn-primary"
-               // onClick={() => setShowModalCreate(true)}
-              >
-                <DownloadOutlined />
-                <span>Import</span>
-              </button>
-              <button
-                type="button"
-                className="ant-btn"
-                onClick={() => {
-                  setToUpdateSubject(true);
-                  setRecordUpdateSubject(props.record);
-                }}
-              >
-                <EditFilled />
-                <span>Cập Nhật</span>
-              </button>
-              <button
-                type="button"
-                className="ant-btn ant-btn-danger"
-                disabled={selectedRowKeys.length !== 0 ? false : true}
-              >
-                <DeleteOutlined />
-                <span>Xoá Nhiều</span>
-              </button>
-              <a
-                href="https://demo.doublechaintech.com/freshchain/platformManager/exportExcelFromList/P000001/productList/"
-                className="ant-btn"
-              >
-                <DiffOutlined />
-                <span>In Exel</span>
-              </a>
-            </div>
-          </Col>
-        </Row>
-
-        <Alert
-          message={`Chương Trình Đạo Tạo: ${props.record.educationProgramName}. Tổng số học phần: ${subjectList.length}. Tổng số tín chỉ: ${totalCredit} `}
-          type="info"
-          showIcon
-          style={{ marginBottom: "15px" }}
-        />
-        <Table
-          columns={columns}
-          dataSource={subjectList}
-          rowKey="id"
-          bordered
-          scroll={{
-            y: "400px",
-          }}
-          pagination={{ pageSize: 10 }}
-          size="small"
-          rowSelection={true}
-          rowSelection={rowSelection}
-        />
-      </div>
-      <UpdateEducationProgramSubject
-        visible={toUpdateSubject}
-        record={recordUpdateSubject}
-        options={optionsToUpdateSubject}
-        selectedSubjectList={subjectList}
-        back={() => {
-          setToUpdateSubject(false);
-          setRecordUpdateSubject(defaultRecord);
-        }}
-        onOk={(values) => handleSubmitUpdateEducationProgramSubject(values)}
-      />
-    </>
-  );
+            <TabPane tab="Danh Sách Học Phần" key="1">
+              {" "}
+              <SubjectList
+                record={props.record}
+                subjectList={subjectList}
+                optionsToUpdateSubject={optionsToUpdateSubject}
+                detail={detail}
+              />
+            </TabPane>
+            <TabPane tab="Phân Phối Chương Trình" key="2">
+              {" "}
+              <TermSchedule detail={detail} />
+            </TabPane>
+          </Tabs>
+        </div>
+      </>
+    );
 };
 
 export default EducationProgramDetail;

@@ -24,7 +24,14 @@ export default {
       new_item: false,
       type_multi: null,
       base_path: "/education-program",
-      child_routes: [
+      child_routes: [ 
+        {
+          menu_icon: "zmdi zmdi-collection-text",
+          isActive: false,
+          menu_title: "C.Trình Đào Tạo",
+          new_item: false,
+          path: "/app/education-program/programs",
+        },
         {
           menu_icon: "zmdi zmdi-group",
           isActive: false,
@@ -47,16 +54,9 @@ export default {
           path: "/app/teachers/teachers",
         },
         {
-          menu_icon: "zmdi zmdi-collection-text",
-          isActive: false,
-          menu_title: "C.Trình Đào Tạo",
-          new_item: false,
-          path: "/app/education-program/programs",
-        },
-        {
           menu_icon: "zmdi zmdi-border-all",
           isActive: false,
-          menu_title: "Kế Hoạch Giảng Dạy",
+          menu_title: "Giảng Dạy",
           new_item: false,
           path: "/education-program/module",
         },

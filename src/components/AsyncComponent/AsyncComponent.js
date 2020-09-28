@@ -65,10 +65,6 @@ const AsyncSessionPage500Component = Loadable({
    loading: () => <RctPageLoader />
 });
 
-const AsyncFormBuilderComponent = Loadable({
-   loader: () => import('Routes/form-builder/builder'),
-   loading: () => <RctPageLoader />
-});
 //forgot pass
 const AsyncForgotPassComponent = Loadable({
    loader: () => import('Routes/session/forgot-password'),
@@ -91,7 +87,6 @@ export {
    
    AsyncForgotPassComponent,
    AsyncHomeDashboardComponent,
-   AsyncFormBuilderComponent,
    AsyncAdminLoginComponent,
    AsyncSessionPage404Component,
    AsyncSessionPage500Component,

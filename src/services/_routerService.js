@@ -1,6 +1,5 @@
 
 import Dashboard from 'Routes/dashboard';
-import FormBuilder from "Routes/form-builder";
 import EducationProgram from "Routes/EducationProgram"
 import Students from "Routes/Student";
 import Class from "Routes/Class";
@@ -28,8 +27,4 @@ export default [
       path:'teachers',
       component:Teachers
    },
-   {
-      path: 'form-builder',
-      component: FormBuilder
-   }
 ]
