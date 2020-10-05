@@ -14,18 +14,14 @@ import {
 } from "@ant-design/icons";
 import {
   Table,
-  Tag,
   Space,
   Button,
   Popconfirm,
-  Alert,
-  Input,
-  Result,
 } from "antd";
 import { Row, Col } from "reactstrap";
-import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import UpdateEducationProgramSubject from "Routes/EducationProgram/Programs/UpdateEducationProgramSubject";
-import TermSchedule from "Routes/Class/Components/YearClassDetailsComponents/EducationProgramDetailsComponents/TermSchedule";
+import SubjectList from "Routes/EducationProgram/Programs/Components/SubjectList"; 
+import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 
 const defaultRecord = {
   branchId: "",
@@ -37,18 +33,10 @@ const defaultRecord = {
   educationProgramType: "",
 };
 
-function roughScale(x, base) {
-  const parsed = parseInt(x, base);
-  if (isNaN(parsed)) {
-    return 0;
-  }
-  return parsed;
-}
-
 const EducationProgramDetail = (props) => {
-  const [educationProgram, setEducationPorgram] = useState(
-    props.educationProgram
-  );
+  const [subjectList, setSubjectList] = useState([]);
+
+  const [detail, setDetail] = useState(null);
 
   const [toUpdateSubject, setToUpdateSubject] = useState(false);
 
@@ -68,9 +56,9 @@ const EducationProgramDetail = (props) => {
 
   const [render, setRerender] = useState(false);
 
-  const [loading, setLoading] = useState(true);
-
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  const [loading, setLoading] = useState(true);
 
   const onSelectChange = (selectedRowKeys) => {
     setSelectedRowKeys(selectedRowKeys);
@@ -136,6 +124,63 @@ const EducationProgramDetail = (props) => {
       });
   };
 
+  useEffect(() => {
+    api
+      .get("/subject/getAll", true)
+      .then((response) => {
+        var options = [];
+        response.map((item) => {
+          var option = {
+            value: item.subjectId,
+            label: item.subjectName,
+          };
+          options.push(option);
+        });
+        setOptionsToUpdateSubject(options);
+      })
+      .catch((error) => {
+        if (error.message === "Forbidden") {
+          NotificationManager.error(
+            "Did you forget something? Please activate your account"
+          );
+        } else if (error.message === "Unauthorized") {
+          throw new SubmissionError({ _error: "Username or Password Invalid" });
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    props.record !== null
+      ? (props.record.subjectList = props.record.subjectList)
+      : (props.record.subjectList = []);
+    api
+      .get(
+        "/education-program/details?educationProgramId=" +
+          props.record.educationProgramId,
+        true
+      )
+      .then((response) => {
+        setDetail(response);
+        var total = 0;
+        total = response.subjectList.reduce(function(a, b) {
+          return a + b;
+        }, 0);
+        setTotalCredit(total);
+        setSubjectList(response.subjectList);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log("loi");
+        if (error.message === "Forbidden") {
+          NotificationManager.error(
+            "Did you forget something? Please activate your account"
+          );
+        } else if (error.message === "Unauthorized") {
+          throw new SubmissionError({ _error: "Username or Password Invalid" });
+        }
+      });
+  }, [render]);
+
   const columns = [
     {
       title: "Mã Học Phần ",
@@ -198,21 +243,22 @@ const EducationProgramDetail = (props) => {
     },
   ];
 
-  if (props.detail === null || props.detail === undefined) {
+  if (loading === true) {
+    return <RctPageLoader />;
+  } else
     return (
-      <Result
-        status="404"
-        title="404"
-        subTitle="Chưa cập nhật chương trình đào tạo của lớp này."
-        extra={<Button type="primary">Cập nhật</Button>}
-      />
+      <>
+        <hr style={{ margin: "0px" }} />
+        <div className="table-responsive">
+          <SubjectList
+            record={props.record}
+            subjectList={subjectList}
+            optionsToUpdateSubject={optionsToUpdateSubject}
+            detail={detail}
+          />
+        </div>
+      </>
     );
-  }
-  return (
-    <>
-      <TermSchedule detail={props.detail}  />
-    </>
-  );
 };
 
 export default EducationProgramDetail;

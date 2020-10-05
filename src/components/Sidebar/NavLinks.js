@@ -58,7 +58,7 @@ export default {
           isActive: false,
           menu_title: "Giảng Dạy",
           new_item: false,
-          path: "/education-program/module",
+          path: "/schedule/schedule",
         },
         {
           menu_icon: "zmdi zmdi-layers",

@@ -18,8 +18,8 @@ import { NotificationManager } from "react-notifications";
 import { Col, Row } from "reactstrap";
 import CreateYearClass from "Routes/Class/Components/CreateYearClass";
 import YearClassDetails from "Routes/Class/Components/YearClassDetails";
-import ExportCSV from "Routes/EducationProgram/Programs/Components/ExportCSV";
-import UpdateEducationProgram from "Routes/EducationProgram/Programs/Components/UpdateEducationProgram";
+import ExportCSV from "Routes/EducationProgram/Programs/ExportCSV";
+import UpdateEducationProgram from "Routes/EducationProgram/Programs/UpdateEducationProgram";
 const defaultRecord = {
   classId: "",
   className: "",

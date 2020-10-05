@@ -24,7 +24,7 @@ import {
   Tabs,
 } from "antd";
 import { Row, Col } from "reactstrap";
-import UpdateEducationProgramSubject from "Routes/EducationProgram/Programs/Components/UpdateEducationProgramSubject";
+import UpdateEducationProgramSubject from "Routes/EducationProgram/Programs/UpdateEducationProgramSubject";
 
 const { TabPane } = Tabs;
 

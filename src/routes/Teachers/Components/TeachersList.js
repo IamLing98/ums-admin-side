@@ -32,8 +32,8 @@ import { connect } from "react-redux";
 import { Col, Row } from "reactstrap";
 import CreateTeacher from "Routes/Teachers/Components/CreateTeacher";
 import TeacherDetails from "Routes/Teachers/Components/TeacherDetails";
-import ExportCSV from "Routes/EducationProgram/Programs/Components/ExportCSV";
-import UpdateEducationProgram from "Routes/EducationProgram/Programs/Components/UpdateEducationProgram";
+import ExportCSV from "Routes/EducationProgram/Programs/ExportCSV";
+import UpdateEducationProgram from "Routes/EducationProgram/Programs/UpdateEducationProgram";
 
 const defaultRecord = {
   admissionType: null,

@@ -2,7 +2,7 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import { Redirect, Route, Switch } from "react-router-dom";
 import {
-  AsyncProgramsComponent,
+  AsyncEducationProgramComponent,
   AsyncEducationProgramDetailComponent,
 } from "Components/AsyncComponent/AsyncComponent";
 
@@ -20,7 +20,7 @@ const EducationProgram = ({ match }) => (
       />
       <Route
         path={`${match.url}/programs`}
-        component={AsyncProgramsComponent}
+        component={AsyncEducationProgramComponent}
       />
     </Switch>
   </div>

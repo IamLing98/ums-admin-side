@@ -7,7 +7,6 @@ import Loadable from 'react-loadable';
 
 // rct page loader
 import RctPageLoader from 'Components/RctPageLoader/RctPageLoader';
-
 // home dashboard
 const AsyncHomeDashboardComponent = Loadable({
    loader: () => import("Routes/dashboard/home"),
@@ -21,17 +20,17 @@ const AsyncClientHomeDashboardComponent = Loadable({
 
 // education programs 
 
-const AsyncProgramsComponent = Loadable({
-   loader: () => import("Routes/EducationProgram/Programs"),
+const AsyncEducationProgramComponent = Loadable({
+   loader: () => import("Routes/EducationProgram/AsyncEducationProgramsComponent"),
    loading: () => <RctPageLoader />,
 });
 
 const AsyncEducationProgramDetailComponent = Loadable({
-   loader: () => import('../../routes/EducationProgram/Programs/Components/node_modules/Routes/EducationProgram/Programs/Components/EducationProgramDetails'),
+   loader: () => import("Routes/EducationProgram/AsyncEducationProgramsComponent"),
    loading: () => <RctPageLoader />
 });
 
-// student list
+// student listZ
 const AsyncStudentComponent = Loadable({
    loader: () => import('Routes/Student/Components'),
    loading: () => <RctPageLoader />
@@ -48,6 +47,13 @@ const AsyncYearClassComponent = Loadable({
    loader: () => import('Routes/Teachers/Components'),
    loading: () => <RctPageLoader />
 });
+
+//schedule
+const AsyncScheduleComponent = Loadable({
+   loader: () => import('Routes/Schedule/Components'),
+   loading: () => <RctPageLoader />
+});
+
 //login
 const AsyncAdminLoginComponent = Loadable({
    loader: () => import('Routes/login'),
@@ -77,7 +83,7 @@ export {
    AsyncStudentComponent,
    
    AsyncEducationProgramDetailComponent,
-   AsyncProgramsComponent,
+   AsyncEducationProgramComponent,
 
    //class
    AsyncYearClassComponent,
@@ -85,6 +91,8 @@ export {
    //teachers
    AsyncTeachersComponent,
    
+   //schedule
+   AsyncScheduleComponent,
    AsyncForgotPassComponent,
    AsyncHomeDashboardComponent,
    AsyncAdminLoginComponent,
