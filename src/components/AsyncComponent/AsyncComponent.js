@@ -27,7 +27,7 @@ const AsyncProgramsComponent = Loadable({
 });
 
 const AsyncEducationProgramDetailComponent = Loadable({
-   loader: () => import('Routes/EducationProgram/Programs/Components/EducationProgramDetails'),
+   loader: () => import('../../routes/EducationProgram/Programs/Components/node_modules/Routes/EducationProgram/Programs/Components/EducationProgramDetails'),
    loading: () => <RctPageLoader />
 });
 
