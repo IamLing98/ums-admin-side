@@ -47,7 +47,7 @@ const NavMenuItem = (props) => {
          if (element.path === props.location.pathname) {
             menu.open = false;
             props.onSupToggleMenu();
-            props.setCurrentLocationPathNameAction({ pathName: props.location.pathname, pageTitle: element.menu_title });
+            props.setCurrentLocationPathNameAction({ pathName: props.location.pathname, pageTitle: element.menu_description });
          }
       });
    }, [props.location])
@@ -74,7 +74,7 @@ const NavMenuItem = (props) => {
                         {menu.child_routes.map((subMenu, index) => {
                            return (
                               <ListItem button component="li" key={index}>
-                                 <NavLink to={subMenu.path} className={subMenu.path === props.currentLocationPathName.pathName ? "item-active" : ""} onClick={() => onClickNavItem(subMenu.path, subMenu.menu_title)}  >
+                                 <NavLink to={subMenu.path} className={subMenu.path === props.currentLocationPathName.pathName ? "item-active" : ""} onClick={() => onClickNavItem(subMenu.path, subMenu.menu_description)}  >
                                     <ListItemIcon className="menu-icon">
                                        <i className={subMenu.menu_icon}></i>
                                     </ListItemIcon>

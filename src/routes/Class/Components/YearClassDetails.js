@@ -49,10 +49,13 @@ const YearClassDetails = (props) => {
             <TabPane tab="Chương Trình Đào Tạo" key="2" >
               <SubjectList detail={details.educationProgram} />
             </TabPane>
-            <TabPane tab="Giáo Viên Chủ Nhiệm" key="3">
+            <TabPane tab="Kế Hoạch Đào Tạo" key="3" >
+              <SubjectList detail={details.educationProgram} />
+            </TabPane>
+            <TabPane tab="Giáo Viên Chủ Nhiệm" key="4">
               Content of Tab Pane 3
             </TabPane>
-            <TabPane tab="Cán Bộ Lớp" key="4">
+            <TabPane tab="Cán Bộ Lớp" key="5">
               Content of Tab Pane 3
             </TabPane>
           </Tabs>

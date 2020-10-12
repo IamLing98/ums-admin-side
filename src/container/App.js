@@ -72,29 +72,11 @@ class App extends Component {
     return (
       <RctThemeProvider>
         <NotificationContainer />
-        {userData !== null ? (
-          userData.roles[0].roleName === "PDT" ? (
-            <InitialPath
+        <InitialPath
               path={`${match.url}app`}
               authToken={token}
-              // component={
-              //   AgencyLayout
-              // }
               component={RctDefaultLayout}
             />
-          ) : (
-            <InitialPath
-              path={`${match.url}app`}
-              authToken={token}
-              // component={
-              //   AgencyLayout
-              // }
-              component={AgencyLayout}
-            />
-          )
-        ) : (
-          <RctPageLoader/>
-        )}
 
         <Switch>
           <Route exact path="/login" component={AsyncAdminLoginComponent} />

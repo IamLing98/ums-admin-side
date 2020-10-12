@@ -1,6 +1,4 @@
-
-
-import React, { useState } from "react"; 
+import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 
 import CardEditor from "./CardEditor";
@@ -13,10 +11,10 @@ const Card = (props) => {
   const startHover = () => setHover(true);
   const endHover = () => setHover(false);
 
-  const startEditing = () =>{
+  const startEditing = () => {
     setHover(false);
     setEditing(true);
-  }
+  };
 
   const endEditing = () => setState({ hover: false, editing: false });
 
@@ -40,7 +38,7 @@ const Card = (props) => {
     });
   };
 
-  const { card, index } = props; 
+  const { card, index } = props;
 
   if (!editing) {
     return (
@@ -54,15 +52,37 @@ const Card = (props) => {
             onMouseEnter={startHover}
             onMouseLeave={endHover}
           >
-            {hover && (
+            {/* {hover && (
               <div className="Card-Icons">
                 <div className="Card-Icon" onClick={startEditing}>
                   <ion-icon name="create" />
                 </div>
               </div>
-            )}
+            )} */}
 
-            {card.cardTitle}
+            <div className="card-container">
+              <div className="card-title">{card.cardTitle}</div>
+              <div className="card-footer">
+                <div className="card-action">
+                  {card.teacher  ? (
+                    <div
+                      className="bg-red text-white w-32  h-6 rounded-6 mx-4 mb-6"
+                      title="High Priority"
+                    />
+                  ) : (
+                    <img
+                      src="assets/images/avatars/james.jpg"
+                      class="MuiAvatar-img"
+                    />
+                  )}
+                </div>
+                <div className="card-action"> 
+                  <span className="flex items-center mx-6">
+                    <i class="zmdi zmdi-swap"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </Draggable>
@@ -78,5 +98,5 @@ const Card = (props) => {
     );
   }
 };
- 
-export default  Card ;
+
+export default Card;
