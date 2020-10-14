@@ -63,7 +63,7 @@ export default {
           menu_title: "Giảng Dạy",
           menu_description: "Đào Tạo/Giảng Dạy",
           new_item: false,
-          path: "/schedule/schedule",
+          path: "/app/schedule/schedule",
         },
         {
           menu_icon: "zmdi zmdi-graduation-cap",

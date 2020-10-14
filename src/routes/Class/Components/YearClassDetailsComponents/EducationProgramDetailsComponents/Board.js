@@ -80,13 +80,7 @@ class Board extends Component {
               aria-disabled="false"
               href="/apps/scrumboard/boards/"
             >
-              <span className="MuiButton-label">
-                <span
-                  className="material-icons MuiIcon-root"
-                  aria-hidden="true"
-                >
-                  assessment
-                </span>
+              <span className="MuiButton-label"> 
                 <span className="px-8">Kỳ hiện tại</span>
               </span>
               <span className="MuiTouchRipple-root" />

@@ -26,7 +26,7 @@ const renderTabBar = (props, DefaultTabBar) => (
   </Sticky>
 );
 
-export const TeachersHome = (props) => {
+export const TeachingHome = (props) => {
   const [tabChange, setChangeTab] = useState(false);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export const TeachersHome = (props) => {
         <title>Danh Sách Giảng Viên</title>
         <meta name="description" content="Danh Sách Giảng Viên" />
       </Helmet>
-      <TeachersList />
+<TeachersList />
     </div>
   );
 };
@@ -68,4 +68,4 @@ export default connect(
   {
     getDepartmentList,
   }
-)(TeachersHome);
+)(TeachingHome);

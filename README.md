@@ -14,4 +14,7 @@ npm start
 # build for production with minification
 npm run build
 ``` 
-![alt text](https://i.ibb.co/mzSFLD0/Capture.png) 
+
+> University Management Software(UMS)
+
+![alt text](https://ibb.co/8jTgHpx) 

@@ -63,7 +63,7 @@ const Card = (props) => {
             <div className="card-container">
               <div className="card-title">{card.cardTitle}</div>
               <div className="card-footer">
-                <div className="card-action">
+                {/* <div className="card-action">
                   {card.teacher  ? (
                     <div
                       className="bg-red text-white w-32  h-6 rounded-6 mx-4 mb-6"
@@ -75,11 +75,11 @@ const Card = (props) => {
                       class="MuiAvatar-img"
                     />
                   )}
-                </div>
+                </div> */}
                 <div className="card-action"> 
-                  <span className="flex items-center mx-6">
+                  <button className="btn ">
                     <i class="zmdi zmdi-swap"></i>
-                  </span>
+                  </button>
                 </div>
               </div>
             </div>

@@ -30,7 +30,7 @@ const AsyncEducationProgramDetailComponent = Loadable({
    loading: () => <RctPageLoader />
 });
 
-// student listZ
+// student list
 const AsyncStudentComponent = Loadable({
    loader: () => import('Routes/Student/Components'),
    loading: () => <RctPageLoader />
