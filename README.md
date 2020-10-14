@@ -17,4 +17,4 @@ npm run build
 
 > University Management Software(UMS)
 
-![alt text](https://ibb.co/8jTgHpx) 
+![alt text](https://i.ibb.co/cNMhjH8/demo.png) 
