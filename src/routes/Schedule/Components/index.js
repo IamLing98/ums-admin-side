@@ -2,54 +2,46 @@
  * Class Dashboard
  */
 
-import { getDepartmentList } from "Actions/DepartmentActions";
-// page title bar
-import { Tabs } from "antd";
-import { api } from "Api";
+import { api } from "../../../api";
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { NotificationManager } from "react-notifications";
-import { connect } from "react-redux";
-import { Sticky, StickyContainer } from "react-sticky"; 
 import TermList from "./TermList";
-import { Col, Row } from "reactstrap"; 
-import {
-  DeleteFilled,
-  DeleteOutlined,
-  DiffOutlined,
-  EditFilled,
-  PlusOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
+import TermDetail from "./TermComponents/index";
+import { Col, Row } from "reactstrap";
+import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Popconfirm, Space, Table } from "antd";
-import TeachersList from "Routes/Teachers/Components/TeachersList";
-
-const { TabPane } = Tabs;
-
-const renderTabBar = (props, DefaultTabBar) => (
-  <Sticky bottomOffset={80}>
-    {({ style }) => (
-      <DefaultTabBar
-        {...props}
-        className="site-custom-tab-bar"
-        style={{ ...style }}
-      />
-    )}
-  </Sticky>
-);
+import TermCreate from "./CreateTerm";
+import { setTermDetail } from "../../../actions/TermActions";
+import { useSelector, useDispatch } from "react-redux";
 
 export const ScheduleHome = (props) => {
+  const [termList, setTermList] = useState([]);
+
   const [tabChange, setChangeTab] = useState(false);
+
+  const [currentTitle, setCurrentTitle] = useState("Học kỳ");
+
   const [showModalCreate, setShowModalCreate] = useState(false);
 
+  const termReducer = useSelector((state) => state.termReducer);
 
+  const handleDeleteRecord = (termId) => {
+    api
+      .delete(`/terms/${termId}`, true)
+      .then((res) => {
+        NotificationManager.success("Đã xoá");
+      })
+      .catch((err) => console.log(err)
+      );
+  };
 
   useEffect(() => {
-    // get list branch
     api
-      .get("/department/getAll", true)
+      .get("/terms", true)
       .then((res) => {
-        props.getDepartmentList(res);
+        console.log("res", res)
+        setTermList(res);
       })
       .catch((err) => {
         console.log(err);
@@ -72,7 +64,7 @@ export const ScheduleHome = (props) => {
       <div className="rct-block ">
         <div className="rct-block-title ">
           <h4>
-            <span>Học Kỳ</span>{" "}
+            <span>{currentTitle}</span>{" "}
           </h4>
           <div className="contextual-link" style={{ top: "15px" }}>
             {/* <a href="javascript:void(0)">
@@ -85,62 +77,75 @@ export const ScheduleHome = (props) => {
         </div>
         <div className="collapse show">
           <div className="rct-full-block">
+            <hr style={{ margin: "0px" }} />
             <div className="table-responsive">
-              <Row>
-                <Col
-                  md={6}
-                  sm={12}
-                  style={{ display: "flex", flexDirection: "column" }}
-                >
-                  <Row>
-                    <Col md={4}>
-                      <Input placeholder="Năm học..." size="middle" />
-                    </Col>
-                    <Col md={4}>
-                      <Input placeholder="Tên Học Phần..." size="middle" />
-                    </Col>
-                    <Col
-                      md={4}
-                      style={{ display: "block", flexDirection: "column" }}
+              {termReducer.recordDetail === null ? (
+                <Row>
+                  <Col
+                    md={6}
+                    sm={12}
+                    style={{ display: "flex", flexDirection: "column" }}
+                  >
+                    <Row>
+                      <Col md={4}>
+                        <Input placeholder="Năm học..." size="middle" />
+                      </Col>
+                      <Col md={4}>
+                        <Input placeholder="Học kỳ..." size="middle" />
+                      </Col>
+                      <Col
+                        md={4}
+                        style={{ display: "block", flexDirection: "column" }}
+                      >
+                        <button
+                          type="button"
+                          className="ant-btn ant-btn-primary"
+                          onClick={() => setShowModalCreate(true)}
+                        >
+                          <SearchOutlined />
+                          <span>Tìm Kiếm</span>
+                        </button>
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col md={6} sm={12} xs={12}>
+                    <div
+                      className="tableListOperator"
+                      style={{ textAlign: "right", width: "100%" }}
                     >
                       <button
                         type="button"
                         className="ant-btn ant-btn-primary"
                         onClick={() => setShowModalCreate(true)}
                       >
-                        <SearchOutlined />
-                        <span>Tìm Kiếm</span>
+                        <PlusOutlined></PlusOutlined>
+                        <span>Tạo Mới </span>
                       </button>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col md={6} sm={12} xs={12}>
-                  <div
-                    className="tableListOperator"
-                    style={{ textAlign: "right", width: "100%" }}
-                  >
-                    <button
-                      type="button"
-                      className="ant-btn ant-btn-primary"
-                      onClick={() => setShowModalCreate(true)}
-                    >
-                      <PlusOutlined></PlusOutlined>
-                      <span>Tạo Mới </span>
-                    </button>
-                  </div>
-                </Col>
-              </Row>
-              <TermList/>
+                    </div>
+                  </Col>
+                </Row>
+              ) : (
+                ""
+              )}
+              {termReducer.recordDetail === null ? (
+                <TermList
+                  termList={termList}
+                  setCurrentTitle={setCurrentTitle}
+                  handleDeleteRecord={handleDeleteRecord}
+                />
+              ) : (
+                <TermDetail />
+              )}
             </div>
 
-            {/* <CreateSubject
+            <TermCreate
               visible={showModalCreate}
               onOk={(values) => handleSubmitFormCreate(values)}
               onCancel={() => setShowModalCreate(false)}
-              options={prerequisitesSubject}
+              // options={prerequisitesSubject}
             />
 
-            <UpdateSubject
+            {/*} <UpdateSubject
               visible={showModalUpdate}
               onOk={(values) => handleSubmitFormUpdate(values)}
               onCancel={() => {
@@ -157,13 +162,4 @@ export const ScheduleHome = (props) => {
   );
 };
 
-const mapStateToProps = ({}) => {
-  return {};
-};
-
-export default connect(
-  mapStateToProps,
-  {
-    getDepartmentList,
-  }
-)(ScheduleHome);
+export default ScheduleHome;

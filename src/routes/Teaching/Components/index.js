@@ -54,7 +54,7 @@ export const TeachingHome = (props) => {
         <title>Danh Sách Giảng Viên</title>
         <meta name="description" content="Danh Sách Giảng Viên" />
       </Helmet>
-<TeachersList />
+      <TeachersList />
     </div>
   );
 };

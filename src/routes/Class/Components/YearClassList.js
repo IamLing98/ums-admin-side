@@ -347,6 +347,7 @@ export const YearClassList = (props) => {
         </div>
         <div className="collapse show">
           <div className="rct-full-block">
+          <hr style={{ margin: "0px" }} />
             {showDetails === false ? (
               <div className="table-responsive">
                 <Row>

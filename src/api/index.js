@@ -1,38 +1,37 @@
-import superagentPromise from "superagent-promise";
-import _superagent from "superagent";
+import axios from "axios";
 
-const superagent = superagentPromise(_superagent, global.Promise);
 const API_ROOT = "http://127.0.0.1:8080";
 
-const responseBody = (res) => res.body;
+const responseBody = (res) => res.data;
 
 let token = localStorage.getItem("jwtToken");
 
 const tokenPlugin = (secured) => {
-  return (request) => {
-    if (token && secured) {
-      request.set("Authorization", `Bearer ${token}`);
-    }
+  var config = {
+    headers: {
+      "Content-Type": "application/json",
+    }, 
   };
+  if (token && secured) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 };
 
 export const api = {
   get: (url, secured = true) => {
-    return superagent
-      .get(`${API_ROOT}${url}`)
-      .use(tokenPlugin(secured))
+    return axios
+      .get(`${API_ROOT}${url}`, tokenPlugin(secured))
       .then(responseBody);
   },
   post: (url, body = null, secured = true) => {
-    return superagent
-      .post(`${API_ROOT}${url}`, body)
-      .use(tokenPlugin(secured))
+    return axios
+      .post(`${API_ROOT}${url}`, body, tokenPlugin(secured))
       .then(responseBody);
   },
   put: (url, body = null, secured = true) => {
-    return superagent
-      .put(`${API_ROOT}${url}`, body)
-      .use(tokenPlugin(secured))
+    return axios
+      .put(`${API_ROOT}${url}`, body, tokenPlugin(secured))
       .then(responseBody);
   },
   upload: (url, file, secured = true) => {
@@ -43,9 +42,8 @@ export const api = {
       .then(responseBody);
   },
   delete: (url, secured = true) => {
-    return superagent
-      .del(`${API_ROOT}${url}`)
-      .use(tokenPlugin(secured))
+    return axios
+      .delete(`${API_ROOT}${url}`, tokenPlugin(secured))
       .then(responseBody);
   },
   setToken: (newToken) => (token = newToken),

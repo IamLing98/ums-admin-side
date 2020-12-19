@@ -14,6 +14,7 @@ import {routerReducer} from 'react-router-redux'
 import UpdateUserReducer from './UpdateUserReducer';
 import EducationProgramReducer from './EducationProgramReducer';
 import DepartmentReducer from './DepartmentReducer';
+import TermReducer from './TermReducer';
 
 
 import {
@@ -35,6 +36,7 @@ const reducers = combineReducers({
   updateUserRed:UpdateUserReducer,
   educationProgram:EducationProgramReducer,
   departmentReducer: DepartmentReducer,
+  termReducer: TermReducer,
   form: formReducer.plugin({
     addUserForm: (state,action)=>{
       switch (action.type) {

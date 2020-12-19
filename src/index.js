@@ -1,6 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-
+import ReactDOM from 'react-dom'; 
 // Save a reference to the root element for reuse
 const rootEl = document.getElementById("root");
 

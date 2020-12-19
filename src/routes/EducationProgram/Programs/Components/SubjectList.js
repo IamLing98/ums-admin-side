@@ -187,7 +187,8 @@ const SubjectList = (props) => {
   ];
 
   return (
-    <>
+    
+    <div className="table-responsive">
       <Row>
         <Col
           md={6}
@@ -289,7 +290,7 @@ const SubjectList = (props) => {
         showImportSubjectModal === true && 
         <ImportSubjectModal />
       }
-    </>
+    </div>
   );
 };
 

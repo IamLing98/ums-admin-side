@@ -21,7 +21,7 @@ import {
   Select,
   Space,
   Table,
-  DatePicker,
+  DatePicker, 
 } from "antd";
 import { api } from "Api";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
@@ -136,12 +136,11 @@ export const StudentList = (props) => {
 
   const [totalElements, setTotalElements] = useState(0);
 
-  const onSelectChange = (selectedRowKeys) => { 
+  const onSelectChange = (selectedRowKeys) => {
     setSelectedRowKeys(selectedRowKeys);
   };
 
-  const onSelect = (data) => { 
-  };
+  const onSelect = (data) => {};
 
   const onChange = (data) => {
     setValue(data);
@@ -158,12 +157,12 @@ export const StudentList = (props) => {
       params.append("startYear", startYear);
     }
     api
-    .get("/students?" + params.toString(), true)
+      .get("/students?" + params.toString(), true)
       .then((response) => {
         setStudentList(response.content);
         setTotalElements(response.totalElements);
       })
-      .catch((error) => { 
+      .catch((error) => {
         if (error.message === "Forbidden") {
           NotificationManager.error(
             "Did you forget something? Please activate your account"
@@ -214,12 +213,12 @@ export const StudentList = (props) => {
   const handleSubmitFormCreate = (values) => {
     setShowModalCreate(false);
     api
-      .post("/education-program/create", values, true)
+      .post("/education-programs", values, true)
       .then((response) => {
         NotificationManager.success("Tạo mới thành công");
         setRerender((value) => (value = !value));
       })
-      .catch(function(err) { 
+      .catch(function(err) {
         if (err.response.body.message === "Đã tồn tại") {
           NotificationManager.error("Đã Tồn Tại !!!");
         } else if (error.message === "Unauthorized") {
@@ -251,9 +250,9 @@ export const StudentList = (props) => {
 
   const handleDeleteRecord = (values) => {
     var object = [];
-    object.push(values); 
+    object.push(values);
     api
-      .post("/education-program/delete", object, true)
+      .delete(`/education-programs/${id}`, object, true)
       .then((response) => {
         NotificationManager.success("Xoá thành công");
         setRerender((value) => (value = !value));
@@ -274,7 +273,7 @@ export const StudentList = (props) => {
     var object = [];
     values.map((item) => {
       object.push({ educationProgramId: item });
-    }); 
+    });
     api
       .post("/education-program/delete", object, true)
       .then((response) => {
@@ -294,7 +293,7 @@ export const StudentList = (props) => {
     setSelectedRowKeys([]);
   };
 
-  const handleChangeTable = (pagination) => { 
+  const handleChangeTable = (pagination) => {
     setPagination(pagination);
   };
 
@@ -315,7 +314,7 @@ export const StudentList = (props) => {
         setStudentList(response.content);
         setTotalElements(response.totalElements);
       })
-      .catch((error) => { 
+      .catch((error) => {
         if (error.message === "Forbidden") {
           NotificationManager.error(
             "Did you forget something? Please activate your account"
@@ -330,7 +329,7 @@ export const StudentList = (props) => {
     setTimeout(() => {
       setLoading(false);
     }, 500);
-    return () => { 
+    return () => {
       setLoading(true);
     };
   }, [props.tabIsChange, JSON.stringify(props.departmentReducer)]);
@@ -447,6 +446,7 @@ export const StudentList = (props) => {
           </div>
           <div className="collapse show">
             <div className="rct-full-block">
+              <hr style={{ margin: "0px" }} />
               {showDetails === false ? (
                 <div className="table-responsive">
                   {showMoreSearch === true ? (
@@ -546,7 +546,7 @@ export const StudentList = (props) => {
                         <Col md={4}>
                           <DatePicker
                             onChange={(date, dateString) => {
-                              setStartYear(dateString); 
+                              setStartYear(dateString);
                             }}
                             picker="year"
                             placeholder="Niên khoá..."
@@ -638,21 +638,31 @@ export const StudentList = (props) => {
                     onChange={(paging) => handleChangeTable(paging)}
                     showSizeChanger={true}
                     rowSelection={rowSelection}
+                    locale={{
+                      emptyText: (
+                        <div className="ant-empty ant-empty-normal">
+                          <div className="ant-empty-image">
+                            <SearchOutlined style={{ fontSize: '16px', color: '#08c' }}/>
+                          <p className="ant-empty-description">Không có sinh viên nào</p>
+                          </div>
+                        </div>
+                      ),
+                    }}
                   />
                 </div>
               ) : (
                 <StudentDetails record={recordShowDetails} />
               )}
-              {
-                showModalCreate === true ? 
+              {showModalCreate === true ? (
                 <ImportStudent
-                visible={showModalCreate}
-                onOk={(values) => handleSubmitFormCreate(values)}
-                onCancel={() => setShowModalCreate(false)}
-              />
-                :""
-              }
-               
+                  visible={showModalCreate}
+                  onOk={(values) => handleSubmitFormCreate(values)}
+                  onCancel={() => setShowModalCreate(false)}
+                />
+              ) : (
+                ""
+              )}
+
               <UpdateEducationProgram
                 visible={showModalUpdate}
                 onOk={(values) => handleSubmitFormUpdate(values)}

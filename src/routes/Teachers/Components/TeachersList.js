@@ -452,7 +452,8 @@ export const TeachersList = (props) => {
             <div className="contextual-link" style={{ top: "15px" }}></div>
           </div>
           <div className="collapse show">
-            <div className="rct-full-block">
+            <div className="rct-full-block"> 
+          <hr style={{ margin: "0px" }} />
               {showDetails === false ? (
                 <div className="table-responsive">
                   {showMoreSearch === true ? (

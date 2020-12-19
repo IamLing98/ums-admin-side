@@ -44,15 +44,14 @@ export const EducationProgramHome = (props) => {
       </Helmet>
  
       <Tabs
-          onChange={() => {}}
-          type="card"
+          onChange={() => {}} 
           animated={{ inkBar: true, tabPane: false }}
           onChange={() => setChangeTab((value) => (value = !value))}
         >
-          <TabPane tab="Ngành/Chuyên Ngành" key="1">
+          <TabPane tab="Chương trình đào tạo" key="1">
             <EducationProgramList />
           </TabPane>
-          <TabPane tab="Học Phần" key="2">
+          <TabPane tab="Học phần" key="2">
             <SubjectList tabIsChange={tabChange} />
           </TabPane> 
         </Tabs>

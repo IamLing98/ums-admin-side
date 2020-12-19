@@ -74,7 +74,6 @@ export const CreateYearClass = (props) => {
   const handleSubmitFormCreate = () => {
     let formData = new FormData();
     formData.append("educationProgramId", educationProgramId);
-    formData.append("educationProgramName", educationProgramName);
     formData.append("branchId", branchId);
     formData.append("educationProgramLevel", educationProgramLevel);
     formData.append("educationProgramType", educationProgramType);
@@ -230,8 +229,7 @@ export const CreateYearClass = (props) => {
           >
             <Select
               allowClear
-              placeholder="Ngành đào tạo..."
-              preserve={false}
+              placeholder="Ngành đào tạo..." 
               onChange={(e) => {
                 form.setFieldsValue({ educationProgramId: undefined });
                 if (e === undefined || e === null) {
@@ -268,57 +266,27 @@ export const CreateYearClass = (props) => {
         ) : (
           ""
         )}
-        {form.getFieldValue("branchId") !== null &&
-          form.getFieldValue("branchId") !== undefined && (
-            <Form.Item
-              name="educationProgramId"
-              label="Chương trình đào tạo"
-              hasFeedback
-              rules={[
-                {
-                  required: true,
-                  message: "Không được để trống chương trình đào tạo !!!",
-                },
-              ]}
-            >
-              <Select
-                allowClear
-                placeholder="Chương trình đào tạo..."
-                onChange={(e) => setEducationProgramId(e)}
-              >
-                {educationProgramList.map((item) => {
-                  return (
-                    <Option
-                      key={item.educationProgramId}
-                      value={item.educationProgramId}
-                    >
-                      {item.educationProgramName}
-                    </Option>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-          )}
-        {form.getFieldValue("educationProgramId") != undefined && (
-          <Form.Item name="rangeTime" label="Niên khoá">
-            <RangePicker style={{ width: "100%" }} picker="year" />
+        <Form.Item name="rangeTime" label="Niên khoá">
+          <RangePicker style={{ width: "100%" }} picker="year" />
+        </Form.Item>
+
+        {form.getFieldValue("rangeTime") != undefined && (
+          <Form.Item
+            name="yearClassName"
+            label="Tên lớp"
+            hasFeedback
+            rules={[{ required: true, message: "Please select your country!" }]}
+          >
+            <Input
+              allowClear
+              placeholder="Tên lớp..."
+              // onClear={() => onSearch()}
+              // onPressEnter={() => onSearch()}
+              onChange={(e) => setYearClassName(e.target.value)}
+              value={yearClassName}
+            ></Input>
           </Form.Item>
         )}
-        <Form.Item
-          name="yearClassName"
-          label="Lớp"
-          hasFeedback
-          rules={[{ required: true, message: "Please select your country!" }]}
-        >
-          <Input
-            allowClear
-            placeholder="Lớp..."
-            // onClear={() => onSearch()}
-            // onPressEnter={() => onSearch()}
-            onChange={(e) => setYearClassName(e.target.value)}
-            value={yearClassName}
-          ></Input>
-        </Form.Item>
         <Form.Item
           name="Giảng viên chủ nhiệm"
           label="Giảng viên chủ nhiệm"

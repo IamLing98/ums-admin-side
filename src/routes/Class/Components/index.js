@@ -38,7 +38,7 @@ export const ClassHome = (props) => {
       <Helmet>
         <title>Danh Sách Lớp</title>
         <meta name="description" content="User Profile" />
-      </Helmet>
+      </Helmet> 
       <YearClassList />
     </div>
   );

@@ -12,16 +12,14 @@ import {
   SearchOutlined,
   DownloadOutlined,
 } from "@ant-design/icons";
-import {
-  Table,
-  Space,
-  Button,
-  Popconfirm,
-} from "antd";
+import { Table, Space, Button, Popconfirm, Tabs } from "antd";
 import { Row, Col } from "reactstrap";
 import UpdateEducationProgramSubject from "Routes/EducationProgram/Programs/UpdateEducationProgramSubject";
-import SubjectList from "Routes/EducationProgram/Programs/Components/SubjectList"; 
+import SubjectList from "Routes/EducationProgram/Programs/Components/SubjectList";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
+import Planning from "./Components/Planning";
+
+const { TabPane } = Tabs;
 
 const defaultRecord = {
   branchId: "",
@@ -126,7 +124,7 @@ const EducationProgramDetail = (props) => {
 
   useEffect(() => {
     api
-      .get("/subject/getAll", true)
+      .get("/subjects", true)
       .then((response) => {
         var options = [];
         response.map((item) => {
@@ -248,15 +246,23 @@ const EducationProgramDetail = (props) => {
   } else
     return (
       <>
-        <hr style={{ margin: "0px" }} />
-        <div className="table-responsive">
-          <SubjectList
-            record={props.record}
-            subjectList={subjectList}
-            optionsToUpdateSubject={optionsToUpdateSubject}
-            detail={detail}
-          />
-        </div>
+        <Tabs
+          onChange={() => {}}
+          type="card"
+          animated={{ inkBar: true, tabPane: false }}
+        >
+          <TabPane tab="Danh Sách Học Phần" key="1">
+            <SubjectList
+              record={props.record}
+              subjectList={subjectList}
+              optionsToUpdateSubject={optionsToUpdateSubject}
+              detail={detail}
+            />
+          </TabPane>
+          <TabPane tab="Kế Hoạch Đào tạo" key="2">
+            <Planning detail={detail}/>
+          </TabPane>
+        </Tabs>
       </>
     );
 };

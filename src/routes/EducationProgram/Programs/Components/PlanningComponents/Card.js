@@ -78,7 +78,7 @@ const Card = (props) => {
                 </div> */}
                 <div className="card-action"> 
                   <button className="btn ">
-                    <i class="zmdi zmdi-swap"></i>
+                    <i className="zmdi zmdi-swap"></i>
                   </button>
                 </div>
               </div>

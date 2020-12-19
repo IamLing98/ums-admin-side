@@ -176,7 +176,7 @@ export const SubjectList = (props) => {
 
   useEffect(() => {
     api
-      .get("/subject/getAll", true)
+      .get("/subjects", true)
       .then((response) => {
         setSubjectList(response);
         var options = [];
@@ -323,6 +323,7 @@ export const SubjectList = (props) => {
         </div>
         <div className="collapse show">
           <div className="rct-full-block">
+          <hr style={{ margin: "0px" }} />
             <div className="table-responsive">
               <Row>
                 <Col

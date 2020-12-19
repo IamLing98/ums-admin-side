@@ -2,8 +2,8 @@ import React from "react";
 // import Board from '@lourenci/react-kanban'
 // import '@lourenci/react-kanban/dist/styles.css'
 
-import Board from './Board';
-const TermSchedule = (props) => {
+import Board from './PlanningComponents/Board';
+const Planning = (props) => {
   const board = {
     columns: [
       {
@@ -113,4 +113,4 @@ const TermSchedule = (props) => {
     );
 }
 
-export default TermSchedule;
+export default Planning;

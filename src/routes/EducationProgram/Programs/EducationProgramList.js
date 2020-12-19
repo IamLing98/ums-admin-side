@@ -101,7 +101,7 @@ export const EducationProgramList = (props) => {
   const handleSubmitFormCreate = (values) => {
     setShowModalCreate(false);
     api
-      .post("/education-program/create", values, true)
+      .post("/education-program", values, true)
       .then((response) => {
         NotificationManager.success("Tạo mới thành công");
         setRerender((value) => (value = !value));
@@ -118,7 +118,7 @@ export const EducationProgramList = (props) => {
   const handleSubmitFormUpdate = (values) => {
     setShowModalUpdate(false);
     api
-      .post("/education-program/update", values, true)
+      .put(`/education-programs/${values.educationProgramId}`, values, true)
       .then((response) => {
         NotificationManager.success("Chỉnh sửa thành công");
         setRerender((value) => (value = !value));
@@ -354,6 +354,7 @@ export const EducationProgramList = (props) => {
         </div>
         <div className="collapse show">
           <div className="rct-full-block">
+          <hr style={{ margin: "0px" }} />
             {showDetails === false ? (
               <div className="table-responsive">
                 <Row>

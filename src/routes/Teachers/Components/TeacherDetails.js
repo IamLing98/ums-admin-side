@@ -17,8 +17,7 @@ const TeacherDetails = (props) => {
   }, []);
   const size = "small";
   return (
-    <>
-      <hr style={{ margin: "0px" }} />
+    <> 
       <div className="wrapper-student" style={{ marginTop: "15px" }}>
         <Row style={{ padding: " 0.3rem 1.25rem" }}>
           <Col span={4}>
