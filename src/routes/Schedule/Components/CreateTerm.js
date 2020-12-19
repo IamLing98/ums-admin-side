@@ -6,7 +6,9 @@ import React, { useState, useEffect } from "react";
 import { Modal, Form, Select } from "antd";
 import { connect } from "react-redux";
 import { NotificationManager } from "react-notifications";
+import { setTermList } from "../../../actions/TermActions";
 import {api} from "Api";
+import { useSelector, useDispatch } from "react-redux";
 
 const { Option } = Select;
 
@@ -33,6 +35,9 @@ const formItemLayout = {
 };
 
 export const CreateSubject = (props) => {
+
+  const dispatch = useDispatch();
+
   const [year, setYear] = useState(new Date().getFullYear());
 
   const [form] = Form.useForm();
@@ -42,7 +47,7 @@ export const CreateSubject = (props) => {
       .post("/terms",values, true)
       .then((res) => {
         NotificationManager.success("Tạo mới kỳ học thành công.")
-        setTermList(res);
+        props.getTermList();
       })
       .catch((error) => {  
         if(error.status === 409){

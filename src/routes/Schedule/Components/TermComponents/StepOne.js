@@ -1,41 +1,36 @@
 import React, { useState, useEffect } from "react";
-import { Result, Button, Modal, Tag, Table, Input, Form, Select } from "antd";
+import {
+  Result,
+  Button,
+  Modal,
+  Tag,
+  Table,
+  Input,
+  Form,
+  Select,
+  DatePicker,
+} from "antd";
 import { SmileOutlined } from "@ant-design/icons";
 import { api } from "Api";
 import { setTermDetail } from "../../../../actions/TermActions";
 import { useSelector, useDispatch } from "react-redux";
 import { NotificationManager } from "react-notifications";
-import {
-  DeleteFilled,
-  DeleteOutlined,
-  DiffOutlined,
-  EditFilled,
+import { 
   PlusOutlined,
-  SearchOutlined,
-  DoubleLeftOutlined,
+  SearchOutlined, 
 } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
 
-const formItemLayout = {
-  labelCol: {
-    xs: {
-      span: 24,
+const { RangePicker } = DatePicker;
+
+const rangeConfig = {
+  rules: [
+    {
+      type: "array",
+      required: true,
+      message: "Vui lòng chọn các mốc thời gian!",
     },
-    sm: {
-      span: 6,
-    },
-  },
-  wrapperCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 16,
-    },
-  },
-  initialValues: {
-    term: undefined,
-  },
+  ],
 };
 
 const StepOne = (props) => {
@@ -43,26 +38,30 @@ const StepOne = (props) => {
 
   const [form] = Form.useForm();
 
-  const [showOpenSubjectSubmitModal, setShowOpenSubjectSubmitModal] = useState(
+  const [subjectSubmitFormVisible, setSubjectSubmitFormVisible] = useState(
     false
   );
 
   const termReducer = useSelector((state) => state.termReducer);
 
-  const recordDetail = { ...termReducer.recordDetail };
+  const term = { ...termReducer.recordDetail };
 
-  const onOpenSubjectSubmit = () => {
-    const recordDetail = { ...termReducer.recordDetail };
-    recordDetail.progress = 12;
+  const onOpenSubjectSubmit = (values) => {
+    let progress11Date = values["rangeTime"][0].format('YYYY-MM-DD') ;
+    let progress13Date = values["rangeTime"][0].format('YYYY-MM-DD') ;
+    let termObj = {...term};
+    termObj.progress = 12;
+    termObj.progress11Date = progress11Date;
+    termObj.progress13Date = progress13Date;
     api
-      .put("/terms", recordDetail, true)
+      .put("/terms", termObj, true)
       .then((res) => {
         console.log(res);
         NotificationManager.success(
           "Mở đăng ký học phần thành công thành công"
         );
-        setShowOpenSubjectSubmitModal(false);
-        dispatch(setTermDetail(recordDetail));
+        setSubjectSubmitFormVisible(false);
+        dispatch(setTermDetail(termObj));
       })
       .catch((err) => {
         console.log(err);
@@ -115,8 +114,9 @@ const StepOne = (props) => {
       },
     },
   ];
+ 
 
-  if (recordDetail.progress === 11) {
+  if (term.progress === 11) {
     return (
       <div>
         <Result
@@ -125,7 +125,7 @@ const StepOne = (props) => {
           extra={
             <Button
               type="primary"
-              onClick={() => setShowOpenSubjectSubmitModal(true)}
+              onClick={() => setSubjectSubmitFormVisible(true)}
             >
               Mở DKHP
             </Button>
@@ -133,42 +133,42 @@ const StepOne = (props) => {
         />
         <Modal
           title="Mở Đăng Ký Học Phần"
-          visible={showOpenSubjectSubmitModal}
-          onOk={() => onOpenSubjectSubmit()}
-          onCancel={() => setShowOpenSubjectSubmitModal(false)}
+          visible={subjectSubmitFormVisible}
+          onOk={() => {
+            form
+              .validateFields()
+              .then((values) => {
+                form.resetFields();
+                onOpenSubjectSubmit(values);
+              })
+              .catch((info) => {
+                console.log("Validate Failed:", info);
+              });
+          }}
+          onCancel={() => setSubjectSubmitFormVisible(false)}
+          maskClosable={false}
+          okText="Mở đăng ký"
+          cancelText="Đóng"
+          destroyOnClose={true}
+          closable={false}
           centered
         >
           <Form
-            form={form}
-            {...formItemLayout}
+            form={form} 
             onFieldsChange={(changedFields, allFields) => {}}
             preserve={false}
             onValuesChange={(changedValues, allValues) => {}}
           >
-            <Form.Item
-              name="term"
-              label="Kỳ"
-              hasFeedback
-              rules={[{ required: true, message: "Vui lòng chọn kỳ!" }]}
-            >
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Chọn học kỳ"
-              >
-                <Option value={1}>Học kỳ 1</Option>
-                <Option value={2}>Học kỳ 2</Option>
-                <Option value={3}>Học kỳ hè</Option>
-              </Select>
+            <Form.Item name="rangeTime" label="Thời gian" {...rangeConfig}>
+              <RangePicker style={{ width: "100%" }} />
             </Form.Item>
           </Form>
         </Modal>
       </div>
     );
-  } else if (recordDetail.progress === 12) {
+  } else if (term.progress === 12) {
     return (
       <>
-        <hr />
         <Row>
           <Col
             md={6}
@@ -220,7 +220,7 @@ const StepOne = (props) => {
         </Row>
         <Table
           columns={columns}
-          dataSource={recordDetail.subjectRegistrationList}
+          dataSource={term.subjectRegistrationList}
           rowKey="id"
           bordered
           pagination={{ pageSize: 10 }}

@@ -18,7 +18,7 @@ const TermList = (props) => {
 
   const dispatch = useDispatch();
 
-  const termReducer = useSelector((state) => state.termReducer);
+  const termList = useSelector((state) => state.termReducer.termList);
 
   const columns = [
     {
@@ -123,7 +123,7 @@ const TermList = (props) => {
   return (
     <Table
       columns={columns}
-      dataSource={props.termList}
+      dataSource={termList}
       rowKey="id"
       bordered
       pagination={{ pageSize: 10 }}

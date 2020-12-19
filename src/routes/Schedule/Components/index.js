@@ -12,11 +12,11 @@ import { Col, Row } from "reactstrap";
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Popconfirm, Space, Table } from "antd";
 import TermCreate from "./CreateTerm";
-import { setTermDetail } from "../../../actions/TermActions";
+import { setTermList } from "../../../actions/TermActions";
 import { useSelector, useDispatch } from "react-redux";
 
 export const ScheduleHome = (props) => {
-  const [termList, setTermList] = useState([]);
+  const dispatch = useDispatch();
 
   const [tabChange, setChangeTab] = useState(false);
 
@@ -26,22 +26,12 @@ export const ScheduleHome = (props) => {
 
   const termReducer = useSelector((state) => state.termReducer);
 
-  const handleDeleteRecord = (termId) => {
-    api
-      .delete(`/terms/${termId}`, true)
-      .then((res) => {
-        NotificationManager.success("Đã xoá");
-      })
-      .catch((err) => console.log(err)
-      );
-  };
-
-  useEffect(() => {
+  const getTermList = () => {
     api
       .get("/terms", true)
       .then((res) => {
-        console.log("res", res)
-        setTermList(res);
+        console.log("res", res);
+        dispatch(setTermList(res));
       })
       .catch((err) => {
         console.log(err);
@@ -53,6 +43,20 @@ export const ScheduleHome = (props) => {
           throw new SubmissionError({ _error: "Username or Password Invalid" });
         }
       });
+  };
+
+  const handleDeleteRecord = (termId) => {
+    api
+      .delete(`/terms/${termId}`, true)
+      .then((res) => {
+        NotificationManager.success("Đã xoá");
+        getTermList();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getTermList();
   }, []);
 
   return (
@@ -129,7 +133,6 @@ export const ScheduleHome = (props) => {
               )}
               {termReducer.recordDetail === null ? (
                 <TermList
-                  termList={termList}
                   setCurrentTitle={setCurrentTitle}
                   handleDeleteRecord={handleDeleteRecord}
                 />
@@ -142,6 +145,7 @@ export const ScheduleHome = (props) => {
               visible={showModalCreate}
               onOk={(values) => handleSubmitFormCreate(values)}
               onCancel={() => setShowModalCreate(false)}
+              getTermList={getTermList}
               // options={prerequisitesSubject}
             />
 
