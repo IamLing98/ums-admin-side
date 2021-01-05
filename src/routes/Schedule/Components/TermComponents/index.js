@@ -20,16 +20,7 @@ const TermComponent = (props) => {
   const [step, setStep] = useState(0);
 
   const [submittingInfo, setSubmittingInfo] = useState([]);
-
-  useEffect(() => {
-    const { progress } = props.term;
-    if (progress > 10 && progress < 20) setStep(0);
-    else if (progress > 20 && progress < 30) setStep(1);
-    else if (progress > 30 && progress < 40) setStep(2);
-
-    return () => props.setIsShowDetail(null);
-  }, []);
-
+ 
   const getSubmittingInfo = (termId) => {
     api
       .get("/subjectsRegistration/" + termId)
@@ -37,38 +28,13 @@ const TermComponent = (props) => {
       .catch((err) => console.log(err));
   };
 
-  const onOpenSubjectSubmit = (values) => {
-    let subjectSubmittingStartDate = values["rangeTime"][0].format("YYYY-MM-DD");
-    let subjectSubmittingEndDate = values["rangeTime"][1].format("YYYY-MM-DD");
-    let termObj = { ...props.term };
-    termObj.progress = 12;
-    termObj.subjectSubmittingStartDate = subjectSubmittingStartDate;
-    termObj.subjectSubmittingEndDate = subjectSubmittingEndDate;
-    termObj.actionType = "SSON";
-    api
-      .put(`/terms/${termObj.id}`, termObj, true)
-      .then((res) => {
-        NotificationManager.success(
-          "Mở đăng ký học phần thành công thành công"
-        );
-        setSubjectSubmitFormVisible(false);
-        dispatch(setTermDetail(termObj)); 
-      })
-      .catch((error) => {
-        NotificationManager.error(error.response.data.message);
-        if (error.response.status === 403) {
-          NotificationManager.error(
-            "Did you forget something? Please activate your account"
-          );
-        } else if (error.response.status === "Lỗi xác thực") {
-          throw new SubmissionError({ _error: "Username or Password Invalid" });
-        }
-      });
-  };
-
   useEffect(() => {
-    getSubmittingInfo(props.term.id);
-  }, []);
+    const { progress } = props.term;
+    if (progress > 10 && progress < 20) setStep(0);
+    else if (progress > 20 && progress < 30) setStep(1);
+    else if (progress > 30 && progress < 40) setStep(2);
+    return () => props.setIsShowDetail(null);
+  }, []);  
 
   const icon = () => {
     return <ArrowRightOutlined />;
@@ -117,6 +83,7 @@ const TermComponent = (props) => {
           step={step}
           submittingInfo={submittingInfo}
           getSubmittingInfo={getSubmittingInfo}
+          setIsShowDetail={props.setIsShowDetail}
           term={props.term}
         />
       }

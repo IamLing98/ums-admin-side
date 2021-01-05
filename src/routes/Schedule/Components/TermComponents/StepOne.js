@@ -34,16 +34,26 @@ const rangeConfig = {
   ],
 };
 
-const StepOne = (props) => { 
-
+const StepOne = (props) => {
   const [form] = Form.useForm();
 
   const [subjectSubmitFormVisible, setSubjectSubmitFormVisible] = useState(
     false
   );
- 
+
+  const [submittingInfo, setSubmittingInfo] = useState([]);
+
+  const getSubmittingInfo = (termId) => {
+    api
+      .get("/subjectsRegistration/" + termId)
+      .then((res) => setSubmittingInfo(res))
+      .catch((err) => console.log(err));
+  };
+
   const onOpenSubjectSubmit = (values) => {
-    let subjectSubmittingStartDate = values["rangeTime"][0].format("YYYY-MM-DD");
+    let subjectSubmittingStartDate = values["rangeTime"][0].format(
+      "YYYY-MM-DD"
+    );
     let subjectSubmittingEndDate = values["rangeTime"][1].format("YYYY-MM-DD");
     let termObj = { ...props.term };
     termObj.progress = 12;
@@ -57,7 +67,10 @@ const StepOne = (props) => {
           "Mở đăng ký học phần thành công thành công"
         );
         setSubjectSubmitFormVisible(false);
-        dispatch(setTermDetail(termObj)); 
+        api.get(`/terms/${termObj.id}`, true).then((res) => {
+          props.setIsShowDetail(res);
+          getSubmittingInfo(termObj.id);
+        });
       })
       .catch((error) => {
         NotificationManager.error(error.response.data.message);
@@ -94,8 +107,12 @@ const StepOne = (props) => {
       title: "Số lượng đăng ký",
       dataIndex: "totalSubmit",
       width: "20%",
-    }, 
+    },
   ];
+
+  useEffect(() => {
+    getSubmittingInfo(props.term.id);
+  }, []);
 
   if (props.term.progress === 11) {
     return (
@@ -205,7 +222,7 @@ const StepOne = (props) => {
         </Row>
         <Table
           columns={columns}
-          dataSource={props.submittingInfo}
+          dataSource={submittingInfo}
           rowKey="subjectId"
           bordered
           pagination={{ pageSize: 10 }}

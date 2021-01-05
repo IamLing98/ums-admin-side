@@ -9,10 +9,9 @@ import {
   SearchOutlined,
   DoubleLeftOutlined,
 } from "@ant-design/icons";
-import { api } from "Api"; 
+import { api } from "Api";
 
-const TermList = (props) => { 
-
+const TermList = (props) => {
   const columns = [
     {
       title: "ID",
@@ -30,7 +29,7 @@ const TermList = (props) => {
               api
                 .get("/terms/" + record.id, true)
                 .then((res) => {
-                  props.setIsShowDetail(record)
+                  props.setIsShowDetail(res);
                 })
                 .catch();
               props.setCurrentTitle(
@@ -39,7 +38,7 @@ const TermList = (props) => {
                     href="javascript:void(0)"
                     onClick={() => {
                       props.setCurrentTitle(<span>Học kỳ</span>);
-                      props.setIsShowDetail(null)
+                      props.setIsShowDetail(null);
                     }}
                   >
                     <DoubleLeftOutlined />
