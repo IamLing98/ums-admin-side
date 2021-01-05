@@ -10,7 +10,7 @@ const tokenPlugin = (secured) => {
   var config = {
     headers: {
       "Content-Type": "application/json",
-    }, 
+    },
   };
   if (token && secured) {
     config.headers.Authorization = `Bearer ${token}`;

@@ -1,5 +1,5 @@
 /**
- * Module Dashboard
+ * Class Dashboard
  */
 
 import React, { useState, useEffect } from "react";
@@ -229,7 +229,7 @@ export const CreateYearClass = (props) => {
           >
             <Select
               allowClear
-              placeholder="Ngành đào tạo..." 
+              placeholder="Ngành đào tạo..."
               onChange={(e) => {
                 form.setFieldsValue({ educationProgramId: undefined });
                 if (e === undefined || e === null) {

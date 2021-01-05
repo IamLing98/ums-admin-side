@@ -9,16 +9,9 @@ import {
   SearchOutlined,
   DoubleLeftOutlined,
 } from "@ant-design/icons";
-import {api} from "Api";
-import { useSelector, useDispatch } from "react-redux";
-import { setTermDetail } from "../../../actions/TermActions";
+import { api } from "Api"; 
 
-
-const TermList = (props) => {
-
-  const dispatch = useDispatch();
-
-  const termList = useSelector((state) => state.termReducer.termList);
+const TermList = (props) => { 
 
   const columns = [
     {
@@ -34,20 +27,19 @@ const TermList = (props) => {
             // className="ant-anchor-link-title ant-anchor-link-title-active"
             href="javascript:void(0)"
             onClick={() => {
-              api.get("/terms/" + record.id, true)
-              .then(
-                res =>{
-                  dispatch(setTermDetail(res));
-                }
-              )
-              .catch()
+              api
+                .get("/terms/" + record.id, true)
+                .then((res) => {
+                  props.setIsShowDetail(record)
+                })
+                .catch();
               props.setCurrentTitle(
                 <span>
                   <a
                     href="javascript:void(0)"
                     onClick={() => {
-                      props.setCurrentTitle(<span>Học kỳ</span>); 
-                      dispatch(setTermDetail(null));
+                      props.setCurrentTitle(<span>Học kỳ</span>);
+                      props.setIsShowDetail(null)
                     }}
                   >
                     <DoubleLeftOutlined />
@@ -75,13 +67,13 @@ const TermList = (props) => {
         let text = "";
         if (status === 2) {
           color = "geekblue";
-          text = "Đang Diễn Ra";
-        } else if (status === 1) {
+          text = "Đang Triển Khai";
+        } else if (status === 3) {
           color = "volcano";
           text = "Kết thúc";
-        } else if (status === 3) {
+        } else if (status === 1) {
           color = "green";
-          text = "Sắp Diễn Ra";
+          text = "Sắp Bắt Đầu";
         }
         return (
           <Tag color={color} key={text}>
@@ -123,7 +115,7 @@ const TermList = (props) => {
   return (
     <Table
       columns={columns}
-      dataSource={termList}
+      dataSource={props.termList}
       rowKey="id"
       bordered
       pagination={{ pageSize: 10 }}

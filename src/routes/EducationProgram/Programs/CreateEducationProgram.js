@@ -3,11 +3,14 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { Table, Tag, Space, Button, Modal } from "antd";
-import { CustomInput, Input, Form, FormGroup, Label } from "reactstrap";
+import { Table, Tag, Space, Button, Modal, Form } from "antd";
+import { CustomInput, Input, FormGroup, Label } from "reactstrap";
 import { connect } from "react-redux";
 
 export const CreateEducationProgram = (props) => {
+
+  const [form] = Form.useForm();
+
   const [educationProgramId, setEducationProgramId] = useState("");
 
   const [educationProgramName, setEducationProgramName] = useState("");
@@ -16,7 +19,7 @@ export const CreateEducationProgram = (props) => {
 
   const [educationProgramLevel, setEducationProgramLevel] = useState("0");
 
-  const [educationProgramType, setEducationProgramType] = useState("0");
+  const [educationProgramType, setEducationProgramType] = useState("0"); 
 
   const handleSubmitFormCreate = () => {
     let formData = new FormData();

@@ -15,9 +15,10 @@ import { api } from "Api";
 import { setTermDetail } from "../../../../actions/TermActions";
 import { useSelector, useDispatch } from "react-redux";
 import { NotificationManager } from "react-notifications";
-import { 
+import {
   PlusOutlined,
-  SearchOutlined, 
+  SearchOutlined,
+  CloseCircleOutlined,
 } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
 
@@ -33,52 +34,51 @@ const rangeConfig = {
   ],
 };
 
-const StepOne = (props) => {
-  const dispatch = useDispatch();
+const StepOne = (props) => { 
 
   const [form] = Form.useForm();
 
   const [subjectSubmitFormVisible, setSubjectSubmitFormVisible] = useState(
     false
   );
-
-  const termReducer = useSelector((state) => state.termReducer);
-
-  const term = { ...termReducer.recordDetail };
-
+ 
   const onOpenSubjectSubmit = (values) => {
-    let progress11Date = values["rangeTime"][0].format('YYYY-MM-DD') ;
-    let progress13Date = values["rangeTime"][0].format('YYYY-MM-DD') ;
-    let termObj = {...term};
+    let subjectSubmittingStartDate = values["rangeTime"][0].format("YYYY-MM-DD");
+    let subjectSubmittingEndDate = values["rangeTime"][1].format("YYYY-MM-DD");
+    let termObj = { ...props.term };
     termObj.progress = 12;
-    termObj.progress11Date = progress11Date;
-    termObj.progress13Date = progress13Date;
+    termObj.subjectSubmittingStartDate = subjectSubmittingStartDate;
+    termObj.subjectSubmittingEndDate = subjectSubmittingEndDate;
+    termObj.actionType = "SSON";
     api
-      .put("/terms", termObj, true)
+      .put(`/terms/${termObj.id}`, termObj, true)
       .then((res) => {
-        console.log(res);
         NotificationManager.success(
           "Mở đăng ký học phần thành công thành công"
         );
         setSubjectSubmitFormVisible(false);
-        dispatch(setTermDetail(termObj));
+        dispatch(setTermDetail(termObj)); 
       })
-      .catch((err) => {
-        console.log(err);
-        NotificationManager.error(
-          "Mở đăng ký học phần không thành công thành công"
-        );
+      .catch((error) => {
+        NotificationManager.error(error.response.data.message);
+        if (error.response.status === 403) {
+          NotificationManager.error(
+            "Did you forget something? Please activate your account"
+          );
+        } else if (error.response.status === "Lỗi xác thực") {
+          throw new SubmissionError({ _error: "Username or Password Invalid" });
+        }
       });
   };
 
   const columns = [
     {
       title: "Mã học phần",
-      dataIndex: "id",
+      dataIndex: "subjectId",
     },
     {
       title: "Tên học phần",
-      dataIndex: "year",
+      dataIndex: "subjectName",
     },
     {
       title: "Khoa phụ trách",
@@ -91,32 +91,13 @@ const StepOne = (props) => {
       width: "20%",
     },
     {
-      title: "Thao tác",
-      dataIndex: "status",
-      render: (status) => {
-        let color;
-        let text = "";
-        if (status === 2) {
-          color = "geekblue";
-          text = "Đang Diễn Ra";
-        } else if (status === 1) {
-          color = "volcano";
-          text = "Kết thúc";
-        } else if (status === 3) {
-          color = "green";
-          text = "Sắp Diễn Ra";
-        }
-        return (
-          <Tag color={color} key={text}>
-            {text.toUpperCase()}
-          </Tag>
-        );
-      },
-    },
+      title: "Số lượng đăng ký",
+      dataIndex: "totalSubmit",
+      width: "20%",
+    }, 
   ];
- 
 
-  if (term.progress === 11) {
+  if (props.term.progress === 11) {
     return (
       <div>
         <Result
@@ -154,7 +135,7 @@ const StepOne = (props) => {
           centered
         >
           <Form
-            form={form} 
+            form={form}
             onFieldsChange={(changedFields, allFields) => {}}
             preserve={false}
             onValuesChange={(changedValues, allValues) => {}}
@@ -166,7 +147,7 @@ const StepOne = (props) => {
         </Modal>
       </div>
     );
-  } else if (term.progress === 12) {
+  } else if (props.term.progress === 12) {
     return (
       <>
         <Row>
@@ -199,7 +180,7 @@ const StepOne = (props) => {
               className="tableListOperator"
               style={{ textAlign: "right", width: "100%" }}
             >
-              <button
+              {/* <button
                 type="button"
                 className="ant-btn ant-btn-primary"
                 // onClick={() => setShowModalCreate(true)}
@@ -214,14 +195,18 @@ const StepOne = (props) => {
               >
                 <PlusOutlined></PlusOutlined>
                 <span>Đăng ký khoá mới </span>
-              </button>
+              </button> */}
+              <Button type="primary" danger>
+                <CloseCircleOutlined />
+                <span>Kết thúc đăng ký</span>
+              </Button>
             </div>
           </Col>
         </Row>
         <Table
           columns={columns}
-          dataSource={term.subjectRegistrationList}
-          rowKey="id"
+          dataSource={props.submittingInfo}
+          rowKey="subjectId"
           bordered
           pagination={{ pageSize: 10 }}
           size="small"

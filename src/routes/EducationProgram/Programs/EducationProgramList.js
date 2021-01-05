@@ -101,7 +101,7 @@ export const EducationProgramList = (props) => {
   const handleSubmitFormCreate = (values) => {
     setShowModalCreate(false);
     api
-      .post("/education-program", values, true)
+      .post("/education-programs", values, true)
       .then((response) => {
         NotificationManager.success("Tạo mới thành công");
         setRerender((value) => (value = !value));
@@ -269,44 +269,44 @@ export const EducationProgramList = (props) => {
       render: (text) => {
         if (text === 1) {
           return <span>Đại học chính quy</span>;
-        } else if (text === 2) {
-          return <span>Đại học vừa làm vừa học </span>;
+        // } else if (text === 2) {
+        //   return <span>Đại học vừa làm vừa học </span>;
         } else if (text === 3) {
           return <span>Văn bằng 2</span>;
-        } else if (text === 4) {
-          return <span>L.thông từ Cao đẳng lên Đại học</span>;
-        } else if (text === 5) {
-          return <span>L.thông từ Trung cấp lên Đại học</span>;
-        } else if (text === 6) {
-          return <span>Liên kết đào tạo quốc tế</span>;
-        } else if (text === 7) {
-          return <span>Đại học từ xa</span>;
+        // } else if (text === 4) {
+        //   return <span>L.thông từ Cao đẳng lên Đại học</span>;
+        // } else if (text === 5) {
+        //   return <span>L.thông từ Trung cấp lên Đại học</span>;
+        // } else if (text === 6) {
+        //   return <span>Liên kết đào tạo quốc tế</span>;
+        // } else if (text === 7) {
+        //   return <span>Đại học từ xa</span>;
         }
       },
     },
-    {
-      title: "Trạng Thái",
-      dataIndex: "educationProgramStatus",
-      render: (status) => {
-        let color;
-        let text = "";
-        if (status === 1) {
-          color = "geekblue";
-          text = "Đang Triển Khai";
-        } else if (status === 2) {
-          color = "volcano";
-          text = "Chờ Cập Nhật";
-        } else if (status === 3) {
-          color = "green";
-          text = "Chờ Cập Nhật";
-        }
-        return (
-          <Tag color={color} key={text}>
-            {text.toUpperCase()}
-          </Tag>
-        );
-      },
-    },
+    // {
+    //   title: "Trạng Thái",
+    //   dataIndex: "educationProgramStatus",
+    //   render: (status) => {
+    //     let color;
+    //     let text = "";
+    //     if (status === 1) {
+    //       color = "geekblue";
+    //       text = "Đang Triển Khai";
+    //     } else if (status === 2) {
+    //       color = "volcano";
+    //       text = "Chờ Cập Nhật";
+    //     } else if (status === 3) {
+    //       color = "green";
+    //       text = "Chờ Cập Nhật";
+    //     }
+    //     return (
+    //       <Tag color={color} key={text}>
+    //         {text.toUpperCase()}
+    //       </Tag>
+    //     );
+    //   },
+    // },
     {
       title: "Thao Tác",
       render: (text, record) => (

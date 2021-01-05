@@ -12,26 +12,21 @@ import { Col, Row } from "reactstrap";
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Popconfirm, Space, Table } from "antd";
 import TermCreate from "./CreateTerm";
-import { setTermList } from "../../../actions/TermActions";
-import { useSelector, useDispatch } from "react-redux";
 
 export const ScheduleHome = (props) => {
-  const dispatch = useDispatch();
-
-  const [tabChange, setChangeTab] = useState(false);
-
   const [currentTitle, setCurrentTitle] = useState("Học kỳ");
 
   const [showModalCreate, setShowModalCreate] = useState(false);
 
-  const termReducer = useSelector((state) => state.termReducer);
+  const [termList, setTermList] = useState([]);
+
+  const [isShowDetail, setIsShowDetail] = useState(null);
 
   const getTermList = () => {
     api
       .get("/terms", true)
       .then((res) => {
-        console.log("res", res);
-        dispatch(setTermList(res));
+        setTermList(res);
       })
       .catch((err) => {
         console.log(err);
@@ -52,7 +47,17 @@ export const ScheduleHome = (props) => {
         NotificationManager.success("Đã xoá");
         getTermList();
       })
-      .catch((err) => console.log(err));
+      .catch((error) => {
+        console.log(error.response);
+        NotificationManager.error(error.response.data.message);
+        if (error.response.status === 403) {
+          NotificationManager.error(
+            "Did you forget something? Please activate your account"
+          );
+        } else if (error.response.status === "Lỗi xác thực") {
+          throw new SubmissionError({ _error: "Username or Password Invalid" });
+        }
+      });
   };
 
   useEffect(() => {
@@ -83,7 +88,7 @@ export const ScheduleHome = (props) => {
           <div className="rct-full-block">
             <hr style={{ margin: "0px" }} />
             <div className="table-responsive">
-              {termReducer.recordDetail === null ? (
+              {isShowDetail === null ? (
                 <Row>
                   <Col
                     md={6}
@@ -131,13 +136,18 @@ export const ScheduleHome = (props) => {
               ) : (
                 ""
               )}
-              {termReducer.recordDetail === null ? (
+              {isShowDetail === null ? (
                 <TermList
                   setCurrentTitle={setCurrentTitle}
                   handleDeleteRecord={handleDeleteRecord}
+                  termList={termList}
+                  setIsShowDetail={setIsShowDetail}
                 />
               ) : (
-                <TermDetail />
+                <TermDetail
+                  term={isShowDetail}
+                  setIsShowDetail={setIsShowDetail}
+                />
               )}
             </div>
 

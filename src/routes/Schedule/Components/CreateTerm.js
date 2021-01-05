@@ -7,8 +7,7 @@ import { Modal, Form, Select } from "antd";
 import { connect } from "react-redux";
 import { NotificationManager } from "react-notifications";
 import { setTermList } from "../../../actions/TermActions";
-import {api} from "Api";
-import { useSelector, useDispatch } from "react-redux";
+import { api } from "Api";
 
 const { Option } = Select;
 
@@ -36,37 +35,31 @@ const formItemLayout = {
 
 export const CreateSubject = (props) => {
 
-  const dispatch = useDispatch();
-
   const [year, setYear] = useState(new Date().getFullYear());
 
   const [form] = Form.useForm();
 
   const handleSubmitForm = (values) => {
     api
-      .post("/terms",values, true)
+      .post("/terms", values, true)
       .then((res) => {
-        NotificationManager.success("Tạo mới kỳ học thành công.")
+        NotificationManager.success("Tạo mới kỳ học thành công.");
         props.getTermList();
       })
-      .catch((error) => {  
-        if(error.status === 409){
-          NotificationManager.error(
-            error.response.body.message
-          );
-        }
-        if (error.message === "Forbidden") {
+      .catch((error) => {
+        console.log(error.response);
+        NotificationManager.error(error.response.data.message);
+        if (error.response.status === 403) {
           NotificationManager.error(
             "Did you forget something? Please activate your account"
           );
-        } else if (error.message === "Unauthorized") {
+        } else if (error.response.status === "Lỗi xác thực") {
           throw new SubmissionError({ _error: "Username or Password Invalid" });
         }
       });
-      props.onCancel();
+    props.onCancel();
   };
-
-  useEffect(() => {}, [JSON.stringify(props.visible)]);
+ 
 
   return (
     <Modal
@@ -96,7 +89,7 @@ export const CreateSubject = (props) => {
       destroyOnClose={true}
       centered
       closable={false}
-      width={"60%"}
+      width={"40%"}
     >
       <Form
         form={form}
