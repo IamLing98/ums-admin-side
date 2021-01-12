@@ -60,6 +60,11 @@ const AsyncAdminLoginComponent = Loadable({
    loading: () => <RctPageLoader />
 });
 
+// CONFIG - Room
+const AsyncRoomConfigComponent = Loadable({
+   loader: () => import('Routes/Config/RoomConfigComponents/index.js'),
+   loading: () => <RctPageLoader />
+});
 
 //error
 const AsyncSessionPage404Component = Loadable({
@@ -93,6 +98,9 @@ export {
    
    //schedule
    AsyncScheduleComponent,
+
+   //Room Config
+   AsyncRoomConfigComponent,
    AsyncForgotPassComponent,
    AsyncHomeDashboardComponent,
    AsyncAdminLoginComponent,

@@ -48,7 +48,7 @@ const TermList = (props) => {
               );
             }}
           >
-            {text}
+            <span style={{fontWeight:"bold"}}>{text}</span> 
           </a>
         );
       },
