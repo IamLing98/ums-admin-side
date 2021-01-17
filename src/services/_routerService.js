@@ -13,7 +13,7 @@ export default [
   },
   
   {
-    path: "education-programs",
+    path: "education",
     component: EducationProgramsHome,
   },
   {

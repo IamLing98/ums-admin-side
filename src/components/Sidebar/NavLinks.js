@@ -32,6 +32,22 @@ export default {
           menu_description: "Đào Tạo/Chương Trình Đào Tạo",
           new_item: false,
           path: "/app/education-program/programs",
+        }, 
+        {
+          menu_icon: "zmdi zmdi-collection-text",
+          isActive: false,
+          menu_title: "Học phần",
+          menu_description: "Đào Tạo/Học Phần",
+          new_item: false,
+          path: "/app/education/subjects",
+        },
+        {
+          menu_icon: "zmdi zmdi-collection-text",
+          isActive: false,
+          menu_title: "C.Trình Đào Tạo",
+          menu_description: "Đào Tạo/Chương Trình Đào Tạo",
+          new_item: false,
+          path: "/app/education/education-programs",
         },
         {
           menu_icon: "zmdi zmdi-accounts",
