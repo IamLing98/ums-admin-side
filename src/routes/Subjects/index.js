@@ -7,7 +7,12 @@ import SubjectCreate from "./SubjectCreate";
 import SubjecUpdate from "./SubjectUpdate";
 // import TermDetail from "./TermComponents/index";
 import { Col, Row } from "reactstrap";
-import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  SearchOutlined,
+  DeleteOutlined,
+  DiffOutlined,
+} from "@ant-design/icons";
 import { Button, Input, Popconfirm, Space, Table } from "antd";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 
@@ -19,6 +24,10 @@ export const SubjectHome = (props) => {
   const [subjectList, setSubjectList] = useState([]);
 
   const [recordUpdate, setRecordUpdate] = useState(null);
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  const [departmentList, setDepartmentList] = useState([]);
 
   const [loading, setLoading] = useState(true);
 
@@ -33,38 +42,80 @@ export const SubjectHome = (props) => {
       })
       .catch((err) => {
         console.log(err);
-        if (error.message === "Forbidden") {
-          NotificationManager.error(
+        if (err.message === "Forbidden") {
+          NotificationManager.err(
             "Did you forget something? Please activate your account"
           );
-        } else if (error.message === "Unauthorized") {
-          throw new SubmissionError({ _error: "Username or Password Invalid" });
+        } else if (err.message === "Unauthorized") {
+          throw new SubmissionError({ _err: "Username or Password Invalid" });
         }
       });
   };
 
-  const handleDeleteRecord = (termId) => {
+  const getDepartmentList = () => {
     api
-      .delete(`/terms/${termId}`, true)
+      .get("/departments", true)
       .then((res) => {
-        NotificationManager.success("Đã xoá");
-        getTermList();
+        setDepartmentList(res);
       })
-      .catch((error) => {
-        console.log(error.response);
-        NotificationManager.error(error.response.data.message);
-        if (error.response.status === 403) {
-          NotificationManager.error(
+      .catch((err) => {
+        if (err.message === "Forbidden") {
+          NotificationManager.err(
             "Did you forget something? Please activate your account"
           );
-        } else if (error.response.status === "Lỗi xác thực") {
-          throw new SubmissionError({ _error: "Username or Password Invalid" });
+        } else if (err.message === "Unauthorized") {
+          throw new SubmissionError({ _err: "Username or Password Invalid" });
+        }
+      });
+  };
+
+  const handleSubmitForm = (values) => {
+    api
+      .post("/subjects", values, true)
+      .then((res) => {
+        NotificationManager.success(`Tạo mới ${res} học phần.`);
+        getSubjectList();
+      })
+      .catch((err) => {
+        console.log(err.response);
+        NotificationManager.err(err.response.data.message);
+        if (err.response.status === 403) {
+          NotificationManager.err(
+            "Did you forget something? Please activate your account"
+          );
+        } else if (err.response.status === "Lỗi xác thực") {
+          throw new SubmissionError({ _err: "Username or Password Invalid" });
+        }
+      });
+    setShowModalCreate(false);
+  };
+
+  const handleDeleteRecord = (values) => {
+    api
+      .delete(
+        `/subjects?${values.map((value, index) => `ids=${value}`).join("&")}`,
+        true
+      )
+      .then((res) => {
+        NotificationManager.success("Đã xoá" + res + " bản ghi");
+        getSubjectList();
+      })
+      .catch((err) => {
+        console.log(err.response);
+        NotificationManager.err(err.response.data.message);
+        if (err.response.status === 403) {
+          NotificationManager.err(
+            "Did you forget something? Please activate your account"
+          );
+        } else if (err.response.status === "Lỗi xác thực") {
+          throw new SubmissionError({ _err: "Username or Password Invalid" });
         }
       });
   };
 
   useEffect(() => {
     getSubjectList();
+    getDepartmentList();
   }, []);
 
   if (loading) {
@@ -107,10 +158,10 @@ export const SubjectHome = (props) => {
                   >
                     <Row>
                       <Col md={4}>
-                        <Input placeholder="Mã học phần..." size="middle" />
+                        <Input placeholder="Mã Học Phần..." size="middle" />
                       </Col>
                       <Col md={4}>
-                        <Input placeholder="Tên học phần..." size="middle" />
+                        <Input placeholder="Tên Học Phần..." size="middle" />
                       </Col>
                       <Col
                         md={4}
@@ -132,14 +183,38 @@ export const SubjectHome = (props) => {
                       className="tableListOperator"
                       style={{ textAlign: "right", width: "100%" }}
                     >
-                      <button
+                      <Button
+                        type="primary"
+                        onClick={() => setShowModalCreate(true)}
+                      >
+                        <PlusOutlined></PlusOutlined>
+                        <span>Tạo Mới </span>
+                      </Button>
+                      <Button
                         type="button"
                         className="ant-btn ant-btn-primary"
                         onClick={() => setShowModalCreate(true)}
                       >
                         <PlusOutlined></PlusOutlined>
-                        <span>Tạo Mới </span>
-                      </button>
+                        <span>Import </span>
+                      </Button>
+                      <Button
+                        type="dashed"
+                        disabled={selectedRowKeys.length > 0 ? false : true}
+                        onClick={() =>
+                          handleDeleteMultipleRecord(selectedRowKeys)
+                        }
+                      >
+                        <DeleteOutlined />
+                        <span>Xoá Nhiều</span>
+                      </Button>
+                      <a
+                        href="https://demo.doublechaintech.com/freshchain/platformManager/exportExcelFromList/P000001/productList/"
+                        className="ant-btn"
+                      >
+                        <DiffOutlined />
+                        <span>In Exel</span>
+                      </a>
                     </div>
                   </Col>
                 </Row>
@@ -148,26 +223,30 @@ export const SubjectHome = (props) => {
                   handleDeleteRecord={handleDeleteRecord}
                   data={subjectList}
                   setRecordUpdate={setRecordUpdate}
+                  selectedRowKeys={selectedRowKeys}
+                  setSelectedRowKeys={setSelectedRowKeys}
                 />
               </div>
 
               <SubjectCreate
-                visible={showModalCreate} 
+                visible={showModalCreate}
                 setShowModalCreate={setShowModalCreate}
                 getSubjectList={getSubjectList}
+                departmentList={departmentList}
+                subjectList={subjectList}
+                handleSubmitForm={handleSubmitForm}
                 // options={prerequisitesSubject}
               />
 
-              {/*} <UpdateSubject
-              visible={showModalUpdate}
-              onOk={(values) => handleSubmitFormUpdate(values)}
-              onCancel={() => {
-                setShowModalUpdate(false);
-                setRecordUpdate(defaultRecord);
-              }}
-              record={recordUpdate}
-              options={prerequisitesSubject}
-            /> */}
+              <SubjecUpdate
+                visible={recordUpdate}
+                setRecordUpdate={setRecordUpdate}
+                record={recordUpdate}
+                subjectList={subjectList}
+                departmentList={departmentList}
+                getSubjectList={getSubjectList}
+                // options={prerequisitesSubject}
+              />
             </div>
           </div>
         </div>

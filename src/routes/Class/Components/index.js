@@ -1,16 +1,10 @@
-/**
- * Class Dashboard
- */
-
-import { getDepartmentList } from "Actions/DepartmentActions"; 
-import { Tabs } from "antd";
-import { api } from "Api";
 import React, { useEffect, useState } from "react";
+import { getDepartmentList } from "Actions/DepartmentActions";
+import { api } from "Api";
 import { Helmet } from "react-helmet";
 import { NotificationManager } from "react-notifications";
-import { connect } from "react-redux"; 
+import { connect } from "react-redux";
 import YearClassList from "Routes/Class/Components/YearClassList";
-const { TabPane } = Tabs;
 
 export const ClassHome = (props) => {
   const [tabChange, setChangeTab] = useState(false);
@@ -38,7 +32,7 @@ export const ClassHome = (props) => {
       <Helmet>
         <title>Danh Sách Lớp</title>
         <meta name="description" content="User Profile" />
-      </Helmet> 
+      </Helmet>
       <YearClassList />
     </div>
   );

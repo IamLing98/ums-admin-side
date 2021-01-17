@@ -43,7 +43,7 @@ export const api = {
   },
   delete: (url, secured = true) => {
     return axios
-      .delete(`${API_ROOT}${url}`, tokenPlugin(secured))
+      .delete(`${API_ROOT}${url}`,   tokenPlugin(secured))
       .then(responseBody);
   },
   setToken: (newToken) => (token = newToken),

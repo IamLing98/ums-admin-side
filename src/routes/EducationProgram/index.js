@@ -3,7 +3,6 @@ import { Helmet } from "react-helmet";
 import { Redirect, Route, Switch } from "react-router-dom";
 import {
   AsyncEducationProgramComponent,
-  AsyncEducationProgramDetailComponent,
 } from "Components/AsyncComponent/AsyncComponent";
 
 const EducationProgram = ({ match }) => (
@@ -13,11 +12,7 @@ const EducationProgram = ({ match }) => (
       <meta name="description" content="Danh Mục Học Phần" />
     </Helmet>
     <Switch>
-      <Redirect exact from={`${match.url}/`} to={`${match.url}/programs`} />
-      <Route
-        path={`${match.url}/programs/details/:id`}
-        component={AsyncEducationProgramDetailComponent}
-      />
+      <Redirect exact from={`${match.url}/`} to={`${match.url}/programs`} /> 
       <Route
         path={`${match.url}/programs`}
         component={AsyncEducationProgramComponent}

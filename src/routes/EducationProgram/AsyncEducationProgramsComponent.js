@@ -6,8 +6,7 @@ import React, { useState, useEffect } from "react";
 // page title bar
 import { Tabs } from "antd"; 
 import { api } from "Api";
-import EducationProgramList from "Routes/EducationProgram/Programs/EducationProgramList";
-import SubjectList from "Routes/EducationProgram/Subject/index.js";
+import EducationProgramList from "Routes/EducationProgram/Programs/EducationProgramList"; 
 import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
 import { setListBranch } from "Actions/EducationProgramActions";
@@ -52,7 +51,7 @@ export const EducationProgramHome = (props) => {
             <EducationProgramList />
           </TabPane>
           <TabPane tab="Học phần" key="2">
-            <SubjectList tabIsChange={tabChange} />
+           
           </TabPane> 
         </Tabs>
     </div>

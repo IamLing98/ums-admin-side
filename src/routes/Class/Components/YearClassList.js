@@ -1,7 +1,3 @@
-/**
- * Year Class Dashboard
- */
-
 import {
   DeleteFilled,
   DeleteOutlined,

@@ -72,7 +72,7 @@ const SubjectList = (props) => {
       ],
     },
     {
-      title: "Môn Học Tiên Quyết",
+      title: "Học Phần Tiên Quyết",
       align: "center",
       dataIndex: "tags",
     },
@@ -81,12 +81,12 @@ const SubjectList = (props) => {
       dataIndex: "subjectForLevel",
       align: "center",
       render: (text) => {
-        if (text === "1") {
-          return <span>Đào Tạo Tiến Sỹ</span>;
-        } else if (text === "2") {
-          return <span>Đào Tạo Thạc Sỹ</span>;
-        } else if (text === "3") {
-          return <span>Đại học</span>;
+        if (text === 1) {
+          return <span>Cao học</span>;
+        } else if (text === 2) {
+          return <span>Đại học</span>;
+        } else if (text === 3) {
+          return <span>Cao đẳng</span>;
         } else {
           return <span></span>;
         }
@@ -95,7 +95,7 @@ const SubjectList = (props) => {
     {
       title: "Khoa phụ trách",
       align: "center",
-      dataIndex: "tags",
+      dataIndex: "departmentName",
     },
     {
       title: "Thao Tác",
@@ -114,7 +114,7 @@ const SubjectList = (props) => {
           <Popconfirm
             placement="left"
             title={"Chắc chắn xoá?"}
-            onConfirm={() => props.handleDeleteRecord(record)}
+            onConfirm={() => props.handleDeleteRecord([record.subjectId])}
             okText="Ok"
             cancelText="Không"
           >
@@ -130,16 +130,14 @@ const SubjectList = (props) => {
   const handleChangeTable = (pagination) => {
     setPagination(pagination);
   };
-
-  
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+ 
 
   const onSelectChange = (selectedRowKeys) => { 
-    setSelectedRowKeys(selectedRowKeys);
+    props.setSelectedRowKeys(selectedRowKeys);
   };
 
   const rowSelection = {
-    selectedRowKeys,
+    selectedRowKeys:props.selectedRowKeys,
     onChange: onSelectChange,
     selections: [
       Table.SELECTION_ALL,
@@ -155,7 +153,7 @@ const SubjectList = (props) => {
             }
             return true;
           });
-          setSelectedRowKeys(newSelectedRowKeys);
+          props.setSelectedRowKeys(newSelectedRowKeys);
         },
       },
       {
@@ -169,7 +167,7 @@ const SubjectList = (props) => {
             }
             return false;
           });
-          setSelectedRowKeys(newSelectedRowKeys);
+          props.setSelectedRowKeys(newSelectedRowKeys);
         },
       },
     ],
