@@ -213,53 +213,65 @@ export const SubjectList = (props) => {
     {
       title: "Mã Học Phần ",
       dataIndex: "subjectId",
+      align:"center",
     },
     {
       title: "Tên Học Phần ",
       dataIndex: "subjectName",
+      align:"center",
       width: "20%",
     },
     {
       title: "Số Tín Chỉ",
+      align:"center",
       children: [
         {
           title: "Từng Môn Học",
           dataIndex: "eachSubject",
+          align:"center",
         },
         {
           title: "Theo Hoạt Động Giờ Tín Chỉ",
+          align:"center",
           children: [
             {
               title: "Lý Thuyết",
               dataIndex: "theoryNumber",
+              align:"center",
             },
             {
               title: "Bài Tập (x2)",
               dataIndex: "exerciseNumber",
+              align:"center",
             },
             {
               title: "Thảo Luận (x2)",
               dataIndex: "practiceNumber",
+              align:"center",
             },
           ],
         },
         {
           title: "Thực Hành",
+          align:"center",
           dataIndex: "exerciseNumber",
         },
         {
           title: "Tự Học",
           dataIndex: "selfLearningNumber",
+          align:"center",
         },
       ],
     },
     {
       title: "Môn Học Tiên Quyết",
+      align:"center",
       dataIndex: "tags",
     },
     {
       title: "Trình Độ Đào Tạo",
       dataIndex: "subjectForLevel",
+      align:"center",
       render: (text) => {
         if (text === "1") {
           return <span>Đào Tạo Tiến Sỹ</span>;
@@ -275,6 +287,7 @@ export const SubjectList = (props) => {
     {
       title: "Thao Tác",
       key: "action",
+      align:"center",
       render: (text, record) => (
         <Space size="middle">
           <Button

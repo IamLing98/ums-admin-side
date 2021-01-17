@@ -141,7 +141,7 @@ const StepOne = (props) => {
       <div>
         <Result
           icon={<SmileOutlined />}
-          title="Bắt đầu học kỳ mới bằng việc mở đăng ký học phần!"
+          title="Bắt đầu Tên học phần mới bằng việc mở đăng ký học phần!"
           extra={
             <Button
               type="primary"
@@ -247,10 +247,10 @@ const StepOne = (props) => {
           >
             <Row>
               <Col md={4}>
-                <Input placeholder="Năm học..." size="middle" />
+                <Input placeholder="Mã học phần..." size="middle" />
               </Col>
               <Col md={4}>
-                <Input placeholder="Học kỳ..." size="middle" />
+                <Input placeholder="Tên học phần..." size="middle" />
               </Col>
               <Col md={4} style={{ display: "block", flexDirection: "column" }}>
                 <button
@@ -431,6 +431,10 @@ const StepOne = (props) => {
         },
       },
       {
+        title: "Số lớp đã mở",
+        dataIndex: "totalSubjectClassOpened",
+      },
+      {
         title: "Thao tác",
         dataIndex: "term",
         width: "15%",
@@ -480,10 +484,10 @@ const StepOne = (props) => {
           >
             <Row>
               <Col md={4}>
-                <Input placeholder="Năm học..." size="middle" />
+                <Input placeholder="Mã học phần..." size="middle" />
               </Col>
               <Col md={4}>
-                <Input placeholder="Học kỳ..." size="middle" />
+                <Input placeholder="Tên học phần..." size="middle" />
               </Col>
               <Col md={4} style={{ display: "block", flexDirection: "column" }}>
                 <button
@@ -548,6 +552,7 @@ const StepOne = (props) => {
             visible={showSubjectClassCreateModal}
             setVisible={setShowSubjectClassCreateModal}
             subject={subjectToCreateClass}
+            term={props.term}
           />
         )}
       </>

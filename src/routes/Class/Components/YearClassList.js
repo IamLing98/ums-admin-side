@@ -204,10 +204,12 @@ export const YearClassList = (props) => {
     {
       title: "Mã Lớp ",
       dataIndex: "classId",
+      align:"center",
     },
     {
       title: "Tên Lớp ",
       dataIndex: "className",
+      align:"center",
       render: (text, record) => (
         <a
           // className="ant-anchor-link-title ant-anchor-link-title-active"
@@ -244,15 +246,18 @@ export const YearClassList = (props) => {
     {
       title: "Khoa Đào Tạo",
       dataIndex: "departmentName",
+      align:"center",
     },
     {
       title: "Ngành Đào Tạo",
       dataIndex: "branchName",
+      align:"center",
     },
 
     {
       title: "Trình Độ Đào Tạo",
       dataIndex: "educationProgramLevel",
+      align:"center",
       render: (text) => {
         if (text === 1) {
           return <span>Đào Tạo Tiến Sỹ</span>;
@@ -268,6 +273,7 @@ export const YearClassList = (props) => {
     {
       title: "Hình Thức Đào Tạo",
       dataIndex: "educationProgramType",
+      align:"center",
       render: (text) => {
         if (text === 1) {
           return <span>Đại học chính quy</span>;
@@ -288,6 +294,7 @@ export const YearClassList = (props) => {
     },
     {
       title: "Niên Khoá",
+      align:"center",
       render: (text, record) => {
         return <>{record.startYear + " - " + record.endYear}</>;
       },
@@ -295,13 +302,16 @@ export const YearClassList = (props) => {
     {
       title: "GVCN",
       dataIndex: "branchName",
+      align:"center",
     },
     {
       title: "Tình Trạng",
       dataIndex: "branchName",
+      align:"center",
     },
     {
       title: "Thao Tác",
+      align:"center",
       render: (text, record) => (
         <Space size="middle">
           {record.educationProgramStatus === "2" ? (
@@ -414,7 +424,7 @@ export const YearClassList = (props) => {
                     </div>
                   </Col>
                 </Row>
-                <Table
+                <Table 
                   columns={columns}
                   dataSource={classList}
                   bordered

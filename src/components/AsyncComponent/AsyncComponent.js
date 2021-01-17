@@ -18,7 +18,22 @@ const AsyncClientHomeDashboardComponent = Loadable({
 });
 
 
-// education programs 
+// education programs  
+
+const AsyncEducationProgramsComponent = Loadable({
+   loader: () => import("Routes/EducationPrograms/Components"),
+   loading: () => <RctPageLoader />
+});
+
+
+//subject
+
+const AsyncSubjectsComponent = Loadable({
+   loader: () => import("Routes/Subjects"),
+   loading: () => <RctPageLoader />
+});
+
+
 
 const AsyncEducationProgramComponent = Loadable({
    loader: () => import("Routes/EducationProgram/AsyncEducationProgramsComponent"),
@@ -30,7 +45,7 @@ const AsyncEducationProgramDetailComponent = Loadable({
    loading: () => <RctPageLoader />
 });
 
-// student list
+// student 
 const AsyncStudentComponent = Loadable({
    loader: () => import('Routes/Student/Components'),
    loading: () => <RctPageLoader />
@@ -87,7 +102,9 @@ export {
    //student
    AsyncStudentComponent,
    
+   //education program
    AsyncEducationProgramDetailComponent,
+   AsyncEducationProgramsComponent,
    AsyncEducationProgramComponent,
 
    //class
@@ -101,6 +118,11 @@ export {
 
    //Room Config
    AsyncRoomConfigComponent,
+
+   //Subjects
+
+   AsyncSubjectsComponent,
+
    AsyncForgotPassComponent,
    AsyncHomeDashboardComponent,
    AsyncAdminLoginComponent,

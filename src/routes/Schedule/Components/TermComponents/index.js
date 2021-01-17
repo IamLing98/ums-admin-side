@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Steps } from "antd";
 import { setTermDetail } from "../../../../actions/TermActions";
 import StepOne from "./StepOne";
+import StepTwo from "./StepTwo";
 import { api } from "Api";
 import { ArrowRightOutlined } from "@ant-design/icons";
 const { Step } = Steps;
@@ -13,14 +14,19 @@ function StepRender(props) {
         <StepOne {...props} />
       </div>
     );
-  } else return <div></div>;
+  } else if (props.step === 1)
+    return (
+      <div>
+        <StepTwo {...props} />
+      </div>
+    );
 }
 
 const TermComponent = (props) => {
   const [step, setStep] = useState(0);
 
   const [submittingInfo, setSubmittingInfo] = useState([]);
- 
+
   const getSubmittingInfo = (termId) => {
     api
       .get("/subjectsRegistration/" + termId)
@@ -34,7 +40,7 @@ const TermComponent = (props) => {
     else if (progress > 20 && progress < 30) setStep(1);
     else if (progress > 30 && progress < 40) setStep(2);
     return () => props.setIsShowDetail(null);
-  }, []);  
+  }, []);
 
   const icon = () => {
     return <ArrowRightOutlined />;

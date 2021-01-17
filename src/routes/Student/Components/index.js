@@ -338,10 +338,12 @@ export const StudentList = (props) => {
     {
       title: "Mã Sinh Viên ",
       dataIndex: "studentId",
+      align:"center",
     },
     {
       title: "Họ Và Tên ",
       dataIndex: "fullName",
+      align:"center",
       render: (text, record) => (
         <a
           // className="ant-anchor-link-title ant-anchor-link-title-active"
@@ -372,6 +374,7 @@ export const StudentList = (props) => {
     },
     {
       title: "Lớp ",
+      align:"center",
       render: (text, record) => (
         <>
           {record.yearClassId +
@@ -385,19 +388,23 @@ export const StudentList = (props) => {
     {
       title: "Khoa Đào Tạo",
       dataIndex: "departmentName",
+      align:"center",
     },
     {
       title: "Ngành Đào Tạo",
       dataIndex: "branchName",
+      align:"center",
     },
     {
       title: "Niên Khoá",
+      align:"center",
       render: (text, record) => (
         <span>{record.startYear + " - " + record.endYear}</span>
       ),
     },
     {
       title: "Thao Tác",
+      align:"center",
       render: (text, record) => (
         <Space size="middle">
           {record.educationProgramStatus === "2" ? (

@@ -320,8 +320,8 @@ export const TeachersList = (props) => {
     api
       .get("/teachers?" + params.toString(), true)
       .then((response) => {
-        setTeachersList(response.content);
-        setTotalElements(response.totalElements);
+        setTeachersList(response);
+        setTotalElements(response.length);
       })
       .catch((error) => {
         console.log(error.message);
@@ -349,10 +349,12 @@ export const TeachersList = (props) => {
     {
       title: "Mã Giảng Viên ",
       dataIndex: "employeeId",
+      align:"center",
     },
     {
       title: "Họ Và Tên",
       dataIndex: "fullName",
+      align:"center",
       render: (text, record) => (
         <a
           // className="ant-anchor-link-title ant-anchor-link-title-active"
@@ -384,6 +386,7 @@ export const TeachersList = (props) => {
     {
       title: "Giới Tính ",
       dataIndex:"sex",
+      align:"center",
       render: (text, record) => {
         if(text  === 1) return<>Nam</>
         else if(text === 0) return <>Nữ</>;
@@ -392,6 +395,7 @@ export const TeachersList = (props) => {
     {
       title: "Học vị",
       dataIndex: "scientificTitles",
+      align:"center",
       render:text =>{
         if(text === 1) return <>Cử nhân</>
         if(text === 2) return <>Kỹ sư</>
@@ -402,9 +406,11 @@ export const TeachersList = (props) => {
     {
       title: "Chức Vụ Và Đơn Vị Công Tác",
       dataIndex: "departmentName",
+      align:"center",
     }, 
     {
       title: "Thao Tác",
+      align:"center",
       render: (text, record) => (
         <Space size="middle">
           {record.educationProgramStatus === "2" ? (
@@ -628,7 +634,7 @@ export const TeachersList = (props) => {
                   <Alert
                     message={
                       <span>
-                        Tìm thấy: <b>{totalElements}</b> sinh viên .{" "}
+                        Tìm thấy: <b>{totalElements}</b> giảng viên .{" "}
                       </span>
                     }
                     type="info"

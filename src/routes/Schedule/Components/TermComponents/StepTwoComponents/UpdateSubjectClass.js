@@ -15,6 +15,8 @@ import {
   Slider,
   Switch,
   Statistic,
+  Radio,
+  AutoComplete,
 } from "antd";
 import { LockOutlined, SmileOutlined } from "@ant-design/icons";
 import { api } from "Api";
@@ -49,36 +51,50 @@ const formItemLayout = {
       span: 16,
     },
   },
-  initialValues: {
-    numberOfSeats: undefined,
-    isRequireLab: false,
-  },
 };
 
-const OpenSubjectClass = (props) => {
+const UpdateSubjectClass = (props) => {
   const [form] = Form.useForm();
 
   const [totalNumberOfSeats, setTotalNumberOfSeats] = useState(0);
 
-  const handleSubmitForm = (values) => {
-    let subjectClassArr = [];
-    for (var i = 0; i < values.numberOfGroup; i++) {
-      let subjectClass = {};
-      subjectClass.subjectClassId = props.term.id + props.subject.subjectId + i;
-      subjectClass.subjectId = props.subject.subjectId;
-      subjectClass.termId = props.term.id;
-      subjectClass.numberOfSeats = values.numberOfSeats;
-      subjectClass.isRequireLab = values.isRequireLab === false ? 0 : 1;
-      subjectClassArr.push(subjectClass);
-    }
+  const [techerList, setTeacherList] = useState([]);
+
+  const getTeacherList = () => {
     api
-      .post("/subjectClasses", subjectClassArr, true)
+      .get("/teachers")
       .then((res) => {
-        NotificationManager.success("Tạo mới lớp học phần thành công.");
-        // props.getTermList();
+        let options = res.map((item, index) => {
+          return {
+            key: index,
+            value: item.employeeId,
+            label: item.employeeId + " - " + item.fullName,
+          };
+        });
+        setTeacherList(options);
+      })
+      .catch((err) => console.log(res));
+  };
+
+  const handleSubmitForm = (values) => {
+    let subjectClass = { ...props.recordUpdate };
+    subjectClass.teacherId = values.employeeId;
+    subjectClass.isRequireLab = values.isRequireLab;
+    subjectClass.numberOfSeats = values.numberOfSeats;
+    api
+      .put(
+        `/subjectClasses/${props.recordUpdate.subjectClassId}`,
+        subjectClass,
+        true
+      )
+      .then((res) => {
+        NotificationManager.success("Cập nhật lớp học phần thành công.");
+        props.getSubjectClassList();
+        props.onCancel();
       })
       .catch((error) => {
-        console.log(error.response);
+        console.log(error.response); 
+        props.onCancel();
         NotificationManager.error(error.response.data.message);
         if (error.response.status === 403) {
           NotificationManager.error(
@@ -88,28 +104,40 @@ const OpenSubjectClass = (props) => {
           throw new SubmissionError({ _error: "Username or Password Invalid" });
         }
       });
-    props.setVisible(false);
   };
+
+  const options = [
+    {
+      value: "Burns Bay Road",
+    },
+    {
+      value: "Downing Street",
+    },
+    {
+      value: "Wall Street",
+    },
+  ];
+
+  useEffect(() => {
+    console.log(props.recordUpdate);
+    getTeacherList();
+  }, []);
 
   return (
     <Modal
-      title="Tạo mới lớp học phần"
+      title="Cập nhật thông tin lớp học phần"
       visible={props.visible}
       onOk={() => {
         let values = form.getFieldsValue();
         form.resetFields();
-        console.log(values);
         handleSubmitForm(values);
       }}
-      onCancel={() => {
-        props.setVisible(false);
-      }}
+      onCancel={() => props.onCancel()}
       okButtonProps={{ disabled: false }}
       cancelButtonProps={{ disabled: false }}
       maskClosable={false}
       okText="Tạo Mới"
       cancelText="Đóng"
-      destroyOnClose={true}
       centered
       closable={false}
       width={"40%"}
@@ -117,11 +145,11 @@ const OpenSubjectClass = (props) => {
       <Form
         form={form}
         {...formItemLayout}
+        initialValues={{ ...props.recordUpdate }}
         onFieldsChange={(changedFields, allFields) => {}}
         preserve={false}
         onValuesChange={(changedValues, allValues) => {
           if (allValues.numberOfSeats && allValues.numberOfGroup) {
-            console.log(allValues);
             setTotalNumberOfSeats(
               allValues.numberOfSeats * allValues.numberOfGroup
             );
@@ -137,48 +165,37 @@ const OpenSubjectClass = (props) => {
           <Slider min={15} max={90} />
         </Form.Item>
         <Form.Item
-          name="numberOfGroup"
-          label="Số nhóm"
-          hasFeedback
-          rules={[{ required: true, message: "Vui lòng điền số nhóm!" }]}
-        >
-          <Input type="number" />
-        </Form.Item>
-        <Form.Item
           name="isRequireLab"
           label="Yêu cầu phòng máy"
           // hasFeedback
           rules={[{ required: true, message: "Vui lòng chọn !" }]}
         >
-          <Switch />
+          <Radio.Group>
+            <Radio value={1}>Có</Radio>
+            <Radio value={0}>Không</Radio>
+          </Radio.Group>
+        </Form.Item>
+        <Form.Item
+          name="employeeId"
+          label="Giảng viên"
+          hasFeedback
+          rules={[{ required: true, message: "Vui lòng điền số nhóm!" }]}
+        >
+          <AutoComplete
+            style={{
+              width: 200,
+            }}
+            options={techerList}
+            placeholder="Nhập mã giảng viên hoặc tên giảng viên"
+            filterOption={(inputValue, option) =>
+              option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !==
+              -1
+            }
+          />
         </Form.Item>
       </Form>
-
-      <Row gutter={16}>
-        <Col span={12}>
-          <Statistic
-            title="Số lượng dự đoán"
-            value={props.subject.predictSubmit}
-            formatter={(values) => <span>{values + " sinh viên"}</span>}
-          />
-        </Col>
-        <Col span={12}>
-          <Statistic
-            title="Số lượng đăng ký"
-            value={props.subject.totalSubmit}
-            formatter={(values) => <span>{values + " sinh viên"}</span>}
-          />
-        </Col>
-        <Col span={12}>
-          <Statistic
-            title="Số lượng theo lớp học phần"
-            value={totalNumberOfSeats}
-            formatter={(values) => <span>{values + " sinh viên"}</span>}
-          />
-        </Col>
-      </Row>
     </Modal>
   );
 };
 
-export default OpenSubjectClass;
+export default UpdateSubjectClass;

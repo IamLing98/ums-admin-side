@@ -1,13 +1,8 @@
-/**
- * Class Routes
- */
-/* eslint-disable */
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 // async components
-import { AsyncScheduleComponent } from "Components/AsyncComponent/AsyncComponent";
-// import './style.scss';
+import { AsyncScheduleComponent } from "Components/AsyncComponent/AsyncComponent"; 
 
 const ScheduleRouter = ({ match }) => {
   return (

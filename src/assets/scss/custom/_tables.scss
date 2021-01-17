@@ -26,7 +26,7 @@ table {
     tr {
       th {
         font-size: $table-tbody-font-size;
-        font-weight: 500;
+        font-weight: bolder;
         color: $table-head-color;
         border-width: 1px !important;
       }
@@ -222,4 +222,17 @@ table {
          background: $primary;
      }
    }
+}
+
+
+//ant table
+
+table{
+  thead{
+    tr{
+      th{
+        font-weight: bolder !important;
+      }
+    }
+  }
 }

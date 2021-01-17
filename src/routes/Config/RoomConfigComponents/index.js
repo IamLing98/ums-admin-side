@@ -95,13 +95,16 @@ const RoomConfigHome = (props) => {
     {
       title: "Mã giảng đường ",
       dataIndex: "roomId",
+      align:"center",
     },
     {
       title: "Sức chứa ",
       dataIndex: "numberOfSeats",
+      align:"center",
     },
     {
       title: "Loại giảng đường",
+      align:"center",
       dataIndex: "isLab",
       render: (text) => {
         if (text === 0) return <span>Thường</span>;
@@ -110,6 +113,7 @@ const RoomConfigHome = (props) => {
     },
     {
       title: "Thao Tác",
+      align:"center",
       render: (text, record) => (
         <Space size="middle">
           <Button

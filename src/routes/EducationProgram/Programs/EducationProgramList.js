@@ -208,10 +208,12 @@ export const EducationProgramList = (props) => {
     {
       title: "Mã CTDT ",
       dataIndex: "educationProgramId",
+      align:"center",
     },
     {
       title: "Tên Chương Trình ",
       dataIndex: "educationProgramName",
+      align:"center",
       render: (text, record) => (
         <a
           // className="ant-anchor-link-title ant-anchor-link-title-active"
@@ -242,6 +244,7 @@ export const EducationProgramList = (props) => {
     {
       title: "Trình Độ Đào Tạo",
       dataIndex: "educationProgramLevel",
+      align:"center",
       render: (text) => {
         if (text === 1) {
           return <span>Đào Tạo Tiến Sỹ</span>;
@@ -256,16 +259,19 @@ export const EducationProgramList = (props) => {
     },
     {
       title: "Ngành Đào Tạo",
+      align:"center",
       dataIndex: "branchName",
     },
 
     {
       title: "Số Tín Chỉ",
       dataIndex: "branchName",
+      align:"center",
     },
     {
       title: "Hình Thức Đào Tạo",
       dataIndex: "educationProgramType",
+      align:"center",
       render: (text) => {
         if (text === 1) {
           return <span>Đại học chính quy</span>;
@@ -309,6 +315,7 @@ export const EducationProgramList = (props) => {
     // },
     {
       title: "Thao Tác",
+      align:"center",
       render: (text, record) => (
         <Space size="middle">
           {record.educationProgramStatus === "2" ? (
