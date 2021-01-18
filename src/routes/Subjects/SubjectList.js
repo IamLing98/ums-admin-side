@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Input, Popconfirm, Space, Table, Tag } from "antd";
+import { Button, Input, Popconfirm, Space, Table, Tag, Badge } from "antd";
 import {
   DeleteFilled,
   DeleteOutlined,
@@ -8,6 +8,7 @@ import {
   PlusOutlined,
   SearchOutlined,
   DoubleLeftOutlined,
+  EditOutlined,
 } from "@ant-design/icons";
 import { api } from "Api";
 
@@ -74,7 +75,19 @@ const SubjectList = (props) => {
     {
       title: "Học Phần Tiên Quyết",
       align: "center",
-      dataIndex: "tags",
+      dataIndex: "preLearnSubjectList",
+      render: (text, record) => {
+        let { preLearnSubjectList } = record;
+        return (
+          <span>
+            {preLearnSubjectList != null
+              ? preLearnSubjectList.map((item, index) => {
+                  return(<> <Badge key={"badge" + item.subjectName + index} color="#87d068" text={item.subjectName} /><br/></>);
+                })
+              : ""}
+          </span>
+        );
+      },
     },
     {
       title: "Trình Độ Đào Tạo",
@@ -91,7 +104,7 @@ const SubjectList = (props) => {
           return <span></span>;
         }
       },
-    }, 
+    },
     {
       title: "Khoa phụ trách",
       align: "center",
@@ -106,7 +119,13 @@ const SubjectList = (props) => {
           <Button
             type=""
             onClick={() => {
-              props.setRecordUpdate(record); 
+              let preLearnList = record.preLearnSubjectList;
+              let preLearnSubjectList = [];
+              preLearnList.map((item, index)=>{
+                preLearnSubjectList.push(item.subjectId);
+              })
+              record.preLearnSubjectList = preLearnSubjectList;
+              props.setRecordUpdate(record);
             }}
           >
             <EditFilled />
@@ -130,14 +149,14 @@ const SubjectList = (props) => {
   const handleChangeTable = (pagination) => {
     setPagination(pagination);
   };
- 
 
-  const onSelectChange = (selectedRowKeys) => { 
+  const onSelectChange = (selectedRowKeys) => {
+    console.log(selectedRowKeys);
     props.setSelectedRowKeys(selectedRowKeys);
   };
 
   const rowSelection = {
-    selectedRowKeys:props.selectedRowKeys,
+    selectedRowKeys: props.selectedRowKeys,
     onChange: onSelectChange,
     selections: [
       Table.SELECTION_ALL,

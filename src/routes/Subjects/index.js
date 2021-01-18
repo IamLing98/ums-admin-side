@@ -5,13 +5,14 @@ import { NotificationManager } from "react-notifications";
 import SubjectList from "./SubjectList";
 import SubjectCreate from "./SubjectCreate";
 import SubjecUpdate from "./SubjectUpdate";
-// import TermDetail from "./TermComponents/index";
+import SubjectImport from './Import'; 
 import { Col, Row } from "reactstrap";
 import {
   PlusOutlined,
   SearchOutlined,
   DeleteOutlined,
   DiffOutlined,
+  VerticalAlignBottomOutlined,
 } from "@ant-design/icons";
 import { Button, Input, Popconfirm, Space, Table } from "antd";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
@@ -20,6 +21,8 @@ export const SubjectHome = (props) => {
   const [currentTitle, setCurrentTitle] = useState("Danh sách học phần");
 
   const [showModalCreate, setShowModalCreate] = useState(false);
+
+  const [showModalImport, setShowModalImport] = useState(false);
 
   const [subjectList, setSubjectList] = useState([]);
 
@@ -33,6 +36,17 @@ export const SubjectHome = (props) => {
 
   const onSearch = () => {};
 
+  const showErrNoti = (err) => {
+    NotificationManager.err(err.response.data.message);
+    if (err.message === "Forbidden") {
+      NotificationManager.err(
+        "Did you forget something? Please activate your account"
+      );
+    } else if (err.message === "Unauthorized") {
+      throw new SubmissionError({ _err: "Username or Password Invalid" });
+    }
+  };
+
   const getSubjectList = () => {
     api
       .get("/subjects", true)
@@ -41,14 +55,7 @@ export const SubjectHome = (props) => {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
-        if (err.message === "Forbidden") {
-          NotificationManager.err(
-            "Did you forget something? Please activate your account"
-          );
-        } else if (err.message === "Unauthorized") {
-          throw new SubmissionError({ _err: "Username or Password Invalid" });
-        }
+        showErrNoti(err);
       });
   };
 
@@ -59,13 +66,7 @@ export const SubjectHome = (props) => {
         setDepartmentList(res);
       })
       .catch((err) => {
-        if (err.message === "Forbidden") {
-          NotificationManager.err(
-            "Did you forget something? Please activate your account"
-          );
-        } else if (err.message === "Unauthorized") {
-          throw new SubmissionError({ _err: "Username or Password Invalid" });
-        }
+        showErrNoti(err);
       });
   };
 
@@ -77,15 +78,7 @@ export const SubjectHome = (props) => {
         getSubjectList();
       })
       .catch((err) => {
-        console.log(err.response);
-        NotificationManager.err(err.response.data.message);
-        if (err.response.status === 403) {
-          NotificationManager.err(
-            "Did you forget something? Please activate your account"
-          );
-        } else if (err.response.status === "Lỗi xác thực") {
-          throw new SubmissionError({ _err: "Username or Password Invalid" });
-        }
+        showErrNoti(err);
       });
     setShowModalCreate(false);
   };
@@ -101,15 +94,23 @@ export const SubjectHome = (props) => {
         getSubjectList();
       })
       .catch((err) => {
-        console.log(err.response);
-        NotificationManager.err(err.response.data.message);
-        if (err.response.status === 403) {
-          NotificationManager.err(
-            "Did you forget something? Please activate your account"
-          );
-        } else if (err.response.status === "Lỗi xác thực") {
-          throw new SubmissionError({ _err: "Username or Password Invalid" });
-        }
+        showErrNoti(err);
+      });
+  };
+
+  const handleDeleteMultipleRecord = (values) => {
+    api
+      .delete(
+        `/subjects?${values.map((value, index) => `ids=${value}`).join("&")}`,
+        true
+      )
+      .then((res) => {
+        NotificationManager.success("Đã xoá" + res + " bản ghi");
+        getSubjectList();
+        setSelectedRowKeys([]);
+      })
+      .catch((err) => {
+        showErrNoti(err);
       });
   };
 
@@ -185,36 +186,59 @@ export const SubjectHome = (props) => {
                     >
                       <Button
                         type="primary"
+                        style={{
+                          background: "#448AE2",
+                          borderColor: "#448AE2",
+                          width: "122px",
+                        }}
                         onClick={() => setShowModalCreate(true)}
                       >
                         <PlusOutlined></PlusOutlined>
                         <span>Tạo Mới </span>
                       </Button>
                       <Button
-                        type="button"
-                        className="ant-btn ant-btn-primary"
-                        onClick={() => setShowModalCreate(true)}
+                        type="primary"
+                        style={{
+                          background: "#63B175",
+                          borderColor: "#63B175",
+                          width: "122px",
+                        }}
+                        onClick={() => setShowModalImport(true)}
                       >
-                        <PlusOutlined></PlusOutlined>
+                        <VerticalAlignBottomOutlined />
                         <span>Import </span>
                       </Button>
                       <Button
-                        type="dashed"
-                        disabled={selectedRowKeys.length > 0 ? false : true}
-                        onClick={() =>
-                          handleDeleteMultipleRecord(selectedRowKeys)
+                        type="primary"
+                        style={
+                          selectedRowKeys.length > 0
+                            ? {
+                                background: "#DC0000",
+                                borderColor: "#DC0000",
+                                color: "wheat",
+                                width: "122px",
+                              }
+                            : {}
                         }
+                        disabled={selectedRowKeys.length > 0 ? false : true}
+                        onClick={() => handleDeleteMultipleRecord(selectedRowKeys)}
                       >
                         <DeleteOutlined />
                         <span>Xoá Nhiều</span>
-                      </Button>
-                      <a
-                        href="https://demo.doublechaintech.com/freshchain/platformManager/exportExcelFromList/P000001/productList/"
-                        className="ant-btn"
+                      </Button> 
+                      <Button
+                        type="primary"
+                        style={{
+                          background: "#DEC544",
+                          borderColor: "#DEC544",
+                          color: "black",
+                          width: "122px",
+                        }}
+                        onClick={() => handleDeleteMultipleRecord(selectedRowKeys)}
                       >
                         <DiffOutlined />
                         <span>In Exel</span>
-                      </a>
+                      </Button>
                     </div>
                   </Col>
                 </Row>
@@ -240,6 +264,16 @@ export const SubjectHome = (props) => {
 
               <SubjecUpdate
                 visible={recordUpdate}
+                setRecordUpdate={setRecordUpdate}
+                record={recordUpdate}
+                subjectList={subjectList}
+                departmentList={departmentList}
+                getSubjectList={getSubjectList}
+                // options={prerequisitesSubject}
+              />
+              <SubjectImport
+                visible={showModalImport}
+                setShowModalImport={setShowModalImport}
                 setRecordUpdate={setRecordUpdate}
                 record={recordUpdate}
                 subjectList={subjectList}

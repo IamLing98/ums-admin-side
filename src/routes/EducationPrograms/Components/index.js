@@ -7,7 +7,12 @@ import EducationProgramDetail from "./DetailComponents/index";
 import EducationProgramCreate from "./CreateEducationProgram";
 import EducationProgramUpdate from "./UpdateEducationProgram";
 import { Col, Row } from "reactstrap";
-import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  SearchOutlined,
+  VerticalAlignBottomOutlined,
+  DiffOutlined,
+} from "@ant-design/icons";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import { Button, Input, Popconfirm, Space, Table } from "antd";
 
@@ -30,6 +35,17 @@ export const EducationProgramsComponent = (props) => {
 
   const [branchList, setBranchList] = useState([]);
 
+  const showErrNoti = (err) => {
+    NotificationManager.err(err.response.data.message);
+    if (err.message === "Forbidden") {
+      NotificationManager.err(
+        "Did you forget something? Please activate your account"
+      );
+    } else if (err.message === "Unauthorized") {
+      throw new SubmissionError({ _err: "Username or Password Invalid" });
+    }
+  };
+
   const getEducationProgramList = () => {
     api
       .get("/education-programs", true)
@@ -38,14 +54,7 @@ export const EducationProgramsComponent = (props) => {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
-        if (error.message === "Forbidden") {
-          NotificationManager.error(
-            "Did you forget something? Please activate your account"
-          );
-        } else if (error.message === "Unauthorized") {
-          throw new SubmissionError({ _error: "Username or Password Invalid" });
-        }
+        showErrNoti(err);
       });
   };
 
@@ -56,13 +65,7 @@ export const EducationProgramsComponent = (props) => {
         setBranchList(res);
       })
       .catch((err) => {
-        if (error.message === "Forbidden") {
-          NotificationManager.error(
-            "Did you forget something? Please activate your account"
-          );
-        } else if (error.message === "Unauthorized") {
-          throw new SubmissionError({ _error: "Username or Password Invalid" });
-        }
+        showErrNoti(err);
       });
   };
 
@@ -73,16 +76,8 @@ export const EducationProgramsComponent = (props) => {
         NotificationManager.success("Đã xoá");
         getEducationProgramList();
       })
-      .catch((error) => {
-        console.log(error.response);
-        NotificationManager.error(error.response.data.message);
-        if (error.response.status === 403) {
-          NotificationManager.error(
-            "Did you forget something? Please activate your account"
-          );
-        } else if (error.response.status === "Lỗi xác thực") {
-          throw new SubmissionError({ _error: "Username or Password Invalid" });
-        }
+      .catch((err) => {
+        showErrNoti(err);
       });
   };
 
@@ -156,14 +151,43 @@ export const EducationProgramsComponent = (props) => {
                         className="tableListOperator"
                         style={{ textAlign: "right", width: "100%" }}
                       >
-                        <button
-                          type="button"
-                          className="ant-btn ant-btn-primary"
+                        <Button
+                          type="primary"
+                          style={{
+                            background: "#448AE2",
+                            borderColor: "#448AE2",
+                            width: "122px",
+                          }}
                           onClick={() => setShowModalCreate(true)}
                         >
                           <PlusOutlined></PlusOutlined>
                           <span>Tạo Mới </span>
-                        </button>
+                        </Button>
+                        <Button
+                          type="primary"
+                          style={{
+                            background: "#63B175",
+                            borderColor: "#63B175",
+                            width: "122px",
+                          }}
+                          onClick={() => setShowModalImport(true)}
+                        >
+                          <VerticalAlignBottomOutlined />
+                          <span>Import </span>
+                        </Button>
+                        <Button
+                          type="primary"
+                          style={{
+                            background: "#DEC544",
+                            borderColor: "#DEC544",
+                            color: "black",
+                            width: "122px",
+                          }}
+                          onClick={() => handleDeleteMultipleRecord()}
+                        >
+                          <DiffOutlined />
+                          <span>In Exel</span>
+                        </Button>
                       </div>
                     </Col>
                   </Row>
@@ -178,7 +202,7 @@ export const EducationProgramsComponent = (props) => {
                     setIsShowDetail={setIsShowDetail}
                     setIsShowModalUpdate={setIsShowModalUpdate}
                     setRecordUpdate={setRecordUpdate}
-                    handleDeleteRecord={handleDeleteRecord }
+                    handleDeleteRecord={handleDeleteRecord}
                   />
                 ) : (
                   <EducationProgramDetail
@@ -195,15 +219,15 @@ export const EducationProgramsComponent = (props) => {
                 getEducationProgramList={getEducationProgramList}
                 // options={prerequisitesSubject}
               />
-                <EducationProgramUpdate
-                  visible={isShowModalUpdate}
-                  record={recordUpdate}
-                  getEducationProgramList={getEducationProgramList}
-                  branchList={branchList}
-                  setIsShowModalUpdate={setIsShowModalUpdate}
-                  setRecordUpdate={setRecordUpdate}
-                  // options={prerequisitesSubject}
-                />
+              <EducationProgramUpdate
+                visible={isShowModalUpdate}
+                record={recordUpdate}
+                getEducationProgramList={getEducationProgramList}
+                branchList={branchList}
+                setIsShowModalUpdate={setIsShowModalUpdate}
+                setRecordUpdate={setRecordUpdate}
+                // options={prerequisitesSubject}
+              />
             </div>
           </div>
         </div>

@@ -136,6 +136,7 @@ export const SubjectCreate = (props) => {
       centered
       closable={false}
       width={"60%"}
+      forceRender
     >
       <Form
         form={form}

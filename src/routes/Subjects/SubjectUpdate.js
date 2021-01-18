@@ -144,6 +144,7 @@ export const SubjectUpdate = (props) => {
       centered
       closable={false}
       width={"60%"}
+      forceRender
     >
       <Form
         form={form}
