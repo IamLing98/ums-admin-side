@@ -1,4 +1,3 @@
-import Dashboard from "Routes/dashboard";
 import EducationProgram from "Routes/EducationProgram";
 import EducationProgramsHome from "Routes/EducationPrograms"
 import Students from "Routes/Student";
@@ -9,7 +8,7 @@ import Config from "Routes/Config";
 export default [
   {
     path: "dashboard",
-    component: Dashboard,
+    component: EducationProgramsHome,
   },
   
   {

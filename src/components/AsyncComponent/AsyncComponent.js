@@ -8,15 +8,6 @@ import Loadable from 'react-loadable';
 // rct page loader
 import RctPageLoader from 'Components/RctPageLoader/RctPageLoader';
 // home dashboard
-const AsyncHomeDashboardComponent = Loadable({
-   loader: () => import("Routes/dashboard/home"),
-   loading: () => <RctPageLoader />,
-});
-const AsyncClientHomeDashboardComponent = Loadable({
-   loader: () => import("Routes/dashboard/client-home"),
-   loading: () => <RctPageLoader />,
-});
-
 
 // education programs  
 
@@ -119,9 +110,7 @@ export {
    AsyncSubjectsComponent,
 
    AsyncForgotPassComponent,
-   AsyncHomeDashboardComponent,
    AsyncAdminLoginComponent,
    AsyncSessionPage404Component,
    AsyncSessionPage500Component,
-   AsyncClientHomeDashboardComponent
 };
