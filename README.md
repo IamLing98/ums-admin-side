@@ -32,7 +32,7 @@ npm run build
 ## Usage
  
 
-_Subject Management ![SubjectManagement])(https://i.ibb.co/m9kRPDK/Capture.png)_
+_Subject Management_ ![SubjectManagement])(https://i.ibb.co/m9kRPDK/Capture.png)
 
 <!-- CONTACT -->
 ## Contact
