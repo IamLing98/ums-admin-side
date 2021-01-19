@@ -12,6 +12,7 @@ import {
   SearchOutlined,
   VerticalAlignBottomOutlined,
   DiffOutlined,
+  DoubleLeftOutlined,
 } from "@ant-design/icons";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import { Button, Input, Popconfirm, Space, Table } from "antd";
@@ -34,6 +35,8 @@ export const EducationProgramsComponent = (props) => {
   const [isShowDetail, setIsShowDetail] = useState(null);
 
   const [branchList, setBranchList] = useState([]);
+
+  const [departmentList, setDepartmentList] = useState([]);
 
   const showErrNoti = (err) => {
     NotificationManager.err(err.response.data.message);
@@ -69,6 +72,17 @@ export const EducationProgramsComponent = (props) => {
       });
   };
 
+  const getDepartmentList = () => {
+    api
+      .get("/departments", true)
+      .then((res) => {
+        setDepartmentList(res);
+      })
+      .catch((err) => {
+        showErrNoti(err);
+      });
+  };
+  
   const handleDeleteRecord = (id) => {
     api
       .delete(`/education-program/${id}`, true)
@@ -81,12 +95,42 @@ export const EducationProgramsComponent = (props) => {
       });
   };
 
+  const getEducationProgramDetail = (educationProgramId) => {
+    api
+    .get(`/education-programs/${educationProgramId}`, true)
+    .then((res) => {
+      setIsShowDetail(res); 
+    })
+    .catch((err) => {
+      showErrNoti(err);
+    });
+  }
+
+  const handleShowDetail = (record) => {
+    setCurrentTitle(
+      <span>
+        <a
+          href="javascript:void(0)"
+          onClick={() => {
+            setCurrentTitle(<span>Danh Mục Chương Trình Đào Tạo</span>);
+            setIsShowDetail(null);
+          }}
+        >
+          <DoubleLeftOutlined />
+        </a>{" "}
+        Thông Tin Chi Tiết Chương Trình Đào Tạo  
+      </span>
+    );
+    getEducationProgramDetail(record.educationProgramId);
+  };
+
   useEffect(() => {
     getEducationProgramList();
     getBranchList();
+    getDepartmentList();
   }, []);
 
-  if (loading) {
+  if (loading === true) {
     return (
       <>
         <RctPageLoader />
@@ -203,12 +247,13 @@ export const EducationProgramsComponent = (props) => {
                     setIsShowModalUpdate={setIsShowModalUpdate}
                     setRecordUpdate={setRecordUpdate}
                     handleDeleteRecord={handleDeleteRecord}
+                    handleShowDetail={handleShowDetail}
                   />
                 ) : (
                   <EducationProgramDetail
-                    term={isShowDetail}
+                    educationProgram={isShowDetail}
                     setIsShowDetail={setIsShowDetail}
-                  />
+                  /> 
                 )}
               </div>
 
@@ -217,6 +262,7 @@ export const EducationProgramsComponent = (props) => {
                 visible={showModalCreate}
                 onCancel={() => setShowModalCreate(false)}
                 getEducationProgramList={getEducationProgramList}
+                departmentList={departmentList}
                 // options={prerequisitesSubject}
               />
               <EducationProgramUpdate
@@ -226,6 +272,7 @@ export const EducationProgramsComponent = (props) => {
                 branchList={branchList}
                 setIsShowModalUpdate={setIsShowModalUpdate}
                 setRecordUpdate={setRecordUpdate}
+                departmentList={departmentList}
                 // options={prerequisitesSubject}
               />
             </div>

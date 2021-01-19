@@ -9,6 +9,7 @@ import {
   SearchOutlined,
   DoubleLeftOutlined,
   EditOutlined,
+  RetweetOutlined,
 } from "@ant-design/icons";
 import { api } from "Api";
 
@@ -100,28 +101,12 @@ const SubjectList = (props) => {
       },
     },
     {
-      title: "Học Phần Tương Đương",
-      dataIndex: "selfLearningNumber",
-      align: "center",
-    },
-    {
-      title: "Trình Độ Đào Tạo",
-      dataIndex: "subjectForLevel",
-      align: "center",
-      render: (text) => {
-        if (text === 1) {
-          return <span>Cao học</span>;
-        } else if (text === 2) {
-          return <span>Đại học</span>;
-        } else if (text === 3) {
-          return <span>Cao đẳng</span>;
-        } else {
-          return <span></span>;
-        }
-      },
-    },
-    {
       title: "Khoa Phụ Trách",
+      align: "center",
+      dataIndex: "departmentName",
+    },
+    {
+      title: "Học Kỳ Dự Kiến",
       align: "center",
       dataIndex: "departmentName",
     },
@@ -131,20 +116,8 @@ const SubjectList = (props) => {
       align: "center",
       render: (text, record) => (
         <Space size="middle">
-          <Button
-            type=""
-            onClick={() => {
-              let recordUpdate = { ...record };
-              let preLearnList = record.preLearnSubjectList;
-              let preLearnSubjectList = [];
-              preLearnList.map((item, index) => {
-                preLearnSubjectList.push(item.subjectId);
-              });
-              recordUpdate.preLearnSubjectList = preLearnSubjectList;
-              props.setRecordUpdate(recordUpdate);
-            }}
-          >
-            <EditFilled />
+          <Button type="" onClick={() => {}}>
+            <RetweetOutlined />
           </Button>
           <Popconfirm
             placement="left"

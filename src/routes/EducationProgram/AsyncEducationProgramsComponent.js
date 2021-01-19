@@ -42,18 +42,7 @@ export const EducationProgramHome = (props) => {
         <meta name="description" content="User Profile" />
       </Helmet>
  
-      <Tabs
-          onChange={() => {}} 
-          animated={{ inkBar: true, tabPane: false }}
-          onChange={() => setChangeTab((value) => (value = !value))}
-        >
-          <TabPane tab="Chương trình đào tạo" key="1">
-            <EducationProgramList />
-          </TabPane>
-          <TabPane tab="Học phần" key="2">
-           
-          </TabPane> 
-        </Tabs>
+      <EducationProgramList />
     </div>
   );
 };

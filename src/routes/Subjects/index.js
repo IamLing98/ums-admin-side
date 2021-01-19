@@ -13,9 +13,13 @@ import {
   DeleteOutlined,
   DiffOutlined,
   VerticalAlignBottomOutlined,
+  ExclamationCircleOutlined 
 } from "@ant-design/icons";
-import { Button, Input, Popconfirm, Space, Table } from "antd";
+import { Button, Input, Popconfirm, Space, Modal } from "antd";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
+
+
+const { confirm } = Modal;
 
 export const SubjectHome = (props) => {
   const [currentTitle, setCurrentTitle] = useState("Danh sách học phần");
@@ -113,6 +117,24 @@ export const SubjectHome = (props) => {
         showErrNoti(err);
       });
   };
+
+  const showDeleteConfirm = (selectedRowKeys) =>  {
+    confirm({
+      centered:true,
+      title: 'Chắc chắn?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Vui lòng xác nhận',
+      okText: 'Đồng ý',
+      okType: 'danger',
+      cancelText: 'Huỷ',
+      onOk() {
+        handleDeleteMultipleRecord(selectedRowKeys)
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
 
   useEffect(() => {
     getSubjectList();
@@ -221,7 +243,7 @@ export const SubjectHome = (props) => {
                             : {}
                         }
                         disabled={selectedRowKeys.length > 0 ? false : true}
-                        onClick={() => handleDeleteMultipleRecord(selectedRowKeys)}
+                        onClick={() => showDeleteConfirm(selectedRowKeys)}
                       >
                         <DeleteOutlined />
                         <span>Xoá Nhiều</span>

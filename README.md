@@ -1,8 +1,21 @@
 # University Dashboard
 
-> AntD Pro 
+## About The Project
 
-## Build Setup
+[![Product Name Screen Shot][product-screenshot]](https://example.com)
+
+This is my final year project in my university. An university information management system. 
+
+### Built With
+ 
+* [ReactJS](https://reactjs.org/)
+* [Antd](https://ant.design/)
+* [Redux](https://redux.js.org/)
+* [Webpack](https://webpack.js.org/)
+
+<!-- GETTING STARTED -->
+## Getting Started
+
 
 ``` bash
 # install dependencies
@@ -15,6 +28,10 @@ npm start
 npm run build
 ``` 
 
-> University Management Software(UMS)
+<!-- USAGE EXAMPLES -->
+## Usage
+ 
 
-![alt text](https://i.ibb.co/cNMhjH8/demo.png) 
+_Subject Management [SubjectManagement](https://i.ibb.co/m9kRPDK/Capture.png)_
+
+

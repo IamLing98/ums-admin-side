@@ -38,6 +38,10 @@ const formItemLayout = {
 export const EducationProgramCreate = (props) => {
   const [form] = Form.useForm();
 
+  const [correctBranchList, setCorrectBranchList] = useState([]);
+
+  const [isAllowBranchField, setIsAllowBranchField] = useState(false);
+
   const handleSubmitForm = (values) => {
     console.log(values);
     api
@@ -96,7 +100,14 @@ export const EducationProgramCreate = (props) => {
         {...formItemLayout}
         onFieldsChange={(changedFields, allFields) => {}}
         preserve={false}
-        onValuesChange={(changedValues, allValues) => {}}
+        onValuesChange={(changedValues, allValues) => {
+          if(changedValues['departmentId']){
+            setIsAllowBranchField(true)
+          }
+          else{
+            setIsAllowBranchField(false)
+          }
+        }}
       >
         <Form.Item
           name="educationProgramId"
@@ -115,6 +126,24 @@ export const EducationProgramCreate = (props) => {
           <Input placeholder="Tên chương trình đào tạo..." />
         </Form.Item>
         <Form.Item
+          name="departmentId"
+          label="Khoa Phụ Trách"
+          hasFeedback
+          rules={[{ required: true, message: "Vui lòng chọn kỳ!" }]}
+        >
+          <Select
+            allowClear
+            style={{ width: "100%" }}
+            placeholder="Khoa phụ trách..."
+          >
+            {props.departmentList.map((item) => (
+              <Option key={item.departmentId} value={item.departmentId}>
+                {item.departmentName}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <Form.Item
           name="branchId"
           label="Ngành Đào Tạo"
           hasFeedback
@@ -124,6 +153,7 @@ export const EducationProgramCreate = (props) => {
             allowClear
             style={{ width: "100%" }}
             placeholder="Ngành đào tạo..."
+            disabled={!isAllowBranchField}
           >
             {props.branchList.map((item) => (
               <Option key={item.branchId} value={item.branchId}>

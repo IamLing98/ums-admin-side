@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Input, Popconfirm, Space, Table, Tag } from "antd";
+import { Button, Input, Popconfirm, Space, Table } from "antd";
 import {
   DeleteFilled,
   DeleteOutlined,
@@ -28,23 +28,7 @@ const EducationProgramList = (props) => {
           // className="ant-anchor-link-title ant-anchor-link-title-active"
           href="javascript:void(0)"
           onClick={() => {
-            props.setIsShowDetail(record);
-            props.setCurrentTitle(
-              <span>
-                <a
-                  href="javascript:void(0)"
-                  onClick={() => {
-                    props.setCurrentTitle(
-                      <span>Danh Mục Chương Trình Đào Tạo</span>
-                    );
-                    props.setIsShowDetail(null);
-                  }}
-                >
-                  <DoubleLeftOutlined />
-                </a>{" "}
-                Thông Tin Chi Tiết Chương Trình Đào Tạo
-              </span>
-            );
+            props.handleShowDetail(record);
           }}
         >
           {text}
@@ -66,6 +50,11 @@ const EducationProgramList = (props) => {
           return <span></span>;
         }
       },
+    },
+    {
+      title: "Khoa Phụ Trách",
+      align: "center",
+      dataIndex: "departmentName",
     },
     {
       title: "Ngành Đào Tạo",
@@ -137,16 +126,21 @@ const EducationProgramList = (props) => {
               <RetweetOutlined />
             </Button>
           )}
-          <Button type="" onClick={() => { 
-            props.setRecordUpdate(record);
-            props.setIsShowModalUpdate(true); 
-          }}>
+          <Button
+            type=""
+            onClick={() => {
+              props.setRecordUpdate(record);
+              props.setIsShowModalUpdate(true);
+            }}
+          >
             <EditFilled />
           </Button>
           <Popconfirm
             placement="left"
             title={"Chắc chắn xoá?"}
-            onConfirm={() => props.handleDeleteRecord(record.educationProgramId)}
+            onConfirm={() =>
+              props.handleDeleteRecord(record.educationProgramId)
+            }
             okText="Ok"
             cancelText="Không"
           >

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Form, Select, Input, Slider } from "antd";
 import { NotificationManager } from "react-notifications";
 import { api } from "Api";
@@ -22,19 +22,32 @@ const formItemLayout = {
       span: 16,
     },
   },
+  initialValues: {
+    branchId: undefined,
+    branchName: undefined,
+    educationProgramId: undefined,
+    educationProgramLevel: undefined,
+    educationProgramName: undefined,
+    educationProgramStatus: undefined,
+    educationProgramType: undefined,
+    subjectList: [],
+    totalTerm: undefined,
+  },
 };
 
-export const EducationProgramUpdate = (props) => {
+export const AddSubjectModal = (props) => {
   const [form] = Form.useForm();
+
+  const [correctBranchList, setCorrectBranchList] = useState([]);
+
+  const [isAllowBranchField, setIsAllowBranchField] = useState(false);
 
   const handleSubmitForm = (values) => {
     console.log(values);
     api
-      .put(`/education-programs/${values.educationProgramId}`, values, true)
+      .post("/education-programs", values, true)
       .then((res) => {
-        NotificationManager.success(
-          "Cập nhật chương trình đào tạo thành công."
-        );
+        NotificationManager.success("Tạo mới kỳ học thành công.");
         props.getEducationProgramList();
       })
       .catch((error) => {
@@ -48,16 +61,12 @@ export const EducationProgramUpdate = (props) => {
           throw new SubmissionError({ _error: "Username or Password Invalid" });
         }
       });
-    props.setIsShowModalUpdate(false);
+    props.onCancel();
   };
 
   function formatter(value) {
     return `${value} kỳ`;
   }
-
-  useEffect(() => {
-    form.resetFields();
-  }, [props.record]);
 
   return (
     <Modal
@@ -75,14 +84,12 @@ export const EducationProgramUpdate = (props) => {
           });
       }}
       onCancel={() => {
-        form.resetFields();
-        props.setRecordUpdate(null);
-        props.setIsShowModalUpdate(false);
+        props.onCancel();
       }}
       okButtonProps={{ disabled: false }}
       cancelButtonProps={{ disabled: false }}
       maskClosable={false}
-      okText="Cập nhật"
+      okText="Tạo Mới"
       cancelText="Đóng"
       centered
       closable={false}
@@ -93,32 +100,28 @@ export const EducationProgramUpdate = (props) => {
         {...formItemLayout}
         onFieldsChange={(changedFields, allFields) => {}}
         preserve={false}
-        onValuesChange={(changedValues, allValues) => {}}
-        initialValues={{ ...props.record }}
+        onValuesChange={(changedValues, allValues) => {
+          if(changedValues['departmentId']){
+            setIsAllowBranchField(true)
+          }
+          else{
+            setIsAllowBranchField(false)
+          }
+        }}
       >
         <Form.Item
           name="educationProgramId"
           label="Mã CTĐT"
           hasFeedback
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng nhập mã chương trình đào tạo!!!",
-            },
-          ]}
+          rules={[{ required: true, message: "Vui lòng chọn kỳ!" }]}
         >
-          <Input disabled placeholder="Mã chương trình đào tạo..." />
+          <Input placeholder="Mã chương trình đào tạo..." />
         </Form.Item>
         <Form.Item
           name="educationProgramName"
           label="Tên CTĐT"
           hasFeedback
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng nhập tên chương trình đào tạo!",
-            },
-          ]}
+          rules={[{ required: true, message: "Vui lòng chọn kỳ!" }]}
         >
           <Input placeholder="Tên chương trình đào tạo..." />
         </Form.Item>
@@ -144,14 +147,13 @@ export const EducationProgramUpdate = (props) => {
           name="branchId"
           label="Ngành Đào Tạo"
           hasFeedback
-          rules={[
-            { required: true, message: "Vui lòng chọn ngành đào tạo!!!" },
-          ]}
+          rules={[{ required: true, message: "Vui lòng chọn kỳ!" }]}
         >
           <Select
             allowClear
             style={{ width: "100%" }}
             placeholder="Ngành đào tạo..."
+            disabled={!isAllowBranchField}
           >
             {props.branchList.map((item) => (
               <Option key={item.branchId} value={item.branchId}>
@@ -164,7 +166,7 @@ export const EducationProgramUpdate = (props) => {
           name="educationProgramLevel"
           label="Cấp Đào Tạo"
           hasFeedback
-          rules={[{ required: true, message: "Vui lòng chọn cấp đào tạo!!!" }]}
+          rules={[{ required: true, message: "Vui lòng chọn kỳ!" }]}
         >
           <Select
             allowClear
@@ -186,9 +188,7 @@ export const EducationProgramUpdate = (props) => {
           name="educationProgramType"
           label="Hình Thức Đào Tạo"
           hasFeedback
-          rules={[
-            { required: true, message: "Vui lòng chọn hình thức đào tạo!!!" },
-          ]}
+          rules={[{ required: true, message: "Vui lòng chọn kỳ!" }]}
         >
           <Select
             allowClear
@@ -207,9 +207,7 @@ export const EducationProgramUpdate = (props) => {
           name="totalTerm"
           label="Thời Gian"
           // hasFeedback
-          rules={[
-            { required: true, message: "Vui lòng chọn thời gian học!!!" },
-          ]}
+          rules={[{ required: true, message: "Vui lòng chọn sĩ số!" }]}
         >
           <Slider min={6} max={10} tipFormatter={formatter} />
         </Form.Item>
@@ -218,4 +216,4 @@ export const EducationProgramUpdate = (props) => {
   );
 };
 
-export default EducationProgramUpdate;
+export default AddSubjectModal;
