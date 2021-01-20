@@ -12,7 +12,7 @@ import RctPageLoader from '../RctPageLoader/RctPageLoader';
 // education programs  
 
 const AsyncEducationProgramsComponent = Loadable({
-   loader: () => import("../../routes/EducationPrograms/index"),
+   loader: () => import("Routes/EducationPrograms"),
    loading: () => <RctPageLoader />
 });
 
@@ -31,11 +31,13 @@ const AsyncStudentComponent = Loadable({
    loading: () => <RctPageLoader />
 });
 
+
 // class
 const AsyncYearClassComponent = Loadable({
    loader: () => import('Routes/Class/Components'),
    loading: () => <RctPageLoader />
 });
+
 
 //teacher
  const AsyncTeachersComponent = Loadable({
@@ -43,11 +45,13 @@ const AsyncYearClassComponent = Loadable({
    loading: () => <RctPageLoader />
 });
 
+
 //schedule
 const AsyncScheduleComponent = Loadable({
    loader: () => import('Routes/Schedule/Components'),
    loading: () => <RctPageLoader />
 });
+
 
 //login
 const AsyncAdminLoginComponent = Loadable({
@@ -55,11 +59,13 @@ const AsyncAdminLoginComponent = Loadable({
    loading: () => <RctPageLoader />
 });
 
+
 // CONFIG - Room
 const AsyncRoomConfigComponent = Loadable({
    loader: () => import('Routes/Config/RoomConfigComponents/index.js'),
    loading: () => <RctPageLoader />
 });
+
 
 //error
 const AsyncSessionPage404Component = Loadable({

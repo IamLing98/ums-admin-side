@@ -1,8 +1,7 @@
-
 import React, { useState } from "react";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 
-import Card from "./Card"; 
+import Card from "./Card";
 
 import shortid from "shortid";
 
@@ -20,7 +19,7 @@ const List = (props) => {
 
     const cardId = shortid.generate();
 
-    dispatch({
+    console.log({
       type: "ADD_CARD",
       payload: { cardText, cardId, listId },
     });

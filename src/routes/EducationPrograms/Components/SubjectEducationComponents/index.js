@@ -7,6 +7,8 @@ import {
   SearchOutlined,
   DeleteOutlined,
   ExclamationCircleOutlined,
+  VerticalAlignBottomOutlined ,
+  DiffOutlined 
 } from "@ant-design/icons";
 import { Button, Input, Modal } from "antd";
 import SubjectList from "./SubjectList";
@@ -131,7 +133,7 @@ export const SubjectEducationHome = (props) => {
   useEffect(() => {
     getSubjectList();
     getListSubjectOpts();
-  }, []);
+  }, [props.tab]);
 
   return (
     <>
@@ -179,6 +181,18 @@ export const SubjectEducationHome = (props) => {
             </Button>
             <Button
               type="primary"
+              style={{
+                background: "#63B175",
+                borderColor: "#63B175",
+                width: "122px",
+              }}
+              onClick={() => setShowModalImport(true)}
+            >
+              <VerticalAlignBottomOutlined />
+              <span>Import </span>
+            </Button>
+            <Button
+              type="primary"
               style={
                 selectedRowKeys.length > 1
                   ? {
@@ -194,6 +208,19 @@ export const SubjectEducationHome = (props) => {
             >
               <DeleteOutlined />
               <span>Xoá Nhiều</span>
+            </Button>{" "}
+            <Button
+              type="primary"
+              style={{
+                background: "#DEC544",
+                borderColor: "#DEC544",
+                color: "black",
+                width: "122px",
+              }}
+              onClick={() => handleDeleteMultipleRecord()}
+            >
+              <DiffOutlined />
+              <span>Export</span>
             </Button>
           </div>
         </Col>
@@ -220,7 +247,7 @@ export const SubjectEducationHome = (props) => {
       <SubjectSwap
         visible={showChangeModal}
         subjectList={subjectList}
-        recordChange={recordChange} 
+        recordChange={recordChange}
         getSubjectList={getSubjectList}
         setShowModalChange={setShowModalChange}
         setRecordChange={setRecordChange}
