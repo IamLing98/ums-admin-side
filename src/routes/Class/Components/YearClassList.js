@@ -13,9 +13,7 @@ import React, { useEffect, useState } from "react";
 import { NotificationManager } from "react-notifications";
 import { Col, Row } from "reactstrap";
 import CreateYearClass from "Routes/Class/Components/CreateYearClass";
-import YearClassDetails from "Routes/Class/Components/YearClassDetails";
-import ExportCSV from "Routes/EducationProgram/Programs/ExportCSV";
-import UpdateEducationProgram from "Routes/EducationProgram/Programs/UpdateEducationProgram";
+import YearClassDetails from "Routes/Class/Components/YearClassDetails";  
 const defaultRecord = {
   classId: "",
   className: "",
@@ -412,11 +410,7 @@ export const YearClassList = (props) => {
                       >
                         <DeleteOutlined />
                         <span>Xoá Nhiều</span>
-                      </button>
-                      <ExportCSV
-                        csvData={classList}
-                        fileName={"educationList"}
-                      />
+                      </button> 
                     </div>
                   </Col>
                 </Row>
@@ -447,17 +441,7 @@ export const YearClassList = (props) => {
               visible={showModalCreate}
               onOk={(values) => handleSubmitFormCreate(values)}
               onCancel={() => setShowModalCreate(false)}
-            />
-
-            <UpdateEducationProgram
-              visible={showModalUpdate}
-              onOk={(values) => handleSubmitFormUpdate(values)}
-              onCancel={() => {
-                setShowModalUpdate(false);
-                setRecordUpdate(defaultRecord);
-              }}
-              record={recordUpdate}
-            />
+            /> 
           </div>
         </div>
       </div>

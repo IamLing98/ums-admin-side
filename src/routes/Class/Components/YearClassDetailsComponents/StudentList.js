@@ -23,8 +23,7 @@ import {
   Descriptions,
   Tabs,
 } from "antd";
-import { Row, Col } from "reactstrap";
-import UpdateEducationProgramSubject from "Routes/EducationProgram/Programs/UpdateEducationProgramSubject";
+import { Row, Col } from "reactstrap"; 
 
 const { TabPane } = Tabs;
 
@@ -316,17 +315,7 @@ const StudentList = (props) => {
             rowSelection={true}
             rowSelection={rowSelection}
           /> 
-        <UpdateEducationProgramSubject
-          visible={toUpdateSubject}
-          record={recordUpdateSubject}
-          options={optionsToUpdateSubject}
-          selectedSubjectList={subjectList}
-          back={() => {
-            setToUpdateSubject(false);
-            setRecordUpdateSubject(defaultRecord);
-          }}
-          onOk={(values) => handleSubmitUpdateEducationProgramSubject(values)}
-        />
+        
       </>
     );
 };

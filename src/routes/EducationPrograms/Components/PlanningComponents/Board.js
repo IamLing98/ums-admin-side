@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-
 import List from "./List";
 
 class Board extends Component {
@@ -54,21 +53,21 @@ class Board extends Component {
 
   render() {
     const list = [];
-    for (var i = 1; i <= this.props.detail.totalTerm; i++) {
+    for (var i = 1; i <= this.props.educationProgram.totalTerm; i++) {
       list.push({
         listId: i.toString(),
         listTitle: "Học kỳ " + i,
         cards: [],
       });
     }
-    this.props.detail.subjectList.map((item, index) => {
+    this.props.educationProgram.subjectList.map((item, index) => {
       list[item.term - 1].cards.push({
         cardId: index.toString(),
         cardTitle: item.subjectName,
       });
     });
     console.log(list);
-    const width = 100 / parseInt(this.props.detail.totalTerm);
+    const width = 100 / parseInt(this.props.educationProgram.totalTerm);
     return (
       <div className="App">
         <header className="board-header">

@@ -25,16 +25,13 @@ import {
   DatePicker,
 } from "antd";
 import { api } from "Api";
-import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
+import RctPageLoader from "../";
 import React, { useEffect, useState } from "react";
 import { NotificationManager } from "react-notifications";
 import { connect } from "react-redux";
 import { Col, Row } from "reactstrap";
 import CreateTeacher from "Routes/Teachers/Components/CreateTeacher";
-import TeacherDetails from "Routes/Teachers/Components/TeacherDetails";
-import ExportCSV from "Routes/EducationProgram/Programs/ExportCSV";
-import UpdateEducationProgram from "Routes/EducationProgram/Programs/UpdateEducationProgram";
-
+import TeacherDetails from "Routes/Teachers/Components/TeacherDetails"; 
 const defaultRecord = {
   admissionType: null,
   avatar: null,
@@ -623,11 +620,7 @@ export const TeachersList = (props) => {
                         >
                           <DeleteFilled />
                           <span>Xoá nhiều</span>
-                        </button>
-                        <ExportCSV
-                          csvData={teachersList}
-                          fileName={"educationList"}
-                        />
+                        </button> 
                       </div>
                     </Col>
                   </Row>
@@ -665,17 +658,7 @@ export const TeachersList = (props) => {
                 />
               ) : (
                 ""
-              )}
-
-              <UpdateEducationProgram
-                visible={showModalUpdate}
-                onOk={(values) => handleSubmitFormUpdate(values)}
-                onCancel={() => {
-                  setShowModalUpdate(false);
-                  setRecordUpdate(defaultRecord);
-                }}
-                record={recordUpdate}
-              />
+              )} 
             </div>
           </div>
         </div>

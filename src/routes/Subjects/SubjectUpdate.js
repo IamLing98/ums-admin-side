@@ -139,7 +139,7 @@ export const SubjectUpdate = (props) => {
       okButtonProps={{ disabled: false }}
       cancelButtonProps={{ disabled: false }}
       maskClosable={false}
-      okText="Cập nhật"
+      okText="Cập Nhật"
       cancelText="Đóng"
       centered
       closable={false}

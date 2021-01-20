@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Button, Input, Popconfirm, Space, Table, Tag, Badge } from "antd";
+import { Button, Popconfirm, Space, Table,  Badge } from "antd";
 import {
-  DeleteFilled,
-  DeleteOutlined,
-  DiffOutlined,
-  EditFilled,
-  PlusOutlined,
-  SearchOutlined,
-  DoubleLeftOutlined,
-  EditOutlined,
+  DeleteFilled, 
+  SearchOutlined, 
   RetweetOutlined,
 } from "@ant-design/icons";
 import { api } from "Api";
@@ -22,14 +16,16 @@ const SubjectList = (props) => {
   const columns = [
     {
       title: "Mã Học Phần ",
-      dataIndex: "subjectId",
       align: "center",
+      dataIndex: "subjectId",
+      key: "subjectId",
     },
     {
       title: "Tên Học Phần ",
       dataIndex: "subjectName",
       align: "center",
       width: "20%",
+      key: "subjectName",
     },
     {
       title: "Số Tín Chỉ",
@@ -37,27 +33,32 @@ const SubjectList = (props) => {
       children: [
         {
           title: "Từng Môn Học",
-          dataIndex: "eachSubject",
           align: "center",
+          dataIndex: "eachSubject",
+          key: "eachSubject",
         },
         {
           title: "Theo Hoạt Động Giờ Tín Chỉ",
           align: "center",
+          key: "numberNumber",
           children: [
             {
               title: "Lý Thuyết",
-              dataIndex: "theoryNumber",
               align: "center",
+              dataIndex: "theoryNumber",
+              key: "theoryNumber",
             },
             {
               title: "Bài Tập (x2)",
-              dataIndex: "exerciseNumber",
               align: "center",
+              dataIndex: "exerciseNumber",
+              key: "exerciseNumber",
             },
             {
               title: "Thảo Luận (x2)",
-              dataIndex: "practiceNumber",
               align: "center",
+              dataIndex: "discussNumber",
+              key: "discussNumber",
             },
           ],
         },
@@ -65,17 +66,20 @@ const SubjectList = (props) => {
           title: "Thực Hành",
           align: "center",
           dataIndex: "exerciseNumber",
+          key: "exerciseNumber",
         },
         {
           title: "Tự Học",
           dataIndex: "selfLearningNumber",
           align: "center",
+          key: "selfLearningNumber",
         },
       ],
     },
     {
       title: "Học Phần Tiên Quyết",
       align: "center",
+      key: "preLearnSubjectList",
       dataIndex: "preLearnSubjectList",
       render: (text, record) => {
         let { preLearnSubjectList } = record;
@@ -103,12 +107,14 @@ const SubjectList = (props) => {
     {
       title: "Khoa Phụ Trách",
       align: "center",
+      key: "departmentId",
       dataIndex: "departmentName",
     },
     {
       title: "Học Kỳ Dự Kiến",
       align: "center",
-      dataIndex: "departmentName",
+      dataIndex: "term",
+      key: "term",
     },
     {
       title: "Thao Tác",
@@ -116,13 +122,19 @@ const SubjectList = (props) => {
       align: "center",
       render: (text, record) => (
         <Space size="middle">
-          <Button type="" onClick={() => {}}>
+          <Button
+            type=""
+            onClick={() => {
+              props.setRecordChange(record);
+              props.setShowModalChange(true);
+            }}
+          >
             <RetweetOutlined />
           </Button>
           <Popconfirm
             placement="left"
             title={"Chắc chắn xoá?"}
-            onConfirm={() => props.handleDeleteRecord([record.subjectId])}
+            onConfirm={() => props.handleDeleteRecords([record.id])}
             okText="Ok"
             cancelText="Không"
           >
@@ -140,7 +152,6 @@ const SubjectList = (props) => {
   };
 
   const onSelectChange = (selectedRowKeys) => {
-    console.log(selectedRowKeys);
     props.setSelectedRowKeys(selectedRowKeys);
   };
 
@@ -185,7 +196,7 @@ const SubjectList = (props) => {
     <Table
       columns={columns}
       dataSource={props.data}
-      rowKey="subjectId"
+      rowKey="id"
       bordered
       size="small"
       pagination={pagination}

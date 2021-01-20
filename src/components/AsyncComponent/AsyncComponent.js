@@ -6,13 +6,13 @@ import React from 'react';
 import Loadable from 'react-loadable';
 
 // rct page loader
-import RctPageLoader from 'Components/RctPageLoader/RctPageLoader';
+import RctPageLoader from '../RctPageLoader/RctPageLoader';
 // home dashboard
 
 // education programs  
 
 const AsyncEducationProgramsComponent = Loadable({
-   loader: () => import("Routes/EducationPrograms/Components"),
+   loader: () => import("../../routes/EducationPrograms/index"),
    loading: () => <RctPageLoader />
 });
 
@@ -24,18 +24,10 @@ const AsyncSubjectsComponent = Loadable({
    loading: () => <RctPageLoader />
 });
 
-
-
-const AsyncEducationProgramComponent = Loadable({
-   loader: () => import("Routes/EducationProgram/AsyncEducationProgramsComponent"),
-   loading: () => <RctPageLoader />,
-});
-
-
-
+ 
 // student 
 const AsyncStudentComponent = Loadable({
-   loader: () => import('Routes/Student/Components'),
+   loader: () => import('Routes/Students'),
    loading: () => <RctPageLoader />
 });
 
@@ -91,8 +83,7 @@ export {
    AsyncStudentComponent,
    
    //education program
-   AsyncEducationProgramsComponent,
-   AsyncEducationProgramComponent,
+   AsyncEducationProgramsComponent, 
 
    //class
    AsyncYearClassComponent,

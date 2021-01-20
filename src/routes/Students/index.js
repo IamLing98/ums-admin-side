@@ -2,10 +2,10 @@ import { api } from "Api";
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { NotificationManager } from "react-notifications";
-import SubjectList from "./SubjectList";
-import SubjectCreate from "./SubjectCreate";
-import SubjecUpdate from "./SubjectUpdate";
-import SubjectImport from './Import'; 
+// import SubjectList from "./SubjectList";
+// import SubjectCreate from "./SubjectCreate";
+// import SubjecUpdate from "./SubjectUpdate";
+// import SubjectImport from './Import'; 
 import { Col, Row } from "reactstrap";
 import {
   PlusOutlined,
@@ -264,17 +264,17 @@ export const SubjectHome = (props) => {
                     </div>
                   </Col>
                 </Row>
-                <SubjectList
+                {/* <SubjectList
                   setCurrentTitle={setCurrentTitle}
                   handleDeleteRecord={handleDeleteRecord}
                   data={subjectList}
                   setRecordUpdate={setRecordUpdate}
                   selectedRowKeys={selectedRowKeys}
                   setSelectedRowKeys={setSelectedRowKeys}
-                />
+                /> */}
               </div>
 
-              <SubjectCreate
+              {/* <SubjectCreate
                 visible={showModalCreate}
                 setShowModalCreate={setShowModalCreate}
                 getSubjectList={getSubjectList}
@@ -302,7 +302,7 @@ export const SubjectHome = (props) => {
                 departmentList={departmentList}
                 getSubjectList={getSubjectList}
                 // options={prerequisitesSubject}
-              />
+              /> */}
             </div>
           </div>
         </div>

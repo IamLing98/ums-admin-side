@@ -24,15 +24,7 @@ export default {
       new_item: false,
       type_multi: null,
       base_path: "/education-program",
-      child_routes: [ 
-        {
-          menu_icon: "zmdi zmdi-collection-text",
-          isActive: false,
-          menu_title: "C.Trình Đào Tạo",
-          menu_description: "Đào Tạo/Chương Trình Đào Tạo",
-          new_item: false,
-          path: "/app/education-program/programs",
-        }, 
+      child_routes: [  
         {
           menu_icon: "zmdi zmdi-collection-text",
           isActive: false,
@@ -55,7 +47,7 @@ export default {
           menu_title: "Hồ Sơ Sinh Viên",
           menu_description: "Đào Tạo/Hồ Sơ Sinh Viên",
           new_item: false,
-          path: "/app/students/students",
+          path: "/app/education/students",
         }, 
         {
           menu_icon: "zmdi zmdi-accounts-list",

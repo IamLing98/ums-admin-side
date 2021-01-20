@@ -70,7 +70,7 @@ export const AddSubjectModal = (props) => {
 
   return (
     <Modal
-      title="Tạo Mới Chương Trình Đào Tạo"
+      title="Thay Thế Học Phần"
       visible={props.visible}
       onOk={() => {
         form
@@ -83,13 +83,14 @@ export const AddSubjectModal = (props) => {
             console.log("Validate Failed:", info);
           });
       }}
-      onCancel={() => {
-        props.onCancel();
+      onCancel={() => { 
+        props.setRecordChange(null);
+        props.setShowModalChange(false);
       }}
       okButtonProps={{ disabled: false }}
       cancelButtonProps={{ disabled: false }}
       maskClosable={false}
-      okText="Tạo Mới"
+      okText="Thay Đổi"
       cancelText="Đóng"
       centered
       closable={false}
