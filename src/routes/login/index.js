@@ -10,7 +10,7 @@ import QueueAnim from 'rc-queue-anim';
 // components
 
 // app config
-import AppConfig from 'Constants/AppConfig';
+// import AppConfig from 'Constants/AppConfig';
 import {userLoginAttempt} from "Actions";
 import {Field, reduxForm} from "redux-form";
 import {renderForm} from "../../forms/LoginForm";
