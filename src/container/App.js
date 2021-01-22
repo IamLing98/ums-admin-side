@@ -66,7 +66,7 @@ class App extends Component {
       if (token === null) {
         return <Redirect to={"/login"} />;
       } else {
-        return <Redirect to={"/app/yearclass/yearclass"} />;
+        return <Redirect to={"/app/education/subjects"} />;
       }
     }
     return (

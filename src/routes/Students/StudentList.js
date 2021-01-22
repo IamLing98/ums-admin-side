@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Button, Input, Popconfirm, Space, Table, Tag, Badge } from "antd";
+import { Button, Input, Popconfirm, Space, Table, Tag, Alert } from "antd";
 import {
   DeleteFilled,
   DeleteOutlined,
@@ -77,9 +77,9 @@ const StudentList = (props) => {
     onFilter: (value, record) =>
       record[values.dataIndex]
         ? record[values.dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -95,8 +95,8 @@ const StudentList = (props) => {
           textToHighlight={text ? text.toString() : ""}
         />
       ) : (
-        text
-      ),
+          text
+        ),
   });
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -121,7 +121,7 @@ const StudentList = (props) => {
       }),
       render: (text, record) => {
         if (record.isSelecting === true) {
-          return <div style={{width:"100%", height:"100%", color: "green" , backgroundColor:"red"}}>{text}</div>;
+          return <Alert message={text} type="success" />
         } else return <span >{text}</span>;
       },
     },
@@ -134,7 +134,7 @@ const StudentList = (props) => {
         columnName: "tên sinh viên",
       }),
       render: (text, record) => (
-        <a 
+        <a
           // className="ant-anchor-link-title ant-anchor-link-title-active"
           href="javascript:void(0)"
           onClick={() => {
@@ -174,11 +174,6 @@ const StudentList = (props) => {
       }),
     },
     {
-      title: "Ngành Đào Tạo",
-      dataIndex: "branchName",
-      align: "center",
-    },
-    {
       title: "Niên Khoá",
       align: "center",
       render: (text, record) => (
@@ -191,14 +186,14 @@ const StudentList = (props) => {
       render: (text, record) => (
         <Space size="middle">
           {record.educationProgramStatus === "2" ? (
-            <Button type="" onClick={() => {}}>
+            <Button type="" onClick={() => { }}>
               <RetweetOutlined />
             </Button>
           ) : (
-            <Button type="" disabled>
-              <RetweetOutlined />
-            </Button>
-          )}
+              <Button type="" disabled>
+                <RetweetOutlined />
+              </Button>
+            )}
           <Button
             type=""
             onClick={() => {

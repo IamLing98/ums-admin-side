@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Form, Select } from "antd";
 import { connect } from "react-redux";
 import { NotificationManager } from "react-notifications";
-import { setTermList } from "../../../actions/TermActions";
+import { setTermList } from "../../actions/TermActions";
 import { api } from "Api";
 
 const { Option } = Select;

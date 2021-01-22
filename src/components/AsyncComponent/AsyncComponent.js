@@ -34,7 +34,7 @@ const AsyncStudentComponent = Loadable({
 
 // class
 const AsyncYearClassComponent = Loadable({
-   loader: () => import('Routes/Class/Components'),
+   loader: () => import('Routes/Class'),
    loading: () => <RctPageLoader />
 });
 
@@ -48,7 +48,7 @@ const AsyncYearClassComponent = Loadable({
 
 //schedule
 const AsyncScheduleComponent = Loadable({
-   loader: () => import('Routes/Schedule/Components'),
+   loader: () => import('Routes/Schedule'),
    loading: () => <RctPageLoader />
 });
 

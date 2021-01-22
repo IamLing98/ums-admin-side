@@ -48,7 +48,8 @@
       "webpack": "4.5.0",
       "webpack-bundle-analyzer": "2.11.1",
       "webpack-cli": "^3.1.2",
-      "webpack-dev-server": "^3.2.1"
+      "webpack-dev-server": "^3.2.1",
+      "react-highlight-words":"^0.17.0"
    },
    "dependencies": {
       "shortid":"^2.2.15",

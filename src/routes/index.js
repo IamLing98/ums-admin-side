@@ -6,6 +6,7 @@ import {
   AsyncSubjectsComponent,
   AsyncEducationProgramsComponent,
   AsyncStudentComponent,
+  AsyncYearClassComponent,AsyncScheduleComponent
 } from "Components/AsyncComponent/AsyncComponent";
 
 export const EducationRoutes = ({ match }) => {
@@ -28,6 +29,15 @@ export const EducationRoutes = ({ match }) => {
         <Route
           path={`${match.url}/students`}
           component={AsyncStudentComponent}
+        />
+        <Route
+          path={`${match.url}/yearclasses`}
+          component={AsyncYearClassComponent}
+        />
+        
+        <Route
+          path={`${match.url}/schedule`}
+          component={AsyncScheduleComponent}
         />
       </Switch>
     </div>
