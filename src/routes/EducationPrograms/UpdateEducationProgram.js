@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Modal, Form, Select, Input, Slider } from "antd";
 import { NotificationManager } from "react-notifications";
 import { api } from "Api";
-
+import { RollbackOutlined, CheckOutlined } from "@ant-design/icons";
 const { Option } = Select;
 
 const formItemLayout = {
@@ -79,8 +79,8 @@ export const EducationProgramUpdate = (props) => {
         props.setRecordUpdate(null);
         props.setIsShowModalUpdate(false);
       }}
-      okButtonProps={{ disabled: false }}
-      cancelButtonProps={{ disabled: false }}
+      okButtonProps={{ icon:<CheckOutlined/>,disabled: false, style:{width:"108px"} }}
+      cancelButtonProps={{ icon: <RollbackOutlined />,   disabled: false, style:{width:"108px"} }}
       maskClosable={false}
       okText="Cập nhật"
       cancelText="Đóng"

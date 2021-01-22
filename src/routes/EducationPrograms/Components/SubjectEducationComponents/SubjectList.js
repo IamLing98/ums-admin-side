@@ -11,6 +11,7 @@ const SubjectList = (props) => {
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
+    size:"default"
   });
 
   const columns = [

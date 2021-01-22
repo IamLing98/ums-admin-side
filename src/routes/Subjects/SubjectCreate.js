@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Row, Col, Select, Input } from "antd";
 import { NotificationManager } from "react-notifications";
+import { RollbackOutlined, CheckOutlined } from "@ant-design/icons";
 import { api } from "Api";
 
 const { Option } = Select;
@@ -128,8 +129,8 @@ export const SubjectCreate = (props) => {
         form.resetFields();
         props.setShowModalCreate(false);
       }}
-      okButtonProps={{ disabled: false }}
-      cancelButtonProps={{ disabled: false }}
+      okButtonProps={{ icon:<CheckOutlined/>,disabled: false, style:{width:"108px"} }}
+      cancelButtonProps={{ icon: <RollbackOutlined />,   disabled: false, style:{width:"108px"} }}
       maskClosable={false}
       okText="Tạo Mới"
       cancelText="Đóng"

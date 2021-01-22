@@ -159,7 +159,7 @@ const EducationProgramList = (props) => {
       dataSource={props.data}
       rowKey="educationProgramId"
       bordered
-      pagination={{ pageSize: 10 }}
+      pagination={{ pageSize: 10,size:"default" }}
       size="small"
     />
   );

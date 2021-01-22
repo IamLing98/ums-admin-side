@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Row, Col, Select, Input } from "antd";
 import { NotificationManager } from "react-notifications";
+import { RollbackOutlined, CheckOutlined } from "@ant-design/icons";
 import { api } from "Api";
 
 const { Option } = Select;
@@ -136,8 +137,8 @@ export const SubjectUpdate = (props) => {
       onCancel={() => { 
         props.setRecordUpdate(null);
       }}
-      okButtonProps={{ disabled: false }}
-      cancelButtonProps={{ disabled: false }}
+      okButtonProps={{ icon:<CheckOutlined/>,disabled: false, style:{width:"108px"} }}
+      cancelButtonProps={{ icon: <RollbackOutlined />,   disabled: false, style:{width:"108px"} }}
       maskClosable={false}
       okText="Cập Nhật"
       cancelText="Đóng"

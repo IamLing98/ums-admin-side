@@ -1,11 +1,10 @@
 import { api } from "Api";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { NotificationManager } from "react-notifications";
-// import SubjectList from "./SubjectList";
-// import SubjectCreate from "./SubjectCreate";
-// import SubjecUpdate from "./SubjectUpdate";
-// import SubjectImport from './Import'; 
+// import StudentCreate from "./StudentCreate";
+// import SubjecUpdate from "./StudentUpdate";
+// import StudentImport from './Import';
 import { Col, Row } from "reactstrap";
 import {
   PlusOutlined,
@@ -13,22 +12,26 @@ import {
   DeleteOutlined,
   DiffOutlined,
   VerticalAlignBottomOutlined,
-  ExclamationCircleOutlined ,
+  ExclamationCircleOutlined,
+  RetweetOutlined,
 } from "@ant-design/icons";
-import { Button, Input, Popconfirm, Space, Modal } from "antd";
+import { Button, Input, Popconfirm, Space, Alert, Modal } from "antd";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
-
+import StudentDetail from "./StudentDetail";
+import StudentList from "./StudentList";
 
 const { confirm } = Modal;
 
-export const SubjectHome = (props) => {
-  const [currentTitle, setCurrentTitle] = useState("Danh sách học phần");
+export const StudentHome = (props) => {
+  const [currentTitle, setCurrentTitle] = useState("Danh Sách Sinh Viên");
 
   const [showModalCreate, setShowModalCreate] = useState(false);
 
   const [showModalImport, setShowModalImport] = useState(false);
 
-  const [subjectList, setSubjectList] = useState([]);
+  const [showDetail, setShowDetail] = useState(null);
+
+  const [studentList, setStudentList] = useState([]);
 
   const [recordUpdate, setRecordUpdate] = useState(null);
 
@@ -37,6 +40,8 @@ export const SubjectHome = (props) => {
   const [departmentList, setDepartmentList] = useState([]);
 
   const [loading, setLoading] = useState(true);
+
+  const input = useRef(null);
 
   const onSearch = () => {};
 
@@ -51,16 +56,41 @@ export const SubjectHome = (props) => {
     }
   };
 
-  const getSubjectList = () => {
+  const getStudentList = () => {
     api
-      .get("/subjects", true)
+      .get("/students", true)
       .then((res) => {
-        setSubjectList(res);
+        for (var i = 0; i < res.length; i++) {
+          res[i].isSelecting = false;
+        }
+        setStudentList(res);
         setLoading(false);
       })
       .catch((err) => {
         showErrNoti(err);
       });
+  };
+
+  const setSelecting = (record) => {
+    let newList = studentList;
+    for (var i = 0; i < newList.length; i++) {
+      if (record.studentId === newList[i].studentId) {
+        newList[i].isSelecting = true;
+      }
+    }
+    setStudentList(newList);
+    setShowDetail(record);
+  };
+
+  const cancelShowDetail = (record) => {
+    let newList = studentList;
+    for (var i = 0; i < newList.length; i++) {
+      if (record.studentId === newList[i].studentId) {
+        newList[i].isSelecting = false;
+      }
+    }
+    setStudentList(newList);
+    setShowDetail(null);
   };
 
   const getDepartmentList = () => {
@@ -76,10 +106,10 @@ export const SubjectHome = (props) => {
 
   const handleSubmitForm = (values) => {
     api
-      .post("/subjects", values, true)
+      .post("/students", values, true)
       .then((res) => {
         NotificationManager.success(`Tạo mới ${res} học phần.`);
-        getSubjectList();
+        getStudentList();
       })
       .catch((err) => {
         showErrNoti(err);
@@ -90,12 +120,12 @@ export const SubjectHome = (props) => {
   const handleDeleteRecord = (values) => {
     api
       .delete(
-        `/subjects?${values.map((value, index) => `ids=${value}`).join("&")}`,
+        `/students?${values.map((value, index) => `ids=${value}`).join("&")}`,
         true
       )
       .then((res) => {
         NotificationManager.success("Đã xoá" + res + " bản ghi");
-        getSubjectList();
+        getStudentList();
       })
       .catch((err) => {
         showErrNoti(err);
@@ -105,12 +135,12 @@ export const SubjectHome = (props) => {
   const handleDeleteMultipleRecord = (values) => {
     api
       .delete(
-        `/subjects?${values.map((value, index) => `ids=${value}`).join("&")}`,
+        `/students?${values.map((value, index) => `ids=${value}`).join("&")}`,
         true
       )
       .then((res) => {
         NotificationManager.success("Đã xoá" + res + " bản ghi");
-        getSubjectList();
+        getStudentList();
         setSelectedRowKeys([]);
       })
       .catch((err) => {
@@ -118,27 +148,27 @@ export const SubjectHome = (props) => {
       });
   };
 
-  const showDeleteConfirm = (selectedRowKeys) =>  {
+  const showDeleteConfirm = (selectedRowKeys) => {
     confirm({
-      centered:true,
-      title: 'Chắc chắn?',
+      centered: true,
+      title: "Chắc chắn?",
       icon: <ExclamationCircleOutlined />,
-      content: 'Vui lòng xác nhận',
-      okText: 'Đồng ý',
-      okType: 'danger',
-      cancelText: 'Huỷ',
+      content: "Vui lòng xác nhận",
+      okText: "Đồng ý",
+      okType: "danger",
+      cancelText: "Huỷ",
       onOk() {
-        handleDeleteMultipleRecord(selectedRowKeys)
+        handleDeleteMultipleRecord(selectedRowKeys);
       },
       onCancel() {
-        console.log('Cancel');
+        console.log("Cancel");
       },
     });
-  }
+  };
 
   useEffect(() => {
-    getSubjectList();
-    getDepartmentList();
+    getStudentList();
+    //getDepartmentList();
   }, []);
 
   if (loading) {
@@ -181,7 +211,11 @@ export const SubjectHome = (props) => {
                   >
                     <Row>
                       <Col md={4}>
-                        <Input placeholder="Mã Học Phần..." size="middle" />
+                        <Input
+                          ref={input}
+                          placeholder="Mã Học Phần..."
+                          size="middle"
+                        />
                       </Col>
                       <Col md={4}>
                         <Input placeholder="Tên Học Phần..." size="middle" />
@@ -199,6 +233,10 @@ export const SubjectHome = (props) => {
                           <span>Tìm Kiếm</span>
                         </button>
                       </Col>
+                      {/* <Col md="12">
+                        
+                      <Alert message={`${studentList.length}`} type="info" showIcon style={{height:"32px"}} />
+                      </Col> */}
                     </Row>
                   </Col>
                   <Col md={6} sm={12} xs={12}>
@@ -247,7 +285,7 @@ export const SubjectHome = (props) => {
                       >
                         <DeleteOutlined />
                         <span>Xoá Nhiều</span>
-                      </Button> 
+                      </Button>
                       <Button
                         type="primary"
                         style={{
@@ -264,44 +302,52 @@ export const SubjectHome = (props) => {
                     </div>
                   </Col>
                 </Row>
-                {/* <SubjectList
+                <StudentList
                   setCurrentTitle={setCurrentTitle}
                   handleDeleteRecord={handleDeleteRecord}
-                  data={subjectList}
+                  data={studentList}
                   setRecordUpdate={setRecordUpdate}
                   selectedRowKeys={selectedRowKeys}
                   setSelectedRowKeys={setSelectedRowKeys}
-                /> */}
+                  setShowDetail={setShowDetail}
+                  setSelecting={setSelecting}
+                />
               </div>
+              <StudentDetail
+                visible={showDetail !== null ? true : false}
+                record={showDetail}
+                setShowDetail={setShowDetail}
+                cancelShowDetail={cancelShowDetail}
+              />
 
-              {/* <SubjectCreate
+              {/* <StudentCreate
                 visible={showModalCreate}
                 setShowModalCreate={setShowModalCreate}
-                getSubjectList={getSubjectList}
+                getStudentList={getStudentList}
                 departmentList={departmentList}
-                subjectList={subjectList}
+                studentList={studentList}
                 handleSubmitForm={handleSubmitForm}
-                // options={prerequisitesSubject}
+                // options={prerequisitesStudent}
               />
 
               <SubjecUpdate
                 visible={recordUpdate}
                 setRecordUpdate={setRecordUpdate}
                 record={recordUpdate}
-                subjectList={subjectList}
+                studentList={studentList}
                 departmentList={departmentList}
-                getSubjectList={getSubjectList}
-                // options={prerequisitesSubject}
+                getStudentList={getStudentList}
+                // options={prerequisitesStudent}
               />
-              <SubjectImport
+              <StudentImport
                 visible={showModalImport}
                 setShowModalImport={setShowModalImport}
                 setRecordUpdate={setRecordUpdate}
                 record={recordUpdate}
-                subjectList={subjectList}
+                studentList={studentList}
                 departmentList={departmentList}
-                getSubjectList={getSubjectList}
-                // options={prerequisitesSubject}
+                getStudentList={getStudentList}
+                // options={prerequisitesStudent}
               /> */}
             </div>
           </div>
@@ -310,4 +356,4 @@ export const SubjectHome = (props) => {
     );
 };
 
-export default SubjectHome;
+export default StudentHome;

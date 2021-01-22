@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Form, Select, Input, Slider } from "antd";
 import { NotificationManager } from "react-notifications";
 import { api } from "Api";
-
+import { RollbackOutlined, CheckOutlined } from "@ant-design/icons";
 const { Option } = Select;
 
 const formItemLayout = {
@@ -86,8 +86,8 @@ export const EducationProgramCreate = (props) => {
       onCancel={() => {
         props.onCancel();
       }}
-      okButtonProps={{ disabled: false }}
-      cancelButtonProps={{ disabled: false }}
+      okButtonProps={{ icon:<CheckOutlined/>,disabled: false, style:{width:"108px"} }}
+      cancelButtonProps={{ icon: <RollbackOutlined />,   disabled: false, style:{width:"108px"} }}
       maskClosable={false}
       okText="Tạo Mới"
       cancelText="Đóng"
@@ -101,11 +101,10 @@ export const EducationProgramCreate = (props) => {
         onFieldsChange={(changedFields, allFields) => {}}
         preserve={false}
         onValuesChange={(changedValues, allValues) => {
-          if(changedValues['departmentId']){
-            setIsAllowBranchField(true)
-          }
-          else{
-            setIsAllowBranchField(false)
+          if (changedValues["departmentId"]) {
+            setIsAllowBranchField(true);
+          } else {
+            setIsAllowBranchField(false);
           }
         }}
       >
