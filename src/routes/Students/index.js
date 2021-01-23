@@ -260,7 +260,7 @@ export const StudentHome = (props) => {
     return (
       <div className="data-table-wrapper">
         <Helmet>
-          <title>Học Phần</title>
+          <title>Hồ Sơ Sinh Viên</title>
           <meta name="description" content="Danh Sách Giảng Viên" />
         </Helmet>
         <div className="rct-block ">

@@ -6,7 +6,10 @@ import {
   AsyncSubjectsComponent,
   AsyncEducationProgramsComponent,
   AsyncStudentComponent,
-  AsyncYearClassComponent,AsyncScheduleComponent
+  AsyncYearClassComponent,
+  AsyncScheduleComponent,
+  AsyncTeachersComponent,
+  AsyncResultComponent,
 } from "Components/AsyncComponent/AsyncComponent";
 
 export const EducationRoutes = ({ match }) => {
@@ -31,10 +34,17 @@ export const EducationRoutes = ({ match }) => {
           component={AsyncStudentComponent}
         />
         <Route
+          path={`${match.url}/teachers`}
+          component={AsyncTeachersComponent}
+        />
+        <Route
           path={`${match.url}/yearclasses`}
           component={AsyncYearClassComponent}
+        /> 
+        <Route
+          path={`${match.url}/results`}
+          component={AsyncResultComponent}
         />
-        
         <Route
           path={`${match.url}/schedule`}
           component={AsyncScheduleComponent}

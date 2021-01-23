@@ -171,7 +171,7 @@ export const YearClassHome = (props) => {
     return (
       <div className="data-table-wrapper">
         <Helmet>
-          <title>Học Phần</title>
+          <title>Lớp Niên Khoá</title>
           <meta name="description" content="Danh Sách Giảng Viên" />
         </Helmet>
         <div className="rct-block ">

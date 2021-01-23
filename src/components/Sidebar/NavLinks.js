@@ -78,7 +78,7 @@ export default {
           isActive: false,
           menu_title: "Kết Quả Học Tập",
           new_item: false,
-          path: "/education/result",
+          path: "/app/education/results",
         }, 
       ],
     },
@@ -129,26 +129,26 @@ export default {
         },
       ],
     },
-    {
-      menu_title: "Công Tác Sinh Viên",
-      menu_icon: "zmdi zmdi-assignment-account",
-      new_item: false,
-      type_multi: null,
-      child_routes: [],
-    },
-    {
-      menu_title: "Tài Khoản",
-      menu_icon: "zmdi zmdi-plus-circle",
-      new_item: false,
-      type_multi: null,
-      child_routes: [
-        {
-          menu_title: "sidebar.createForm",
-          new_item: false,
-          path: "/form-builder/create-form",
-        },
-      ],
-    },
+    // {
+    //   menu_title: "Công Tác Sinh Viên",
+    //   menu_icon: "zmdi zmdi-assignment-account",
+    //   new_item: false,
+    //   type_multi: null,
+    //   child_routes: [],
+    // },
+    // {
+    //   menu_title: "Tài Khoản",
+    //   menu_icon: "zmdi zmdi-plus-circle",
+    //   new_item: false,
+    //   type_multi: null,
+    //   child_routes: [
+    //     {
+    //       menu_title: "sidebar.createForm",
+    //       new_item: false,
+    //       path: "/form-builder/create-form",
+    //     },
+    //   ],
+    // },
   ],
   SupAdmincategory3: [
    //  {

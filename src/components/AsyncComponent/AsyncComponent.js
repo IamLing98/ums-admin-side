@@ -41,7 +41,7 @@ const AsyncYearClassComponent = Loadable({
 
 //teacher
  const AsyncTeachersComponent = Loadable({
-   loader: () => import('Routes/Teachers/Components'),
+   loader: () => import('Routes/Teachers'),
    loading: () => <RctPageLoader />
 });
 
@@ -53,9 +53,16 @@ const AsyncScheduleComponent = Loadable({
 });
 
 
+//result
+const AsyncResultComponent = Loadable({
+   loader: () => import('Routes/Results'),
+   loading: () => <RctPageLoader />
+});
+
+
 //login
 const AsyncAdminLoginComponent = Loadable({
-   loader: () => import('Routes/login'),
+   loader: () => import('Routes/Login'),
    loading: () => <RctPageLoader />
 });
 
@@ -105,6 +112,9 @@ export {
 
    //Subjects
    AsyncSubjectsComponent,
+
+   //Results
+   AsyncResultComponent,
 
    AsyncForgotPassComponent,
    AsyncAdminLoginComponent,

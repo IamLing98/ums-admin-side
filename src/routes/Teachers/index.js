@@ -23,8 +23,8 @@ import StudentList from "./StudentList";
 
 const { confirm } = Modal;
 
-export const StudentHome = (props) => {
-  const [currentTitle, setCurrentTitle] = useState("Danh Sách Sinh Viên");
+export const TeacherHome = (props) => {
+  const [currentTitle, setCurrentTitle] = useState("Danh Sách Giảng Viên");
 
   const [showModalCreate, setShowModalCreate] = useState(false);
 
@@ -260,7 +260,7 @@ export const StudentHome = (props) => {
     return (
       <div className="data-table-wrapper">
         <Helmet>
-          <title>Học Phần</title>
+          <title>Hồ Sơ Giảng Viên</title>
           <meta name="description" content="Danh Sách Giảng Viên" />
         </Helmet>
         <div className="rct-block ">
@@ -437,4 +437,4 @@ export const StudentHome = (props) => {
     );
 };
 
-export default StudentHome;
+export default TeacherHome;

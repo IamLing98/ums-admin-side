@@ -20,8 +20,7 @@ const ConfigRouter = ({ match }) => {
         <Route
           path={`${match.url}/rooms`}
           component={AsyncRoomConfigComponent}
-        />
-
+        /> 
         <Route path={`${match.url}/time`} component={AsyncYearClassComponent} />
       </Switch>
     </div>

@@ -129,7 +129,7 @@ export const EducationProgramsComponent = (props) => {
     return (
       <div className="data-table-wrapper">
         <Helmet>
-          <title>Giảng Dạy</title>
+          <title>Chương Trình Đào Tạo</title>
           <meta name="description" content="Danh Sách Giảng Viên" />
         </Helmet>
         <div className="rct-block ">
