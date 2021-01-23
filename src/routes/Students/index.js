@@ -2,10 +2,11 @@ import { api } from "Api";
 import React, { useEffect, useState, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { NotificationManager } from "react-notifications";
-// import StudentCreate from "./StudentCreate";
-// import SubjecUpdate from "./StudentUpdate";
+import StudentCreate from "./StudentCreate";
+import StudentUpdate from "./StudentUpdate";
 // import StudentImport from './Import';
 import { Col, Row } from "reactstrap";
+import moment from 'moment';
 import {
   PlusOutlined,
   SearchOutlined,
@@ -27,6 +28,8 @@ export const StudentHome = (props) => {
 
   const [showModalCreate, setShowModalCreate] = useState(false);
 
+  const [showModalUpdate, setShowModalUpdate] = useState(false);
+
   const [showModalImport, setShowModalImport] = useState(false);
 
   const [showDetail, setShowDetail] = useState(null);
@@ -39,11 +42,19 @@ export const StudentHome = (props) => {
 
   const [departmentList, setDepartmentList] = useState([]);
 
+  const [ethnicList, setEthnicList] = useState([]);
+
+  const [provinceList, setProvinceList] = useState([]);
+
+  const [educationProgramList, setEducationProgramList] = useState([]);
+
+  const [classList, setClassList] = useState([]);
+
   const [loading, setLoading] = useState(true);
 
   const input = useRef(null);
 
-  const onSearch = () => {};
+  const onSearch = () => { };
 
   const showErrNoti = (err) => {
     NotificationManager.err(err.response.data.message);
@@ -105,16 +116,35 @@ export const StudentHome = (props) => {
   };
 
   const handleSubmitForm = (values) => {
+    for (var i = 0; i < values.length; i++) {
+      values.dateBirth = moment(values.dateBirth, 'YYYY-MM-DD');
+    }
     api
       .post("/students", values, true)
       .then((res) => {
-        NotificationManager.success(`Tạo mới ${res} học phần.`);
+        NotificationManager.success(`Tạo mới ${res} sinh viên.`);
         getStudentList();
       })
       .catch((err) => {
         showErrNoti(err);
       });
     setShowModalCreate(false);
+  };
+
+  const handleSubmitUpdateForm = (values) => {
+    for (var i = 0; i < values.length; i++) {
+      values.dateBirth = moment(values.dateBirth, 'YYYY-MM-DD');
+    }
+    api
+      .put("/students", values, true)
+      .then((res) => {
+        NotificationManager.success(`Tạo mới ${res} sinh viên.`);
+        getStudentList();
+      })
+      .catch((err) => {
+        showErrNoti(err);
+      });
+    setShowModalUpdate(false);
   };
 
   const handleDeleteRecord = (values) => {
@@ -166,9 +196,57 @@ export const StudentHome = (props) => {
     });
   };
 
+  const getEthnicList = () => {
+    api
+      .get("/ethnics", true)
+      .then((res) => {
+        setEthnicList(res);
+      })
+      .catch((err) => {
+        showErrNoti(err);
+      });
+  }
+
+  const getProvinceList = (id) => {
+    api
+      .get(`/provinceCities?countryId=${id}`, true)
+      .then((res) => {
+        setProvinceList(res);
+      })
+      .catch((err) => {
+        showErrNoti(err);
+      });
+  }
+
+  const getEducationProgramList = () => {
+    api
+      .get(`/education-programs`, true)
+      .then((res) => {
+        setEducationProgramList(res);
+      })
+      .catch((err) => {
+        showErrNoti(err);
+      });
+  }
+
+  const getClassList = () => {
+    api
+      .get(`/yearClasses`, true)
+      .then((res) => {
+        setClassList(res);
+      })
+      .catch((err) => {
+        showErrNoti(err);
+      });
+  }
+
   useEffect(() => {
     getStudentList();
-    //getDepartmentList();
+    getDepartmentList();
+    getEthnicList();
+    getProvinceList('VNM');
+    getEducationProgramList();
+    getClassList();
   }, []);
 
   if (loading) {
@@ -191,12 +269,6 @@ export const StudentHome = (props) => {
               <span>{currentTitle}</span>{" "}
             </h4>
             <div className="contextual-link" style={{ top: "15px" }}>
-              {/* <a href="javascript:void(0)">
-            <i className="ti-minus" />
-          </a>
-          <a href="javascript:void(0)">
-            <i className="ti-close" />
-          </a> */}
             </div>
           </div>
           <div className="collapse show">
@@ -273,11 +345,11 @@ export const StudentHome = (props) => {
                         style={
                           selectedRowKeys.length > 1
                             ? {
-                                background: "#DC0000",
-                                borderColor: "#DC0000",
-                                color: "wheat",
-                                width: "122px",
-                              }
+                              background: "#DC0000",
+                              borderColor: "#DC0000",
+                              color: "wheat",
+                              width: "122px",
+                            }
                             : {}
                         }
                         disabled={selectedRowKeys.length > 1 ? false : true}
@@ -294,7 +366,7 @@ export const StudentHome = (props) => {
                           color: "black",
                           width: "122px",
                         }}
-                        onClick={() => {}}
+                        onClick={() => { }}
                       >
                         <DiffOutlined />
                         <span>In Exel</span>
@@ -306,39 +378,48 @@ export const StudentHome = (props) => {
                   setCurrentTitle={setCurrentTitle}
                   handleDeleteRecord={handleDeleteRecord}
                   data={studentList}
-                  setRecordUpdate={setRecordUpdate}
+                  setShowModalUpdate={setShowModalUpdate}
                   selectedRowKeys={selectedRowKeys}
                   setSelectedRowKeys={setSelectedRowKeys}
                   setShowDetail={setShowDetail}
                   setSelecting={setSelecting}
                 />
               </div>
-              <StudentDetail
-                visible={showDetail !== null ? true : false}
-                record={showDetail}
-                setShowDetail={setShowDetail}
-                cancelShowDetail={cancelShowDetail}
-              />
+              {showDetail !== null
+                && <StudentDetail
+                  visible={showDetail !== null ? true : false}
+                  record={showDetail}
+                  setShowDetail={setShowDetail}
+                  cancelShowDetail={cancelShowDetail}
+                />}
 
-              {/* <StudentCreate
+              <StudentCreate
                 visible={showModalCreate}
                 setShowModalCreate={setShowModalCreate}
                 getStudentList={getStudentList}
                 departmentList={departmentList}
                 studentList={studentList}
                 handleSubmitForm={handleSubmitForm}
-                // options={prerequisitesStudent}
+                ethnicList={ethnicList}
+                provinceList={provinceList}
+                educationProgramList={educationProgramList}
+                classList={classList}
+              // options={prerequisitesStudent}
               />
-
-              <SubjecUpdate
-                visible={recordUpdate}
-                setRecordUpdate={setRecordUpdate}
-                record={recordUpdate}
-                studentList={studentList}
-                departmentList={departmentList}
+              <StudentUpdate
+                visible={showModalUpdate  }
+                setShowModalUpdate={setShowModalUpdate}
                 getStudentList={getStudentList}
-                // options={prerequisitesStudent}
+                departmentList={departmentList}
+                studentList={studentList}
+                handleSubmitUpdateForm={handleSubmitUpdateForm}
+                ethnicList={ethnicList}
+                provinceList={provinceList}
+                educationProgramList={educationProgramList}
+                classList={classList}
+              // options={prerequisitesStudent}
               />
+              {/* 
               <StudentImport
                 visible={showModalImport}
                 setShowModalImport={setShowModalImport}

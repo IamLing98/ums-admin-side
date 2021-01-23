@@ -12,6 +12,7 @@ import {
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import StudentProfile from "./StudentDetailComponents/StudentProfile";
+import FamilyInfo from './StudentDetailComponents/FamilyInfo';
 import { api } from "Api";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 
@@ -74,7 +75,7 @@ const StudentDetail = (props) => {
               <Col span={4}>
                 <div className="text-center">
                   <img
-                    src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png"
+                    src={studentDetail.avatar}
                     className="avatar img-circle img-thumbnail"
                     alt="avatar"
                   />
@@ -87,31 +88,29 @@ const StudentDetail = (props) => {
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
-                      <strong>Mã sinh viên:</strong>
-                    </span>{" "}
-                    125
+                      <strong>Mã sinh viên:</strong> 
+                    </span>{" "} {studentDetail.studentId}
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
-                      <strong>Lớp:</strong>
-                    </span>{" "}
-                    13
+                      <strong>Lớp:</strong> 
+                    </span>{" "} {studentDetail.yearClassName}
                   </li>
-                  <li className="list-group-item text-right">
+                  {/* <li className="list-group-item text-right">
                     <span className="pull-left">
-                      <strong>CTĐT:</strong>
+                      <strong>CTĐT:</strong>{studentDetail.yearClassName}
                     </span>{" "}
                     37
-                  </li>
-                </ul>
+                  </li> */}
+                </ul >
               </Col>
               <Col span={20}>
                 <Tabs defaultActiveKey="1" type="card" size="small">
                   <TabPane tab="Sơ Yếu Lý Lịch" key="1">
-                    <StudentProfile record={props.record} />
+                    <StudentProfile record={studentDetail} />
                   </TabPane>
                   <TabPane tab="Thông Tin Gia Đình" key="2">
-                    Content of card tab 2
+                    <FamilyInfo record={studentDetail}/>
                   </TabPane>
                   <TabPane tab="Kết Quả Học Tập" key="3">
                     Content of card tab 3

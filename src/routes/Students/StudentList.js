@@ -197,8 +197,9 @@ const StudentList = (props) => {
           <Button
             type=""
             onClick={() => {
-              setRecordUpdate(record);
-              setShowModalUpdate(true);
+              console.log("cc")
+              console.log(record)
+              props.setShowModalUpdate(record); 
             }}
           >
             <EditFilled />
@@ -206,7 +207,7 @@ const StudentList = (props) => {
           <Popconfirm
             placement="left"
             title={"Chắc chắn xoá?"}
-            onConfirm={() => handleDeleteRecord(record)}
+            onConfirm={() => props.handleDeleteRecord([record.studentId])}
             okText="Ok"
             cancelText="Không"
           >
@@ -283,7 +284,7 @@ const StudentList = (props) => {
             <div className="ant-empty ant-empty-normal">
               <div className="ant-empty-image">
                 <SearchOutlined style={{ fontSize: "16px", color: "#08c" }} />
-                <p className="ant-empty-description">Không có học phần nào</p>
+                <p className="ant-empty-description">Không có kết quả nào</p>
               </div>
             </div>
           ),

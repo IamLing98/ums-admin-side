@@ -98,6 +98,14 @@ export default {
         {
           menu_icon: "zmdi zmdi-device-hub",
           isActive: false,
+          menu_title: "Tài Khoản",
+          menu_description: "Cài Đặt/Tài Khoản",
+          new_item: false,
+          path: "/app/config/accounts",
+        },
+        {
+          menu_icon: "zmdi zmdi-device-hub",
+          isActive: false,
           menu_title: "Ngành",
           menu_description: "Cài Đặt/Ngành",
           new_item: false,
