@@ -14,9 +14,7 @@ const { Dragger } = Upload;
 
 const { Option } = Select;
 
-export const CreateTeacher = (props) => {
-
-    
+export const ImportStudent = (props) => {
   const [educationProgramId, setEducationProgramId] = useState(null);
 
   const [educationProgramName, setEducationProgramName] = useState(null);
@@ -34,15 +32,12 @@ export const CreateTeacher = (props) => {
   const [cols, setCols] = useState([]);
 
   const fileHandler2 = (file) => {
-    let fileObj = file;
-    console.log(fileObj);
+    let fileObj = file; 
 
     //just pass the fileObj as parameter
     ExcelRenderer(fileObj, (err, resp) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(resp);
+      if (err) { 
+      } else { 
         setRows(resp.rows);
         setCols(resp.cols);
       }
@@ -55,9 +50,7 @@ export const CreateTeacher = (props) => {
     action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     onChange(info) {
       const { status } = info.file;
-      if (status !== "uploading") {
-        // console.log(info.file, info.fileList);
-        console.log(info);
+      if (status !== "uploading") {  
       }
       if (status === "done") {
         message.success(`${info.file.name} file uploaded successfully.`);
@@ -79,8 +72,7 @@ export const CreateTeacher = (props) => {
     formData.append("educationProgramStatus", "2");
     props.onOk(formData);
   };
-  useEffect(() => {
-    // console.log(props.educationProgram.listBranch)
+  useEffect(() => { 
   }, [JSON.stringify(props.visible)]);
 
   const columns = [
@@ -135,7 +127,7 @@ export const CreateTeacher = (props) => {
 
   return (
     <Modal
-      title="Tạo Mới Giảng Viên"
+      title="Import Danh Sách Sinh Viên"
       visible={props.visible}
       // onOk={() => handleSubmitFormCreate()}
       onOk={() => setModalWidth("60%")}
@@ -310,4 +302,4 @@ const mapStateToProps = ({ departmentReducer }) => {
   return { departmentReducer };
 };
 
-export default connect(mapStateToProps, {})(CreateTeacher);
+export default connect(mapStateToProps, {})(ImportStudent);

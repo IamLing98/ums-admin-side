@@ -1,23 +1,6 @@
 import { Descriptions, Tabs } from "antd";
 import React, { useEffect } from "react";
-const { TabPane } = Tabs;
-
-const defaultRecord = {
-  branchId: "",
-  branchName: "",
-  educationProgramId: "",
-  educationProgramLevel: "3",
-  educationProgramName: "",
-  educationProgramStatus: "",
-  educationProgramType: "",
-};
-
-const TeacherProfile = (props) => {
-  const size = "small";
-  useEffect(() => {}, [JSON.stringify(props.record)]);
-  const { record } = props;
-  console.log("record", record);
-
+const StudentProfile = (props) => {
   const enrollmentAreaDisplay = (value) => {
     if (value === 1) {
       return <>Khu vực 1 (KV1)</>;
@@ -32,139 +15,139 @@ const TeacherProfile = (props) => {
     }
   };
 
-  if (record === null) {
-    return <div></div>;
-  } else {
+  if(props.record ){
     return (
       <div className="student-description-wrapper">
-          s
         <Descriptions layout="horizontal" column={6}>
           <Descriptions.Item label="Họ và tên" span={3}>
-            {record.fullName}
+            {props.record.fullName}
           </Descriptions.Item>
           <Descriptions.Item label="Giới tính" span={3}>
-            {record.sex !== null ? (record.sex === 1 ? "Nam" : "Nữ") : ""}
+            {props.record.sex !== null ? (props.record.sex === 1 ? "Nam" : "Nữ") : ""}
           </Descriptions.Item>
         </Descriptions>
-
+  
         <Descriptions layout="horizontal" column={6}>
           <Descriptions.Item label="Ngày sinh" span={3}>
-            {record.dateBirth !== null ? record.dateBirth : "__ /__ /____"}
+            {props.record.dateBirth !== null ? props.record.dateBirth : "__ /__ /____"}
           </Descriptions.Item>
           <Descriptions.Item label="Nơi sinh" span={3}>
-            {record.bornPlace !== null ? record.bornPlace : ""}
+            {props.record.bornPlace !== null ? props.record.bornPlace : ""}
           </Descriptions.Item>
         </Descriptions>
-
+  
         <Descriptions layout="horizontal" column={6}>
           <Descriptions.Item label="Quốc tịch" span={3}>
-            {record.nationalityName !== null ? record.nationalityName : ""}
+            {props.record.nationalityName !== null ? props.record.nationalityName : ""}
           </Descriptions.Item>
           <Descriptions.Item label="Dân tộc" span={3}>
-            {record.ethnicName !== null ? record.ethnicName : ""}
+            {props.record.ethnicName !== null ? props.record.ethnicName : ""}
           </Descriptions.Item>
         </Descriptions>
-
+  
         <Descriptions layout="horizontal" column={6}>
           <Descriptions.Item label="Tôn giáo" span={3}>
-            {record.religion !== null ? record.religion : ""}
+            {props.record.religion !== null ? props.record.religion : ""}
           </Descriptions.Item>
           <Descriptions.Item label="Nguyên quán" span={3}>
-            {record.homeTown !== null ? record.homeTown : ""}
+            {props.record.homeTown !== null ? props.record.homeTown : ""}
           </Descriptions.Item>
         </Descriptions>
-
+  
         <Descriptions layout="horizontal" column={6}>
           <Descriptions.Item label="Hộ khẩu thường trú" span={3}>
-            {record.permanentResidence !== null
-              ? record.permanentResidence
-              : ""}
+            {props.record.permanentResidence !== null ? props.record.permanentResidence : ""}
           </Descriptions.Item>
         </Descriptions>
-
+  
         <Descriptions layout="horizontal" column={6}>
           <Descriptions.Item label="Khu vực tuyển sinh" span={3}>
-            {enrollmentAreaDisplay(record.enrollmentArea)}
+            {enrollmentAreaDisplay(props.record.enrollmentArea)}
           </Descriptions.Item>
           <Descriptions.Item label="Đối tượng" span={3}>
-            {/* {record.homeTown !== null ? record.homeTown : ""} */}
+            {/* {props.record.homeTown !== null ? props.record.homeTown : ""} */}
           </Descriptions.Item>
         </Descriptions>
-
+  
         <Descriptions layout="horizontal" column={6}>
           <Descriptions.Item label="Đạo Đức" span={3}>
             {/* Việt Nam */}
           </Descriptions.Item>
-
+  
           <Descriptions.Item label="Trình độ văn hoá" span={3}>
-            {record.educationLevel !== null
-              ? record.educationLevel
+            {props.record.educationLevel !== null ? props.record.educationLevel : ""}
+          </Descriptions.Item>
+        </Descriptions>
+  
+        <Descriptions layout="horizontal" column={6}>
+          <Descriptions.Item label="Diện chính sách" span={3}>
+            {props.record.incentivesType !== null ? props.record.incentivesType : ""}
+          </Descriptions.Item>
+  
+          <Descriptions.Item label="Thành phần gia đình" span={3}>
+            {props.record.familyElement !== null ? props.record.familyElement : ""}
+          </Descriptions.Item>
+        </Descriptions>
+  
+        <Descriptions layout="horizontal" column={6}>
+          <Descriptions.Item label="Ngày vào đoàn" span={3}>
+            {props.record.CYUStartDate !== null ? props.record.CYUStartDate : ""}
+          </Descriptions.Item>
+  
+          <Descriptions.Item label="Ngày vào đảng" span={3}>
+            {props.record.CPStartDate !== null ? props.record.CPStartDate : ""}
+          </Descriptions.Item>
+        </Descriptions>
+  
+        <Descriptions layout="horizontal" column={6}>
+          <Descriptions.Item label="Số CMND" span={3}>
+            {props.record.identityNumber !== null ? props.record.identityNumber : ""}
+          </Descriptions.Item>
+  
+          <Descriptions.Item label="Ngày cấp" span={3}>
+            {props.record.identityCreatedDate !== null
+              ? props.record.identityCreatedDate
               : ""}
           </Descriptions.Item>
         </Descriptions>
-
-        <Descriptions layout="horizontal" column={6}>
-          <Descriptions.Item label="Diện chính sách" span={3}>
-          {record.incentivesType !== null ? record.incentivesType : ""}
-          </Descriptions.Item>
-
-          <Descriptions.Item label="Thành phần gia đình" span={3}>
-          {record.familyElement !== null ? record.familyElement : ""}
-          </Descriptions.Item>
-        </Descriptions>
-
-        <Descriptions layout="horizontal" column={6}>
-          <Descriptions.Item label="Ngày vào đoàn" span={3}>
-          {record.CYUStartDate !== null ? record.CYUStartDate : ""}
-          </Descriptions.Item>
-
-          <Descriptions.Item label="Ngày vào đảng" span={3}>
-          {record.CPStartDate !== null ? record.CPStartDate : ""}
-          </Descriptions.Item>
-        </Descriptions>
-
-        <Descriptions layout="horizontal" column={6}>
-          <Descriptions.Item label="Số CMND" span={3}>
-          {record.identityNumber !== null ? record.identityNumber : ""}
-          </Descriptions.Item>
-
-          <Descriptions.Item label="Ngày cấp" span={3}>
-          {record.identityCreatedDate !== null ? record.identityCreatedDate : ""}
-          </Descriptions.Item>
-        </Descriptions>
-
+  
         <Descriptions layout="horizontal" column={6}>
           <Descriptions.Item label="Nơi cấp" span={3}>
-          {record.identityCreatedPlace !== null ? record.identityCreatedPlace : ""}
+            {props.record.identityCreatedPlace !== null
+              ? props.record.identityCreatedPlace
+              : ""}
           </Descriptions.Item>
-
+  
           <Descriptions.Item label="Số tài khoản" span={3}>
-          {record.bankNumber !== null ? record.bankNumber : ""}
+            {props.record.bankNumber !== null ? props.record.bankNumber : ""}
           </Descriptions.Item>
         </Descriptions>
-
+  
         <Descriptions layout="horizontal" column={6}>
           <Descriptions.Item label="Số điện thoại" span={3}>
-          {record.phoneNumber !== null ? record.phoneNumber : ""}
+            {props.record.phoneNumber !== null ? props.record.phoneNumber : ""}
           </Descriptions.Item>
-
+  
           <Descriptions.Item label="Email" span={3}>
-          {record.email !== null ? record.email : ""}
+            {props.record.email !== null ? props.record.email : ""}
           </Descriptions.Item>
         </Descriptions>
-
+  
         <Descriptions layout="horizontal" column={6}>
           <Descriptions.Item label="Địa chỉ liên lạc" span={3}>
-          {record.contactAddress !== null ? record.contactAddress : ""}
+            {props.record.contactAddress !== null ? props.record.contactAddress : ""}
           </Descriptions.Item>
-
+  
           <Descriptions.Item label="Ghi chú" span={3}>
-          {record.note !== null ? record.note : ""}
+            {props.record.note !== null ? props.record.note : ""}
           </Descriptions.Item>
         </Descriptions>
       </div>
-    );
+  );
   }
+   else{
+     return <div></div>
+   }
 };
 
-export default TeacherProfile;
+export default StudentProfile;
