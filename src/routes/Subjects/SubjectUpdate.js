@@ -232,7 +232,8 @@ export const SubjectUpdate = (props) => {
                 placeholder="Môn học tiên quyết..."
               >
                 {props.subjectList.map((item) => (
-                  <Option key={"opts" + item.subjectId} value={item.subjectId}>
+                  props.record !== null && props.record != undefined &&
+                 item.subjectId !== props.record.subjectId &&  <Option key={"opts" + item.subjectId} value={item.subjectId}>
                     {item.subjectName + " - " + item.subjectId}
                   </Option>
                 ))}

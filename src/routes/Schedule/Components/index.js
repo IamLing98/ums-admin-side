@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Steps } from "antd";
-import { setTermDetail } from "../../../../actions/TermActions";
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import { api } from "Api";
 import { ArrowRightOutlined } from "@ant-design/icons";
+import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
+
 const { Step } = Steps;
 
 function StepRender(props) {
@@ -23,28 +24,38 @@ function StepRender(props) {
 }
 
 const TermComponent = (props) => {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(0); 
 
-  const [submittingInfo, setSubmittingInfo] = useState([]);
+  const [term, setTerm] = useState(null);
 
-  const getSubmittingInfo = (termId) => {
+  const [loading, setLoading] = useState(true);
+
+  const getTermDetail = (id) => {
     api
-      .get("/subjectsRegistration/" + termId)
-      .then((res) => setSubmittingInfo(res))
+      .get(`/terms/${id}`)
+      .then((res) => {
+        setTerm(res);
+        setLoading(false);
+        if(term){
+          const { progress } = props.term;
+          if (progress > 10 && progress < 20) setStep(0);
+          else if (progress > 20 && progress < 30) setStep(1);
+          else if (progress > 30 && progress < 40) setStep(2); 
+        }
+      })
       .catch((err) => console.log(err));
   };
+ 
 
   useEffect(() => {
-    const { progress } = props.term;
-    if (progress > 10 && progress < 20) setStep(0);
-    else if (progress > 20 && progress < 30) setStep(1);
-    else if (progress > 30 && progress < 40) setStep(2);
-    return () => props.setIsShowDetail(null);
+    if (props.term) {
+      getTermDetail(props.term.id);
+    }
   }, []);
 
-  const icon = () => {
-    return <ArrowRightOutlined />;
-  };
+  if (loading && !term) {
+    return <RctPageLoader />;
+  }
   return (
     <div>
       <Steps
@@ -86,11 +97,9 @@ const TermComponent = (props) => {
       <br />
       {
         <StepRender
-          step={step}
-          submittingInfo={submittingInfo}
-          getSubmittingInfo={getSubmittingInfo}
-          setIsShowDetail={props.setIsShowDetail}
-          term={props.term}
+          step={step} 
+          term={term}
+          getTermDetail={getTermDetail} 
         />
       }
     </div>

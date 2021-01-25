@@ -3,11 +3,13 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { NotificationManager } from "react-notifications";
 import TermList from "./TermList";
-import TermDetail from "./TermComponents/index";
+import TermDetail from "./Components/index";
 import { Col, Row } from "reactstrap";
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Popconfirm, Space, Table } from "antd";
 import TermCreate from "./CreateTerm";
+import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
+
 
 export const ScheduleHome = (props) => {
   const [currentTitle, setCurrentTitle] = useState("Học kỳ");
@@ -18,11 +20,14 @@ export const ScheduleHome = (props) => {
 
   const [isShowDetail, setIsShowDetail] = useState(null);
 
+  const [loading, setLoading] = useState(true);
+
   const getTermList = () => {
     api
       .get("/terms", true)
       .then((res) => {
         setTermList(res);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -60,7 +65,10 @@ export const ScheduleHome = (props) => {
     getTermList();
   }, []);
 
-  return (
+  if(loading){
+    return <RctPageLoader />
+  }
+  else return (
     <div className="data-table-wrapper">
       <Helmet>
         <title>Giảng Dạy</title>
@@ -71,13 +79,7 @@ export const ScheduleHome = (props) => {
           <h4>
             <span>{currentTitle}</span>{" "}
           </h4>
-          <div className="contextual-link" style={{ top: "15px" }}>
-            {/* <a href="javascript:void(0)">
-            <i className="ti-minus" />
-          </a>
-          <a href="javascript:void(0)">
-            <i className="ti-close" />
-          </a> */}
+          <div className="contextual-link" style={{ top: "15px" }}> 
           </div>
         </div>
         <div className="collapse show">

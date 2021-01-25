@@ -2,8 +2,8 @@ import { api } from "Api";
 import React, { useEffect, useState, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { NotificationManager } from "react-notifications";
-import StudentCreate from "./StudentCreate";
-import StudentUpdate from "./StudentUpdate";
+// import StudentCreate from "./StudentCreate";
+// import StudentUpdate from "./StudentUpdate";
 // import StudentImport from './Import';
 import { Col, Row } from "reactstrap";
 import moment from 'moment';
@@ -19,7 +19,7 @@ import {
 import { Button, Input, Popconfirm, Space, Alert, Modal } from "antd";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import StudentDetail from "./StudentDetail";
-import StudentList from "./StudentList";
+import TeacherList from "./TeacherList";
 
 const { confirm } = Modal;
 
@@ -34,7 +34,7 @@ export const TeacherHome = (props) => {
 
   const [showDetail, setShowDetail] = useState(null);
 
-  const [studentList, setStudentList] = useState([]);
+  const [teacherList, setTeacherList] = useState([]);
 
   const [recordUpdate, setRecordUpdate] = useState(null);
 
@@ -67,14 +67,14 @@ export const TeacherHome = (props) => {
     }
   };
 
-  const getStudentList = () => {
+  const getTeacherList = () => {
     api
-      .get("/students", true)
+      .get("/teachers", true)
       .then((res) => {
         for (var i = 0; i < res.length; i++) {
           res[i].isSelecting = false;
         }
-        setStudentList(res);
+        setTeacherList(res);
         setLoading(false);
       })
       .catch((err) => {
@@ -83,24 +83,24 @@ export const TeacherHome = (props) => {
   };
 
   const setSelecting = (record) => {
-    let newList = studentList;
+    let newList = teacherList;
     for (var i = 0; i < newList.length; i++) {
       if (record.studentId === newList[i].studentId) {
         newList[i].isSelecting = true;
       }
     }
-    setStudentList(newList);
+    setTeacherList(newList);
     setShowDetail(record);
   };
 
   const cancelShowDetail = (record) => {
-    let newList = studentList;
+    let newList = teacherList;
     for (var i = 0; i < newList.length; i++) {
       if (record.studentId === newList[i].studentId) {
         newList[i].isSelecting = false;
       }
     }
-    setStudentList(newList);
+    setTeacherList(newList);
     setShowDetail(null);
   };
 
@@ -123,7 +123,7 @@ export const TeacherHome = (props) => {
       .post("/students", values, true)
       .then((res) => {
         NotificationManager.success(`Tạo mới ${res} sinh viên.`);
-        getStudentList();
+        getTeacherList();
       })
       .catch((err) => {
         showErrNoti(err);
@@ -139,7 +139,7 @@ export const TeacherHome = (props) => {
       .put("/students", values, true)
       .then((res) => {
         NotificationManager.success(`Tạo mới ${res} sinh viên.`);
-        getStudentList();
+        getTeacherList();
       })
       .catch((err) => {
         showErrNoti(err);
@@ -155,7 +155,7 @@ export const TeacherHome = (props) => {
       )
       .then((res) => {
         NotificationManager.success("Đã xoá" + res + " bản ghi");
-        getStudentList();
+        getTeacherList();
       })
       .catch((err) => {
         showErrNoti(err);
@@ -170,7 +170,7 @@ export const TeacherHome = (props) => {
       )
       .then((res) => {
         NotificationManager.success("Đã xoá" + res + " bản ghi");
-        getStudentList();
+        getTeacherList();
         setSelectedRowKeys([]);
       })
       .catch((err) => {
@@ -241,7 +241,7 @@ export const TeacherHome = (props) => {
   }
 
   useEffect(() => {
-    getStudentList();
+    getTeacherList();
     getDepartmentList();
     getEthnicList();
     getProvinceList('VNM');
@@ -307,7 +307,7 @@ export const TeacherHome = (props) => {
                       </Col>
                       {/* <Col md="12">
                         
-                      <Alert message={`${studentList.length}`} type="info" showIcon style={{height:"32px"}} />
+                      <Alert message={`${teacherList.length}`} type="info" showIcon style={{height:"32px"}} />
                       </Col> */}
                     </Row>
                   </Col>
@@ -374,10 +374,10 @@ export const TeacherHome = (props) => {
                     </div>
                   </Col>
                 </Row>
-                <StudentList
+                <TeacherList
                   setCurrentTitle={setCurrentTitle}
                   handleDeleteRecord={handleDeleteRecord}
-                  data={studentList}
+                  data={teacherList}
                   setShowModalUpdate={setShowModalUpdate}
                   selectedRowKeys={selectedRowKeys}
                   setSelectedRowKeys={setSelectedRowKeys}
@@ -385,7 +385,7 @@ export const TeacherHome = (props) => {
                   setSelecting={setSelecting}
                 />
               </div>
-              {showDetail !== null
+              {/* {showDetail !== null
                 && <StudentDetail
                   visible={showDetail !== null ? true : false}
                   record={showDetail}
@@ -396,9 +396,9 @@ export const TeacherHome = (props) => {
               <StudentCreate
                 visible={showModalCreate}
                 setShowModalCreate={setShowModalCreate}
-                getStudentList={getStudentList}
+                getTeacherList={getTeacherList}
                 departmentList={departmentList}
-                studentList={studentList}
+                teacherList={teacherList}
                 handleSubmitForm={handleSubmitForm}
                 ethnicList={ethnicList}
                 provinceList={provinceList}
@@ -409,25 +409,25 @@ export const TeacherHome = (props) => {
               <StudentUpdate
                 visible={showModalUpdate  }
                 setShowModalUpdate={setShowModalUpdate}
-                getStudentList={getStudentList}
+                getTeacherList={getTeacherList}
                 departmentList={departmentList}
-                studentList={studentList}
+                teacherList={teacherList}
                 handleSubmitUpdateForm={handleSubmitUpdateForm}
                 ethnicList={ethnicList}
                 provinceList={provinceList}
                 educationProgramList={educationProgramList}
                 classList={classList}
               // options={prerequisitesStudent}
-              />
+              /> */}
               {/* 
               <StudentImport
                 visible={showModalImport}
                 setShowModalImport={setShowModalImport}
                 setRecordUpdate={setRecordUpdate}
                 record={recordUpdate}
-                studentList={studentList}
+                teacherList={teacherList}
                 departmentList={departmentList}
-                getStudentList={getStudentList}
+                getTeacherList={getTeacherList}
                 // options={prerequisitesStudent}
               /> */}
             </div>

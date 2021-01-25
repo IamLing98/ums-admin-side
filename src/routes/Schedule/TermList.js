@@ -16,12 +16,12 @@ const TermList = (props) => {
     {
       title: "ID",
       dataIndex: "id",
-      align:"center",
+      align: "center",
     },
     {
       title: "Niên Giám",
       dataIndex: "year",
-      align:"center",
+      align: "center",
       render: (text, record) => {
         return (
           <a
@@ -50,7 +50,7 @@ const TermList = (props) => {
               );
             }}
           >
-            <span  >{text}</span> 
+            <span>{text}</span>
           </a>
         );
       },
@@ -59,12 +59,12 @@ const TermList = (props) => {
       title: "Học Kỳ",
       dataIndex: "term",
       width: "20%",
-      align:"center",
+      align: "center",
     },
     {
       title: "Trạng Thái",
       dataIndex: "status",
-      align:"center",
+      align: "center",
       render: (status) => {
         let color;
         let text = "";
@@ -88,7 +88,7 @@ const TermList = (props) => {
     {
       title: "Thao Tác",
       key: "action",
-      align:"center",
+      align: "center",
       render: (text, record) => (
         <Space size="middle">
           <Button

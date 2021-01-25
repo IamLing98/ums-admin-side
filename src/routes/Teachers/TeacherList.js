@@ -112,12 +112,12 @@ const StudentList = (props) => {
 
   const columns = [
     {
-      title: "Mã Sinh Viên ",
-      dataIndex: "studentId",
+      title: "Mã Giảng Viên ",
+      dataIndex: "employeeId",
       align: "center",
       ...getColumnSearchProps({
         dataIndex: "studentId",
-        columnName: "mã sinh viên",
+        columnName: "mã giảng viên",
       }),
       render: (text, record) => {
         if (record.isSelecting === true) {
@@ -145,25 +145,7 @@ const StudentList = (props) => {
           {text}
         </a>
       ),
-    },
-    {
-      title: "Lớp ",
-      align: "center",
-      dataIndex: "yearClassId",
-      ...getColumnSearchProps({
-        dataIndex: "yearClassId",
-        columnName: "lớp niên khoá",
-      }),
-      render: (text, record) => (
-        <>
-          {record.yearClassId +
-            " - " +
-            record.yearClassName +
-            " K" +
-            record.courseNumber}
-        </>
-      ),
-    },
+    }, 
     {
       title: "Khoa Đào Tạo",
       dataIndex: "departmentName",
@@ -172,14 +154,7 @@ const StudentList = (props) => {
         dataIndex: "departmentName",
         columnName: "khoa đào tạo",
       }),
-    },
-    {
-      title: "Niên Khoá",
-      align: "center",
-      render: (text, record) => (
-        <span>{record.startYear + " - " + record.endYear}</span>
-      ),
-    },
+    }, 
     {
       title: "Thao Tác",
       align: "center",
