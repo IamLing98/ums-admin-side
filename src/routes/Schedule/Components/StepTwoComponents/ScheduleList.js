@@ -30,55 +30,37 @@ import {
 } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
 
-const SubjectClassList = (props) => {
+const ScheduleList = (props) => {
   const columns = [
     {
-      title: "Mã lớp học phần",
-      dataIndex: "subjectClassId",
-      align: "center",
-    },
-    {
-      title: "Mã học phần",
-      dataIndex: "subjectId",
-      align: "center",
-    },
-    {
-      title: "Tên học phần",
-      dataIndex: "subjectName",
-      align: "center",
+      title: "ID",
+      dataIndex: "id",
+      align: "center", 
       render: (text, record) => (
-        <a
-          // className="ant-anchor-link-title ant-anchor-link-title-active"
+        <a 
           href="javascript:void(0)"
           onClick={() => {
-             props.setShowSubjectClassDetail(record);
+             props.setSchedule(record);
+          }}
+        >
+          <span >Thời khoá biểu {text}</span>
+        </a>
+      ), 
+    }, 
+    {
+      title: "Ngày tạo",
+      dataIndex: "createdDate",
+      align: "center",
+      render: (text, record) => (
+        <a 
+          href="javascript:void(0)"
+          onClick={() => { 
           }}
         >
           <span >{text}</span>
         </a>
       ),
-    },
-    {
-      title: "Phòng máy",
-      dataIndex: "isRequireLab",
-      align: "center",
-    },
-    {
-      title: "Sĩ số",
-      dataIndex: "numberOfSeats",
-      align: "center",
-    },
-    {
-      title: "Giảng viên",
-      dataIndex: "employeeId",
-      align: "center",
-      render: (text, record ) => {
-        if (record.employeeId) {
-          return <span>{record.employeeFullName}</span>;
-        }
-        return <Alert message="Chưa assigment" type="warning" />;
-      },
-    },
+    } ,
     {
       title: "Thao tác", 
       dataIndex: "numberOfSeats",
@@ -87,7 +69,8 @@ const SubjectClassList = (props) => {
        return <Space size="middle"> 
        <Button
          type=""
-         onClick={() => { 
+         onClick={() => {
+           props.setPageStatus(3);
            props.setRecordUpdate(record);
          }}
        >
@@ -123,7 +106,7 @@ const SubjectClassList = (props) => {
       <Table
         columns={columns}
         dataSource={props.data}
-        rowKey="subjectClassId"
+        rowKey="id"
         bordered
         pagination={{ pageSize: 10, size:"default" }}
         size="small"
@@ -144,4 +127,4 @@ const SubjectClassList = (props) => {
   );
 };
 
-export default SubjectClassList;
+export default ScheduleList;

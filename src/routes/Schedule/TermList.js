@@ -122,7 +122,7 @@ const TermList = (props) => {
       dataSource={props.termList}
       rowKey="id"
       bordered
-      pagination={{ pageSize: 10 }}
+      pagination={{ pageSize: 10, size:"default" }}
       size="small"
     />
   );

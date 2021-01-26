@@ -266,7 +266,7 @@ const Progress13 = (props) => {
         dataSource={submittingInfo}
         rowKey="subjectId"
         bordered
-        pagination={{ pageSize: 10 }}
+        pagination={{ pageSize: 10, size:"default" }}
         size="small"
         rowSelection={true}
         rowSelection={rowSelection}
@@ -289,6 +289,7 @@ const Progress13 = (props) => {
           setVisible={setShowSubjectClassCreateModal}
           subject={subjectToCreateClass}
           term={props.term}
+          getSubmittingInfo={getSubmittingInfo}
         />
       )}
     </>

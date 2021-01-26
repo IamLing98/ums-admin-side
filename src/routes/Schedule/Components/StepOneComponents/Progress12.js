@@ -156,7 +156,7 @@ const StepOne = (props) => {
         dataSource={submittingInfo}
         rowKey="subjectId"
         bordered
-        pagination={{ pageSize: 10 }}
+        pagination={{ pageSize: 10 , size:"default"}}
         size="small"
         locale={{
           emptyText: (

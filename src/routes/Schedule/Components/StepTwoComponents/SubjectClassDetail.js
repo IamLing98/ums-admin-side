@@ -35,7 +35,7 @@ const SubjectClassDetail = (props) => {
       <Drawer
         title="Thông tin chi tiết lớp học phần"
         width={720}
-        onClose={() => props.setPageStatus(1)}
+        onClose={() => props.setShowSubjectClassDetail(null)}
         visible={props.visible}
         bodyStyle={{ paddingBottom: 80 }}
         footer={
@@ -45,12 +45,12 @@ const SubjectClassDetail = (props) => {
             }}
           >
             <Button
-              onClick={() => props.setPageStatus(1)}
+              onClick={() => props.setShowSubjectClassDetail(null)}
               style={{ marginRight: 8 }}
             >
               Đóng
             </Button>
-            <Button onClick={() => props.setPageStatus(1)} type="primary">
+            <Button onClick={() => props.setShowSubjectClassDetail(null)} type="primary">
               Đóng
             </Button>
           </div>

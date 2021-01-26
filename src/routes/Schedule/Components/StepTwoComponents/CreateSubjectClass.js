@@ -49,10 +49,6 @@ const formItemLayout = {
       span: 16,
     },
   },
-  initialValues: {
-    numberOfSeats: undefined,
-    isRequireLab: false,
-  },
 };
 
 const OpenSubjectClass = (props) => {
@@ -75,7 +71,7 @@ const OpenSubjectClass = (props) => {
       .post("/subjectClasses", subjectClassArr, true)
       .then((res) => {
         NotificationManager.success("Tạo mới lớp học phần thành công.");
-        // props.getTermList();
+        props.getSubmittingInfo(props.term.id);
       })
       .catch((error) => {
         console.log(error.response);
@@ -90,7 +86,7 @@ const OpenSubjectClass = (props) => {
       });
     props.setVisible(false);
   };
-
+  
   return (
     <Modal
       title="Tạo mới lớp học phần"
@@ -117,15 +113,21 @@ const OpenSubjectClass = (props) => {
       <Form
         form={form}
         {...formItemLayout}
+        initialValues={{
+          numberOfSeats: props.subject.subjectType === "ONLYTHEORY" ? 45 : 30,
+          isRequireLab:  props.subject.subjectType === "ONLYPRACTICE" ||
+          props.subject.subjectType === "BOTH"
+            ? true
+            : false,
+          numberOfGroup:0
+        }}
         onFieldsChange={(changedFields, allFields) => {}}
         preserve={false}
         onValuesChange={(changedValues, allValues) => {
-          if (allValues.numberOfSeats && allValues.numberOfGroup) {
-            console.log(allValues);
-            setTotalNumberOfSeats(
-              allValues.numberOfSeats * allValues.numberOfGroup
-            );
-          }
+          setTotalNumberOfSeats(
+            form.getFieldValue("numberOfSeats") *
+              form.getFieldValue("numberOfGroup")
+          );
         }}
       >
         <Form.Item
@@ -134,7 +136,10 @@ const OpenSubjectClass = (props) => {
           // hasFeedback
           rules={[{ required: true, message: "Vui lòng chọn sĩ số!" }]}
         >
-          <Slider min={15} max={90} />
+          <Slider
+            min={15}
+            max={props.subject.subjectType === "ONLYTHEORY" ? 90 : 45} 
+          />
         </Form.Item>
         <Form.Item
           name="numberOfGroup"
@@ -150,7 +155,7 @@ const OpenSubjectClass = (props) => {
           // hasFeedback
           rules={[{ required: true, message: "Vui lòng chọn !" }]}
         >
-          <Switch />
+          <Switch  />
         </Form.Item>
       </Form>
 

@@ -104,23 +104,12 @@ const UpdateSubjectClass = (props) => {
           throw new SubmissionError({ _error: "Username or Password Invalid" });
         }
       });
-  };
-
-  const options = [
-    {
-      value: "Burns Bay Road",
-    },
-    {
-      value: "Downing Street",
-    },
-    {
-      value: "Wall Street",
-    },
-  ];
+  }; 
 
   useEffect(() => {
     console.log(props.recordUpdate);
     getTeacherList();
+    form.resetFields();
   }, []);
 
   return (
@@ -141,6 +130,7 @@ const UpdateSubjectClass = (props) => {
       centered
       closable={false}
       width={"40%"}
+      forceRender
     >
       <Form
         form={form}
