@@ -2,8 +2,6 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
 This is my final year project in my university. An university information management system. 
 
 ### Built With
@@ -49,6 +47,9 @@ _Education Programs Management_
 Doan Van Linh - [@https://www.facebook.com/linkfromthemid/](https://www.facebook.com/linkfromthemid/) - vandoan1029i@gmail.com
 
 Admin FE Side Link: [FE Side](https://github.com/lingdev1998/ums-admin-side)
+
+User FE Side Link: [FE Side](https://github.com/lingdev1998/ums-client-side)
+
 BE Side Link: [BE Side](https://github.com/lingdev1998/ums-admin-side)
 
 
