@@ -37,6 +37,12 @@ _Subject Management_
 
 _Schedule Creator_ 
 ![Schedule Creator](https://i.ibb.co/2gx6tfT/Capture.png) 
+
+_Student Management_ 
+![Student Management](https://i.ibb.co/G0vMrfT/Capture.png) 
+
+_Education Programs Management_ 
+![Education Programs](https://i.ibb.co/rG001zH/Capture.png) 
 <!-- CONTACT -->
 ## Contact
 
