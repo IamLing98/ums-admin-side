@@ -27,6 +27,8 @@ import {
   UnlockFilled,
   BranchesOutlined,
   DeleteFilled,
+  RollbackOutlined,
+  CheckOutlined,
 } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
 
@@ -86,7 +88,7 @@ const OpenSubjectClass = (props) => {
       });
     props.setVisible(false);
   };
-  
+
   return (
     <Modal
       title="Tạo mới lớp học phần"
@@ -100,8 +102,16 @@ const OpenSubjectClass = (props) => {
       onCancel={() => {
         props.setVisible(false);
       }}
-      okButtonProps={{ disabled: false }}
-      cancelButtonProps={{ disabled: false }}
+      okButtonProps={{
+        icon: <CheckOutlined />,
+        disabled: false,
+        style: { width: "108px" },
+      }}
+      cancelButtonProps={{
+        icon: <RollbackOutlined />,
+        disabled: false,
+        style: { width: "108px" },
+      }}
       maskClosable={false}
       okText="Tạo Mới"
       cancelText="Đóng"
@@ -115,11 +125,12 @@ const OpenSubjectClass = (props) => {
         {...formItemLayout}
         initialValues={{
           numberOfSeats: props.subject.subjectType === "ONLYTHEORY" ? 45 : 30,
-          isRequireLab:  props.subject.subjectType === "ONLYPRACTICE" ||
-          props.subject.subjectType === "BOTH"
-            ? true
-            : false,
-          numberOfGroup:0
+          isRequireLab:
+            props.subject.subjectType === "ONLYPRACTICE" ||
+            props.subject.subjectType === "BOTH"
+              ? true
+              : false,
+          numberOfGroup: 0,
         }}
         onFieldsChange={(changedFields, allFields) => {}}
         preserve={false}
@@ -138,7 +149,7 @@ const OpenSubjectClass = (props) => {
         >
           <Slider
             min={15}
-            max={props.subject.subjectType === "ONLYTHEORY" ? 90 : 45} 
+            max={props.subject.subjectType === "ONLYTHEORY" ? 90 : 45}
           />
         </Form.Item>
         <Form.Item
@@ -155,7 +166,7 @@ const OpenSubjectClass = (props) => {
           // hasFeedback
           rules={[{ required: true, message: "Vui lòng chọn !" }]}
         >
-          <Switch  />
+          <Switch />
         </Form.Item>
       </Form>
 

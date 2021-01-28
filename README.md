@@ -34,7 +34,7 @@ _Subject Management_
 ![SubjectManagement](https://i.ibb.co/m9kRPDK/Capture.png)
 
 _Schedule Creator_ 
-![Schedule Creator](https://i.ibb.co/2gx6tfT/Capture.png) 
+![Schedule Creator](https://i.ibb.co/28qzp6B/Capture.png) 
 
 _Student Management_ 
 ![Student Management](https://i.ibb.co/G0vMrfT/Capture.png) 

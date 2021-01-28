@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  Result,
   Button,
   Modal,
   Tag,
@@ -12,6 +11,9 @@ import {
   Badge,
   Space,
   Popconfirm,
+  Alert,
+  Result,
+  Card,
 } from "antd";
 import { LockOutlined, SmileOutlined } from "@ant-design/icons";
 import { api } from "Api";
@@ -27,6 +29,7 @@ import {
   DeleteFilled,
   CalendarOutlined,
   FolderViewOutlined,
+  SelectOutlined,
 } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
 import SubjectClassList from "./StepTwoComponents/SubjectClassList";
@@ -34,6 +37,7 @@ import SubjectClassDetail from "./StepTwoComponents/SubjectClassDetail";
 import UpdateSubjectClass from "./StepTwoComponents/UpdateSubjectClass";
 import ScheduleList from "./StepTwoComponents/ScheduleList";
 import ScheduleInfo from "./StepTwoComponents/ScheduleInfo";
+import SubjectClassRegistration from "./StepTwoComponents/SubjectClassRegistrationInfo";
 
 import fileSaver from "file-saver";
 
@@ -63,7 +67,7 @@ const StepTwo = (props) => {
     } else if (err.message === "Unauthorized") {
       throw new SubmissionError({ _err: "Username or Password Invalid" });
     }
-  }; 
+  };
 
   const getSubjectClassList = () => {
     api
@@ -82,7 +86,7 @@ const StepTwo = (props) => {
         getSubjectClassList();
         NotificationManager.success("Xoá lớp học thành công");
       })
-      .catch((err) =>  showErrNoti(err));
+      .catch((err) => showErrNoti(err));
   };
 
   const saveFile = () => {
@@ -99,7 +103,7 @@ const StepTwo = (props) => {
         setScheduleList(res);
         setLoading(false);
       })
-      .catch((err) =>  showErrNoti(err));
+      .catch((err) => showErrNoti(err));
   };
 
   const handleCreateSchedule = () => {
@@ -109,7 +113,40 @@ const StepTwo = (props) => {
         NotificationManager.success("Tạo thời khoá biểu thành công");
         getListSchedule();
       })
-      .catch((err) =>  showErrNoti(err));
+      .catch((err) => showErrNoti(err));
+  };
+
+  const handleOpenSubjectClassRegistration = (scheduleId) => {
+    let termObj = {};
+    termObj.id = props.term.id;
+    termObj.progress = 21;
+    termObj.actionType = "SCRON";
+    termObj.activeSchedule = scheduleId;
+    api
+      .put(`/terms/${props.term.id}`, termObj)
+      .then((res) => {
+        setSchedule(null);
+        setPageStatus(3);
+        NotificationManager.success("Mở đăng ký lớp học phần thành công!!!");
+        props.getTermDetail(props.term.id);
+      })
+      .catch((err) => showErrNoti(err));
+  };
+
+  const handleCloseSubjectClassRegistration = () => {
+    let termObj = {};
+    termObj.id = props.term.id;
+    termObj.progress = 22;
+    termObj.actionType = "SCROFF"; 
+    api
+      .put(`/terms/${props.term.id}`, termObj)
+      .then((res) => {
+        setSchedule(null);
+        setPageStatus(3);
+        NotificationManager.success("Kết thúc đăng ký học phần!!!");
+        props.getTermDetail(props.term.id);
+      })
+      .catch((err) => showErrNoti(err));
   };
 
   useEffect(() => {
@@ -119,6 +156,12 @@ const StepTwo = (props) => {
 
   if (loading) {
     return <RctPageLoader />;
+  } else if (props.term.progress === 22) {
+    return (
+      <>
+        <SubjectClassRegistration {...props} />
+      </>
+    );
   } else {
     return (
       <>
@@ -128,49 +171,26 @@ const StepTwo = (props) => {
             sm={12}
             style={{ display: "flex", flexDirection: "column" }}
           >
-            <Row>
-              <Col md={4}>
-                <Input placeholder="Mã học phần..." size="middle" />
-              </Col>
-              <Col md={4}>
-                <Input placeholder="Tên học phần..." size="middle" />
-              </Col>
-              <Col md={4} style={{ display: "block", flexDirection: "column" }}>
-                <button
-                  type="button"
-                  className="ant-btn ant-btn-primary"
-                  //onClick={() => setShowModalCreate(true)}
-                >
-                  <SearchOutlined />
-                  <span>Tìm Kiếm</span>
-                </button>
-              </Col>
-            </Row>
+            <Row></Row>
           </Col>
           <Col md={6} sm={12} xs={12}>
             <div
               className="tableListOperator"
               style={{ textAlign: "right", width: "100%" }}
             >
-              {/* <button
-                  type="button"
-                  className="ant-btn ant-btn-primary"
-                  // onClick={() => setShowModalCreate(true)}
-                >
-                  <PlusOutlined></PlusOutlined>
-                  <span>Mở nhiều lớp </span>
-                </button>
-                <button
-                  type="button"
-                  className="ant-btn ant-btn-primary"
-                  // onClick={() => setShowModalCreate(true)}
-                >
-                  <PlusOutlined></PlusOutlined>
-                  <span>Đăng ký khoá mới </span>
-                </button> */}
-
               {scheduleList.length > 0 && pageStatus === 1 && (
-                <Button type="primary" onClick={() => setPageStatus(2)}>
+                <Button
+                  type="primary"
+                  style={
+                    props.term.activeSchedule
+                      ? {
+                          background: "#63B175",
+                          borderColor: "#63B175",
+                        }
+                      : {}
+                  }
+                  onClick={() => setPageStatus(2)}
+                >
                   <FolderViewOutlined />
                   <span>Thời khoá biểu</span>
                 </Button>
@@ -181,7 +201,7 @@ const StepTwo = (props) => {
                   <span>Lớp học phần</span>
                 </Button>
               )}
-              {pageStatus === 1 && (
+              {pageStatus === 1 && props.term.progress == 13 && (
                 <Button type="primary" onClick={() => handleCreateSchedule()}>
                   <CalendarOutlined />
                   <span>Tạo thời khoá biểu</span>
@@ -192,13 +212,32 @@ const StepTwo = (props) => {
         </Row>
         {pageStatus === 1 ? (
           <>
-            <SubjectClassList
-              data={subjectClassList}
-              setShowSubjectClassDetail={setShowSubjectClassDetail}
-              term={props.term}
-              setRecordUpdate={setRecordUpdate}
-              handleDeleteSubjectClass={handleDeleteSubjectClass}
-            />
+            {props.term.progress === 13 ? (
+              <SubjectClassList
+                data={subjectClassList}
+                setShowSubjectClassDetail={setShowSubjectClassDetail}
+                term={props.term}
+                setRecordUpdate={setRecordUpdate}
+                handleDeleteSubjectClass={handleDeleteSubjectClass}
+              />
+            ) : (
+              <Card bordered={true}>
+                <Result
+                  status="warning"
+                  title="Chưa có dữ liệu đăng ký lớp học phần. Dữ liệu sẽ được cập nhật sau khi quá trình đăng ký kết thúc."
+                  extra={
+                    <Button
+                      type="primary"
+                      onClick={() => handleCloseSubjectClassRegistration()}
+                      danger
+                    >
+                      <CloseCircleOutlined />
+                      <span>Kết Thúc</span>
+                    </Button>
+                  }
+                />
+              </Card>
+            )}
             <SubjectClassDetail
               visible={showSubjectClassDetail}
               setShowSubjectClassDetail={setShowSubjectClassDetail}
@@ -217,7 +256,7 @@ const StepTwo = (props) => {
               />
             )}
           </>
-        ) : (
+        ) : pageStatus === 2 ? (
           <>
             <ScheduleList
               data={scheduleList}
@@ -231,9 +270,14 @@ const StepTwo = (props) => {
                 term={props.term}
                 visible={schedule}
                 setSchedule={setSchedule}
+                handleOpenSubjectClassRegistration={
+                  handleOpenSubjectClassRegistration
+                }
               />
             )}
           </>
+        ) : (
+          ""
         )}
       </>
     );

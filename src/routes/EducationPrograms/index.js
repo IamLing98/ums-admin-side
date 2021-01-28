@@ -107,7 +107,7 @@ export const EducationProgramsComponent = (props) => {
         >
           <DoubleLeftOutlined />
         </a>{" "}
-        Thông Tin Chi Tiết Chương Trình Đào Tạo  
+        Thông Tin Chi Tiết Chương Trình Đào Tạo:  {record.educationProgramName}
       </span>
     );
     setIsShowDetail(record); 

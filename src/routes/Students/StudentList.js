@@ -18,7 +18,7 @@ import Highlighter from "react-highlight-words";
 const StudentList = (props) => {
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 10,
+    pageSize: 15,
     size: "default",
   });
 

@@ -13,7 +13,7 @@ import {
   Space,
   Popconfirm,
   Alert,
-  Drawer
+  Drawer,
 } from "antd";
 import { LockOutlined, SmileOutlined } from "@ant-design/icons";
 import { api } from "Api";
@@ -26,7 +26,7 @@ import {
   UnlockFilled,
   BranchesOutlined,
   DeleteFilled,
-  EditFilled
+  EditFilled,
 } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
 
@@ -51,10 +51,10 @@ const SubjectClassList = (props) => {
           // className="ant-anchor-link-title ant-anchor-link-title-active"
           href="javascript:void(0)"
           onClick={() => {
-             props.setShowSubjectClassDetail(record);
+            props.setShowSubjectClassDetail(record);
           }}
         >
-          <span >{text}</span>
+          <span>{text}</span>
         </a>
       ),
     },
@@ -62,6 +62,10 @@ const SubjectClassList = (props) => {
       title: "Phòng máy",
       dataIndex: "isRequireLab",
       align: "center",
+      render: (text, record) => {
+        if (text === 1) return <span>Có</span>;
+        else return <span>Không</span>;
+      },
     },
     {
       title: "Sĩ số",
@@ -72,7 +76,7 @@ const SubjectClassList = (props) => {
       title: "Giảng viên",
       dataIndex: "employeeId",
       align: "center",
-      render: (text, record ) => {
+      render: (text, record) => {
         if (record.employeeId) {
           return <span>{record.employeeFullName}</span>;
         }
@@ -80,40 +84,42 @@ const SubjectClassList = (props) => {
       },
     },
     {
-      title: "Thao tác", 
+      title: "Thao tác",
       dataIndex: "numberOfSeats",
       align: "center",
       render: (text, record) => {
-       return <Space size="middle"> 
-       <Button
-         type=""
-         onClick={() => { 
-           props.setRecordUpdate(record);
-         }}
-       >
-         <EditFilled />
-       </Button>
-          <Button
-            type=""
-            // onClick={() => {
-            //   setRecordUpdate(record);
-            //   setShowModalUpdate(true);
-            // }}
-          >
-            <LockOutlined />
-          </Button>
-          <Popconfirm
-            placement="left"
-            title={"Chắc chắn xoá?"}
-            onConfirm={() => props.handleDeleteSubjectClass(record)}
-            okText="Ok"
-            cancelText="Không"
-          >
-            <Button type="">
-              <DeleteFilled />
+        return (
+          <Space size="middle">
+            <Button
+              type=""
+              onClick={() => {
+                props.setRecordUpdate(record);
+              }}
+            >
+              <EditFilled />
             </Button>
-          </Popconfirm>
-        </Space>;
+            <Button
+              type=""
+              // onClick={() => {
+              //   setRecordUpdate(record);
+              //   setShowModalUpdate(true);
+              // }}
+            >
+              <LockOutlined />
+            </Button>
+            <Popconfirm
+              placement="left"
+              title={"Chắc chắn xoá?"}
+              onConfirm={() => props.handleDeleteSubjectClass(record)}
+              okText="Ok"
+              cancelText="Không"
+            >
+              <Button type="">
+                <DeleteFilled />
+              </Button>
+            </Popconfirm>
+          </Space>
+        );
       },
     },
   ];
@@ -125,7 +131,7 @@ const SubjectClassList = (props) => {
         dataSource={props.data}
         rowKey="subjectClassId"
         bordered
-        pagination={{ pageSize: 10, size:"default" }}
+        pagination={{ pageSize: 10, size: "default" }}
         size="small"
         locale={{
           emptyText: (

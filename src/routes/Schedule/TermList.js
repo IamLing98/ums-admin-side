@@ -39,13 +39,13 @@ const TermList = (props) => {
                   <a
                     href="javascript:void(0)"
                     onClick={() => {
-                      props.setCurrentTitle(<span>Học kỳ</span>);
+                      props.setCurrentTitle(<span>Học kỳ </span>);
                       props.setIsShowDetail(null);
                     }}
                   >
                     <DoubleLeftOutlined />
                   </a>{" "}
-                  Thông tin học kỳ
+                  Thông tin học kỳ  {record.term } năm {record.year}
                 </span>
               );
             }}

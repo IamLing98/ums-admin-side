@@ -15,7 +15,7 @@ import Highlighter from 'react-highlight-words';
 const SubjectList = (props) => {
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 10,
+    pageSize: 15,
     size: "default",
   });
 
@@ -114,8 +114,7 @@ const SubjectList = (props) => {
     {
       title: "Tên Học Phần ",
       dataIndex: "subjectName",
-      align: "center",
-      width: "20%",
+      align: "center", 
       ...getColumnSearchProps("subjectName"),
     },
     {
@@ -174,7 +173,7 @@ const SubjectList = (props) => {
                     <>
                       {" "}
                       <Badge
-                        key={"badge" + item.subjectName + index}
+                        key={"badge" + item.subjectId + record.subjectId + index}
                         color="#87d068"
                         text={item.subjectName}
                       />

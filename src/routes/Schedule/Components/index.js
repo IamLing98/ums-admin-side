@@ -24,7 +24,7 @@ function StepRender(props) {
 }
 
 const TermComponent = (props) => {
-  const [step, setStep] = useState(0); 
+  const [step, setStep] = useState(0);
 
   const [term, setTerm] = useState(null);
 
@@ -36,22 +36,42 @@ const TermComponent = (props) => {
       .then((res) => {
         setTerm(res);
         setLoading(false);
-        if(term){
-          const { progress } = props.term;
-          if (progress > 10 && progress < 20) setStep(0);
-          else if (progress > 20 && progress < 30) setStep(1);
-          else if (progress > 30 && progress < 40) setStep(2); 
-        }
       })
       .catch((err) => console.log(err));
   };
- 
+
+  const setCorrectStatusForStep = (termProgress, step) => {
+    if (step === 1) {
+      if (termProgress < 20) {
+        return "process";
+      } else return "finish";
+    } else if (step === 2) {
+      if (termProgress > 20 && termProgress < 30) {
+        return "process";
+      } else if (termProgress > 30) return "finish";
+      else if (termProgress < 20) return "wait";
+    } else if (step === 3) {
+      if (step > 30) {
+        return "process";
+      } else if (step < 30) return "wait";
+    }
+  };
 
   useEffect(() => {
     if (props.term) {
       getTermDetail(props.term.id);
     }
   }, []);
+
+  useEffect(() => {
+    console.log("term changed");
+    if (term) {
+      const { progress } = term;
+      if (progress > 10 && progress < 20) setStep(0);
+      else if (progress > 20 && progress < 30) setStep(1);
+      else if (progress > 30 && progress < 40) setStep(2);
+    }
+  }, [JSON.stringify(term)]);
 
   if (loading && !term) {
     return <RctPageLoader />;
@@ -67,7 +87,7 @@ const TermComponent = (props) => {
       >
         <Step
           title="Đăng ký học phần"
-          status="process"
+          status={setCorrectStatusForStep(term.progress, 1)}
           // description={
           //   term.progress11Date && term.progress13Date ? (
           //     <span>
@@ -78,30 +98,24 @@ const TermComponent = (props) => {
           //     ""
           //   )
           // }
-        />
-        <Step
-          title="Đăng ký lớp học phần"
-          status="process"
+        /> 
+         <Step
+          title="Đăng ký lớp học phần"
+          status={setCorrectStatusForStep(term.progress, 2)}
           // description={`${
           //   term.progress21Date ? term.progress21Date + " - " : ""
           // }   ${term.progress23Date ? term.progress23Date : ""}`}
         />
         <Step
           title="Đăng ký chỉnh sửa"
-          status="wait"
+          status={setCorrectStatusForStep(term.progress, 3)}
           // description={`${
           //   term.progress31Date ? term.progress31Date + " - " : ""
           // }   ${term.progress32Date ? term.progress33Date : ""}`}
         />
       </Steps>
       <br />
-      {
-        <StepRender
-          step={step} 
-          term={term}
-          getTermDetail={getTermDetail} 
-        />
-      }
+      {<StepRender step={step} term={term} getTermDetail={getTermDetail} />}
     </div>
   );
 };

@@ -13,7 +13,7 @@ import {
   Space,
   Popconfirm,
   Alert,
-  Drawer
+  Drawer,
 } from "antd";
 import { LockOutlined, SmileOutlined } from "@ant-design/icons";
 import { api } from "Api";
@@ -26,7 +26,7 @@ import {
   UnlockFilled,
   BranchesOutlined,
   DeleteFilled,
-  EditFilled
+  EditFilled,
 } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
 
@@ -35,68 +35,77 @@ const ScheduleList = (props) => {
     {
       title: "ID",
       dataIndex: "id",
-      align: "center", 
-      render: (text, record) => (
-        <a 
-          href="javascript:void(0)"
-          onClick={() => {
-             props.setSchedule(record);
-          }}
-        >
-          <span >Thời khoá biểu {text}</span>
-        </a>
-      ), 
-    }, 
+      align: "center",
+      render: (text, record) => {
+        if (record.id === props.term.activeSchedule) {
+          return (
+            <a
+              href="javascript:void(0)"
+              onClick={() => {
+                props.setSchedule(record);
+              }}
+            >
+              <Alert message={`Thời khoá biểu ` + text} style={{width:"100%"}} type="success" />
+            </a>
+          );
+        }else return             <a
+        href="javascript:void(0)"
+        onClick={() => {
+          props.setSchedule(record);
+        }}
+      >
+        {text}
+      </a>
+      },
+    },
     {
       title: "Ngày tạo",
       dataIndex: "createdDate",
       align: "center",
       render: (text, record) => (
-        <a 
-          href="javascript:void(0)"
-          onClick={() => { 
-          }}
-        >
-          <span >{text}</span>
+        <a href="javascript:void(0)" onClick={() => {}}>
+          <span>{text}</span>
         </a>
       ),
-    } ,
+    },
     {
-      title: "Thao tác", 
+      title: "Thao tác",
       dataIndex: "numberOfSeats",
       align: "center",
       render: (text, record) => {
-       return <Space size="middle"> 
-       <Button
-         type=""
-         onClick={() => {
-           props.setPageStatus(3);
-           props.setRecordUpdate(record);
-         }}
-       >
-         <EditFilled />
-       </Button>
-          <Button
-            type=""
-            // onClick={() => {
-            //   setRecordUpdate(record);
-            //   setShowModalUpdate(true);
-            // }}
-          >
-            <LockOutlined />
-          </Button>
-          <Popconfirm
-            placement="left"
-            title={"Chắc chắn xoá?"}
-            onConfirm={() => props.handleDeleteSubjectClass(record)}
-            okText="Ok"
-            cancelText="Không"
-          >
-            <Button type="">
-              <DeleteFilled />
+        return (
+          <Space size="middle">
+            <Button
+              type=""
+              onClick={() => {
+                props.setPageStatus(3);
+                props.setRecordUpdate(record);
+              }}
+            >
+              <EditFilled />
             </Button>
-          </Popconfirm>
-        </Space>;
+            <Button
+              type=""
+              // onClick={() => {
+              //   setRecordUpdate(record);
+              //   setShowModalUpdate(true);
+              // }}
+            >
+              <LockOutlined />
+            </Button>
+            <Popconfirm
+              placement="left"
+              title={"Chắc chắn xoá?"}
+              onConfirm={() => props.handleDeleteSubjectClass(record)}
+              okText="Ok"
+              cancelText="Không"
+            >
+              <Button type="">
+                <DeleteFilled />
+              </Button>
+            </Popconfirm>
+          </Space>
+        );
       },
     },
   ];
@@ -108,7 +117,7 @@ const ScheduleList = (props) => {
         dataSource={props.data}
         rowKey="id"
         bordered
-        pagination={{ pageSize: 10, size:"default" }}
+        pagination={{ pageSize: 10, size: "default" }}
         size="small"
         locale={{
           emptyText: (

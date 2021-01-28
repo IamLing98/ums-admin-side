@@ -11,7 +11,11 @@ import {
   List,
   Avatar,
 } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  RollbackOutlined,
+  CheckOutlined,
+} from "@ant-design/icons";
 
 const { Option } = Select;
 
@@ -48,9 +52,14 @@ const SubjectClassDetail = (props) => {
               onClick={() => props.setShowSubjectClassDetail(null)}
               style={{ marginRight: 8 }}
             >
+              <RollbackOutlined />
               Đóng
             </Button>
-            <Button onClick={() => props.setShowSubjectClassDetail(null)} type="primary">
+            <Button
+              onClick={() => props.setShowSubjectClassDetail(null)}
+              type="primary"
+            >
+              <CheckOutlined />
               Đóng
             </Button>
           </div>

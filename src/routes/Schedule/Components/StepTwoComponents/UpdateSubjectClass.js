@@ -29,6 +29,8 @@ import {
   UnlockFilled,
   BranchesOutlined,
   DeleteFilled,
+  RollbackOutlined,
+  CheckOutlined,
 } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
 
@@ -122,8 +124,16 @@ const UpdateSubjectClass = (props) => {
         handleSubmitForm(values);
       }}
       onCancel={() => props.onCancel()}
-      okButtonProps={{ disabled: false }}
-      cancelButtonProps={{ disabled: false }}
+      okButtonProps={{
+        icon: <CheckOutlined />,
+        disabled: false,
+        style: { width: "108px" },
+      }}
+      cancelButtonProps={{
+        icon: <RollbackOutlined />,
+        disabled: false,
+        style: { width: "108px" },
+      }}
       maskClosable={false}
       okText="Tạo Mới"
       cancelText="Đóng"
