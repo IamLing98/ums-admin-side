@@ -30,14 +30,24 @@ import {
   ClearOutlined,
   RollbackOutlined,
   CheckOutlined,
+  EditFilled,
+  LockOutlined,
+  CloseSquareOutlined,
+  DeleteOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
+import { Row, Col } from "reactstrap";
+import { NotificationManager } from "react-notifications";
+import OpenSubjectClassEditReg from "../StepThreeComponents/OpenSubjectClassEditReg";
 
-import OpenSubjectClassReg from "./OpenSubjectClassReg";
+const { confirm } = Modal;
 
-const ScheduleInfo = (props) => {
+const SubjectClassList = (props) => {
   const [loading, setLoading] = useState(true);
 
   const [scheduleInfo, setScheduleInfo] = useState(null);
+
+  const [selectFilterValue, setSelectFilterValue] = useState(undefined);
 
   const [visible, setVisible] = useState(false);
 
@@ -50,10 +60,101 @@ const ScheduleInfo = (props) => {
       })
       .catch((err) => console.log(err));
   };
-
+  const showErrNoti = (err) => {
+    NotificationManager.err(err.response.data.message);
+    if (err.message === "Forbidden") {
+      NotificationManager.err(
+        "Did you forget something? Please activate your account"
+      );
+    } else if (err.message === "Unauthorized") {
+      throw new SubmissionError({ _err: "Username or Password Invalid" });
+    }
+  };
   useEffect(() => {
-    getScheduleInfo(props.visible.id);
-  }, []);
+    if (props.term) {
+      getScheduleInfo(props.term.activeSchedule);
+    }
+  }, [props.term]);
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  const onSelectChange = (selectedRowKeys) => {
+    console.log(selectedRowKeys);
+    setSelectedRowKeys(selectedRowKeys);
+  };
+
+  const rowSelection = {
+    selectedRowKeys: selectedRowKeys,
+    onChange: onSelectChange,
+    selections: [
+      {
+        key: "odd",
+        text: "Lớp không đủ tiêu chuẩn",
+        onSelect: (changableRowKeys) => {
+          let newSelectedRowKeys = [];
+          newSelectedRowKeys = changableRowKeys.filter((key, index) => {
+            if (index % 2 !== 0) {
+              return false;
+            }
+            return true;
+          });
+          setSelectedRowKeys(newSelectedRowKeys);
+        },
+      },
+      {
+        key: "even",
+        text: "Select Even Row",
+        onSelect: (changableRowKeys) => {
+          let newSelectedRowKeys = [];
+          newSelectedRowKeys = changableRowKeys.filter((key, index) => {
+            if (index % 2 !== 0) {
+              return true;
+            }
+            return false;
+          });
+          console.log(newSelectedRowKeys);
+          setSelectedRowKeys(newSelectedRowKeys);
+        },
+      },
+    ],
+  };
+
+  const handleCloseSubjectClass = (values) => {
+    api
+      .delete(
+        `/schedules/${props.term.id}/${props.term.activeSchedule}/?${values
+          .map((value, index) => `ids=${value}`)
+          .join("&")}`,
+        true
+      )
+      .then((res) => {
+        NotificationManager.success("Đã xoá" + res + " bản ghi");
+        getScheduleInfo(props.term.activeSchedule);
+      })
+      .catch((err) => {
+        showErrNoti(err);
+      });
+  };
+
+  const handleOpenSubjectClassRegEdit = (values) => {
+    let editSubmittingStartDate = values["rangeTime"][0].format("YYYY-MM-DD");
+    let editSubmittingEndDate = values["rangeTime"][1].format("YYYY-MM-DD");
+    let termObj = {};
+    termObj.id = props.term.id;
+    termObj.progress = 31;
+    termObj.actionType = "SCREON";
+    termObj.editSubmittingStartDate = editSubmittingStartDate;
+    termObj.editSubmittingEndDate = editSubmittingEndDate;
+    api
+      .put(`/terms/${props.term.id}`, termObj)
+      .then((res) => {
+        setSchedule(null);
+        setPageStatus(3);
+        NotificationManager.success("Mở đăng ký điều chỉnh học phần!!!");
+        props.getTermDetail(props.term.id);
+      })
+      .catch((err) => showErrNoti(err));
+  };
 
   const [searchText, setSearchText] = useState("");
 
@@ -143,6 +244,8 @@ const ScheduleInfo = (props) => {
     setSearchText("");
   };
 
+  const daysOfWeek = ["", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu"];
+
   const columns = [
     {
       title: "Mã lớp",
@@ -181,6 +284,22 @@ const ScheduleInfo = (props) => {
           <span>{text}</span>
         </span>
       ),
+    },
+    {
+      title: "Loại Lớp",
+      dataIndex: "subjectType",
+      align: "center",
+      render: (text, record) => {
+        if (text === 1) {
+          return <span>Lý thuyết</span>;
+        }
+        if (text === 2) {
+          return <span>Lý thuyết/Thảo luận</span>;
+        }
+        if (text === 3) {
+          return <span>Lý thuyết/Thực hành</span>;
+        }
+      },
     },
     {
       title: "Số Tín",
@@ -275,7 +394,7 @@ const ScheduleInfo = (props) => {
       ),
     },
     {
-      title: "Số Lượng Max",
+      title: "Max",
       dataIndex: "numberOfSeats",
       align: "center",
       render: (text, record) => (
@@ -284,131 +403,123 @@ const ScheduleInfo = (props) => {
         </span>
       ),
     },
-    // {
-    //   title: "Loại Lớp",
-    //   dataIndex: "numberOfSeats",
-    //   align: "center",
-    //   render: (text, record) => (
-    //     <span>
-    //       <span>{text}</span>
-    //     </span>
-    //   ),
-    // },
-    // {
-    //   title: "Thao tác",
-    //   dataIndex: "numberOfSeats",
-    //   align: "center",
-    //   render: (text, record) => {
-    //    return <Space size="middle">
-    //    <Button
-    //      type=""
-    //      onClick={() => {
-    //        props.setPageStatus(3);
-    //        props.setRecordUpdate(record);
-    //      }}
-    //    >
-    //      <EditFilled />
-    //    </Button>
-    //       <Button
-    //         type=""
-    //         // onClick={() => {
-    //         //   setRecordUpdate(record);
-    //         //   setShowModalUpdate(true);
-    //         // }}
-    //       >
-    //         <LockOutlined />
-    //       </Button>
-    //       <Popconfirm
-    //         placement="left"
-    //         title={"Chắc chắn xoá?"}
-    //         onConfirm={() => props.handleDeleteSubjectClass(record)}
-    //         okText="Ok"
-    //         cancelText="Không"
-    //       >
-    //         <Button type="">
-    //           <DeleteFilled />
-    //         </Button>
-    //       </Popconfirm>
-    //     </Space>;
-    //   },
-    // },
+    {
+      title: "ĐK",
+      dataIndex: "currentOfSubmittingNumber",
+      align: "center",
+      render: (text, record) => (
+        <span>
+          <span>{text}</span>
+        </span>
+      ),
+    },
   ];
 
+  const onSearch = (values) => {
+    if (values === 1) {
+      let newSelectItems = [];
+      for (var i = 0; i < scheduleInfo.length; i++) {
+        let item = scheduleInfo[i];
+        if (item.subjectType === 1) {
+          if (item.currentOfSubmittingNumber < 30) {
+            newSelectItems.push(item.subjectClassId);
+          }
+        } else if (item.subjectType === 2) {
+          if (item.currentOfSubmittingNumber < 15) {
+            newSelectItems.push(item.subjectClassId);
+          }
+        } else if (item.subjectType === 3) {
+          if (item.currentOfSubmittingNumber < 15) {
+            newSelectItems.push(item.subjectClassId);
+          }
+        }
+      }
+      setSelectedRowKeys(newSelectItems);
+    } else if (values === 0) {
+      let newSelectItems = [];
+      for (var i = 0; i < scheduleInfo.length; i++) {
+        let item = scheduleInfo[i];
+        newSelectItems.push(item.subjectClassId);
+      }
+      setSelectedRowKeys(newSelectItems);
+    } else {
+      setSelectedRowKeys([]);
+    }
+  };
+  const showDeleteConfirm = (selectedRowKeys) => {
+    confirm({
+      centered: true,
+      title: "Chắc chắn?",
+      icon: <ExclamationCircleOutlined />,
+      content: "Vui lòng xác nhận",
+      okText: "Đồng ý",
+      okType: "danger",
+      cancelText: "Huỷ",
+      onOk() {
+        handleCloseSubjectClass(selectedRowKeys);
+      },
+      onCancel() {
+        console.log("D");
+      },
+    });
+  };
   return (
     <>
-      <Drawer
-        title={`Thời khoá biểu học kỳ ${props.term.term} năm ${props.term.year}`}
-        width={"80%"}
-        onClose={() => props.setSchedule(null)}
-        visible={props.visible}
-        bodyStyle={{ paddingBottom: 80 }}
-        footer={
+      <Row>
+        <Col
+          md={6}
+          sm={12}
+          style={{ display: "flex", flexDirection: "column" }}
+        ></Col>
+        <Col md={6} sm={12} xs={12}>
           <div
-            style={{
-              textAlign: "right",
-            }}
+            className="tableListOperator"
+            style={{ textAlign: "right", width: "100%" }}
           >
             <Button
-              onClick={() => props.setSchedule(null)}
-              style={{ marginRight: 8 }}
-            >
-              {" "}
-              <RollbackOutlined />
-              Quay lại
-            </Button>
-            <Button
-              onClick={() =>
-                setVisible(true)
-              }
               type="primary"
+              style={{
+                background: "#DC0000",
+                borderColor: "#DC0000",
+                color: "wheat",
+              }}
+              onClick={() => props.handleCloseSubmittingEdit()}
             >
-              <CheckOutlined />
-              Mở ĐKLHP
+              <DeleteOutlined />
+              <span>Kết thúc ĐKĐC</span>
             </Button>
           </div>
-        }
-      >
-        {loading && !scheduleInfo ? (
-          <RctPageLoader />
-        ) : (
-          <>
-            <Table
-              columns={columns}
-              dataSource={scheduleInfo}
-              rowKey="subjectClassId"
-              bordered
-              pagination={{ pageSize: 25, size: "default" }}
-              size="small"
-              locale={{
-                emptyText: (
-                  <div className="ant-empty ant-empty-normal">
-                    <div className="ant-empty-image">
-                      <SearchOutlined
-                        style={{ fontSize: "16px", color: "#08c" }}
-                      />
-                      <p className="ant-empty-description">
-                        Không có dữ liệu thời khoá biểu
-                      </p>
-                    </div>
-                  </div>
-                ),
-              }}
-            />
-            <OpenSubjectClassReg
-              visible={visible}
-              handleOpenSubjectClassRegistration={
-                props.handleOpenSubjectClassRegistration
-              }
-              id={props.visible.id}
-              setVisible={setVisible}
-            />
-          </>
-        )}
-      </Drawer>
+        </Col>
+      </Row>
+      <Table
+        columns={columns}
+        dataSource={scheduleInfo}
+        rowKey="subjectClassId"
+        bordered
+        pagination={{ pageSize: 25, size: "default" }}
+        size="small"
+        locale={{
+          emptyText: (
+            <div className="ant-empty ant-empty-normal">
+              <div className="ant-empty-image">
+                <SearchOutlined style={{ fontSize: "16px", color: "#08c" }} />
+                <p className="ant-empty-description">
+                  Không có dữ liệu thời khoá biểu
+                </p>
+              </div>
+            </div>
+          ),
+        }}
+      />
+      <OpenSubjectClassEditReg
+        visible={visible}
+        handleOpenSubjectClassRegEdit={handleOpenSubjectClassRegEdit}
+        setVisible={setVisible}
+        term={props.term}
+      />
     </>
   );
 };
-const daysOfWeek = ["", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu"];
 
 const timeTable = [
   {
@@ -453,4 +564,4 @@ const timeTable = [
   },
 ];
 
-export default ScheduleInfo;
+export default SubjectClassList;

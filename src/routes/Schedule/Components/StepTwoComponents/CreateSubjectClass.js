@@ -15,6 +15,7 @@ import {
   Slider,
   Switch,
   Statistic,
+  Radio
 } from "antd";
 import { LockOutlined, SmileOutlined } from "@ant-design/icons";
 import { api } from "Api";
@@ -66,7 +67,7 @@ const OpenSubjectClass = (props) => {
       subjectClass.subjectId = props.subject.subjectId;
       subjectClass.termId = props.term.id;
       subjectClass.numberOfSeats = values.numberOfSeats;
-      subjectClass.isRequireLab = values.isRequireLab === false ? 0 : 1;
+      subjectClass.isRequireLab = values.isRequireLab;
       subjectClassArr.push(subjectClass);
     }
     api
@@ -118,7 +119,7 @@ const OpenSubjectClass = (props) => {
       destroyOnClose={true}
       centered
       closable={false}
-      width={"40%"}
+      width={"40%"} 
     >
       <Form
         form={form}
@@ -166,7 +167,10 @@ const OpenSubjectClass = (props) => {
           // hasFeedback
           rules={[{ required: true, message: "Vui lòng chọn !" }]}
         >
-          <Switch />
+         <Radio.Group>
+            <Radio value={1}>Có</Radio>
+            <Radio value={0}>Không</Radio>
+          </Radio.Group>
         </Form.Item>
       </Form>
 

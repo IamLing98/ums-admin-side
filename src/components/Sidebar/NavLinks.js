@@ -68,8 +68,8 @@ export default {
         {
           menu_icon: "zmdi zmdi-border-all",
           isActive: false,
-          menu_title: "Giảng Dạy",
-          menu_description: "Đào Tạo/Giảng Dạy",
+          menu_title: "Thời Khoá Biểu",
+          menu_description: "Đào Tạo/Thời Khoá Biểu",
           new_item: false,
           path: "/app/education/schedule",
         },

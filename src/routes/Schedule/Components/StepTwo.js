@@ -14,6 +14,8 @@ import {
   Alert,
   Result,
   Card,
+  Divider,
+  Empty,
 } from "antd";
 import { LockOutlined, SmileOutlined } from "@ant-design/icons";
 import { api } from "Api";
@@ -116,17 +118,26 @@ const StepTwo = (props) => {
       .catch((err) => showErrNoti(err));
   };
 
-  const handleOpenSubjectClassRegistration = (scheduleId) => {
-    let termObj = {};
+  const handleOpenSubjectClassRegistration = (values) => {
+    console.log(values);
+    let subjectClassSubmittingStartDate = values["rangeTime"][0].format(
+      "YYYY-MM-DD"
+    );
+    let subjectCLassSubmittingEndDate = values["rangeTime"][1].format(
+      "YYYY-MM-DD"
+    );
+    let termObj = { ...props.term };
     termObj.id = props.term.id;
     termObj.progress = 21;
     termObj.actionType = "SCRON";
-    termObj.activeSchedule = scheduleId;
+    termObj.activeSchedule = values.id;
+    termObj.subjectClassSubmittingStartDate = subjectClassSubmittingStartDate;
+    termObj.subjectCLassSubmittingEndDate = subjectCLassSubmittingEndDate;
     api
       .put(`/terms/${props.term.id}`, termObj)
       .then((res) => {
         setSchedule(null);
-        setPageStatus(3);
+        setPageStatus(1);
         NotificationManager.success("Mở đăng ký lớp học phần thành công!!!");
         props.getTermDetail(props.term.id);
       })
@@ -137,12 +148,12 @@ const StepTwo = (props) => {
     let termObj = {};
     termObj.id = props.term.id;
     termObj.progress = 22;
-    termObj.actionType = "SCROFF"; 
+    termObj.actionType = "SCROFF";
     api
       .put(`/terms/${props.term.id}`, termObj)
       .then((res) => {
-        setSchedule(null);
-        setPageStatus(3);
+        // setSchedule(null);
+        // setPageStatus(1);
         NotificationManager.success("Kết thúc đăng ký học phần!!!");
         props.getTermDetail(props.term.id);
       })
@@ -156,12 +167,6 @@ const StepTwo = (props) => {
 
   if (loading) {
     return <RctPageLoader />;
-  } else if (props.term.progress === 22) {
-    return (
-      <>
-        <SubjectClassRegistration {...props} />
-      </>
-    );
   } else {
     return (
       <>
@@ -178,7 +183,7 @@ const StepTwo = (props) => {
               className="tableListOperator"
               style={{ textAlign: "right", width: "100%" }}
             >
-              {scheduleList.length > 0 && pageStatus === 1 && (
+              {scheduleList.length > 0 && pageStatus === 1 && props.term.progress < 22 && (
                 <Button
                   type="primary"
                   style={
@@ -212,7 +217,7 @@ const StepTwo = (props) => {
         </Row>
         {pageStatus === 1 ? (
           <>
-            {props.term.progress === 13 ? (
+            {props.term.progress === 13 && (
               <SubjectClassList
                 data={subjectClassList}
                 setShowSubjectClassDetail={setShowSubjectClassDetail}
@@ -220,22 +225,33 @@ const StepTwo = (props) => {
                 setRecordUpdate={setRecordUpdate}
                 handleDeleteSubjectClass={handleDeleteSubjectClass}
               />
-            ) : (
+            )}{" "}
+            {
+              props.term.progress === 22 && <SubjectClassRegistration {...props} />
+            }
+            {props.term.progress == 21 && (
               <Card bordered={true}>
-                <Result
-                  status="warning"
-                  title="Chưa có dữ liệu đăng ký lớp học phần. Dữ liệu sẽ được cập nhật sau khi quá trình đăng ký kết thúc."
-                  extra={
-                    <Button
-                      type="primary"
-                      onClick={() => handleCloseSubjectClassRegistration()}
-                      danger
-                    >
-                      <CloseCircleOutlined />
-                      <span>Kết Thúc</span>
-                    </Button>
+                <Empty
+                  image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                  imageStyle={{
+                    height: 60,
+                  }}
+                  description={
+                    <span>
+                      Chưa có dữ liệu đăng ký lớp học phần. Dữ liệu sẽ được cập
+                      nhật sau khi quá trình đăng ký kết thúc.{" "}
+                    </span>
                   }
-                />
+                >
+                  <Button
+                    type="primary"
+                    onClick={() => handleCloseSubjectClassRegistration()}
+                    danger
+                  >
+                    <CloseCircleOutlined />
+                    <span>Kết Thúc ĐK</span>
+                  </Button>
+                </Empty>
               </Card>
             )}
             <SubjectClassDetail

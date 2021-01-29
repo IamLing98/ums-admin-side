@@ -79,8 +79,7 @@ const SubjectClassDetail = (props) => {
               />
             </List.Item>
           )}
-        />
-        ,
+        /> 
       </Drawer>
     </>
   );

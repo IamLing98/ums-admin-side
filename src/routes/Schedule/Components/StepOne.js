@@ -100,9 +100,9 @@ const StepOne = (props) => {
         handleSubjectSubmittingClose={handleSubjectSubmittingClose}
       />
     );
-  } else if (props.term.progress === 13) {
+  } else  {
     return <Progress13 {...props} />;
-  } else return <></>;
+  }  
 };
 
 export default StepOne;

@@ -6,7 +6,7 @@ import StudentCreate from "./StudentCreate";
 import StudentUpdate from "./StudentUpdate";
 // import StudentImport from './Import';
 import { Col, Row } from "reactstrap";
-import moment from 'moment';
+import moment from "moment";
 import {
   PlusOutlined,
   SearchOutlined,
@@ -16,10 +16,12 @@ import {
   ExclamationCircleOutlined,
   RetweetOutlined,
 } from "@ant-design/icons";
-import { Button, Input, Popconfirm, Space, Alert, Modal } from "antd";
+import { Button, Input, Popconfirm, Space, Alert, Modal,Select  } from "antd";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import StudentDetail from "./StudentDetail";
 import StudentList from "./StudentList";
+import ToPdf from "./ExportToPdf";
+import ImportStudent from './Import';
 
 const { confirm } = Modal;
 
@@ -31,6 +33,8 @@ export const StudentHome = (props) => {
   const [showModalUpdate, setShowModalUpdate] = useState(false);
 
   const [showModalImport, setShowModalImport] = useState(false);
+
+  const [showModalPDF, setShowModalPDF] = useState(false);
 
   const [showDetail, setShowDetail] = useState(null);
 
@@ -54,7 +58,7 @@ export const StudentHome = (props) => {
 
   const input = useRef(null);
 
-  const onSearch = () => { };
+  const onSearch = () => {};
 
   const showErrNoti = (err) => {
     NotificationManager.err(err.response.data.message);
@@ -117,7 +121,7 @@ export const StudentHome = (props) => {
 
   const handleSubmitForm = (values) => {
     for (var i = 0; i < values.length; i++) {
-      values.dateBirth = moment(values.dateBirth, 'YYYY-MM-DD');
+      values.dateBirth = moment(values.dateBirth, "YYYY-MM-DD");
     }
     api
       .post("/students", values, true)
@@ -133,7 +137,7 @@ export const StudentHome = (props) => {
 
   const handleSubmitUpdateForm = (values) => {
     for (var i = 0; i < values.length; i++) {
-      values.dateBirth = moment(values.dateBirth, 'YYYY-MM-DD');
+      values.dateBirth = moment(values.dateBirth, "YYYY-MM-DD");
     }
     api
       .put("/students", values, true)
@@ -205,7 +209,7 @@ export const StudentHome = (props) => {
       .catch((err) => {
         showErrNoti(err);
       });
-  }
+  };
 
   const getProvinceList = (id) => {
     api
@@ -216,7 +220,7 @@ export const StudentHome = (props) => {
       .catch((err) => {
         showErrNoti(err);
       });
-  }
+  };
 
   const getEducationProgramList = () => {
     api
@@ -227,7 +231,7 @@ export const StudentHome = (props) => {
       .catch((err) => {
         showErrNoti(err);
       });
-  }
+  };
 
   const getClassList = () => {
     api
@@ -238,13 +242,13 @@ export const StudentHome = (props) => {
       .catch((err) => {
         showErrNoti(err);
       });
-  }
+  };
 
   useEffect(() => {
     getStudentList();
     getDepartmentList();
     getEthnicList();
-    getProvinceList('VNM');
+    getProvinceList("VNM");
     getEducationProgramList();
     getClassList();
   }, []);
@@ -268,8 +272,7 @@ export const StudentHome = (props) => {
             <h4>
               <span>{currentTitle}</span>{" "}
             </h4>
-            <div className="contextual-link" style={{ top: "15px" }}>
-            </div>
+            <div className="contextual-link" style={{ top: "15px" }}></div>
           </div>
           <div className="collapse show">
             <div className="rct-full-block">
@@ -283,14 +286,43 @@ export const StudentHome = (props) => {
                   >
                     <Row>
                       <Col md={4}>
-                        <Input
-                          ref={input}
-                          placeholder="Mã Học Phần..."
-                          size="middle"
-                        />
+                        <Select
+                          allowClear
+                          style={{ width: "100%" }}
+                          placeholder="Học lực..."
+                          showSearch
+                        >
+                          <Option key={ + "filtereddd1"} value={1}>
+                            Xếp loại xuất sắc
+                          </Option>
+                          <Option key={ + "filtereddd2"} value={2}>
+                            Xếp loại giỏi
+                          </Option>
+                          <Option key={ + "filtereddd3"} value={3}>
+                            Xếp loại khá
+                          </Option>
+                          <Option key={ + "filtereddd4"} value={4}>
+                            Xếp loại trung bình
+                          </Option>
+                          <Option key={ + "filtereddd5"} value={5}>
+                            Xếp loại yếu
+                          </Option>
+                        </Select>
                       </Col>
                       <Col md={4}>
-                        <Input placeholder="Tên Học Phần..." size="middle" />
+                      <Select
+                          allowClear
+                          style={{ width: "100%" }}
+                          placeholder="Khen thưởng..."
+                          showSearch
+                        >
+                          <Option key={ + "filteredddd1"} value={1}>
+                            Khen thuởng
+                          </Option>
+                          <Option key={ + "filteredddd2"} value={2}>
+                            Kỷ luật
+                          </Option> 
+                        </Select>
                       </Col>
                       <Col
                         md={4}
@@ -345,11 +377,11 @@ export const StudentHome = (props) => {
                         style={
                           selectedRowKeys.length > 1
                             ? {
-                              background: "#DC0000",
-                              borderColor: "#DC0000",
-                              color: "wheat",
-                              width: "122px",
-                            }
+                                background: "#DC0000",
+                                borderColor: "#DC0000",
+                                color: "wheat",
+                                width: "122px",
+                              }
                             : {}
                         }
                         disabled={selectedRowKeys.length > 1 ? false : true}
@@ -359,18 +391,52 @@ export const StudentHome = (props) => {
                         <span>Xoá Nhiều</span>
                       </Button>
                       <Button
-                        type="primary"
-                        style={{
-                          background: "#DEC544",
-                          borderColor: "#DEC544",
-                          color: "black",
-                          width: "122px",
-                        }}
-                        onClick={() => { }}
+                        style={
+                          selectedRowKeys.length > 1
+                            ? {
+                                background: "#DEC544",
+                                borderColor: "#DEC544",
+                                color: "black",
+                                width: "122px",
+                              }
+                            : {
+                                width: "122px",
+                              }
+                        }
+                        onClick={() => {}}
+                        disabled={selectedRowKeys.length > 1 ? false : true}
                       >
                         <DiffOutlined />
                         <span>In Exel</span>
                       </Button>
+                      <Button
+                        type="primary"
+                        style={
+                          selectedRowKeys.length > 1
+                            ? {
+                                background: "#DEC544",
+                                borderColor: "#DEC544",
+                                color: "black",
+                                width: "122px",
+                              }
+                            : {
+                                width: "122px",
+                              }
+                        }
+                        onClick={() => {
+                          setShowModalPDF(true);
+                        }}
+                        disabled={selectedRowKeys.length > 1 ? false : true}
+                      >
+                        <DiffOutlined />
+                        <span>PDF</span>
+                      </Button>
+                      <ToPdf
+                        selectedRowKeys={selectedRowKeys}
+                        visible={showModalPDF}
+                        setShowModalPDF={setShowModalPDF}
+                        studentList={studentList}
+                      />
                     </div>
                   </Col>
                 </Row>
@@ -385,13 +451,14 @@ export const StudentHome = (props) => {
                   setSelecting={setSelecting}
                 />
               </div>
-              {showDetail !== null
-                && <StudentDetail
+              {showDetail !== null && (
+                <StudentDetail
                   visible={showDetail !== null ? true : false}
                   record={showDetail}
                   setShowDetail={setShowDetail}
                   cancelShowDetail={cancelShowDetail}
-                />}
+                />
+              )}
 
               <StudentCreate
                 visible={showModalCreate}
@@ -404,10 +471,10 @@ export const StudentHome = (props) => {
                 provinceList={provinceList}
                 educationProgramList={educationProgramList}
                 classList={classList}
-              // options={prerequisitesStudent}
+                // options={prerequisitesStudent}
               />
               <StudentUpdate
-                visible={showModalUpdate  }
+                visible={showModalUpdate}
                 setShowModalUpdate={setShowModalUpdate}
                 getStudentList={getStudentList}
                 departmentList={departmentList}
@@ -417,7 +484,7 @@ export const StudentHome = (props) => {
                 provinceList={provinceList}
                 educationProgramList={educationProgramList}
                 classList={classList}
-              // options={prerequisitesStudent}
+                // options={prerequisitesStudent}
               />
               {/* 
               <StudentImport

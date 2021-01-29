@@ -131,7 +131,7 @@ const SubjectClassList = (props) => {
         dataSource={props.data}
         rowKey="subjectClassId"
         bordered
-        pagination={{ pageSize: 10, size: "default" }}
+        pagination={{ pageSize: 15, size: "default" }}
         size="small"
         locale={{
           emptyText: (

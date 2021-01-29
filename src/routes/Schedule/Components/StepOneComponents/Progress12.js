@@ -10,6 +10,7 @@ import {
   Select,
   DatePicker,
   Badge,
+  Divider,
   Space,
   Popconfirm,
 } from "antd";
@@ -25,12 +26,10 @@ import {
   BranchesOutlined,
   DeleteFilled,
 } from "@ant-design/icons";
-import { Row, Col } from "reactstrap";  
- 
+import { Row, Col } from "reactstrap";
 
 const StepOne = (props) => {
   const [form] = Form.useForm();
- 
 
   const [submittingInfo, setSubmittingInfo] = useState([]);
 
@@ -52,8 +51,8 @@ const StepOne = (props) => {
         setSubmittingInfo(res);
       })
       .catch((err) => console.log(err));
-  }; 
- 
+  };
+
   useEffect(() => {
     getSubmittingInfo(props.term.id);
   }, []);
@@ -62,15 +61,18 @@ const StepOne = (props) => {
     {
       title: "Mã học phần",
       dataIndex: "subjectId",
+      align:"center"
     },
     {
       title: "Tên học phần",
       dataIndex: "subjectName",
+      align:"center"
     },
     {
       title: "Khoa phụ trách",
-      dataIndex: "term",
+      dataIndex: "departmentName",
       width: "20%",
+      align:"center",
     },
     {
       title: "Số lượng đăng ký",
@@ -80,28 +82,12 @@ const StepOne = (props) => {
       render: (text, record) => {
         return (
           <Space>
-            Dự đoán:
-            <Badge
-              count={record.predictSubmit}
-              showZero={true}
-              overflowCount={10000}
-              title={"Số lượng dự đoán"}
-            />
-            Tổng số:
-            <Badge
-              count={record.totalSubmit}
-              showZero={true}
-              overflowCount={10000}
-              title={"Tổng số đăng ký"}
-            />
-            Tự động:
-            <Badge
-              count={record.autoSubmit}
-              style={{ backgroundColor: "#52c41a" }}
-              showZero={true}
-              overflowCount={10000}
-              title={"Tự động đăng ký"}
-            />
+            <Badge status="warning" />
+            Dự đoán:{record.predictSubmit}
+            <Badge status="processing" />
+            Tổng số: {record.totalSubmit}
+            <Badge status="success" />
+            Tự động: <b>{record.autoSubmit}</b>
           </Space>
         );
       },
@@ -156,7 +142,7 @@ const StepOne = (props) => {
         dataSource={submittingInfo}
         rowKey="subjectId"
         bordered
-        pagination={{ pageSize: 10 , size:"default"}}
+        pagination={{ pageSize: 10, size: "default" }}
         size="small"
         locale={{
           emptyText: (

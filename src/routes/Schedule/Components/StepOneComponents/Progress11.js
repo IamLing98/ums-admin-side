@@ -12,6 +12,8 @@ import {
   Badge,
   Space,
   Popconfirm,
+  Divider,
+  Card,
 } from "antd";
 import { LockOutlined, SmileOutlined } from "@ant-design/icons";
 import { api } from "Api";
@@ -25,7 +27,7 @@ import {
   BranchesOutlined,
   DeleteFilled,
 } from "@ant-design/icons";
-import { Row, Col } from "reactstrap";  
+import { Row, Col } from "reactstrap";
 const { RangePicker } = DatePicker;
 
 const rangeConfig = {
@@ -43,10 +45,11 @@ const Progress11 = (props) => {
 
   const [subjectSubmitFormVisible, setSubjectSubmitFormVisible] = useState(
     false
-  ); 
-  
-    return (
-      <div>
+  );
+
+  return (
+    <div>
+      <Card bordered={true}>
         <Result
           icon={<SmileOutlined />}
           title="Bắt đầu Tên học phần mới bằng việc mở đăng ký học phần!"
@@ -67,7 +70,10 @@ const Progress11 = (props) => {
               .validateFields()
               .then((values) => {
                 form.resetFields();
-                props.handleSubjectSubmittingOpen(values, setSubjectSubmitFormVisible);
+                props.handleSubjectSubmittingOpen(
+                  values,
+                  setSubjectSubmitFormVisible
+                );
               })
               .catch((info) => {
                 console.log("Validate Failed:", info);
@@ -92,9 +98,9 @@ const Progress11 = (props) => {
             </Form.Item>
           </Form>
         </Modal>
-      </div>
-    );
-    
+      </Card>
+    </div>
+  );
 };
 
 export default Progress11;

@@ -54,7 +54,7 @@ const ScheduleList = (props) => {
           props.setSchedule(record);
         }}
       >
-        {text}
+        Thời khoá biểu {text}
       </a>
       },
     },

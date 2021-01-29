@@ -1,7 +1,7 @@
 /**
  * Theme Options
  */
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { DropdownToggle, DropdownMenu, Dropdown } from 'reactstrap';
@@ -29,56 +29,57 @@ import {
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
 
-class ThemeOptions extends Component {
+const ThemeOptions  = (props) =>  {
 
-    state = {
+    const [state, setState] = useState({
         switched: false,
         themeOptionPanelOpen: false
-    }
+    })
 
-    componentDidMount() {
-        const { darkMode, boxLayout, rtlLayout, miniSidebar } = this.props;
+    componentDidMount =() =>   {
+        const { darkMode, boxLayout, rtlLayout, miniSidebar } = props;
         if (darkMode) {
-            this.darkModeHanlder(true);
+            darkModeHanlder(true);
         }
         if (boxLayout) {
-            this.boxLayoutHanlder(true);
+            boxLayoutHanlder(true);
         }
         if (rtlLayout) {
-            this.rtlLayoutHanlder(true);
+            rtlLayoutHanlder(true);
         }
         if (miniSidebar) {
-            this.miniSidebarHanlder(true);
+            miniSidebarHanlder(true);
         }
     }
 
     /**
      * Set Sidebar Background Image
      */
-    setSidebarBgImage(sidebarImage) {
-        this.props.setSidebarBgImageAction(sidebarImage);
+    const setSidebarBgImage = (sidebarImage) =>  {
+        props.setSidebarBgImageAction(sidebarImage);
     }
 
     /**
      * Function To Toggle Theme Option Panel
      */
-    toggleThemePanel() {
-        this.setState({
-            themeOptionPanelOpen: !this.state.themeOptionPanelOpen
+    const toggleThemePanel = () =>  {
+        setState({
+            ...state,
+            themeOptionPanelOpen: !state.themeOptionPanelOpen 
         });
     }
 
     /**
      * Mini Sidebar Event Handler
     */
-    miniSidebarHanlder(isTrue) {
+    const miniSidebarHanlder = (isTrue) => {
         if (isTrue) {
             $('body').addClass('mini-sidebar');
         } else {
             $('body').removeClass('mini-sidebar');
         }
         setTimeout(() => {
-            this.props.miniSidebarAction(isTrue);
+            props.miniSidebarAction(isTrue);
         }, 100)
     }
 
@@ -87,13 +88,13 @@ class ThemeOptions extends Component {
      * Use To Enable Dark Mode
      * @param {*object} event
     */
-    darkModeHanlder(isTrue) {
+    const darkModeHanlder = (isTrue) =>  {
         if (isTrue) {
             $('body').addClass('dark-mode');
         } else {
             $('body').removeClass('dark-mode');
         }
-        this.props.darkModeAction(isTrue);
+        props.darkModeAction(isTrue);
     }
 
     /**
@@ -101,13 +102,13 @@ class ThemeOptions extends Component {
      * Use To Enable Boxed Layout
      * @param {*object} event
     */
-    boxLayoutHanlder(isTrue) {
+    const boxLayoutHanlder =(isTrue)  => {
         if (isTrue) {
             $('body').addClass('boxed-layout');
         } else {
             $('body').removeClass('boxed-layout');
         }
-        this.props.boxLayoutAction(isTrue);
+        props.boxLayoutAction(isTrue);
     }
 
     /**
@@ -115,7 +116,7 @@ class ThemeOptions extends Component {
      * Use to Enable rtl Layout
      * @param {*object} event
     */
-    rtlLayoutHanlder(isTrue) {
+    const rtlLayoutHanlder = (isTrue) => {
         if (isTrue) {
             $("html").attr("dir", "rtl");
             $('body').addClass('rtl');
@@ -123,26 +124,26 @@ class ThemeOptions extends Component {
             $("html").attr("dir", "ltr")
             $('body').removeClass('rtl');
         }
-        this.props.rtlLayoutAction(isTrue);
+        props.rtlLayoutAction(isTrue);
     }
 
     /**
      * Change Theme Color Event Handler
      * @param {*object} theme 
      */
-    changeThemeColor(theme) {
-        const { themes } = this.props;
+    const changeThemeColor = (theme) =>  {
+        const { themes } = props;
         for (const appTheme of themes) {
             if ($('body').hasClass(`theme-${appTheme.name}`)) {
                 $('body').removeClass(`theme-${appTheme.name}`);
             }
         }
         $('body').addClass(`theme-${theme.name}`);
-        this.darkModeHanlder(false);
-        this.props.changeThemeColor(theme);
+        darkModeHanlder(false);
+        props.changeThemeColor(theme);
     }
 
-    render() {
+ 
         const {
             themes,
             activeTheme,
@@ -155,11 +156,11 @@ class ThemeOptions extends Component {
             rtlLayout,
             navCollapsed,
             isDarkSidenav
-        } = this.props;
+        } = props;
         return (
             <div className="fixed-plugin">
                 {AppConfig.enableThemeOptions &&
-                    <Dropdown isOpen={this.state.themeOptionPanelOpen} toggle={() => this.toggleThemePanel()}>
+                    <Dropdown isOpen={state.themeOptionPanelOpen} toggle={() => toggleThemePanel()}>
                         <DropdownToggle className="bg-primary">
                             <Tooltip title="Theme Options" placement="left">
                                 <i className="zmdi zmdi-settings font-2x tour-step-6 spin-icon"></i>
@@ -177,7 +178,7 @@ class ThemeOptions extends Component {
                                                 {themes.map((theme, key) => (
                                                     <Tooltip title={theme.name} placement="top" key={key}>
                                                         <img
-                                                            onClick={() => this.changeThemeColor(theme)}
+                                                            onClick={() => changeThemeColor(theme)}
                                                             src={require(`Assets/img/${theme.name}-theme.png`)}
                                                             alt="theme"
                                                             className={classnames('img-fluid mr-5', { 'active': theme.id === activeTheme.id })}
@@ -197,7 +198,7 @@ class ThemeOptions extends Component {
                                             control={
                                                 <Switch
                                                     checked={isDarkSidenav}
-                                                    onClick={() => this.props.toggleDarkSidebar()}
+                                                    onClick={() => props.toggleDarkSidebar()}
                                                     color="primary"
                                                     className="switch-btn"
                                                 />
@@ -211,7 +212,7 @@ class ThemeOptions extends Component {
                                             control={
                                                 <Switch
                                                     checked={enableSidebarBackgroundImage}
-                                                    onClick={() => this.props.toggleSidebarImage()}
+                                                    onClick={() => props.toggleSidebarImage()}
                                                     color="primary"
                                                     className="switch-btn"
                                                 />
@@ -222,7 +223,7 @@ class ThemeOptions extends Component {
                                     {enableSidebarBackgroundImage &&
                                         <li className="background-img">
                                             {sidebarBackgroundImages.map((sidebarImage, key) => (
-                                                <a className={classnames('img-holder', { 'active': selectedSidebarImage === sidebarImage })} href="javascript:void(0)" key={key} onClick={() => this.setSidebarBgImage(sidebarImage)}>
+                                                <a className={classnames('img-holder', { 'active': selectedSidebarImage === sidebarImage })} href="javascript:void(0)" key={key} onClick={() => setSidebarBgImage(sidebarImage)}>
                                                     <img src={sidebarImage} alt="sidebar" className="img-fluid" width="" height="" />
                                                 </a>
                                             ))}
@@ -240,7 +241,7 @@ class ThemeOptions extends Component {
                                                 <Switch
                                                     disabled={navCollapsed}
                                                     checked={miniSidebar}
-                                                    onChange={(e) => this.miniSidebarHanlder(e.target.checked)}
+                                                    onChange={(e) => miniSidebarHanlder(e.target.checked)}
                                                     className="switch-btn"
                                                 />
                                             }
@@ -253,7 +254,7 @@ class ThemeOptions extends Component {
                                             control={
                                                 <Switch
                                                     checked={boxLayout}
-                                                    onChange={(e) => this.boxLayoutHanlder(e.target.checked)}
+                                                    onChange={(e) => boxLayoutHanlder(e.target.checked)}
                                                     className="switch-btn"
                                                 />
                                             }
@@ -266,7 +267,7 @@ class ThemeOptions extends Component {
                                             control={
                                                 <Switch
                                                     checked={rtlLayout}
-                                                    onChange={(e) => this.rtlLayoutHanlder(e.target.checked)}
+                                                    onChange={(e) => rtlLayoutHanlder(e.target.checked)}
                                                     className="switch-btn"
                                                 />
                                             }
@@ -279,7 +280,7 @@ class ThemeOptions extends Component {
                                             control={
                                                 <Switch
                                                     checked={darkMode}
-                                                    onChange={(e) => this.darkModeHanlder(e.target.checked)}
+                                                    onChange={(e) => darkModeHanlder(e.target.checked)}
                                                     className="switch-btn"
                                                 />
                                             }
@@ -294,7 +295,7 @@ class ThemeOptions extends Component {
                 }
             </div>
         );
-    }
+ 
 }
 
 // map state to props

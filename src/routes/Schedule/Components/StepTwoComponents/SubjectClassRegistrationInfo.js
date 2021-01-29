@@ -34,8 +34,13 @@ import {
   LockOutlined,
   CloseSquareOutlined,
   DeleteOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
+import { NotificationManager } from "react-notifications";
+import OpenSubjectClassEditReg from "../StepThreeComponents/OpenSubjectClassEditReg";
+
+const { confirm } = Modal;
 
 const SubjectClassRegistration = (props) => {
   const [loading, setLoading] = useState(true);
@@ -43,6 +48,8 @@ const SubjectClassRegistration = (props) => {
   const [scheduleInfo, setScheduleInfo] = useState(null);
 
   const [selectFilterValue, setSelectFilterValue] = useState(undefined);
+
+  const [visible, setVisible] = useState(false);
 
   const getScheduleInfo = (scheduleId) => {
     api
@@ -53,7 +60,16 @@ const SubjectClassRegistration = (props) => {
       })
       .catch((err) => console.log(err));
   };
-
+  const showErrNoti = (err) => {
+    NotificationManager.err(err.response.data.message);
+    if (err.message === "Forbidden") {
+      NotificationManager.err(
+        "Did you forget something? Please activate your account"
+      );
+    } else if (err.message === "Unauthorized") {
+      throw new SubmissionError({ _err: "Username or Password Invalid" });
+    }
+  };
   useEffect(() => {
     if (props.term) {
       getScheduleInfo(props.term.activeSchedule);
@@ -104,9 +120,43 @@ const SubjectClassRegistration = (props) => {
   };
 
   const handleCloseSubjectClass = (values) => {
-      let subjectClassList = [];
+    api
+      .delete(
+        `/schedules/${props.term.id}/${props.term.activeSchedule}/?${values
+          .map((value, index) => `ids=${value}`)
+          .join("&")}`,
+        true
+      )
+      .then((res) => {
+        NotificationManager.success("Đã xoá" + res + " bản ghi");
+        getScheduleInfo(props.term.activeSchedule);
+      })
+      .catch((err) => {
+        showErrNoti(err);
+      });
+  };
 
-  }
+  const handleOpenSubjectClassRegEdit = (values) => {
+    let editSubmittingStartDate = values["rangeTime"][0].format(
+      "YYYY-MM-DD"
+    );
+    let editSubmittingEndDate = values["rangeTime"][1].format(
+      "YYYY-MM-DD"
+    );
+    let termObj = {};
+    termObj.id = props.term.id;
+    termObj.progress = 31;
+    termObj.actionType = "SCREON";
+    termObj.editSubmittingStartDate = editSubmittingStartDate;
+    termObj.editSubmittingEndDate = editSubmittingEndDate;
+    api
+      .put(`/terms/${props.term.id}`, termObj)
+      .then((res) => {
+        props.getTermDetail(props.term.id);
+        NotificationManager.success("Mở đăng ký điều chỉnh học phần!!!"); 
+      })
+      .catch((err) => showErrNoti(err));
+  };
 
   const [searchText, setSearchText] = useState("");
 
@@ -375,7 +425,7 @@ const SubjectClassRegistration = (props) => {
             <Popconfirm
               placement="left"
               title={"Chắc chắn xoá?"}
-              onConfirm={() => handleCloseSubjectClass([record])}
+              onConfirm={() => handleCloseSubjectClass([record.subjectClassId])}
               okText="Ok"
               cancelText="Không"
             >
@@ -420,7 +470,23 @@ const SubjectClassRegistration = (props) => {
       setSelectedRowKeys([]);
     }
   };
-
+  const showDeleteConfirm = (selectedRowKeys) => {
+    confirm({
+      centered: true,
+      title: "Chắc chắn?",
+      icon: <ExclamationCircleOutlined />,
+      content: "Vui lòng xác nhận",
+      okText: "Đồng ý",
+      okType: "danger",
+      cancelText: "Huỷ",
+      onOk() {
+        handleCloseSubjectClass(selectedRowKeys);
+      },
+      onCancel() {
+        console.log("D");
+      },
+    });
+  };
   return (
     <>
       <Row>
@@ -437,7 +503,7 @@ const SubjectClassRegistration = (props) => {
                 placeholder="Điều kiện..."
                 size="middle"
                 allowClear
-                onClear={()=>setSelectedRowKeys([])}
+                onClear={() => setSelectedRowKeys([])}
               >
                 <Select.Option key={"selectFilterValue1"} value={1}>
                   Chưa đủ tiêu chuẩn
@@ -477,10 +543,13 @@ const SubjectClassRegistration = (props) => {
                     }
                   : {}
               }
-              onClick={() => setPageStatus(2)}
+              onClick={() => {
+                console.log("oe");
+                setVisible(true);
+              }}
             >
               <EditFilled />
-              <span>Mở Đăng Ký Điều Chỉnh</span>
+              <span>Mở ĐKĐC</span>
             </Button>
 
             <Button
@@ -490,7 +559,7 @@ const SubjectClassRegistration = (props) => {
                   ? {
                       background: "#DC0000",
                       borderColor: "#DC0000",
-                      color: "wheat", 
+                      color: "wheat",
                     }
                   : {}
               }
@@ -524,6 +593,12 @@ const SubjectClassRegistration = (props) => {
             </div>
           ),
         }}
+      />
+      <OpenSubjectClassEditReg
+        visible={visible}
+        handleOpenSubjectClassRegEdit={handleOpenSubjectClassRegEdit}
+        setVisible={setVisible}
+        term={props.term}
       />
     </>
   );

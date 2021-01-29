@@ -12,6 +12,7 @@ import {
   Badge,
   Space,
   Popconfirm,
+  Divider,
 } from "antd";
 import { LockOutlined, SmileOutlined } from "@ant-design/icons";
 import { api } from "Api";
@@ -24,6 +25,7 @@ import {
   UnlockFilled,
   BranchesOutlined,
   DeleteFilled,
+  FolderOpenOutlined,
 } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
 import CreateSubjectClass from "../StepTwoComponents/CreateSubjectClass";
@@ -34,18 +36,7 @@ const Progress13 = (props) => {
   const getSubmittingInfo = (termId) => {
     api
       .get("/subjectsRegistration/" + termId)
-      .then((res) => {
-        res.forEach(function(element) {
-          if (
-            element.discussNumber ||
-            element.exerciseNumber ||
-            element.practiceNumber
-          ) {
-            if (element.theoryNumber) element.subjectType = "BOTH";
-            else element.subjectType = "ONLYPRACTICE";
-          } else element.subjectType = "ONLYTHEORY";
-        });
-        console.log(res);
+      .then((res) => { 
         setSubmittingInfo(res);
       })
       .catch((err) => console.log(err));
@@ -109,26 +100,31 @@ const Progress13 = (props) => {
     {
       title: "Mã học phần",
       dataIndex: "subjectId",
+      align: "center",
     },
     {
       title: "Tên học phần",
       dataIndex: "subjectName",
+      align: "center",
     },
     {
       title: "Khoa phụ trách",
-      dataIndex: "term",
+      dataIndex: "departmentName",
+      align: "center",
     },
     {
       title: "Loại học phần",
       dataIndex: "subjectType",
+      align: "center",
       render: (text, record) => {
-        // check thực hành/thí nghiệm/thảo luận
-        if (text === "BOTH") {
-          return <>Lý thuyết/Thực hành</>;
-        } else if (text === "ONLYTHEORY") {
-          return <>Lý thuyết</>;
-        } else if (text === "ONLYPRACTICE") {
-          return <>Thực hành</>;
+        if (record.subjectType == "1") {
+          return <span>Lý thuyết</span>;
+        } else if (record.subjectType == "2") {
+          return <span>Lý thuyết/Thảo luận</span>;
+        } else if (record.subjectType == "3") {
+          return <span>Lý thuyết/Thực hành</span>;
+        } else {
+          return <>cc</>;
         }
       },
     },
@@ -140,28 +136,12 @@ const Progress13 = (props) => {
       render: (text, record) => {
         return (
           <Space>
-            Dự đoán:
-            <Badge
-              count={record.predictSubmit}
-              showZero={true}
-              overflowCount={10000}
-              title={"Số lượng dự đoán"}
-            />
-            Tổng số:
-            <Badge
-              count={record.totalSubmit}
-              showZero={true}
-              overflowCount={10000}
-              title={"Tổng số đăng ký"}
-            />
-            Tự động:
-            <Badge
-              count={record.autoSubmit}
-              style={{ backgroundColor: "#52c41a" }}
-              showZero={true}
-              overflowCount={10000}
-              title={"Tự động đăng ký"}
-            />
+            <Badge status="warning" />
+            Dự đoán:{record.predictSubmit}
+            <Badge status="processing" />
+            Tổng số: {record.totalSubmit}
+            <Badge status="success" />
+            Tự động: <b>{record.autoSubmit}</b>
           </Space>
         );
       },
@@ -169,9 +149,11 @@ const Progress13 = (props) => {
     {
       title: "Số lớp đã mở",
       dataIndex: "totalSubjectClassOpened",
+      align: "center",
     },
     {
       title: "Thao tác",
+      align: "center",
       dataIndex: "term",
       width: "15%",
       render: (text, record) => (
@@ -247,17 +229,9 @@ const Progress13 = (props) => {
               className="ant-btn ant-btn-primary"
               // onClick={() => setShowModalCreate(true)}
             >
-              <PlusOutlined></PlusOutlined>
-              <span>Mở nhiều lớp </span>
-            </button>
-            <button
-              type="button"
-              className="ant-btn ant-btn-primary"
-              // onClick={() => setShowModalCreate(true)}
-            >
-              <PlusOutlined></PlusOutlined>
-              <span>Mở lớp toàn bộ </span>
-            </button>
+              <FolderOpenOutlined />
+              <span>Mở tự động </span>
+            </button>{" "}
           </div>
         </Col>
       </Row>
@@ -266,9 +240,8 @@ const Progress13 = (props) => {
         dataSource={submittingInfo}
         rowKey="subjectId"
         bordered
-        pagination={{ pageSize: 10, size:"default" }}
-        size="small"
-        rowSelection={true}
+        pagination={{ pageSize: 10, size: "default" }}
+        size="small" 
         rowSelection={rowSelection}
         locale={{
           emptyText: (
