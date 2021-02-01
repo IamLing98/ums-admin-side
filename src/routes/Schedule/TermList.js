@@ -30,8 +30,8 @@ const TermList = (props) => {
             onClick={() => {
               api
                 .get("/terms/" + record.id, true)
-                .then((res) => {
-                  props.setIsShowDetail(res);
+                .then((res) => { 
+                  props.setIsShowDetail(res); 
                 })
                 .catch();
               props.setCurrentTitle(

@@ -6,10 +6,9 @@ import TermList from "./TermList";
 import TermDetail from "./Components/index";
 import { Col, Row } from "reactstrap";
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
-import { Button, Input, Popconfirm, Space, Table } from "antd";
+import { Input, Alert } from "antd";
 import TermCreate from "./CreateTerm";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
-
 
 export const ScheduleHome = (props) => {
   const [currentTitle, setCurrentTitle] = useState("Học kỳ");
@@ -65,99 +64,87 @@ export const ScheduleHome = (props) => {
     getTermList();
   }, []);
 
-  if(loading){
-    return <RctPageLoader />
-  }
-  else return (
-    <div className="data-table-wrapper">
-      <Helmet>
-        <title>Giảng Dạy</title>
-        <meta name="description" content="Danh Sách Giảng Viên" />
-      </Helmet>
-      <div className="rct-block ">
-        <div className="rct-block-title ">
-          <h4>
-            <span>{currentTitle}</span>{" "}
-          </h4>
-          <div className="contextual-link" style={{ top: "15px" }}> 
-          </div>
-        </div>
-        <div className="collapse show">
-          <div className="rct-full-block">
-            <hr style={{ margin: "0px" }} />
-            <div className="table-responsive">
-              {isShowDetail === null ? (
-                <Row>
-                  <Col
-                    md={6}
-                    sm={12}
-                    style={{ display: "flex", flexDirection: "column" }}
-                  >
-                    <Row>
-                      <Col md={4}>
-                        <Input placeholder="Năm học..." size="middle" />
-                      </Col>
-                      <Col md={4}>
-                        <Input placeholder="Học kỳ..." size="middle" />
-                      </Col>
-                      <Col
-                        md={4}
-                        style={{ display: "block", flexDirection: "column" }}
+  if (loading) {
+    return <RctPageLoader />;
+  } else
+    return (
+      <div className="data-table-wrapper">
+        <Helmet>
+          <title>Giảng Dạy</title>
+          <meta name="description" content="Danh Sách Giảng Viên" />
+        </Helmet>
+        <div className="rct-block ">
+          {isShowDetail === null && (
+            <div className="rct-block-title ">
+              <div>
+                <h4>
+                  <span>Danh sách học kỳ</span>{" "}
+                </h4>
+                <div className="contextual-link" style={{ top: "15px" }}></div>
+              </div>
+            </div>
+          )}
+          <div className="collapse show">
+            <div className="rct-full-block">
+              <hr style={{ margin: "0px" }} />
+              <div className="table-responsive">
+                {isShowDetail === null ? (
+                  <Row>
+                    <Col
+                      md={6}
+                      sm={12}
+                      style={{ display: "flex", flexDirection: "column" }}
+                    >
+                      {" "}
+                      <Alert
+                        message="Success Text"
+                        type="info"
+                        style={{ maxHeight: "32px" }}
+                      />
+                    </Col>
+                    <Col md={6} sm={12} xs={12}>
+                      <div
+                        className="tableListOperator"
+                        style={{ textAlign: "right", width: "100%" }}
                       >
                         <button
                           type="button"
                           className="ant-btn ant-btn-primary"
                           onClick={() => setShowModalCreate(true)}
                         >
-                          <SearchOutlined />
-                          <span>Tìm Kiếm</span>
+                          <PlusOutlined></PlusOutlined>
+                          <span>Tạo Mới </span>
                         </button>
-                      </Col>
-                    </Row>
-                  </Col>
-                  <Col md={6} sm={12} xs={12}>
-                    <div
-                      className="tableListOperator"
-                      style={{ textAlign: "right", width: "100%" }}
-                    >
-                      <button
-                        type="button"
-                        className="ant-btn ant-btn-primary"
-                        onClick={() => setShowModalCreate(true)}
-                      >
-                        <PlusOutlined></PlusOutlined>
-                        <span>Tạo Mới </span>
-                      </button>
-                    </div>
-                  </Col>
-                </Row>
-              ) : (
-                ""
-              )}
-              {isShowDetail === null ? (
-                <TermList
-                  setCurrentTitle={setCurrentTitle}
-                  handleDeleteRecord={handleDeleteRecord}
-                  termList={termList}
-                  setIsShowDetail={setIsShowDetail}
-                />
-              ) : (
-                <TermDetail
-                  term={isShowDetail}
-                  setIsShowDetail={setIsShowDetail}
-                />
-              )}
-            </div>
+                      </div>
+                    </Col>
+                  </Row>
+                ) : (
+                  ""
+                )}
+                {isShowDetail === null ? (
+                  <TermList
+                    setCurrentTitle={setCurrentTitle}
+                    handleDeleteRecord={handleDeleteRecord}
+                    termList={termList}
+                    setIsShowDetail={setIsShowDetail}
+                  />
+                ) : (
+                  <TermDetail
+                    term={isShowDetail}
+                    setIsShowDetail={setIsShowDetail}
+                  />
+                )}
+              </div>
 
-            <TermCreate
-              visible={showModalCreate}
-              onOk={(values) => handleSubmitFormCreate(values)}
-              onCancel={() => setShowModalCreate(false)}
-              getTermList={getTermList}
-              // options={prerequisitesSubject}
-            />
+              <TermCreate
+                visible={showModalCreate}
+                onOk={(values) => handleSubmitFormCreate(values)}
+                onCancel={() => setShowModalCreate(false)}
+                getTermList={getTermList}
+                // options={prerequisitesSubject}
+              />
 
-            {/*} <UpdateSubject
+              {/*} <UpdateSubject
               visible={showModalUpdate}
               onOk={(values) => handleSubmitFormUpdate(values)}
               onCancel={() => {
@@ -167,11 +154,11 @@ export const ScheduleHome = (props) => {
               record={recordUpdate}
               options={prerequisitesSubject}
             /> */}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
 };
 
 export default ScheduleHome;

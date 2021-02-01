@@ -52,6 +52,7 @@
       "react-highlight-words":"^0.17.0"
    },
    "dependencies": {
+      "react-to-pdf":"^0.0.13",
       "shortid":"^2.2.15",
       "ts-loader":"^8.0.4",
       "react-textarea-autosize" :"^8.2.0",

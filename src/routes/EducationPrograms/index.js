@@ -15,7 +15,7 @@ import {
   DoubleLeftOutlined,
 } from "@ant-design/icons";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
-import { Button, Input, Popconfirm, Space, Table } from "antd";
+import { Button, Input,  Alert, } from "antd";
 
 export const EducationProgramsComponent = (props) => {
   const [currentTitle, setCurrentTitle] = useState(
@@ -157,27 +157,7 @@ export const EducationProgramsComponent = (props) => {
                       sm={12}
                       style={{ display: "flex", flexDirection: "column" }}
                     >
-                      <Row>
-                        <Col md={4}>
-                          <Input placeholder="Năm học..." size="middle" />
-                        </Col>
-                        <Col md={4}>
-                          <Input placeholder="Học kỳ..." size="middle" />
-                        </Col>
-                        <Col
-                          md={4}
-                          style={{ display: "block", flexDirection: "column" }}
-                        >
-                          <button
-                            type="button"
-                            className="ant-btn ant-btn-primary"
-                            onClick={() => setShowModalCreate(true)}
-                          >
-                            <SearchOutlined />
-                            <span>Tìm Kiếm</span>
-                          </button>
-                        </Col>
-                      </Row>
+                    <Alert message="Success Text" type="info" style={{maxHeight:"32px"}} />  
                     </Col>
                     <Col md={6} sm={12} xs={12}>
                       <div

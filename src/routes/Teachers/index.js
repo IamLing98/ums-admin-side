@@ -16,7 +16,7 @@ import {
   ExclamationCircleOutlined,
   RetweetOutlined,
 } from "@ant-design/icons";
-import { Button, Input, Popconfirm, Space, Alert, Modal } from "antd";
+import { Button,   Alert, Modal } from "antd";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import StudentDetail from "./StudentDetail";
 import TeacherList from "./TeacherList";
@@ -281,35 +281,11 @@ export const TeacherHome = (props) => {
                     sm={12}
                     style={{ display: "flex", flexDirection: "column" }}
                   >
-                    <Row>
-                      <Col md={4}>
-                        <Input
-                          ref={input}
-                          placeholder="Mã Học Phần..."
-                          size="middle"
-                        />
-                      </Col>
-                      <Col md={4}>
-                        <Input placeholder="Tên Học Phần..." size="middle" />
-                      </Col>
-                      <Col
-                        md={4}
-                        style={{ display: "block", flexDirection: "column" }}
-                      >
-                        <button
-                          type="button"
-                          className="ant-btn ant-btn-primary"
-                          onClick={() => onSearch()}
-                        >
-                          <SearchOutlined />
-                          <span>Tìm Kiếm</span>
-                        </button>
-                      </Col>
-                      {/* <Col md="12">
-                        
-                      <Alert message={`${teacherList.length}`} type="info" showIcon style={{height:"32px"}} />
-                      </Col> */}
-                    </Row>
+                     <Alert
+                      message="Success Text"
+                      type="info"
+                      style={{ maxHeight: "32px" }}
+                    />
                   </Col>
                   <Col md={6} sm={12} xs={12}>
                     <div

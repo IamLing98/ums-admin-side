@@ -1,37 +1,18 @@
 import React, { useState, useEffect } from "react";
 import {
   Button,
-  Modal,
-  Tag,
-  Table,
-  Input,
-  Form,
-  Select,
-  DatePicker,
-  Badge,
-  Space,
-  Popconfirm,
-  Alert,
-  Result,
   Card,
-  Divider,
   Empty,
+  Result,
 } from "antd";
 import { LockOutlined, SmileOutlined } from "@ant-design/icons";
 import { api } from "Api";
 import { NotificationManager } from "react-notifications";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import {
-  PlusOutlined,
-  SearchOutlined,
   CloseCircleOutlined,
-  LockFilled,
-  UnlockFilled,
-  BranchesOutlined,
-  DeleteFilled,
   CalendarOutlined,
   FolderViewOutlined,
-  SelectOutlined,
 } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
 import SubjectClassList from "./StepTwoComponents/SubjectClassList";
@@ -50,9 +31,7 @@ const StepTwo = (props) => {
 
   const [showSubjectClassDetail, setShowSubjectClassDetail] = useState(null);
 
-  const [recordUpdate, setRecordUpdate] = useState(null);
-
-  const [toShowListSchedule, setToShowListSchedule] = useState(false);
+  const [recordUpdate, setRecordUpdate] = useState(null); 
 
   const [schedule, setSchedule] = useState(null);
 
@@ -170,130 +149,148 @@ const StepTwo = (props) => {
   } else {
     return (
       <>
-        <Row>
-          <Col
-            md={6}
-            sm={12}
-            style={{ display: "flex", flexDirection: "column" }}
-          >
-            <Row></Row>
-          </Col>
-          <Col md={6} sm={12} xs={12}>
-            <div
-              className="tableListOperator"
-              style={{ textAlign: "right", width: "100%" }}
-            >
-              {scheduleList.length > 0 && pageStatus === 1 && props.term.progress < 22 && (
-                <Button
-                  type="primary"
-                  style={
-                    props.term.activeSchedule
-                      ? {
-                          background: "#63B175",
-                          borderColor: "#63B175",
+        {props.term.progress === 21 || props.term.progress === 22 ? (
+          <>
+            <Row>
+              <Col
+                md={6}
+                sm={12}
+                style={{ display: "flex", flexDirection: "column" }}
+              >
+                <Row></Row>
+              </Col>
+              <Col md={6} sm={12} xs={12}>
+                <div
+                  className="tableListOperator"
+                  style={{ textAlign: "right", width: "100%" }}
+                >
+                  {scheduleList.length > 0 &&
+                    pageStatus === 1 &&
+                    props.term.progress < 22 && (
+                      <Button
+                        type="primary"
+                        style={
+                          props.term.activeSchedule
+                            ? {
+                                background: "#63B175",
+                                borderColor: "#63B175",
+                              }
+                            : {}
                         }
-                      : {}
-                  }
-                  onClick={() => setPageStatus(2)}
-                >
-                  <FolderViewOutlined />
-                  <span>Thời khoá biểu</span>
-                </Button>
-              )}
-              {pageStatus === 2 && (
-                <Button type="primary" onClick={() => setPageStatus(1)}>
-                  <FolderViewOutlined />
-                  <span>Lớp học phần</span>
-                </Button>
-              )}
-              {pageStatus === 1 && props.term.progress == 13 && (
-                <Button type="primary" onClick={() => handleCreateSchedule()}>
-                  <CalendarOutlined />
-                  <span>Tạo thời khoá biểu</span>
-                </Button>
-              )}
-            </div>
-          </Col>
-        </Row>
-        {pageStatus === 1 ? (
-          <>
-            {props.term.progress === 13 && (
-              <SubjectClassList
-                data={subjectClassList}
-                setShowSubjectClassDetail={setShowSubjectClassDetail}
-                term={props.term}
-                setRecordUpdate={setRecordUpdate}
-                handleDeleteSubjectClass={handleDeleteSubjectClass}
-              />
-            )}{" "}
-            {
-              props.term.progress === 22 && <SubjectClassRegistration {...props} />
-            }
-            {props.term.progress == 21 && (
-              <Card bordered={true}>
-                <Empty
-                  image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
-                  imageStyle={{
-                    height: 60,
-                  }}
-                  description={
-                    <span>
-                      Chưa có dữ liệu đăng ký lớp học phần. Dữ liệu sẽ được cập
-                      nhật sau khi quá trình đăng ký kết thúc.{" "}
-                    </span>
-                  }
-                >
-                  <Button
-                    type="primary"
-                    onClick={() => handleCloseSubjectClassRegistration()}
-                    danger
-                  >
-                    <CloseCircleOutlined />
-                    <span>Kết Thúc ĐK</span>
-                  </Button>
-                </Empty>
-              </Card>
-            )}
-            <SubjectClassDetail
-              visible={showSubjectClassDetail}
-              setShowSubjectClassDetail={setShowSubjectClassDetail}
-              term={props.term}
-            />
-            {recordUpdate && (
-              <UpdateSubjectClass
-                visible={recordUpdate}
-                term={props.term}
-                recordUpdate={recordUpdate}
-                setRecordUpdate={setRecordUpdate}
-                getSubjectClassList={getSubjectClassList}
-                onCancel={() => {
-                  setRecordUpdate(null);
-                }}
-              />
-            )}
-          </>
-        ) : pageStatus === 2 ? (
-          <>
-            <ScheduleList
-              data={scheduleList}
-              term={props.term}
-              setRecordUpdate={setRecordUpdate}
-              handleDeleteSubjectClass={handleDeleteSubjectClass}
-              setSchedule={setSchedule}
-            />
-            {schedule && (
-              <ScheduleInfo
-                term={props.term}
-                visible={schedule}
-                setSchedule={setSchedule}
-                handleOpenSubjectClassRegistration={
-                  handleOpenSubjectClassRegistration
-                }
-              />
+                        onClick={() => setPageStatus(2)}
+                      >
+                        <FolderViewOutlined />
+                        <span>Thời khoá biểu</span>
+                      </Button>
+                    )}
+                  {pageStatus === 2 && (
+                    <Button type="primary" onClick={() => setPageStatus(1)}>
+                      <FolderViewOutlined />
+                      <span>Lớp học phần</span>
+                    </Button>
+                  )}
+                  {pageStatus === 1 && props.term.progress == 13 && (
+                    <Button
+                      type="primary"
+                      onClick={() => handleCreateSchedule()}
+                    >
+                      <CalendarOutlined />
+                      <span>Tạo thời khoá biểu</span>
+                    </Button>
+                  )}
+                </div>
+              </Col>
+            </Row>
+            {pageStatus === 1 ? (
+              <>
+                {props.term.progress === 13 && (
+                  <SubjectClassList
+                    data={subjectClassList}
+                    setShowSubjectClassDetail={setShowSubjectClassDetail}
+                    term={props.term}
+                    setRecordUpdate={setRecordUpdate}
+                    handleDeleteSubjectClass={handleDeleteSubjectClass}
+                  />
+                )}{" "}
+                {props.term.progress === 22 && (
+                  <SubjectClassRegistration {...props} />
+                )}
+                {props.term.progress == 21 && (
+                  <Card bordered={true}>
+                    <Empty
+                      image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                      imageStyle={{
+                        height: 60,
+                      }}
+                      description={
+                        <span>
+                          Chưa có dữ liệu đăng ký lớp học phần. Dữ liệu sẽ được
+                          cập nhật sau khi quá trình đăng ký kết thúc.{" "}
+                        </span>
+                      }
+                    >
+                      <Button
+                        type="primary"
+                        onClick={() => handleCloseSubjectClassRegistration()}
+                        danger
+                      >
+                        <CloseCircleOutlined />
+                        <span>Kết Thúc ĐK</span>
+                      </Button>
+                    </Empty>
+                  </Card>
+                )}
+                <SubjectClassDetail
+                  visible={showSubjectClassDetail}
+                  setShowSubjectClassDetail={setShowSubjectClassDetail}
+                  term={props.term}
+                />
+                {recordUpdate && (
+                  <UpdateSubjectClass
+                    visible={recordUpdate}
+                    term={props.term}
+                    recordUpdate={recordUpdate}
+                    setRecordUpdate={setRecordUpdate}
+                    getSubjectClassList={getSubjectClassList}
+                    onCancel={() => {
+                      setRecordUpdate(null);
+                    }}
+                  />
+                )}
+              </>
+            ) : pageStatus === 2 ? (
+              <>
+                <ScheduleList
+                  data={scheduleList}
+                  term={props.term}
+                  setRecordUpdate={setRecordUpdate}
+                  handleDeleteSubjectClass={handleDeleteSubjectClass}
+                  setSchedule={setSchedule}
+                />
+                {schedule && (
+                  <ScheduleInfo
+                    term={props.term}
+                    visible={schedule}
+                    setSchedule={setSchedule}
+                    handleOpenSubjectClassRegistration={
+                      handleOpenSubjectClassRegistration
+                    }
+                  />
+                )}
+              </>
+            ) : (
+              ""
             )}
           </>
         ) : (
-          ""
+          <Result
+            title="Đăng ký lớp học phần đã đóng, xem thông tin chi tiết"
+            extra={
+              <Button type="primary" key="console">
+                Xem chi tiết
+              </Button>
+            }
+          />
         )}
       </>
     );

@@ -92,7 +92,7 @@ const ToPdf = (props) => {
         <div className="toPDF">
           <page
             size="A4"
-            style={{ padding: "20px", backGroundColor: "white" }}
+            style={{ padding: "20px",margin:"0 auto", backGroundColor: "white" }}
             ref={ref}
           >
             <div>
@@ -104,7 +104,7 @@ const ToPdf = (props) => {
                   marginLeft: "9pt",
                   borderCollapse: "collapse",
                   float: "left",
-                  width: "98%",
+                  maxWidth: "98%",
                 }}
               >
                 <tbody>
@@ -325,9 +325,7 @@ const ToPdf = (props) => {
                             border: "1px solid rgb(0, 0, 0)",
                           }}
                         >
-                          <div style={{ textAlign: "center" }}>
-                            {index + 1}
-                          </div>
+                          <div style={{ textAlign: "center" }}>{index + 1}</div>
                         </td>
                         <td
                           style={{
@@ -336,7 +334,7 @@ const ToPdf = (props) => {
                           }}
                         >
                           <div style={{ textAlign: "center" }}>
-                          {item.studentId }
+                            {item.studentId}
                           </div>
                         </td>
                         <td
@@ -345,7 +343,7 @@ const ToPdf = (props) => {
                             border: "1px solid rgb(0, 0, 0)",
                           }}
                         >
-                         {item.fullName }
+                          {item.fullName}
                         </td>
                         <td
                           style={{
@@ -585,6 +583,5 @@ const ToPdf = (props) => {
     </>
   );
 };
-
 
 export default ToPdf;

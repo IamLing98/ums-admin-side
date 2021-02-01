@@ -16,13 +16,14 @@ import {
   ExclamationCircleOutlined,
   RetweetOutlined,
 } from "@ant-design/icons";
-import { Button, Input, Popconfirm, Space, Alert, Modal,Select  } from "antd";
+import { Button, Alert, Modal, Select } from "antd";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import StudentDetail from "./StudentDetail";
 import StudentList from "./StudentList";
 import ToPdf from "./ExportToPdf";
-import ImportStudent from './Import';
+import ImportStudent from "./Import"; 
 
+ 
 const { confirm } = Modal;
 
 export const StudentHome = (props) => {
@@ -251,6 +252,7 @@ export const StudentHome = (props) => {
     getProvinceList("VNM");
     getEducationProgramList();
     getClassList();
+    console.log(process.env.REACT_APP_MODE)
   }, []);
 
   if (loading) {
@@ -292,36 +294,36 @@ export const StudentHome = (props) => {
                           placeholder="Học lực..."
                           showSearch
                         >
-                          <Option key={ + "filtereddd1"} value={1}>
+                          <Option key={+"filtereddd1"} value={1}>
                             Xếp loại xuất sắc
                           </Option>
-                          <Option key={ + "filtereddd2"} value={2}>
+                          <Option key={+"filtereddd2"} value={2}>
                             Xếp loại giỏi
                           </Option>
-                          <Option key={ + "filtereddd3"} value={3}>
+                          <Option key={+"filtereddd3"} value={3}>
                             Xếp loại khá
                           </Option>
-                          <Option key={ + "filtereddd4"} value={4}>
+                          <Option key={+"filtereddd4"} value={4}>
                             Xếp loại trung bình
                           </Option>
-                          <Option key={ + "filtereddd5"} value={5}>
+                          <Option key={+"filtereddd5"} value={5}>
                             Xếp loại yếu
                           </Option>
                         </Select>
                       </Col>
                       <Col md={4}>
-                      <Select
+                        <Select
                           allowClear
                           style={{ width: "100%" }}
                           placeholder="Khen thưởng..."
                           showSearch
                         >
-                          <Option key={ + "filteredddd1"} value={1}>
+                          <Option key={+"filteredddd1"} value={1}>
                             Khen thuởng
                           </Option>
-                          <Option key={ + "filteredddd2"} value={2}>
+                          <Option key={+"filteredddd2"} value={2}>
                             Kỷ luật
-                          </Option> 
+                          </Option>
                         </Select>
                       </Col>
                       <Col
@@ -337,10 +339,6 @@ export const StudentHome = (props) => {
                           <span>Tìm Kiếm</span>
                         </button>
                       </Col>
-                      {/* <Col md="12">
-                        
-                      <Alert message={`${studentList.length}`} type="info" showIcon style={{height:"32px"}} />
-                      </Col> */}
                     </Row>
                   </Col>
                   <Col md={6} sm={12} xs={12}>
@@ -438,6 +436,15 @@ export const StudentHome = (props) => {
                         studentList={studentList}
                       />
                     </div>
+                  </Col>
+                </Row>
+                <Row style={{marginBottom:"16px"}}>
+                  <Col md={6} sm={12}>
+                    <Alert
+                      message="Success Text"
+                      type="info"
+                      style={{ maxHeight: "32px" }}
+                    />
                   </Col>
                 </Row>
                 <StudentList
