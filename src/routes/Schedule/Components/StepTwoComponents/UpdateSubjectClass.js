@@ -1,37 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-  Result,
-  Button,
-  Modal,
-  Tag,
-  Table,
-  Input,
-  Form,
-  Select,
-  DatePicker,
-  Badge,
-  Space,
-  Popconfirm,
-  Slider,
-  Switch,
-  Statistic,
-  Radio,
-  AutoComplete,
-} from "antd";
+import { Modal, Form, Select, Slider, Radio } from "antd";
 import { LockOutlined, SmileOutlined } from "@ant-design/icons";
 import { api } from "Api";
 import { NotificationManager } from "react-notifications";
-import {
-  PlusOutlined,
-  SearchOutlined,
-  CloseCircleOutlined,
-  LockFilled,
-  UnlockFilled,
-  BranchesOutlined,
-  DeleteFilled,
-  RollbackOutlined,
-  CheckOutlined,
-} from "@ant-design/icons";
+import { RollbackOutlined, CheckOutlined } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
 
 const { Option } = Select;
@@ -60,20 +32,13 @@ const UpdateSubjectClass = (props) => {
 
   const [totalNumberOfSeats, setTotalNumberOfSeats] = useState(0);
 
-  const [techerList, setTeacherList] = useState([]);
+  const [teacherList, setTeacherList] = useState([]);
 
   const getTeacherList = () => {
     api
       .get("/teachers")
-      .then((res) => {
-        let options = res.map((item, index) => {
-          return {
-            key: index,
-            value: item.employeeId,
-            label: item.employeeId + " - " + item.fullName,
-          };
-        });
-        setTeacherList(options);
+      .then((res) => { 
+        setTeacherList(res);
       })
       .catch((err) => console.log(res));
   };
@@ -95,7 +60,7 @@ const UpdateSubjectClass = (props) => {
         props.onCancel();
       })
       .catch((error) => {
-        console.log(error.response); 
+        console.log(error.response);
         props.onCancel();
         NotificationManager.error(error.response.data.message);
         if (error.response.status === 403) {
@@ -106,7 +71,7 @@ const UpdateSubjectClass = (props) => {
           throw new SubmissionError({ _error: "Username or Password Invalid" });
         }
       });
-  }; 
+  };
 
   useEffect(() => {
     console.log(props.recordUpdate);
@@ -178,20 +143,32 @@ const UpdateSubjectClass = (props) => {
         <Form.Item
           name="employeeId"
           label="Giảng viên"
-          hasFeedback
-          rules={[{ required: true, message: "Vui lòng điền số nhóm!" }]}
+          rules={[{ required: true, message: "Vui lòng chọn giảng viên!" }]}
         >
-          <AutoComplete
-            style={{
-              width: 200,
-            }}
-            options={techerList}
-            placeholder="Nhập mã giảng viên hoặc tên giảng viên"
-            filterOption={(inputValue, option) =>
-              option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !==
-              -1
+          <Select
+            showSearch
+            allowClear
+            style={{ width: "100%" }}
+            placeholder="Giảng viên..."
+            optionFilterProp="children"
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }
-          />
+            filterSort={(optionA, optionB) =>
+              optionA.children
+                .toLowerCase()
+                .localeCompare(optionB.children.toLowerCase())
+            }
+          >
+            {teacherList.map((item, index) => (
+              <Option
+                key={"TeacherSubjectClassUpdateOpts" + index}
+                value={item.employeeId}
+              >
+                {item.employeeId + " - " + item.fullName}
+              </Option>
+            ))}
+          </Select>
         </Form.Item>
       </Form>
     </Modal>

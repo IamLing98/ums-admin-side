@@ -60,13 +60,7 @@ const EducationProgramList = (props) => {
       title: "Ngành Đào Tạo",
       align: "center",
       dataIndex: "branchName",
-    },
-
-    {
-      title: "Số Tín Chỉ",
-      dataIndex: "branchName",
-      align: "center",
-    },
+    }, 
     {
       title: "Hình Thức Đào Tạo",
       dataIndex: "educationProgramType",

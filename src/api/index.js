@@ -1,6 +1,7 @@
 import axios from "axios"; 
-const API_ROOT ='https://limitless-atoll-69204.herokuapp.com' ;
+// const API_ROOT ='https://limitless-atoll-69204.herokuapp.com' ;
 
+const API_ROOT ='http://127.0.0.1:8080' ;
 const responseBody = (res) => res.data;
 
 let token = localStorage.getItem("jwtToken");

@@ -19,7 +19,7 @@ const TermList = (props) => {
       align: "center",
     },
     {
-      title: "Niên Giám",
+      title: "Học Kỳ - Niên Giám",
       dataIndex: "year",
       align: "center",
       render: (text, record) => {
@@ -30,8 +30,8 @@ const TermList = (props) => {
             onClick={() => {
               api
                 .get("/terms/" + record.id, true)
-                .then((res) => { 
-                  props.setIsShowDetail(res); 
+                .then((res) => {
+                  props.setIsShowDetail(res);
                 })
                 .catch();
               props.setCurrentTitle(
@@ -45,12 +45,12 @@ const TermList = (props) => {
                   >
                     <DoubleLeftOutlined />
                   </a>{" "}
-                  Thông tin học kỳ  {record.term } năm {record.year}
+                  Thông tin học kỳ {record.term} năm {record.year}
                 </span>
               );
             }}
           >
-            <span>{text}</span>
+            <span>Học kỳ {record.term + " năm " + text}</span>
           </a>
         );
       },
@@ -58,6 +58,12 @@ const TermList = (props) => {
     {
       title: "Học Kỳ",
       dataIndex: "term",
+      width: "20%",
+      align: "center",
+    },
+    {
+      title: "Năm",
+      dataIndex: "year",
       width: "20%",
       align: "center",
     },
@@ -70,13 +76,54 @@ const TermList = (props) => {
         let text = "";
         if (status === 2) {
           color = "geekblue";
-          text = "Đang Triển Khai";
+          text = "Đang diên ra";
         } else if (status === 3) {
           color = "volcano";
           text = "Kết thúc";
         } else if (status === 1) {
           color = "green";
-          text = "Sắp Bắt Đầu";
+          text = "Sắp bắt đầu";
+        }
+        else {
+          text = "None";
+          color = "orange";
+        }
+        return (
+          <Tag color={color} key={text}>
+            {text.toUpperCase()}
+          </Tag>
+        );
+      },
+    },
+    {
+      title: "Tiến trình",
+      dataIndex: "progress",
+      align: "center",
+      render: (progress) => {
+        let color;
+        let text = "";
+        if (progress === 12) {
+          color = "green";
+          text = "Đang mở đăng ký học phần";
+        } else if (progress === 13) {
+          color = "volcano";
+          text = "Kết thúc đ.ký học phần";
+        } else if (progress === 21) {
+          color = "green";
+          text = "Đang mở đ.ký lớp học phần";
+        } else if (progress === 22) {
+          color = "volcano";
+          text = "Kết thúc đ.ký lớp học phần";
+        } else if (progress === 31) {
+          color = "green";
+          text = "Đang mở đ.ký điều chỉnh";
+        }else if (progress === 32) {
+          color = "volcano";
+          text = "Kết thúc đ.ký điều chỉnh";
+        }
+        else {
+          text = "None";
+          color = "orange";
         }
         return (
           <Tag color={color} key={text}>
@@ -122,7 +169,7 @@ const TermList = (props) => {
       dataSource={props.termList}
       rowKey="id"
       bordered
-      pagination={{ pageSize: 10, size:"default" }}
+      pagination={{ pageSize: 10, size: "default" }}
       size="small"
     />
   );

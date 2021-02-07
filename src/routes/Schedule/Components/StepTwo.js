@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Card,
-  Empty,
-  Result,
-} from "antd";
-import { LockOutlined, SmileOutlined } from "@ant-design/icons";
+import { Button, Card, Empty, Result } from "antd";
 import { api } from "Api";
 import { NotificationManager } from "react-notifications";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import {
   CloseCircleOutlined,
-  CalendarOutlined,
-  FolderViewOutlined,
+  FolderAddOutlined,
+  ScheduleOutlined,
+  DesktopOutlined,
+  PlusSquareOutlined,
 } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
 import SubjectClassList from "./StepTwoComponents/SubjectClassList";
@@ -21,6 +17,7 @@ import UpdateSubjectClass from "./StepTwoComponents/UpdateSubjectClass";
 import ScheduleList from "./StepTwoComponents/ScheduleList";
 import ScheduleInfo from "./StepTwoComponents/ScheduleInfo";
 import SubjectClassRegistration from "./StepTwoComponents/SubjectClassRegistrationInfo";
+import SubjectClassCreate from "./StepTwoComponents/SubjectClassCreate";
 
 import fileSaver from "file-saver";
 
@@ -31,7 +28,9 @@ const StepTwo = (props) => {
 
   const [showSubjectClassDetail, setShowSubjectClassDetail] = useState(null);
 
-  const [recordUpdate, setRecordUpdate] = useState(null); 
+  const [toSubjectClassCreate, setToShowSubjectClassCreate] = useState(false);
+
+  const [recordUpdate, setRecordUpdate] = useState(null);
 
   const [schedule, setSchedule] = useState(null);
 
@@ -40,7 +39,7 @@ const StepTwo = (props) => {
   const [loading, setLoading] = useState(true);
 
   const showErrNoti = (err) => {
-    NotificationManager.err(err.response.data.message);
+    NotificationManager.err(err.message);
     if (err.message === "Forbidden") {
       NotificationManager.err(
         "Did you forget something? Please activate your account"
@@ -131,8 +130,6 @@ const StepTwo = (props) => {
     api
       .put(`/terms/${props.term.id}`, termObj)
       .then((res) => {
-        // setSchedule(null);
-        // setPageStatus(1);
         NotificationManager.success("Kết thúc đăng ký học phần!!!");
         props.getTermDetail(props.term.id);
       })
@@ -142,6 +139,7 @@ const StepTwo = (props) => {
   useEffect(() => {
     getSubjectClassList();
     getListSchedule();
+    console.log(pageStatus);
   }, []);
 
   if (loading) {
@@ -149,58 +147,83 @@ const StepTwo = (props) => {
   } else {
     return (
       <>
-        {props.term.progress === 21 || props.term.progress === 22 ? (
+        {props.term.progress === 13 ||
+        props.term.progress === 21 ||
+        props.term.progress === 22 ? (
           <>
-            <Row>
-              <Col
-                md={6}
-                sm={12}
-                style={{ display: "flex", flexDirection: "column" }}
-              >
-                <Row></Row>
-              </Col>
-              <Col md={6} sm={12} xs={12}>
-                <div
-                  className="tableListOperator"
-                  style={{ textAlign: "right", width: "100%" }}
+            {props.term.progress === 22 ? (
+              ""
+            ) : (
+              <Row>
+                <Col
+                  md={6}
+                  sm={12}
+                  style={{ display: "flex", flexDirection: "column" }}
                 >
-                  {scheduleList.length > 0 &&
-                    pageStatus === 1 &&
-                    props.term.progress < 22 && (
-                      <Button
-                        type="primary"
-                        style={
-                          props.term.activeSchedule
-                            ? {
-                                background: "#63B175",
-                                borderColor: "#63B175",
-                              }
-                            : {}
-                        }
-                        onClick={() => setPageStatus(2)}
-                      >
-                        <FolderViewOutlined />
-                        <span>Thời khoá biểu</span>
-                      </Button>
+                  <Row></Row>
+                </Col>
+                <Col md={6} sm={12} xs={12}>
+                  <div
+                    className="tableListOperator"
+                    style={{ textAlign: "right", width: "100%" }}
+                  >
+                    {pageStatus === 1 && props.term.progress < 22 && (
+                      <>
+                        <Button
+                          type="primary"
+                          onClick={() => setToShowSubjectClassCreate(true)}
+                          style={{
+                            width: "180px",
+                          }}
+                        >
+                          <PlusSquareOutlined />
+                          <span>Tạo lớp học phần</span>
+                        </Button>
+                        <Button
+                          type="primary"
+                          style={{
+                            background: "#63B175",
+                            borderColor: "#63B175",
+                            width: "180px",
+                          }}
+                          onClick={() => setPageStatus(2)}
+                        >
+                          <ScheduleOutlined />
+                          <span>Thời khoá biểu</span>
+                        </Button>
+                      </>
                     )}
-                  {pageStatus === 2 && (
-                    <Button type="primary" onClick={() => setPageStatus(1)}>
-                      <FolderViewOutlined />
-                      <span>Lớp học phần</span>
-                    </Button>
-                  )}
-                  {pageStatus === 1 && props.term.progress == 13 && (
-                    <Button
-                      type="primary"
-                      onClick={() => handleCreateSchedule()}
-                    >
-                      <CalendarOutlined />
-                      <span>Tạo thời khoá biểu</span>
-                    </Button>
-                  )}
-                </div>
-              </Col>
-            </Row>
+                    {pageStatus === 2 && (
+                      <>
+                        {" "}
+                        <Button
+                          type="primary"
+                          onClick={() => handleCreateSchedule()}
+                          style={{
+                            background: "#63B175",
+                            borderColor: "#63B175",
+                            width: "180px",
+                          }}
+                        >
+                          <FolderAddOutlined />
+                          <span>Tạo thời khoá biểu</span>
+                        </Button>
+                        <Button
+                          style={{
+                            width: "180px",
+                          }}
+                          type="primary"
+                          onClick={() => setPageStatus(1)}
+                        >
+                          <DesktopOutlined />
+                          <span>Lớp học phần</span>
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </Col>
+              </Row>
+            )}
             {pageStatus === 1 ? (
               <>
                 {props.term.progress === 13 && (
@@ -245,6 +268,14 @@ const StepTwo = (props) => {
                   setShowSubjectClassDetail={setShowSubjectClassDetail}
                   term={props.term}
                 />
+                {toSubjectClassCreate && (
+                  <SubjectClassCreate
+                    visible={toSubjectClassCreate}
+                    setVisible={setToShowSubjectClassCreate}
+                    term={props.term}
+                    getSubjectClassList={getSubjectClassList}
+                  ></SubjectClassCreate>
+                )}
                 {recordUpdate && (
                   <UpdateSubjectClass
                     visible={recordUpdate}
@@ -261,11 +292,12 @@ const StepTwo = (props) => {
             ) : pageStatus === 2 ? (
               <>
                 <ScheduleList
+                  handleCreateSchedule={handleCreateSchedule}
                   data={scheduleList}
                   term={props.term}
                   setRecordUpdate={setRecordUpdate}
-                  handleDeleteSubjectClass={handleDeleteSubjectClass}
                   setSchedule={setSchedule}
+                  getListSchedule={getListSchedule}
                 />
                 {schedule && (
                   <ScheduleInfo
@@ -286,7 +318,11 @@ const StepTwo = (props) => {
           <Result
             title="Đăng ký lớp học phần đã đóng, xem thông tin chi tiết"
             extra={
-              <Button type="primary" key="console">
+              <Button
+                type="primary"
+                key="console"
+                onClick={() => props.setCurrent("setting:3")}
+              >
                 Xem chi tiết
               </Button>
             }

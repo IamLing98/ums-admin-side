@@ -203,7 +203,7 @@ export const YearClassHome = (props) => {
                         style={{
                           background: "#448AE2",
                           borderColor: "#448AE2",
-                          width: "122px",
+                          width: "180px",
                         }}
                         onClick={() => setShowModalCreate(true)}
                       >

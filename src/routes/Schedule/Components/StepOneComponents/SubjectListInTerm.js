@@ -1,34 +1,20 @@
 import React, { useState, useEffect } from "react";
-import {
-  Result,
-  Button,
-  Modal,
-  Tag,
+import { 
+  Button, 
   Table,
   Input,
-  Form,
-  Select,
-  DatePicker,
-  Badge,
-  Divider,
-  Space,
-  Popconfirm,
-} from "antd";
-import { LockOutlined, SmileOutlined } from "@ant-design/icons";
-import { api } from "Api";
-import { NotificationManager } from "react-notifications";
-import {
-  PlusOutlined,
+  Form, 
+  Badge, 
+  Space, 
+} from "antd"; 
+import { api } from "Api"; 
+import { 
   SearchOutlined,
-  CloseCircleOutlined,
-  LockFilled,
-  UnlockFilled,
-  BranchesOutlined,
-  DeleteFilled,
+  CloseCircleOutlined, 
 } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
 
-const StepOne = (props) => {
+const SubjectListInTerm = (props) => {
   const [form] = Form.useForm();
 
   const [submittingInfo, setSubmittingInfo] = useState([]);
@@ -129,6 +115,7 @@ const StepOne = (props) => {
             <Button
               type="primary"
               onClick={() => props.handleSubjectSubmittingClose()}
+              style={{width: "180px"}}
               danger
             >
               <CloseCircleOutlined />
@@ -161,4 +148,4 @@ const StepOne = (props) => {
   );
 };
 
-export default StepOne;
+export default SubjectListInTerm;

@@ -1,33 +1,14 @@
 import React, { useState, useEffect } from "react";
-import {
-  Result,
-  Button,
-  Modal,
-  Tag,
-  Table,
-  Input,
-  Form,
-  Select,
-  DatePicker,
-  Badge,
-  Space,
-  Popconfirm,
-} from "antd";
-import { LockOutlined, SmileOutlined } from "@ant-design/icons";
+import { Modal, Form, DatePicker } from "antd";
 import { api } from "Api";
 import { NotificationManager } from "react-notifications";
 import {
-  PlusOutlined,
-  SearchOutlined,
-  CloseCircleOutlined,
-  LockFilled,
-  UnlockFilled,
-  BranchesOutlined,
-  DeleteFilled,
   CheckOutlined,
   RollbackOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import { Row, Col } from "reactstrap";
+
+const { confirm } = Modal;
 
 const { RangePicker } = DatePicker;
 
@@ -44,6 +25,32 @@ const rangeConfig = {
 const OpenSubjectClassReg = (props) => {
   const [form] = Form.useForm();
 
+  function showConfirm(values) {
+    confirm({
+      centered:true,
+      title: "Mở đăng ký học phần?",
+      icon: <ExclamationCircleOutlined />,
+      content: "Không thể thêm lớp học phần cho đến khi quá trình này kết thúc",
+      okText: "Đồng ý",
+      cancelText: "Đóng",
+      okButtonProps: {
+        icon: <CheckOutlined />,
+        disabled: false,
+        style: { width: "108px" },
+      },
+      cancelButtonProps: {
+        icon: <RollbackOutlined />,
+        disabled: false,
+        style: { width: "108px" },
+      },
+      onOk() {
+        props.handleOpenSubjectClassRegistration(values);  
+      },
+      onCancel() {
+        props.setToOpenSubjectClassReg(false);
+      },
+    });
+  }
   return (
     <div>
       <Modal
@@ -54,15 +61,13 @@ const OpenSubjectClassReg = (props) => {
             .validateFields()
             .then((values) => {
               form.resetFields();
-              props.handleOpenSubjectClassRegistration(
-                {...values, id:props.id}
-              );
+              showConfirm({ ...values, id: props.id }); 
             })
             .catch((info) => {
               console.log("Validate Failed:", info);
             });
         }}
-        onCancel={() => props.setVisible(false)}
+        onCancel={() => props.setToOpenSubjectClassReg(false)}
         maskClosable={false}
         okText="Xác Nhận"
         cancelText="Đóng"
@@ -71,11 +76,11 @@ const OpenSubjectClassReg = (props) => {
         centered
         okButtonProps={{
           icon: <CheckOutlined />,
-          disabled: false, 
+          disabled: false,
         }}
         cancelButtonProps={{
           icon: <RollbackOutlined />,
-          disabled: false, 
+          disabled: false,
         }}
       >
         <Form

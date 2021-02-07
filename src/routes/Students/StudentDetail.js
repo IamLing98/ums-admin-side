@@ -10,7 +10,7 @@ import {
   DatePicker,
   Tabs,
 } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { RollbackOutlined } from "@ant-design/icons";
 import StudentProfile from "./StudentDetailComponents/StudentProfile";
 import FamilyInfo from './StudentDetailComponents/FamilyInfo';
 import { api } from "Api";
@@ -59,6 +59,7 @@ const StudentDetail = (props) => {
               onClick={() => props.cancelShowDetail(props.record)}
               style={{ marginRight: 8 }}
             >
+              <RollbackOutlined/>
               Quay lại
             </Button>
             <Button onClick={props.onClose} type="primary">

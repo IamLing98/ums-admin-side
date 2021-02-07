@@ -5,7 +5,7 @@ import { NotificationManager } from "react-notifications";
 import SubjectList from "./SubjectList";
 import SubjectCreate from "./SubjectCreate";
 import SubjecUpdate from "./SubjectUpdate";
-import SubjectImport from './Import'; 
+import SubjectImport from "./Import";
 import { Col, Row } from "reactstrap";
 import {
   PlusOutlined,
@@ -13,11 +13,10 @@ import {
   DeleteOutlined,
   DiffOutlined,
   VerticalAlignBottomOutlined,
-  ExclamationCircleOutlined ,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import { Button, Input, Popconfirm, Space, Modal } from "antd";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
-
 
 const { confirm } = Modal;
 
@@ -118,23 +117,23 @@ export const SubjectHome = (props) => {
       });
   };
 
-  const showDeleteConfirm = (selectedRowKeys) =>  {
+  const showDeleteConfirm = (selectedRowKeys) => {
     confirm({
-      centered:true,
-      title: 'Chắc chắn?',
+      centered: true,
+      title: "Chắc chắn?",
       icon: <ExclamationCircleOutlined />,
-      content: 'Vui lòng xác nhận',
-      okText: 'Đồng ý',
-      okType: 'danger',
-      cancelText: 'Huỷ',
+      content: "Vui lòng xác nhận",
+      okText: "Đồng ý",
+      okType: "danger",
+      cancelText: "Huỷ",
       onOk() {
-        handleDeleteMultipleRecord(selectedRowKeys)
+        handleDeleteMultipleRecord(selectedRowKeys);
       },
       onCancel() {
-        console.log('Cancel');
+        console.log("Cancel");
       },
     });
-  }
+  };
 
   useEffect(() => {
     getSubjectList();
@@ -211,7 +210,7 @@ export const SubjectHome = (props) => {
                         style={{
                           background: "#448AE2",
                           borderColor: "#448AE2",
-                          width: "122px",
+                          width: "180px",
                         }}
                         onClick={() => setShowModalCreate(true)}
                       >
@@ -223,7 +222,7 @@ export const SubjectHome = (props) => {
                         style={{
                           background: "#63B175",
                           borderColor: "#63B175",
-                          width: "122px",
+                          width: "180px",
                         }}
                         onClick={() => setShowModalImport(true)}
                       >
@@ -238,23 +237,25 @@ export const SubjectHome = (props) => {
                                 background: "#DC0000",
                                 borderColor: "#DC0000",
                                 color: "wheat",
-                                width: "122px",
+                                width: "180px",
                               }
-                            : {}
+                            : {
+                                width: "180px",
+                              }
                         }
                         disabled={selectedRowKeys.length > 1 ? false : true}
                         onClick={() => showDeleteConfirm(selectedRowKeys)}
                       >
                         <DeleteOutlined />
                         <span>Xoá Nhiều</span>
-                      </Button> 
+                      </Button>
                       <Button
                         type="primary"
                         style={{
                           background: "#DEC544",
                           borderColor: "#DEC544",
                           color: "black",
-                          width: "122px",
+                          width: "180px",
                         }}
                         onClick={() => {}}
                       >

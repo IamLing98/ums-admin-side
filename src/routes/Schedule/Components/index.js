@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Tabs, Menu  } from "antd";
+import { Menu } from "antd";
 import StepOne from "./StepOne";
-import StepTwo from "./StepTwo";
+import StepTwo from "./StepTwo2";
 import StepThree from "./StepThree";
 import { api } from "Api";
 import {
-  ArrowRightOutlined,
-  MailOutlined,
   SettingOutlined,
-  AppstoreOutlined,
   DoubleLeftOutlined,
+  ClockCircleOutlined,
+  BankOutlined,
+  CodeOutlined,
 } from "@ant-design/icons";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
-
-const { TabPane } = Tabs;
 
 const { SubMenu } = Menu;
 
@@ -82,15 +80,26 @@ const TermComponent = (props) => {
               icon={<SettingOutlined />}
               title="Đăng ký học tập"
             >
-              <Menu.Item key="setting:1">Học phần dự kiến</Menu.Item>
-              <Menu.Item key="setting:2">Lớp học phần</Menu.Item>
-              <Menu.Item key="setting:3">Đăng ký điều chỉnh</Menu.Item>
+              <Menu.Item key="setting:1">
+                <ClockCircleOutlined />
+                Học phần dự kiến
+              </Menu.Item>
+              <Menu.Item key="setting:2">
+                <BankOutlined />
+                Lớp học phần
+              </Menu.Item>
+              <Menu.Item key="setting:3">
+                <CodeOutlined />
+                Đăng ký điều chỉnh
+              </Menu.Item>
             </SubMenu>
-            <SubMenu key="result" icon={<SettingOutlined />} title="Thông tin ">
-              <Menu.Item key="result:1">Option 1</Menu.Item>
-              <Menu.Item key="result:2">Option 2</Menu.Item>
-              <Menu.Item key="result:3">Option 3</Menu.Item>
-              <Menu.Item key="result:4">Option 4</Menu.Item>
+            <SubMenu
+              key="result"
+              icon={<SettingOutlined />}
+              title="Kết quả học tập "
+            >
+              <Menu.Item key="result:1">Thời khoá biểu</Menu.Item>
+              <Menu.Item key="result:2">Danh sách lớp học phần</Menu.Item>
             </SubMenu>
           </Menu>
         </span>
@@ -100,7 +109,11 @@ const TermComponent = (props) => {
         <StepOne term={term} getTermDetail={getTermDetail} />
       )}
       {current === "setting:2" && (
-        <StepTwo term={term} getTermDetail={getTermDetail} />
+        <StepTwo
+          term={term}
+          getTermDetail={getTermDetail}
+          setCurrent={setCurrent}
+        />
       )}
       {current === "setting:3" && (
         <StepThree term={term} getTermDetail={getTermDetail} />

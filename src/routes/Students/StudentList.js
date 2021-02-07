@@ -1,14 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Button, Input, Popconfirm, Space, Table, Tag, Alert } from "antd";
+import { Button, Input, Popconfirm, Space, Table  } from "antd";
 import {
-  DeleteFilled,
-  DeleteOutlined,
-  DiffOutlined,
-  EditFilled,
-  PlusOutlined,
-  SearchOutlined,
-  DoubleLeftOutlined,
-  EditOutlined,
+  DeleteFilled, 
+  EditFilled, 
+  SearchOutlined, 
   RetweetOutlined,
   ClearOutlined,
 } from "@ant-design/icons";
@@ -100,7 +95,7 @@ const StudentList = (props) => {
   });
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
+    confirm();  
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   };
@@ -118,12 +113,7 @@ const StudentList = (props) => {
       ...getColumnSearchProps({
         dataIndex: "studentId",
         columnName: "mã sinh viên",
-      }),
-      render: (text, record) => {
-        if (record.isSelecting === true) {
-          return <Alert message={text} type="success" />
-        } else return <span >{text}</span>;
-      },
+      }), 
     },
     {
       title: "Họ Và Tên ",
@@ -279,6 +269,10 @@ const StudentList = (props) => {
         onChange={(paging) => handleChangeTable(paging)}
         showSizeChanger={true}
         rowSelection={rowSelection}
+        onRow={(record, index) => {
+          if (record.isSelecting === true)
+            return { style: { background: "#4DC2F7", fontWeight:"bolder" } };
+        }}
         locale={{
           emptyText: (
             <div className="ant-empty ant-empty-normal">

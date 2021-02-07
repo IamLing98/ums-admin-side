@@ -2,31 +2,15 @@ import React, { useState, useEffect } from "react";
 import {
   Result,
   Button,
-  Modal,
-  Tag,
-  Table,
-  Input,
-  Form,
-  Select,
-  DatePicker,
-  Badge,
-  Space,
-  Popconfirm,
-  Divider,
+  Modal, 
+  Form, 
+  DatePicker, 
   Card,
 } from "antd";
-import { LockOutlined, SmileOutlined } from "@ant-design/icons";
+import { ArrowRightOutlined, SmileOutlined } from "@ant-design/icons";
 import { api } from "Api";
 import { NotificationManager } from "react-notifications";
-import {
-  PlusOutlined,
-  SearchOutlined,
-  CloseCircleOutlined,
-  LockFilled,
-  UnlockFilled,
-  BranchesOutlined,
-  DeleteFilled,
-} from "@ant-design/icons";
+import { CheckOutlined, RollbackOutlined } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
 const { RangePicker } = DatePicker;
 
@@ -40,7 +24,7 @@ const rangeConfig = {
   ],
 };
 
-const Progress11 = (props) => {
+const SubjectRegistrationOpenning = (props) => {
   const [form] = Form.useForm();
 
   const [subjectSubmitFormVisible, setSubjectSubmitFormVisible] = useState(
@@ -52,13 +36,15 @@ const Progress11 = (props) => {
       <Card bordered={true}>
         <Result
           icon={<SmileOutlined />}
-          title="Bắt đầu Tên học phần mới bằng việc mở đăng ký học phần!"
+          title="Mở đăng ký học phần"
           extra={
             <Button
               type="primary"
               onClick={() => setSubjectSubmitFormVisible(true)}
+              style={{ width: "180px" }}
             >
-              Mở DKHP
+              <ArrowRightOutlined />
+              Mở
             </Button>
           }
         />
@@ -81,11 +67,21 @@ const Progress11 = (props) => {
           }}
           onCancel={() => setSubjectSubmitFormVisible(false)}
           maskClosable={false}
-          okText="Mở đăng ký"
+          okText="Đồng ý"
           cancelText="Đóng"
           destroyOnClose={true}
           closable={false}
           centered
+          okButtonProps={{
+            icon: <CheckOutlined />,
+            disabled: false,
+            style: { width: "108px" },
+          }}
+          cancelButtonProps={{
+            icon: <RollbackOutlined />,
+            disabled: false,
+            style: { width: "108px" },
+          }}
         >
           <Form
             form={form}
@@ -103,4 +99,4 @@ const Progress11 = (props) => {
   );
 };
 
-export default Progress11;
+export default SubjectRegistrationOpenning;

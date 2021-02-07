@@ -1,38 +1,13 @@
 import React, { useState, useEffect } from "react";
-import {
-  Result,
-  Button,
-  Modal,
-  Tag,
-  Table,
-  Input,
-  Form,
-  Select,
-  DatePicker,
-  Badge,
-  Space,
-  Popconfirm,
-} from "antd";
-import { LockOutlined, SmileOutlined } from "@ant-design/icons";
+import { Form, DatePicker } from "antd";
 import { api } from "Api";
-import { NotificationManager } from "react-notifications";
-import {
-  PlusOutlined,
-  SearchOutlined,
-  CloseCircleOutlined,
-  LockFilled,
-  UnlockFilled,
-  BranchesOutlined,
-  DeleteFilled,
-} from "@ant-design/icons";
-import { Row, Col } from "reactstrap";
-import Progress12 from "./StepOneComponents/Progress12";
-import Progress11 from "./StepOneComponents/Progress11";
-import Progress13 from "./StepOneComponents/Progress13";
-const { RangePicker } = DatePicker;
+import { NotificationManager } from "react-notifications"; 
+import SubjectListInTerm from "./StepOneComponents/SubjectListInTerm";
+import SubjectRegistrationOpenning from "./StepOneComponents/SubjectRegistrationOpenning";
+import SubjectSubmittingResult from "./StepOneComponents/SubjectSubmittingResult"; 
 
 const StepOne = (props) => {
-  const [form] = Form.useForm(); 
+  const [form] = Form.useForm();
 
   const showErrNoti = (err) => {
     NotificationManager.err(err.response.data.message);
@@ -43,7 +18,7 @@ const StepOne = (props) => {
     } else if (err.message === "Unauthorized") {
       throw new SubmissionError({ _err: "Username or Password Invalid" });
     }
-  }; 
+  };
 
   const handleSubjectSubmittingOpen = (values, callbacks) => {
     let subjectSubmittingStartDate = values["rangeTime"][0].format(
@@ -57,9 +32,9 @@ const StepOne = (props) => {
     api
       .put(`/terms/${termObj.id}`, termObj, true)
       .then((res) => {
-        NotificationManager.success("Mở đăng ký học phần thành công"); 
-        props.getTermDetail(props.term.id)
-        callbacks(false)
+        NotificationManager.success("Mở đăng ký học phần thành công");
+        props.getTermDetail(props.term.id);
+        callbacks(false);
       })
       .catch((error) => {
         showErrNoti(error);
@@ -75,34 +50,31 @@ const StepOne = (props) => {
     api
       .put(`/terms/${termObj.id}`, termObj, true)
       .then((res) => {
-        NotificationManager.success(
-          "Đóng đăng ký học phần thành công"
-        ); 
-        props.getTermDetail(props.term.id)
+        NotificationManager.success("Đóng đăng ký học phần thành công");
+        props.getTermDetail(props.term.id);
       })
       .catch((error) => {
         showErrNoti(error);
       });
   };
- 
 
   if (props.term.progress === 11) {
     return (
-      <Progress11
+      <SubjectRegistrationOpenning
         {...props}
-        handleSubjectSubmittingOpen={handleSubjectSubmittingOpen} 
+        handleSubjectSubmittingOpen={handleSubjectSubmittingOpen}
       />
     );
   } else if (props.term.progress === 12) {
     return (
-      <Progress12
+      <SubjectListInTerm
         {...props}
         handleSubjectSubmittingClose={handleSubjectSubmittingClose}
       />
     );
-  } else  {
-    return <Progress13 {...props} />;
-  }  
+  } else {
+    return <SubjectSubmittingResult {...props} />;
+  }
 };
 
 export default StepOne;

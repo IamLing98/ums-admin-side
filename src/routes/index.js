@@ -12,6 +12,19 @@ import {
   AsyncResultComponent,
 } from "Components/AsyncComponent/AsyncComponent";
 
+export const DashboardRoutes = ({match}) => {
+  return (
+    <div className="content-wrapper">
+      <Switch>
+        <Redirect
+          exact
+          from={`${match.url}/`}
+          to={`${match.url}/home`}
+        /> 
+      </Switch>
+    </div>
+  );
+}
 export const EducationRoutes = ({ match }) => {
   return (
     <div className="content-wrapper">

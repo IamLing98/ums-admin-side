@@ -6,7 +6,7 @@ import TermList from "./TermList";
 import TermDetail from "./Components/index";
 import { Col, Row } from "reactstrap";
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
-import { Input, Alert } from "antd";
+import { Button, Alert } from "antd";
 import TermCreate from "./CreateTerm";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 
@@ -21,12 +21,15 @@ export const ScheduleHome = (props) => {
 
   const [loading, setLoading] = useState(true);
 
+  const [recordFoundNumber, setRecordFoundNumber] = useState(0);
+
   const getTermList = () => {
     api
       .get("/terms", true)
       .then((res) => {
         setTermList(res);
         setLoading(false);
+        setRecordFoundNumber(res.length)
       })
       .catch((err) => {
         console.log(err);
@@ -94,10 +97,11 @@ export const ScheduleHome = (props) => {
                       md={6}
                       sm={12}
                       style={{ display: "flex", flexDirection: "column" }}
-                    >
-                      {" "}
+                    > 
                       <Alert
-                        message="Success Text"
+                        message={
+                          <strong>Danh sách học kỳ - Tìm thấy {recordFoundNumber} bản ghi</strong>
+                        }
                         type="info"
                         style={{ maxHeight: "32px" }}
                       />
@@ -107,14 +111,18 @@ export const ScheduleHome = (props) => {
                         className="tableListOperator"
                         style={{ textAlign: "right", width: "100%" }}
                       >
-                        <button
-                          type="button"
-                          className="ant-btn ant-btn-primary"
+                        <Button
+                          style={{
+                            background: "#448AE2",
+                            borderColor: "#448AE2",
+                            width: "180px",
+                          }}
+                          type="primary"
                           onClick={() => setShowModalCreate(true)}
                         >
                           <PlusOutlined></PlusOutlined>
                           <span>Tạo Mới </span>
-                        </button>
+                        </Button>
                       </div>
                     </Col>
                   </Row>

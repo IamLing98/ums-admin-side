@@ -169,7 +169,7 @@ export const EducationProgramsComponent = (props) => {
                           style={{
                             background: "#448AE2",
                             borderColor: "#448AE2",
-                            width: "122px",
+                            width: "180px",
                           }}
                           onClick={() => setShowModalCreate(true)}
                         >
@@ -181,7 +181,7 @@ export const EducationProgramsComponent = (props) => {
                           style={{
                             background: "#63B175",
                             borderColor: "#63B175",
-                            width: "122px",
+                            width: "180px",
                           }}
                           onClick={() => setShowModalImport(true)}
                         >
@@ -194,7 +194,7 @@ export const EducationProgramsComponent = (props) => {
                             background: "#DEC544",
                             borderColor: "#DEC544",
                             color: "black",
-                            width: "122px",
+                            width: "180px",
                           }}
                           onClick={() => handleDeleteMultipleRecord()}
                         >

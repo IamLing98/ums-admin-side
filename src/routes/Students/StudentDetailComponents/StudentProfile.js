@@ -1,6 +1,147 @@
-import { Descriptions, Tabs } from "antd";
-import React, { useEffect } from "react";
+import { Table } from "antd";
+import React, { useState, useEffect } from "react";
+import { Row, Col } from "reactstrap";
+
 const StudentProfile = (props) => {
+  const [record, setRecord] = useState(undefined);
+
+  useEffect(() => {
+    if (props.record) {
+      setRecord(props.record);
+    }
+  }, [props.record]);
+
+  const dataLeft = [
+    {
+      title: "Họ và tên:",
+      values: record ? record.fullName : "",
+    },
+    {
+      title: "Ngày sinh:",
+      values: record ? record.dateBirth : "",
+    },
+    {
+      title: "Quốc tịch:",
+      values: record ? record.nationalityName : "",
+    },
+    {
+      title: "Tôn giáo:",
+      values: record ? record.religion : "",
+    },
+    {
+      title: "Hộ khẩu thường trú:",
+      values: record ? record.permanentResidence : "",
+    },
+    {
+      title: "Khu vực tuyển sinh:",
+      values: "",
+    }, 
+    {
+      title: "Diện chính sách:",
+      values: record ? record.incentivesType : "",
+    },
+    {
+      title: "Số CMND:",
+      values: record ? record.identityNumber : "",
+    },
+    {
+      title: "Nơi cấp:",
+      values: record ? record.identityCreatedPlace : "",
+    },
+    {
+      title: "Số điện thoại:",
+      values: record ? record.phoneNumber : "",
+    },
+    {
+      title: "Địa chỉ liên lạc:",
+      values: record ? record.contactAddress : "",
+    },
+    {
+      title: "Ngày vào đoàn:",
+      values: record ? record.CYUStartDate : "",
+    },
+  ];
+  const columnsLeft = [
+    {
+      title: "Danh mục",
+      dataIndex: "title",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.age - b.age,
+      render: (text, record) => {
+        return <strong style={{ fontWeight: "700" }}>{text}</strong>;
+      },
+    },
+    {
+      title: "Giá trị",
+      dataIndex: "values",
+    },
+  ];
+
+  const dataRight = [
+    {
+      title: "Giới tính:",
+      values: "",
+    },
+    {
+      title: "Nơi sinh:",
+      values: record ? record.bornPlace : "",
+    },
+    {
+      title: "Dân tộc:",
+      values: record ? record.ethnicName : "",
+    },
+    {
+      title: "Nguyên quán:",
+      values: record ? record.homeTown : "",
+    },
+    {
+      title: "Đối tượng:",
+      values: "",
+    },
+    {
+      title: "Trình độ văn hoá:",
+      values: record ? record.educationLevel : "",
+    },
+    {
+      title: "Thành phần gia đình:",
+      values: record ? record.familyElement : "",
+    },
+    {
+      title: "Ngày vào đảng:",
+      values: record ? record.CPStartDate : "",
+    },
+    {
+      title: "Ngày cấp:",
+      values: record ? record.identityCreatedDate : "",
+    },
+    {
+      title: "Số tài khoản:",
+      values: record ? record.bankNumber : "",
+    },
+    {
+      title: "Email:",
+      values: record ? record.email : "",
+    },
+    {
+      title: "Ghi chú:",
+      values: record ? record.note : "",
+    },
+  ];
+  const columnsRigth = [
+    {
+      title: "Danh mục",
+      dataIndex: "title",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.age - b.age,
+      render: (text, record) => {
+        return <strong style={{ fontWeight: "700" }}>{text}</strong>;
+      },
+    },
+    {
+      title: "Giá trị",
+      dataIndex: "values",
+    },
+  ];
   const enrollmentAreaDisplay = (value) => {
     if (value === 1) {
       return <>Khu vực 1 (KV1)</>;
@@ -15,139 +156,36 @@ const StudentProfile = (props) => {
     }
   };
 
-  if(props.record ){
+  if (props.record) {
     return (
       <div className="student-description-wrapper">
-        <Descriptions layout="horizontal" column={6}>
-          <Descriptions.Item label="Họ và tên" span={3}>
-            {props.record.fullName}
-          </Descriptions.Item>
-          <Descriptions.Item label="Giới tính" span={3}>
-            {props.record.sex !== null ? (props.record.sex === 1 ? "Nam" : "Nữ") : ""}
-          </Descriptions.Item>
-        </Descriptions>
-  
-        <Descriptions layout="horizontal" column={6}>
-          <Descriptions.Item label="Ngày sinh" span={3}>
-            {props.record.dateBirth !== null ? props.record.dateBirth : "__ /__ /____"}
-          </Descriptions.Item>
-          <Descriptions.Item label="Nơi sinh" span={3}>
-            {props.record.bornPlace !== null ? props.record.bornPlace : ""}
-          </Descriptions.Item>
-        </Descriptions>
-  
-        <Descriptions layout="horizontal" column={6}>
-          <Descriptions.Item label="Quốc tịch" span={3}>
-            {props.record.nationalityName !== null ? props.record.nationalityName : ""}
-          </Descriptions.Item>
-          <Descriptions.Item label="Dân tộc" span={3}>
-            {props.record.ethnicName !== null ? props.record.ethnicName : ""}
-          </Descriptions.Item>
-        </Descriptions>
-  
-        <Descriptions layout="horizontal" column={6}>
-          <Descriptions.Item label="Tôn giáo" span={3}>
-            {props.record.religion !== null ? props.record.religion : ""}
-          </Descriptions.Item>
-          <Descriptions.Item label="Nguyên quán" span={3}>
-            {props.record.homeTown !== null ? props.record.homeTown : ""}
-          </Descriptions.Item>
-        </Descriptions>
-  
-        <Descriptions layout="horizontal" column={6}>
-          <Descriptions.Item label="Hộ khẩu thường trú" span={3}>
-            {props.record.permanentResidence !== null ? props.record.permanentResidence : ""}
-          </Descriptions.Item>
-        </Descriptions>
-  
-        <Descriptions layout="horizontal" column={6}>
-          <Descriptions.Item label="Khu vực tuyển sinh" span={3}>
-            {enrollmentAreaDisplay(props.record.enrollmentArea)}
-          </Descriptions.Item>
-          <Descriptions.Item label="Đối tượng" span={3}>
-            {/* {props.record.homeTown !== null ? props.record.homeTown : ""} */}
-          </Descriptions.Item>
-        </Descriptions>
-  
-        <Descriptions layout="horizontal" column={6}>
-          <Descriptions.Item label="Đạo Đức" span={3}>
-            {/* Việt Nam */}
-          </Descriptions.Item>
-  
-          <Descriptions.Item label="Trình độ văn hoá" span={3}>
-            {props.record.educationLevel !== null ? props.record.educationLevel : ""}
-          </Descriptions.Item>
-        </Descriptions>
-  
-        <Descriptions layout="horizontal" column={6}>
-          <Descriptions.Item label="Diện chính sách" span={3}>
-            {props.record.incentivesType !== null ? props.record.incentivesType : ""}
-          </Descriptions.Item>
-  
-          <Descriptions.Item label="Thành phần gia đình" span={3}>
-            {props.record.familyElement !== null ? props.record.familyElement : ""}
-          </Descriptions.Item>
-        </Descriptions>
-  
-        <Descriptions layout="horizontal" column={6}>
-          <Descriptions.Item label="Ngày vào đoàn" span={3}>
-            {props.record.CYUStartDate !== null ? props.record.CYUStartDate : ""}
-          </Descriptions.Item>
-  
-          <Descriptions.Item label="Ngày vào đảng" span={3}>
-            {props.record.CPStartDate !== null ? props.record.CPStartDate : ""}
-          </Descriptions.Item>
-        </Descriptions>
-  
-        <Descriptions layout="horizontal" column={6}>
-          <Descriptions.Item label="Số CMND" span={3}>
-            {props.record.identityNumber !== null ? props.record.identityNumber : ""}
-          </Descriptions.Item>
-  
-          <Descriptions.Item label="Ngày cấp" span={3}>
-            {props.record.identityCreatedDate !== null
-              ? props.record.identityCreatedDate
-              : ""}
-          </Descriptions.Item>
-        </Descriptions>
-  
-        <Descriptions layout="horizontal" column={6}>
-          <Descriptions.Item label="Nơi cấp" span={3}>
-            {props.record.identityCreatedPlace !== null
-              ? props.record.identityCreatedPlace
-              : ""}
-          </Descriptions.Item>
-  
-          <Descriptions.Item label="Số tài khoản" span={3}>
-            {props.record.bankNumber !== null ? props.record.bankNumber : ""}
-          </Descriptions.Item>
-        </Descriptions>
-  
-        <Descriptions layout="horizontal" column={6}>
-          <Descriptions.Item label="Số điện thoại" span={3}>
-            {props.record.phoneNumber !== null ? props.record.phoneNumber : ""}
-          </Descriptions.Item>
-  
-          <Descriptions.Item label="Email" span={3}>
-            {props.record.email !== null ? props.record.email : ""}
-          </Descriptions.Item>
-        </Descriptions>
-  
-        <Descriptions layout="horizontal" column={6}>
-          <Descriptions.Item label="Địa chỉ liên lạc" span={3}>
-            {props.record.contactAddress !== null ? props.record.contactAddress : ""}
-          </Descriptions.Item>
-  
-          <Descriptions.Item label="Ghi chú" span={3}>
-            {props.record.note !== null ? props.record.note : ""}
-          </Descriptions.Item>
-        </Descriptions>
+        <Row>
+          <Col md={6}>
+            <Table
+            bordered
+              rowKey="title"
+              showHeader={false}
+              pagination={false}
+              columns={columnsLeft}
+              dataSource={dataLeft}
+            ></Table>
+          </Col>
+          <Col>
+            <Table
+            bordered  
+              rowKey="title"
+              showHeader={false}
+              pagination={false}
+              columns={columnsRigth}
+              dataSource={dataRight}
+            ></Table>
+          </Col>
+        </Row>
       </div>
-  );
+    );
+  } else {
+    return <div></div>;
   }
-   else{
-     return <div></div>
-   }
 };
 
 export default StudentProfile;

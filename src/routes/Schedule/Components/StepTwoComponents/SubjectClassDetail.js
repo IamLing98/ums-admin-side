@@ -1,45 +1,97 @@
-import React from "react";
-import {
-  Drawer,
-  Form,
-  Button,
-  Col,
-  Row,
-  Input,
-  Select,
-  DatePicker,
-  List,
-  Avatar,
-} from "antd";
-import {
-  PlusOutlined,
-  RollbackOutlined,
-  CheckOutlined,
-} from "@ant-design/icons";
-
-const { Option } = Select;
+import React, { useState, useEffect } from "react";
+import { Drawer, Button, Table, Avatar } from "antd";
+import { RollbackOutlined, CheckOutlined } from "@ant-design/icons";
 
 const SubjectClassDetail = (props) => {
+  const [subjectClass, setSubjectClass] = useState(undefined);
+
+  useEffect(() => {
+    if (props.visible) {
+      console.log(props.visible);
+      setSubjectClass(props.visible);
+    }
+  }, [props.visible]);
   const data = [
     {
-      title: "Ant Design Title 1",
+      title: "Mã lớp học phần:",
+      value: subjectClass ? subjectClass.subjectClassId : "",
     },
     {
-      title: "Ant Design Title 2",
+      title: "Mã học phần:",
+      value: subjectClass ? subjectClass.subjectId : "",
     },
     {
-      title: "Ant Design Title 3",
+      title: "Tên học phần:",
+      value: subjectClass ? subjectClass.subjectName : "",
     },
     {
-      title: "Ant Design Title 4",
+      title: "Giảng viên:",
+      value: subjectClass ? subjectClass.employeeFullName : "",
+    },
+    {
+      title: "Khoa phụ trách",
+      value: subjectClass ? subjectClass.departmentName : "",
+    },
+    {
+      title: "Thời lượng:",
+      value: subjectClass ? subjectClass.duration + " tiết" : "",
+    },
+    {
+      title: "Yêu cầu phòng máy:",
+      value: subjectClass
+        ? subjectClass.isRequireLab === true
+          ? "Có"
+          : "Không"
+        : "",
+    },
+    {
+      title: "Số tín chỉ:",
+      value: subjectClass ? subjectClass.eachsubject  : "",
+    },
+    {
+      title: "Số giờ lý thuyết:",
+      value: subjectClass ? subjectClass.theoryNumber : "",
+    },
+    {
+      title: "Số giờ bài tập:",
+      value: subjectClass ? subjectClass.exerciseNumber : "",
+    },
+    {
+      title: "Số giờ thảo luận:",
+      value: subjectClass ? subjectClass.discussNumber : "",
+    },
+    {
+      title: "Số giờ thực hành:",
+      value: subjectClass ? subjectClass.practiceNumber : "",
+    },
+    {
+      title: "Số giờ tự học:",
+      value: subjectClass ? subjectClass.selfLearningNumber : "",
     },
   ];
+
+  const columns = [
+    {
+      title: "Danh mục",
+      dataIndex: "title",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.age - b.age,
+      render: (text, record) => {
+        return <strong style={{ fontWeight: "700" }}>{text}</strong>;
+      },
+    },
+    {
+      title: "Giá trị",
+      dataIndex: "value",
+    },
+  ];
+
   return (
     <>
       <Drawer
         title="Thông tin chi tiết lớp học phần"
         width={720}
-        onClose={() => props.setShowSubjectClassDetail(null)}
+        onClose={() => props.cancelSelecting(subjectClass)}
         visible={props.visible}
         bodyStyle={{ paddingBottom: 80 }}
         footer={
@@ -49,37 +101,23 @@ const SubjectClassDetail = (props) => {
             }}
           >
             <Button
-              onClick={() => props.setShowSubjectClassDetail(null)}
+              onClick={() => props.cancelSelecting(subjectClass)}
               style={{ marginRight: 8 }}
             >
               <RollbackOutlined />
               Đóng
             </Button>
-            <Button
-              onClick={() => props.setShowSubjectClassDetail(null)}
-              type="primary"
-            >
-              <CheckOutlined />
-              Đóng
-            </Button>
           </div>
         }
       >
-        <List
-          itemLayout="horizontal"
+        <Table
+          rowKey="title"
+          bordered
+          columns={columns}
           dataSource={data}
-          renderItem={(item) => (
-            <List.Item>
-              <List.Item.Meta
-                avatar={
-                  <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                }
-                title={<a href="https://ant.design">{item.title}</a>}
-                description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-              />
-            </List.Item>
-          )}
-        /> 
+          showHeader={false}
+          pagination={false}
+        ></Table>
       </Drawer>
     </>
   );

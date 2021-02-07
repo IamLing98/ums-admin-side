@@ -21,9 +21,8 @@ import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import StudentDetail from "./StudentDetail";
 import StudentList from "./StudentList";
 import ToPdf from "./ExportToPdf";
-import ImportStudent from "./Import"; 
+import ImportStudent from "./Import";
 
- 
 const { confirm } = Modal;
 
 export const StudentHome = (props) => {
@@ -55,6 +54,8 @@ export const StudentHome = (props) => {
 
   const [classList, setClassList] = useState([]);
 
+  const [recordFoundNumber, setRecordFoundNumber] = useState(0);
+
   const [loading, setLoading] = useState(true);
 
   const input = useRef(null);
@@ -62,7 +63,7 @@ export const StudentHome = (props) => {
   const onSearch = () => {};
 
   const showErrNoti = (err) => {
-    NotificationManager.err(err.response.data.message);
+    NotificationManager.error(err.response.data.message);
     if (err.message === "Forbidden") {
       NotificationManager.err(
         "Did you forget something? Please activate your account"
@@ -80,6 +81,7 @@ export const StudentHome = (props) => {
           res[i].isSelecting = false;
         }
         setStudentList(res);
+        setRecordFoundNumber(res.length);
         setLoading(false);
       })
       .catch((err) => {
@@ -252,7 +254,7 @@ export const StudentHome = (props) => {
     getProvinceList("VNM");
     getEducationProgramList();
     getClassList();
-    console.log(process.env.REACT_APP_MODE)
+    console.log(process.env.REACT_APP_MODE);
   }, []);
 
   if (loading) {
@@ -351,7 +353,7 @@ export const StudentHome = (props) => {
                         style={{
                           background: "#448AE2",
                           borderColor: "#448AE2",
-                          width: "122px",
+                          width: "180px",
                         }}
                         onClick={() => setShowModalCreate(true)}
                       >
@@ -363,7 +365,7 @@ export const StudentHome = (props) => {
                         style={{
                           background: "#63B175",
                           borderColor: "#63B175",
-                          width: "122px",
+                          width: "180px",
                         }}
                         onClick={() => setShowModalImport(true)}
                       >
@@ -378,9 +380,49 @@ export const StudentHome = (props) => {
                                 background: "#DC0000",
                                 borderColor: "#DC0000",
                                 color: "wheat",
-                                width: "122px",
+                                width: "180px",
                               }
-                            : {}
+                            : {
+                                width: "180px",
+                              }
+                        }
+                        disabled={selectedRowKeys.length > 1 ? false : true}
+                        onClick={() => showDeleteConfirm(selectedRowKeys)}
+                      >
+                        <DeleteOutlined />
+                        <span>Xoá Nhiều</span>
+                      </Button>  
+                    </div>
+                  </Col>
+                </Row>
+                <Row style={{ marginBottom: "16px" }}>
+                  <Col md={6} sm={12}>
+                    <Alert
+                      message={
+                        <strong>Tìm thấy {recordFoundNumber} bản ghi</strong>
+                      }
+                      type="info"
+                      style={{ maxHeight: "32px" }}
+                    />
+                  </Col>
+                  <Col md={6} sm={12} xs={12}>
+                    <div
+                      className="tableListOperator"
+                      style={{ textAlign: "right", width: "100%" }}
+                    > 
+                      <Button
+                        type="primary"
+                        style={
+                          selectedRowKeys.length > 1
+                            ? {
+                                background: "#DC0000",
+                                borderColor: "#DC0000",
+                                color: "wheat",
+                                width: "180px",
+                              }
+                            : {
+                                width: "180px",
+                              }
                         }
                         disabled={selectedRowKeys.length > 1 ? false : true}
                         onClick={() => showDeleteConfirm(selectedRowKeys)}
@@ -395,10 +437,10 @@ export const StudentHome = (props) => {
                                 background: "#DEC544",
                                 borderColor: "#DEC544",
                                 color: "black",
-                                width: "122px",
+                                width: "180px",
                               }
                             : {
-                                width: "122px",
+                                width: "180px",
                               }
                         }
                         onClick={() => {}}
@@ -415,10 +457,10 @@ export const StudentHome = (props) => {
                                 background: "#DEC544",
                                 borderColor: "#DEC544",
                                 color: "black",
-                                width: "122px",
+                                width: "180px",
                               }
                             : {
-                                width: "122px",
+                                width: "180px",
                               }
                         }
                         onClick={() => {
@@ -438,15 +480,6 @@ export const StudentHome = (props) => {
                     </div>
                   </Col>
                 </Row>
-                <Row style={{marginBottom:"16px"}}>
-                  <Col md={6} sm={12}>
-                    <Alert
-                      message="Success Text"
-                      type="info"
-                      style={{ maxHeight: "32px" }}
-                    />
-                  </Col>
-                </Row>
                 <StudentList
                   setCurrentTitle={setCurrentTitle}
                   handleDeleteRecord={handleDeleteRecord}
@@ -456,6 +489,7 @@ export const StudentHome = (props) => {
                   setSelectedRowKeys={setSelectedRowKeys}
                   setShowDetail={setShowDetail}
                   setSelecting={setSelecting}
+                  setRecordFoundNumber={setRecordFoundNumber}
                 />
               </div>
               {showDetail !== null && (
