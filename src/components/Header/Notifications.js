@@ -8,13 +8,43 @@ import Button from "@material-ui/core/Button";
 import { Badge } from "reactstrap";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import { NotificationManager } from "react-notifications"; 
+import { NotificationManager } from "react-notifications";
+import { socketsSubscribe,socketsConnect } from "../../store/actions/WebSocketsActions";
+import { useDispatch, useSelector } from "react-redux";
+
 // api
-import { api } from "Api"; 
-const Notifications = ({ token, notification }) => {
+import { api } from "Api";
+const Notifications = (props) => {
+  const dispatch = useDispatch();
+  const webSocketReducer = useSelector((state) => state.webSocketReducer);
   const [notifications, setNotifications] = useState([]);
 
   const [notReadNumber, setNotReadNumber] = useState(0);
+
+  const [subscriptionActive, setSubscriptionActive] = useState(false);
+
+  useEffect(() => {
+    dispatch(socketsConnect());
+  }, []);
+  const socketLink = () => {
+    console.log("wsreducer:", webSocketReducer);
+    const { connected } = webSocketReducer;
+    console.log("CONNECT", connected);
+    if (connected && ! subscriptionActive) {
+      dispatch(socketsSubscribe("/hello"));
+      setSubscriptionActive(true);
+    }
+
+    if (connected && subscriptionActive) {
+      return (
+      
+            <a href="#">{webSocketReducer.message}</a>
+          
+      );
+    }
+
+    return null;
+  };
 
   const [isShow, setIsShow] = useState(false);
 
@@ -63,7 +93,7 @@ const Notifications = ({ token, notification }) => {
     setNotReadNumber(0);
     api
       .put("/notifications", ids)
-      .then((res) => console.log(res))
+      .then((res) => console.log("update: ", res))
       .catch((err) => {
         console.log(err);
       });
@@ -88,7 +118,8 @@ const Notifications = ({ token, notification }) => {
           </IconButton>
         </Tooltip>
       </DropdownToggle>
-      <DropdownMenu right> 
+      <DropdownMenu right>
+        {socketLink()}
         <div className="dropdown-content">
           <div className="dropdown-top d-flex justify-content-between rounded-top bg-primary">
             <span className="text-white font-weight-bold">
@@ -165,4 +196,5 @@ const Notifications = ({ token, notification }) => {
     </Dropdown>
   );
 };
+
 export default Notifications;

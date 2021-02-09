@@ -13,8 +13,7 @@
    "license": "ISC",
    "devDependencies": {
       "ts-node":"^9.0.0",
-      "redux-logger": "^3.0.6",
-      "json-loader": "^0.5.7",
+      "redux-logger": "^3.0.6", 
       "antd": "^4.6.1",
       "source-map-loader": "^1.0.0",
       "@babel/cli": "^7.5.5",
@@ -51,7 +50,8 @@
       "webpack-dev-server": "^3.2.1",
       "react-highlight-words":"^0.17.0"
    },
-   "dependencies": {
+   "dependencies": { 
+      "@stomp/stompjs": "6.0.0",
       "react-to-pdf":"^0.0.13",
       "shortid":"^2.2.15",
       "ts-loader":"^8.0.4",

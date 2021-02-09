@@ -3,6 +3,7 @@ import Thunk from "redux-thunk";
 import reducers from "./reducers";
 import { tokenMiddleWare } from "./tokenMiddleware";
 import loggerMiddleware from "./logger-middleware";
+import { wsMiddleware } from "./webSocketsMiddleware";
 
 //delete in packed json please
 import logger from "redux-logger";
@@ -11,7 +12,7 @@ export function configureStore(initialState) {
   const store = createStore(
     reducers,
     initialState,
-    compose(applyMiddleware(Thunk, tokenMiddleWare, loggerMiddleware))
+    compose(applyMiddleware(wsMiddleware,Thunk, tokenMiddleWare, loggerMiddleware))
   );
 
   if (module.hot) {
