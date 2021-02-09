@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Menu } from "antd";
+import { Menu, Tag } from "antd";
 import StepOne from "./StepOne";
-import StepTwo from "./StepTwo2";
+import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
 import { api } from "Api";
 import {
@@ -10,6 +10,8 @@ import {
   ClockCircleOutlined,
   BankOutlined,
   CodeOutlined,
+  SyncOutlined,
+  CheckCircleOutlined,
 } from "@ant-design/icons";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 
@@ -48,6 +50,79 @@ const TermComponent = (props) => {
     console.log(e.key);
     setCurrent(e.key);
   };
+
+  const getProgressName = (progress) => {
+    if (progress === 11) {
+      return (
+        <Tag
+          style={{ fontSize: "15px" }}
+          icon={<ClockCircleOutlined  />}
+          color="default"
+        >
+          Khởi tạo
+        </Tag>
+      );
+    } else if (progress == 12)
+      return (
+        <Tag
+          style={{ fontSize: "15px" }}
+          icon={<SyncOutlined spin />}
+          color="processing"
+        >
+          Đang mở đăng ký học phần
+        </Tag>
+      );
+    else if (progress == 13)
+      return (
+        <Tag
+          style={{ fontSize: "15px" }}
+          icon={<CheckCircleOutlined />}
+          color="success"
+        >
+          Hoàn tất đăng ký học phần
+        </Tag>
+      );
+    else if (progress == 21)
+      return (
+        <Tag
+          style={{ fontSize: "15px" }}
+          icon={<SyncOutlined spin />}
+          color="processing"
+        >
+          Đang mở đăng ký lớp học phần
+        </Tag>
+      );
+    else if (progress == 22)
+      return (
+        <Tag
+          style={{ fontSize: "15px" }}
+          icon={<CheckCircleOutlined />}
+          color="success"
+        >
+          Hoàn tất đăng ký lớp học phần
+        </Tag>
+      );
+    else if (progress == 31)
+      return (
+        <Tag
+          style={{ fontSize: "15px" }}
+          icon={<SyncOutlined  spin/>}
+          color="processing"
+        >
+          Đang mở đăng ký điều chỉnh
+        </Tag>
+      );
+    else if (progress == 32)
+      return (
+        <Tag
+          style={{ fontSize: "15px" }}
+          icon={<CheckCircleOutlined />}
+          color="success"
+        >
+          Hoàn tất đăng ký điều chỉnh
+        </Tag>
+      );
+  };
   if (loading && !term) {
     return <RctPageLoader />;
   }
@@ -65,7 +140,8 @@ const TermComponent = (props) => {
               >
                 <DoubleLeftOutlined />
               </a>{" "}
-              Thông tin học kỳ {term.term} năm {term.year}
+              Thông tin học kỳ {term.term} năm {term.year}{" "}
+              {getProgressName(term.progress)}
             </span>
           </h4>
         </div>

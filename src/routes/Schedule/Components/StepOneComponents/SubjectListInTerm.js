@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { 
-  Button, 
-  Table,
-  Input,
-  Form, 
-  Badge, 
-  Space, 
-} from "antd"; 
-import { api } from "Api"; 
-import { 
-  SearchOutlined,
-  CloseCircleOutlined, 
-} from "@ant-design/icons";
+import { Button, Table, Input, Form, Badge, Space, Spin } from "antd";
+import { api } from "Api";
+import { SearchOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
 
 const SubjectListInTerm = (props) => {
@@ -47,18 +37,18 @@ const SubjectListInTerm = (props) => {
     {
       title: "Mã học phần",
       dataIndex: "subjectId",
-      align:"center"
+      align: "center",
     },
     {
       title: "Tên học phần",
       dataIndex: "subjectName",
-      align:"center"
+      align: "center",
     },
     {
       title: "Khoa phụ trách",
       dataIndex: "departmentName",
       width: "20%",
-      align:"center",
+      align: "center",
     },
     {
       title: "Số lượng đăng ký",
@@ -81,7 +71,7 @@ const SubjectListInTerm = (props) => {
   ];
 
   return (
-    <>
+    <Spin spin={true}>
       <Row>
         <Col
           md={6}
@@ -115,7 +105,7 @@ const SubjectListInTerm = (props) => {
             <Button
               type="primary"
               onClick={() => props.handleSubjectSubmittingClose()}
-              style={{width: "180px"}}
+              style={{ width: "180px" }}
               danger
             >
               <CloseCircleOutlined />
@@ -144,7 +134,7 @@ const SubjectListInTerm = (props) => {
           ),
         }}
       />
-    </>
+    </Spin>
   );
 };
 

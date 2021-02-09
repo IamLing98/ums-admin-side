@@ -4,14 +4,13 @@ import {
   SearchOutlined,
   DeleteFilled,
   EditFilled,
-  ClearOutlined,
+  ClearOutlined,CloseSquareOutlined
 } from "@ant-design/icons";
-import Highlighter from "react-highlight-words"; 
-import {timeTable, daysOfWeek} from '../../../../util/dataUltil';
+import Highlighter from "react-highlight-words";
+import { timeTable, daysOfWeek } from "../../../../util/dataUltil";
 
-const SubjectClassList = (props) => {
-  const [filteredInfo, setFilteredInfo] = useState({});
- 
+const SubjectClassListAfterSubmitting = (props) => {
+  const [filteredInfo, setFilteredInfo] = useState({}); 
 
   const handleChange = (pagination, filters, sorter) => {
     console.log("Various parameters", pagination, filters, sorter);
@@ -106,7 +105,7 @@ const SubjectClassList = (props) => {
     setSearchText("");
   };
 
-  const columns = [
+  const columnsAfterSubmitting = [
     {
       title: "Mã LHP",
       dataIndex: "subjectClassId",
@@ -115,6 +114,14 @@ const SubjectClassList = (props) => {
         dataIndex: "subjectClassId",
         columnName: "mã lớp học phần",
       }),
+      filteredValue: filteredInfo.subjectClassId || null,
+      onFilter: (value, record) =>
+        record["subjectClassId"]
+          ? record["subjectClassId"]
+              .toString()
+              .toLowerCase()
+              .includes(value.toLowerCase())
+          : "",
     },
     {
       title: "Mã HP",
@@ -124,6 +131,14 @@ const SubjectClassList = (props) => {
         dataIndex: "subjectId",
         columnName: "mã học phần",
       }),
+      filteredValue: filteredInfo.subjectId || null,
+      onFilter: (value, record) =>
+        record["subjectId"]
+          ? record["subjectId"]
+              .toString()
+              .toLowerCase()
+              .includes(value.toLowerCase())
+          : "",
     },
     {
       title: "Tên HP",
@@ -260,7 +275,22 @@ const SubjectClassList = (props) => {
       align: "center",
     },
     {
-      title: "Thao tác",
+      title: "ĐK",
+      dataIndex: "currentOfSubmittingNumber",
+      align: "center",
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      align: "center",
+      render:(text)=>{
+          if(text === 1){
+              return <Tag color="green">Đang mở</Tag>
+          }else return <Tag color="volcano">Đã đóng</Tag>
+      }
+    },
+    {
+      title: "Thao Tác",
       dataIndex: "numberOfSeats",
       align: "center",
       render: (text, record) => {
@@ -276,13 +306,13 @@ const SubjectClassList = (props) => {
             </Button>
             <Popconfirm
               placement="left"
-              title={"Chắc chắn xoá?"}
+              title={"Đóng lớp?"}
               onConfirm={() => props.handleDeleteSubjectClass(record)}
-              okText="Ok"
+              okText="Đồng ý"
               cancelText="Không"
             >
               <Button type="">
-                <DeleteFilled />
+                <CloseSquareOutlined />
               </Button>
             </Popconfirm>
           </Space>
@@ -294,7 +324,7 @@ const SubjectClassList = (props) => {
   return (
     <>
       <Table
-        columns={columns}
+        columns={columnsAfterSubmitting}
         dataSource={props.data}
         rowKey="subjectClassId"
         bordered
@@ -323,4 +353,4 @@ const SubjectClassList = (props) => {
     </>
   );
 };
-export default SubjectClassList;
+export default SubjectClassListAfterSubmitting;

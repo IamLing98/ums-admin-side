@@ -9,22 +9,18 @@ import {
   Alert,
   Select,
 } from "antd";
-import { api } from "Api";
-import { NotificationManager } from "react-notifications";
+import { api } from "Api"; 
 import {
   SearchOutlined,
   BranchesOutlined,
   DeleteFilled,
-  FolderOpenOutlined,
-  LockOutlined,
+  FolderOpenOutlined, 
   ClearOutlined,
 } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
 import SubjectClassCreate from "./SubjectClassCreate";
 import SubjectDetails from "./SubjectDetails";
-import Highlighter from "react-highlight-words";
-
-const { Option } = Select;
+import Highlighter from "react-highlight-words"; 
 
 const SubjectSubmittingResult = (props) => {
   const [submittingInfo, setSubmittingInfo] = useState([]);
@@ -303,11 +299,11 @@ const SubjectSubmittingResult = (props) => {
   return (
     <>
       <Row>
-        <Col md={6} sm={12} xs={12}>
+        <Col md={3} sm={12} xs={12}>
           <Alert
             message={
               <strong>
-                Danh sách học phần theo CTĐT chuẩn - Tìm thấy{" "}
+                Danh sách HP theo CTĐT chuẩn - Tìm thấy{" "}
                 {recordFoundNumber} bản ghi
               </strong>
             }
@@ -315,7 +311,7 @@ const SubjectSubmittingResult = (props) => {
             style={{ maxHeight: "32px" }}
           />
         </Col>
-        <Col md={6} sm={12} xs={12}>
+        <Col md={9} sm={12} xs={12}>
           <div
             className="tableListOperator"
             style={{ textAlign: "right", width: "100%" }}

@@ -284,70 +284,66 @@ export const StudentHome = (props) => {
               <div className="table-responsive">
                 <Row>
                   <Col
-                    md={6}
+                    md={3}
                     sm={12}
                     style={{ display: "flex", flexDirection: "column" }}
                   >
-                    <Row>
-                      <Col md={4}>
-                        <Select
-                          allowClear
-                          style={{ width: "100%" }}
-                          placeholder="Học lực..."
-                          showSearch
-                        >
-                          <Option key={+"filtereddd1"} value={1}>
-                            Xếp loại xuất sắc
-                          </Option>
-                          <Option key={+"filtereddd2"} value={2}>
-                            Xếp loại giỏi
-                          </Option>
-                          <Option key={+"filtereddd3"} value={3}>
-                            Xếp loại khá
-                          </Option>
-                          <Option key={+"filtereddd4"} value={4}>
-                            Xếp loại trung bình
-                          </Option>
-                          <Option key={+"filtereddd5"} value={5}>
-                            Xếp loại yếu
-                          </Option>
-                        </Select>
-                      </Col>
-                      <Col md={4}>
-                        <Select
-                          allowClear
-                          style={{ width: "100%" }}
-                          placeholder="Khen thưởng..."
-                          showSearch
-                        >
-                          <Option key={+"filteredddd1"} value={1}>
-                            Khen thuởng
-                          </Option>
-                          <Option key={+"filteredddd2"} value={2}>
-                            Kỷ luật
-                          </Option>
-                        </Select>
-                      </Col>
-                      <Col
-                        md={4}
-                        style={{ display: "block", flexDirection: "column" }}
-                      >
-                        <button
-                          type="button"
-                          className="ant-btn ant-btn-primary"
-                          onClick={() => onSearch()}
-                        >
-                          <SearchOutlined />
-                          <span>Tìm Kiếm</span>
-                        </button>
-                      </Col>
-                    </Row>
+                    <Alert
+                      message={
+                        <strong>Tìm thấy {recordFoundNumber} bản ghi</strong>
+                      }
+                      type="info"
+                      style={{ maxHeight: "32px" }}
+                    />
                   </Col>
-                  <Col md={6} sm={12} xs={12}>
+                  <Col md={9} sm={12} xs={12}>
                     <div
                       className="tableListOperator"
                       style={{ textAlign: "right", width: "100%" }}
                     >
+                      <Select
+                        allowClear
+                        placeholder="Xếp loại..."
+                        showSearch
+                        style={{
+                          width: "200px",
+                          marginRight: "8px",
+                          textAlign: "left",
+                        }}
+                      >
+                        <Option key={+"filtereddd1"} value={1}>
+                          Xếp loại xuất sắc
+                        </Option>
+                        <Option key={+"filtereddd2"} value={2}>
+                          Xếp loại giỏi
+                        </Option>
+                        <Option key={+"filtereddd3"} value={3}>
+                          Xếp loại khá
+                        </Option>
+                        <Option key={+"filtereddd4"} value={4}>
+                          Xếp loại trung bình
+                        </Option>
+                        <Option key={+"filtereddd5"} value={5}>
+                          Xếp loại yếu
+                        </Option>
+                      </Select>
+                      <Select
+                        allowClear
+                        placeholder="Khen thưởng..."
+                        showSearch
+                        style={{
+                          width: "200px",
+                          marginRight: "8px",
+                          textAlign: "left",
+                        }}
+                      >
+                        <Option key={+"filteredddd1"} value={1}>
+                          Khen thuởng
+                        </Option>
+                        <Option key={+"filteredddd2"} value={2}>
+                          Kỷ luật
+                        </Option>
+                      </Select>
                       <Button
                         type="primary"
                         style={{
@@ -362,6 +358,26 @@ export const StudentHome = (props) => {
                       </Button>
                       <Button
                         type="primary"
+                        style={
+                          selectedRowKeys.length > 1
+                            ? {
+                                background: "#DC0000",
+                                borderColor: "#DC0000",
+                                color: "wheat",
+                                width: "180px",
+                              }
+                            : {
+                                width: "180px",
+                              }
+                        }
+                        disabled={selectedRowKeys.length > 1 ? false : true}
+                        onClick={() => showDeleteConfirm(selectedRowKeys)}
+                      >
+                        <DeleteOutlined />
+                        <span>Xoá Nhiều</span>
+                      </Button>
+                      <Button
+                        type="primary"
                         style={{
                           background: "#63B175",
                           borderColor: "#63B175",
@@ -372,65 +388,7 @@ export const StudentHome = (props) => {
                         <VerticalAlignBottomOutlined />
                         <span>Import </span>
                       </Button>
-                      <Button
-                        type="primary"
-                        style={
-                          selectedRowKeys.length > 1
-                            ? {
-                                background: "#DC0000",
-                                borderColor: "#DC0000",
-                                color: "wheat",
-                                width: "180px",
-                              }
-                            : {
-                                width: "180px",
-                              }
-                        }
-                        disabled={selectedRowKeys.length > 1 ? false : true}
-                        onClick={() => showDeleteConfirm(selectedRowKeys)}
-                      >
-                        <DeleteOutlined />
-                        <span>Xoá Nhiều</span>
-                      </Button>  
-                    </div>
-                  </Col>
-                </Row>
-                <Row style={{ marginBottom: "16px" }}>
-                  <Col md={6} sm={12}>
-                    <Alert
-                      message={
-                        <strong>Tìm thấy {recordFoundNumber} bản ghi</strong>
-                      }
-                      type="info"
-                      style={{ maxHeight: "32px" }}
-                    />
-                  </Col>
-                  <Col md={6} sm={12} xs={12}>
-                    <div
-                      className="tableListOperator"
-                      style={{ textAlign: "right", width: "100%" }}
-                    > 
-                      <Button
-                        type="primary"
-                        style={
-                          selectedRowKeys.length > 1
-                            ? {
-                                background: "#DC0000",
-                                borderColor: "#DC0000",
-                                color: "wheat",
-                                width: "180px",
-                              }
-                            : {
-                                width: "180px",
-                              }
-                        }
-                        disabled={selectedRowKeys.length > 1 ? false : true}
-                        onClick={() => showDeleteConfirm(selectedRowKeys)}
-                      >
-                        <DeleteOutlined />
-                        <span>Xoá Nhiều</span>
-                      </Button>
-                      <Button
+                      {/* <Button
                         style={
                           selectedRowKeys.length > 1
                             ? {
@@ -448,7 +406,7 @@ export const StudentHome = (props) => {
                       >
                         <DiffOutlined />
                         <span>In Exel</span>
-                      </Button>
+                      </Button> */}
                       <Button
                         type="primary"
                         style={

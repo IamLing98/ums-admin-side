@@ -94,7 +94,7 @@ export const ScheduleHome = (props) => {
                 {isShowDetail === null ? (
                   <Row>
                     <Col
-                      md={6}
+                      md={3}
                       sm={12}
                       style={{ display: "flex", flexDirection: "column" }}
                     > 
@@ -106,7 +106,7 @@ export const ScheduleHome = (props) => {
                         style={{ maxHeight: "32px" }}
                       />
                     </Col>
-                    <Col md={6} sm={12} xs={12}>
+                    <Col md={9} sm={12} xs={12}>
                       <div
                         className="tableListOperator"
                         style={{ textAlign: "right", width: "100%" }}

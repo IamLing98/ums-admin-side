@@ -1,45 +1,56 @@
 import React, { useState, useEffect } from "react";
-import { Button, Card, Empty, Result } from "antd";
+import { Button,  Alert,Modal, Spin, Select } from "antd";
 import { api } from "Api";
 import { NotificationManager } from "react-notifications";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import {
-  CloseCircleOutlined,
-  FolderAddOutlined,
   ScheduleOutlined,
-  DesktopOutlined,
   PlusSquareOutlined,
+  ExclamationCircleOutlined,
+  CheckOutlined,
+  RollbackOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
 import SubjectClassList from "./StepTwoComponents/SubjectClassList";
 import SubjectClassDetail from "./StepTwoComponents/SubjectClassDetail";
-import UpdateSubjectClass from "./StepTwoComponents/UpdateSubjectClass";
-import ScheduleList from "./StepTwoComponents/ScheduleList";
-import ScheduleInfo from "./StepTwoComponents/ScheduleInfo";
-import SubjectClassRegistration from "./StepTwoComponents/SubjectClassRegistrationInfo";
+import SubjectClassUpdate from "./StepTwoComponents/SubjectClassUpdate";
 import SubjectClassCreate from "./StepTwoComponents/SubjectClassCreate";
+import OpenSubjectClassReg from "./StepTwoComponents/OpenSubjectClassReg";
+import SubjectClassListAfterSubmitting from "./StepTwoComponents/SubjectClassListAfterSubmitting"; 
+
+const { confirm } = Modal;
 
 import fileSaver from "file-saver";
 
 const StepTwo = (props) => {
   const [subjectClassList, setSubjectClassList] = useState([]);
 
-  const [scheduleList, setScheduleList] = useState([]);
-
   const [showSubjectClassDetail, setShowSubjectClassDetail] = useState(null);
 
   const [toSubjectClassCreate, setToShowSubjectClassCreate] = useState(false);
 
+  const [toOpenSubjectClassReg, setToOpenSubjectClassReg] = useState(false);
+
   const [recordUpdate, setRecordUpdate] = useState(null);
-
-  const [schedule, setSchedule] = useState(null);
-
-  const [pageStatus, setPageStatus] = useState(1);
 
   const [loading, setLoading] = useState(true);
 
+  const [showSpin, setShowSpin] = useState(false);
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  const onSelectChange = (selectedRowKeys) => {
+    console.log(selectedRowKeys);
+    setSelectedRowKeys(selectedRowKeys);
+  };
+
+  const rowSelection = {
+    selectedRowKeys: selectedRowKeys,
+    onChange: onSelectChange,
+  };
   const showErrNoti = (err) => {
-    NotificationManager.err(err.message);
+    NotificationManager.error(err.response.data.message);
     if (err.message === "Forbidden") {
       NotificationManager.err(
         "Did you forget something? Please activate your account"
@@ -49,12 +60,82 @@ const StepTwo = (props) => {
     }
   };
 
+  function showCreateScheduleConfirm() {
+    confirm({
+      title: "Tạo mới thời khoá biểu?",
+      icon: <ExclamationCircleOutlined />,
+      content: "Thời gian lớp học sẽ bị thay đổi",
+      okText: "Đồng ý",
+      cancelText: "Đóng",
+      okButtonProps: {
+        icon: <CheckOutlined />,
+        disabled: false,
+        style: { width: "108px" },
+      },
+      cancelButtonProps: {
+        icon: <RollbackOutlined />,
+        disabled: false,
+        style: { width: "108px" },
+      },
+      onOk() {
+        handleCreateSchedule();
+      },
+      onCancel() {
+        console.log("Đóng");
+      },
+    });
+  }
+
+  const showDeleteConfirm = (selectedRowKeys) => {
+    confirm({
+      centered: true,
+      title: "Chắc chắn?",
+      icon: <ExclamationCircleOutlined />,
+      content: "Vui lòng xác nhận",
+      okText: "Đồng ý",
+      okType: "danger",
+      cancelText: "Huỷ",
+      onOk() {
+        // handleDeleteMultipleRecord(selectedRowKeys);
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  const setSelecting = (record) => {
+    let newSubjectClassList = [...subjectClassList];
+    for (var i = 0; i < newSubjectClassList.length; i++) {
+      if (record.subjectClassId === newSubjectClassList[i].subjectClassId) {
+        newSubjectClassList[i].isSelecting = true;
+      }
+    }
+    setSubjectClassList([...newSubjectClassList]);
+    setShowSubjectClassDetail(record);
+  };
+
+  const cancelSelecting = (record) => {
+    let newSubjectClassList = [...subjectClassList];
+    for (var i = 0; i < newSubjectClassList.length; i++) {
+      if (record.subjectClassId === newSubjectClassList[i].subjectClassId) {
+        newSubjectClassList[i].isSelecting = false;
+      }
+    }
+    setSubjectClassList([...newSubjectClassList]);
+    setShowSubjectClassDetail(null);
+  };
   const getSubjectClassList = () => {
     api
       .get(`/subjectClasses/${props.term.id}`)
       .then((response) => {
-        setSubjectClassList(response);
-        setLoading(false);
+        if (response) {
+          for (var i = 0; i < response.length; i++) {
+            response[i].isSelecting = false;
+          }
+          setSubjectClassList(response);
+          setLoading(false);
+        }
       })
       .catch((err) => showErrNoti(err));
   };
@@ -76,27 +157,24 @@ const StepTwo = (props) => {
     );
   };
 
-  const getListSchedule = () => {
-    api
-      .get("/schedules?termId=" + props.term.id)
-      .then((res) => {
-        setScheduleList(res);
-        setLoading(false);
-      })
-      .catch((err) => showErrNoti(err));
-  };
-
   const handleCreateSchedule = () => {
+    setShowSpin(true);
     api
       .post("/schedules", props.term.id)
       .then((res) => {
         NotificationManager.success("Tạo thời khoá biểu thành công");
-        getListSchedule();
+        getSubjectClassList();
+        setShowSpin(false);
       })
-      .catch((err) => showErrNoti(err));
+      .catch((err) => {
+        setShowSpin(false);
+        showErrNoti(err);
+      });
   };
 
   const handleOpenSubjectClassRegistration = (values) => {
+    setShowSpin(true);
+    setToOpenSubjectClassReg(false);
     console.log(values);
     let subjectClassSubmittingStartDate = values["rangeTime"][0].format(
       "YYYY-MM-DD"
@@ -114,12 +192,15 @@ const StepTwo = (props) => {
     api
       .put(`/terms/${props.term.id}`, termObj)
       .then((res) => {
-        setSchedule(null);
-        setPageStatus(1);
         NotificationManager.success("Mở đăng ký lớp học phần thành công!!!");
+
+        setShowSpin(false);
         props.getTermDetail(props.term.id);
       })
-      .catch((err) => showErrNoti(err));
+      .catch((err) => {
+        setShowSpin(false);
+        showErrNoti(err);
+      });
   };
 
   const handleCloseSubjectClassRegistration = () => {
@@ -138,197 +219,180 @@ const StepTwo = (props) => {
 
   useEffect(() => {
     getSubjectClassList();
-    getListSchedule();
-    console.log(pageStatus);
   }, []);
 
   if (loading) {
     return <RctPageLoader />;
   } else {
     return (
-      <>
-        {props.term.progress === 13 ||
-        props.term.progress === 21 ||
-        props.term.progress === 22 ? (
-          <>
-            {props.term.progress === 22 ? (
-              ""
-            ) : (
-              <Row>
-                <Col
-                  md={6}
-                  sm={12}
-                  style={{ display: "flex", flexDirection: "column" }}
+      <Spin size="large" tip={props.term.progress === 21 ? "Đang trong quá trình đăng ký học phần " : props.term.progress < 13 ? "Tiến trình chưa mở" : ""} spinning={props.term.progress === 21 || props.term.progress < 13 ? true : showSpin}>
+        <Row> 
+          <Col
+            md={3}
+            sm={12}
+            style={{ display: "flex", flexDirection: "column" }}
+          >
+            <Alert
+              message={
+                <strong>
+                  Danh sách lớp học phần - Tìm thấy {subjectClassList.length}{" "}
+                  bản ghi
+                </strong>
+              }
+              type="info"
+              style={{ maxHeight: "32px" }}
+            />
+          </Col>
+          <Col md={9} sm={12} xs={12}>
+            <div
+              className="tableListOperator"
+              style={{ textAlign: "right", width: "100%" }}
+            >
+              {props.term.progress === 22 && (
+                <Select
+                  allowClear
+                  placeholder="Tình trạng..."
+                  showSearch
+                  style={{
+                    width: "200px",
+                    marginRight: "8px",
+                    textAlign: "left",
+                  }}
                 >
-                  <Row></Row>
-                </Col>
-                <Col md={6} sm={12} xs={12}>
-                  <div
-                    className="tableListOperator"
-                    style={{ textAlign: "right", width: "100%" }}
-                  >
-                    {pageStatus === 1 && props.term.progress < 22 && (
-                      <>
-                        <Button
-                          type="primary"
-                          onClick={() => setToShowSubjectClassCreate(true)}
-                          style={{
-                            width: "180px",
-                          }}
-                        >
-                          <PlusSquareOutlined />
-                          <span>Tạo lớp học phần</span>
-                        </Button>
-                        <Button
-                          type="primary"
-                          style={{
-                            background: "#63B175",
-                            borderColor: "#63B175",
-                            width: "180px",
-                          }}
-                          onClick={() => setPageStatus(2)}
-                        >
-                          <ScheduleOutlined />
-                          <span>Thời khoá biểu</span>
-                        </Button>
-                      </>
-                    )}
-                    {pageStatus === 2 && (
-                      <>
-                        {" "}
-                        <Button
-                          type="primary"
-                          onClick={() => handleCreateSchedule()}
-                          style={{
-                            background: "#63B175",
-                            borderColor: "#63B175",
-                            width: "180px",
-                          }}
-                        >
-                          <FolderAddOutlined />
-                          <span>Tạo thời khoá biểu</span>
-                        </Button>
-                        <Button
-                          style={{
-                            width: "180px",
-                          }}
-                          type="primary"
-                          onClick={() => setPageStatus(1)}
-                        >
-                          <DesktopOutlined />
-                          <span>Lớp học phần</span>
-                        </Button>
-                      </>
-                    )}
-                  </div>
-                </Col>
-              </Row>
-            )}
-            {pageStatus === 1 ? (
-              <>
-                {props.term.progress === 13 && (
-                  <SubjectClassList
-                    data={subjectClassList}
-                    setShowSubjectClassDetail={setShowSubjectClassDetail}
-                    term={props.term}
-                    setRecordUpdate={setRecordUpdate}
-                    handleDeleteSubjectClass={handleDeleteSubjectClass}
-                  />
-                )}{" "}
-                {props.term.progress === 22 && (
-                  <SubjectClassRegistration {...props} />
-                )}
-                {props.term.progress == 21 && (
-                  <Card bordered={true}>
-                    <Empty
-                      image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
-                      imageStyle={{
-                        height: 60,
-                      }}
-                      description={
-                        <span>
-                          Chưa có dữ liệu đăng ký lớp học phần. Dữ liệu sẽ được
-                          cập nhật sau khi quá trình đăng ký kết thúc.{" "}
-                        </span>
-                      }
-                    >
-                      <Button
-                        type="primary"
-                        onClick={() => handleCloseSubjectClassRegistration()}
-                        danger
-                      >
-                        <CloseCircleOutlined />
-                        <span>Kết Thúc ĐK</span>
-                      </Button>
-                    </Empty>
-                  </Card>
-                )}
-                <SubjectClassDetail
-                  visible={showSubjectClassDetail}
-                  setShowSubjectClassDetail={setShowSubjectClassDetail}
-                  term={props.term}
-                />
-                {toSubjectClassCreate && (
-                  <SubjectClassCreate
-                    visible={toSubjectClassCreate}
-                    setVisible={setToShowSubjectClassCreate}
-                    term={props.term}
-                    getSubjectClassList={getSubjectClassList}
-                  ></SubjectClassCreate>
-                )}
-                {recordUpdate && (
-                  <UpdateSubjectClass
-                    visible={recordUpdate}
-                    term={props.term}
-                    recordUpdate={recordUpdate}
-                    setRecordUpdate={setRecordUpdate}
-                    getSubjectClassList={getSubjectClassList}
-                    onCancel={() => {
-                      setRecordUpdate(null);
-                    }}
-                  />
-                )}
-              </>
-            ) : pageStatus === 2 ? (
-              <>
-                <ScheduleList
-                  handleCreateSchedule={handleCreateSchedule}
-                  data={scheduleList}
-                  term={props.term}
-                  setRecordUpdate={setRecordUpdate}
-                  setSchedule={setSchedule}
-                  getListSchedule={getListSchedule}
-                />
-                {schedule && (
-                  <ScheduleInfo
-                    term={props.term}
-                    visible={schedule}
-                    setSchedule={setSchedule}
-                    handleOpenSubjectClassRegistration={
-                      handleOpenSubjectClassRegistration
-                    }
-                  />
-                )}
-              </>
-            ) : (
-              ""
-            )}
-          </>
-        ) : (
-          <Result
-            title="Đăng ký lớp học phần đã đóng, xem thông tin chi tiết"
-            extra={
+                  <Select.Option key={+"filtereddd1"} value={1}>
+                    Đạt tiêu chuẩn
+                  </Select.Option>
+                  <Select.Option key={+"filtereddd2"} value={2}>
+                    Không đạt tiêu chuẩn
+                  </Select.Option>
+                </Select>
+              )}
               <Button
                 type="primary"
-                key="console"
-                onClick={() => props.setCurrent("setting:3")}
+                onClick={() => setToShowSubjectClassCreate(true)}
+                style={{
+                  width: "180px",
+                }}
               >
-                Xem chi tiết
+                <PlusSquareOutlined />
+                <span>Tạo lớp học phần</span>
               </Button>
-            }
+              <Button
+                type="primary"
+                style={
+                  selectedRowKeys.length > 1
+                    ? {
+                        background: "#DC0000",
+                        borderColor: "#DC0000",
+                        color: "wheat",
+                        width: "180px",
+                      }
+                    : {
+                        width: "180px",
+                      }
+                }
+                disabled={selectedRowKeys.length > 1 ? false : true}
+                onClick={() => showDeleteConfirm(selectedRowKeys)}
+              >
+                <DeleteOutlined />
+                <span>Đóng Nhiều lớp</span>
+              </Button>
+              {props.term.progress === 13 && (
+                <Button
+                  type="primary"
+                  onClick={() => showCreateScheduleConfirm()}
+                  style={{
+                    background: "#63B175",
+                    borderColor: "#63B175",
+                    width: "180px",
+                  }}
+                >
+                  <ScheduleOutlined />
+                  <span>Tạo thời khoá biểu</span>
+                </Button>
+              )}
+              {props.term.progress === 13 && (
+                <Button
+                  type="primary"
+                  onClick={() => setToOpenSubjectClassReg(true)}
+                  style={{
+                    width: "180px",
+                  }}
+                >
+                  <PlusSquareOutlined />
+                  <span>Mở ĐKLHP</span>
+                </Button>
+              )}
+              {props.term.progress === 22 && (
+                <Button
+                  type="primary"
+                  onClick={() => setToOpenSubjectClassReg(true)}
+                  style={{
+                    width: "180px",
+                  }}
+                >
+                  <PlusSquareOutlined />
+                  <span>Mở ĐKĐC</span>
+                </Button>
+              )}
+            </div>
+          </Col>
+        </Row>
+        <OpenSubjectClassReg
+          visible={toOpenSubjectClassReg}
+          handleOpenSubjectClassRegistration={
+            handleOpenSubjectClassRegistration
+          }
+          setToOpenSubjectClassReg={setToOpenSubjectClassReg}
+          term={props.term}
+        />
+        <SubjectClassDetail
+          visible={showSubjectClassDetail}
+          cancelSelecting={cancelSelecting}
+          term={props.term}
+        />
+        {toSubjectClassCreate && (
+          <SubjectClassCreate
+            visible={toSubjectClassCreate}
+            setVisible={setToShowSubjectClassCreate}
+            term={props.term}
+            getSubjectClassList={getSubjectClassList}
+          ></SubjectClassCreate>
+        )}
+        {props.term.progress === 22 ? (
+          <SubjectClassListAfterSubmitting
+            data={subjectClassList}
+            setSelecting={setSelecting}
+            term={props.term}
+            setRecordUpdate={setRecordUpdate}
+            handleDeleteSubjectClass={handleDeleteSubjectClass}
+            rowSelection={rowSelection}
+            selectedRowKeys={selectedRowKeys}
+          />
+        ) : (
+          <SubjectClassList
+            rowSelection={rowSelection}
+            selectedRowKeys={selectedRowKeys}
+            data={subjectClassList}
+            setSelecting={setSelecting}
+            term={props.term}
+            setRecordUpdate={setRecordUpdate}
+            handleDeleteSubjectClass={handleDeleteSubjectClass}
           />
         )}
-      </>
+        {recordUpdate && (
+          <SubjectClassUpdate
+            visible={recordUpdate}
+            term={props.term}
+            recordUpdate={recordUpdate}
+            setRecordUpdate={setRecordUpdate}
+            getSubjectClassList={getSubjectClassList}
+            onCancel={() => {
+              setRecordUpdate(null);
+            }}
+          />
+        )}
+      </Spin>
     );
   }
 };

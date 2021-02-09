@@ -27,7 +27,7 @@ const formItemLayout = {
   },
 };
 
-const UpdateSubjectClass = (props) => {
+const SubjectClassUpdateAfterSubmitting = (props) => {
   const [form] = Form.useForm();
 
   const [totalNumberOfSeats, setTotalNumberOfSeats] = useState(0);
@@ -175,4 +175,4 @@ const UpdateSubjectClass = (props) => {
   );
 };
 
-export default UpdateSubjectClass;
+export default SubjectClassUpdateAfterSubmitting;

@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, Input, Popconfirm, Space, Table, Tag } from "antd";
 import {
-  DeleteFilled,
-  DeleteOutlined,
-  DiffOutlined,
-  EditFilled,
-  PlusOutlined,
-  SearchOutlined,
+  DeleteFilled, 
+  EditFilled, 
   DoubleLeftOutlined,
 } from "@ant-design/icons";
 import { api } from "Api";
@@ -45,7 +41,7 @@ const TermList = (props) => {
                   >
                     <DoubleLeftOutlined />
                   </a>{" "}
-                  Thông tin học kỳ {record.term} năm {record.year}
+                  Thông tin học kỳ {record.term} năm {record.year}. Tiến trình: 
                 </span>
               );
             }}
