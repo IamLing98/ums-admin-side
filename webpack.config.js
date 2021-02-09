@@ -71,7 +71,7 @@ module.exports = {
             Routes: path.resolve(__dirname, 'src/routes/'),
             Constants: path.resolve(__dirname, 'src/constants/'),
             Helpers: path.resolve(__dirname, 'src/helpers/'),
-            Api: path.resolve(__dirname, 'src/api/')
+            Api: path.resolve(__dirname, 'src/helpers/index')
         },
         extensions: [ '.tsx', '.ts', '.js','jsx' ],
     },

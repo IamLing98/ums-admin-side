@@ -1,4 +1,4 @@
-import { api } from "../../api/index";
+import { api } from "Api";
 import { SubmissionError } from "redux-form";
 import {
   LOGIN_USER,

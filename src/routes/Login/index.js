@@ -13,7 +13,7 @@ import QueueAnim from 'rc-queue-anim';
 // import AppConfig from 'Constants/AppConfig';
 import {userLoginAttempt} from "Actions";
 import {Field, reduxForm} from "redux-form";
-import {renderForm} from "../../forms/LoginForm";
+import {renderForm} from "../../components/Forms/LoginForm";
 import {Helmet} from "react-helmet";
 import {NotificationContainer} from "react-notifications";
 
