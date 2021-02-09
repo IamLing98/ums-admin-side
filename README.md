@@ -50,7 +50,7 @@ Admin FE Side Link: [FE Side](https://github.com/lingdev1998/ums-admin-side)
 
 User FE Side Link: [FE Side](https://github.com/lingdev1998/ums-client-side)
 
-BE Side Link: [BE Side](https://github.com/lingdev1998/ums-admin-side)
+BE Side Link: [BE Side](https://github.com/lingdev1998/crm-springboot-j2ee)
 
 
 
