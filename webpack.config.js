@@ -64,7 +64,7 @@ module.exports = {
     // resolve alias (Absolute paths)
     resolve: {
         alias: {
-            Actions: path.resolve(__dirname, 'src/actions/'),
+            Actions: path.resolve(__dirname, 'src/store/actions'),
             Components: path.resolve(__dirname, 'src/components/'),
             Assets: path.resolve(__dirname, 'src/assets/'),
             Util: path.resolve(__dirname, 'src/util/'),

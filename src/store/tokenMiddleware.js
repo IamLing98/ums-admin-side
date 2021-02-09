@@ -2,7 +2,7 @@ import {
   LOGIN_USER_SUCCESS,
   LOGOUT_USER,
   USER_FETCH_ERROR,
-} from "Actions/types";
+} from "./actions/types.js";
 import { api } from "Api";
 
 export const tokenMiddleWare = (store) => (next) => (action) => {

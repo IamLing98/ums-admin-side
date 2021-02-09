@@ -73,10 +73,10 @@ class App extends Component {
       <RctThemeProvider>
         <NotificationContainer />
         <InitialPath
-              path={`${match.url}app`}
-              authToken={token}
-              component={RctDefaultLayout}
-            />
+          path={`${match.url}app`}
+          authToken={token}
+          component={RctDefaultLayout}
+        />
 
         <Switch>
           <Route exact path="/login" component={AsyncAdminLoginComponent} />

@@ -9,7 +9,7 @@ import {
   TOGGLE_SUB_MENU,
   TOGGLE_SUP_MENU,
   CHANGE_CURRENT_LOCATION_PATH_NAME,
-} from "Actions/types";
+} from "../actions/types.js";
 
 // nav links
 import navLinks from "Components/Sidebar/NavLinks";

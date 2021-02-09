@@ -30,7 +30,7 @@ import {
   EMAIL_SENT_SUCCESSFULLY,
   FILTER_EMAILS_WITH_LABELS,
   ADD_LABELS_INTO_EMAILS,
-} from "Actions/types";
+} from "../actions/types.js";
 
 // email data
 import folders from "Assets/data/email-app/folders";

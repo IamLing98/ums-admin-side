@@ -1,5 +1,4 @@
-import { EducationRoutes } from "../routes/index";
-import Config from "Routes/Config";
+import { EducationRoutes ,ConfigRoutes} from "./index"; 
 export default [
   {
     path: "dashboard",
@@ -11,6 +10,6 @@ export default [
   },
   {
     path: "config",
-    component: Config,
+    component: ConfigRoutes,
   },
 ];

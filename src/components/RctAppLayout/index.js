@@ -25,7 +25,7 @@ import PreloadSidebar from 'Components/PreloadLayout/PreloadSidebar';
 import AppConfig from 'Constants/AppConfig';
 
 // actions
-import {collapsedSidebarAction, startUserTour} from 'Actions';
+import {collapsedSidebarAction, startUserTour} from '../../store/actions/index';
 
 class MainApp extends Component {
 

@@ -2,7 +2,11 @@
  * CRM Reducer
  */
 //action types
-import { ADD_NEW_CLIENT, DELETE_CLIENT, UPDATE_CLIENT } from "../actions/types";
+import {
+  ADD_NEW_CLIENT,
+  DELETE_CLIENT,
+  UPDATE_CLIENT,
+} from "../actions/types.js";
 
 import { clientsData } from "../routes/crm/clients/data";
 

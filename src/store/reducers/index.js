@@ -9,13 +9,12 @@ import sidebarReducer from "./SidebarReducer";
 import authUserReducer from "./AuthUserReducer";
 import { reducer as formReducer } from "redux-form";
 import { routerReducer } from "react-router-redux";
-import UpdateUserReducer from "./UpdateUserReducer";
 
 import {
   ADD_DEPARTMENT_SUCCESS_ADD,
   ADD_USER_SUCCESS,
   LOGIN_USER_FAILURE,
-} from "Actions/types";
+} from "../actions/types.js";
 
 const reducers = combineReducers({
   settings,
@@ -23,7 +22,6 @@ const reducers = combineReducers({
   emailApp: emailAppReducer,
   sidebar: sidebarReducer,
   auth: authUserReducer,
-  updateUserRed: UpdateUserReducer,
   form: formReducer.plugin({
     addUserForm: (state, action) => {
       switch (action.type) {

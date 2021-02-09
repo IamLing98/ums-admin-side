@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import RctAppLayout from 'Components/RctAppLayout';
 
 // router service
-import routerService from "../services/_routerService";
+import routerService from "../routes/_routerService.js";
 import {fetchUserDetails, fetchUserError} from "Actions";
 
 

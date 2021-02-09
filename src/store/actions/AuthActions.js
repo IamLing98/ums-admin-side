@@ -1,4 +1,4 @@
-import { api } from "../api/index";
+import { api } from "../../api/index";
 import { SubmissionError } from "redux-form";
 import {
   LOGIN_USER,
@@ -8,9 +8,9 @@ import {
   USER_FETCH_ERROR,
   USER_FETCH_REQUEST,
   USER_FETCH_SUCCESS,
-} from "Actions/types";
+} from "./types";
 import { NotificationManager } from "react-notifications";
-import { configureStore } from "../store";
+import { configureStore } from "..";
 
 export const userLoginAttempt = (username, password) => {
   return (dispatch) => {

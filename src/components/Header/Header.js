@@ -15,7 +15,7 @@ import $ from "jquery";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import UserBlock from "Components/Sidebar/UserBlock";
 // actions
-import { collapsedSidebarAction } from "Actions";
+import { collapsedSidebarAction } from "../../store/actions/index";
 
 // // components
 // import SearchForm from './SearchForm';

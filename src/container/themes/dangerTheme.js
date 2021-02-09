@@ -2,7 +2,7 @@
  * App Danger Theme
  */
 import { createMuiTheme } from '@material-ui/core/styles';
-import AppConfig from 'Constants/AppConfig';
+import AppConfig from '../../constants/AppConfig';
 
 const theme = createMuiTheme({
     typography: {

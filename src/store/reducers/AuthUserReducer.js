@@ -9,7 +9,7 @@ import {
   USER_FETCH_SUCCESS,
   USER_FETCH_REQUEST,
   USER_FETCH_ERROR,
-} from "Actions/types";
+} from "../actions/types.js";
 
 /**
  * initial auth user
