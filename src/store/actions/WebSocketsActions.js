@@ -1,4 +1,5 @@
 import { wsTypes } from "./types";
+import {getListNotifications} from './NotificationActions';
 
 export const socketsConnecting = () => {
   return { type: wsTypes.SOCKETS_CONNECTING };
@@ -22,10 +23,24 @@ export const socketsMessageSending = (sendMessage) => {
   return { type: wsTypes.SOCKETS_MESSAGE_SENDING, messageSend: sendMessage };
 };
 
+function isValidJsonString(tester) {
+  //early existing
+  if (/^\s*$|undefined/.test(tester) || !/number|object|array|string|boolean/.test(typeof tester)) {
+    return false;
+  }
+  //go ahead do you parsing via try catch
+  return true;
+}
 export const socketsMessageReceiving = (receiveMessage) => {
-  return {
-    type: wsTypes.SOCKETS_MESSAGE_RECEIVING,
-    messageReceive: receiveMessage,
+  return (dispatch) => {
+    if (isValidJsonString(receiveMessage)) {
+      receiveMessage = JSON.parse(receiveMessage);
+      if (receiveMessage.username === "SSOFF") dispatch(getListNotifications())
+    }
+    return {
+      type: wsTypes.SOCKETS_MESSAGE_RECEIVING,
+      messageReceive: receiveMessage,
+    };
   };
 };
 

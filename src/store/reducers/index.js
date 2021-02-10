@@ -10,6 +10,7 @@ import authUserReducer from "./AuthUserReducer";
 import { reducer as formReducer } from "redux-form";
 import { routerReducer } from "react-router-redux";
 import webSocketReducer from "./WebSocketsReducer";
+import notificationsReducer from './NotificationsReducer';
 
 import {
   ADD_DEPARTMENT_SUCCESS_ADD,
@@ -24,6 +25,7 @@ const reducers = combineReducers({
   sidebar: sidebarReducer,
   auth: authUserReducer,
   webSocketReducer:webSocketReducer,
+  notificationsReducer:notificationsReducer,
   form: formReducer.plugin({
     addUserForm: (state, action) => {
       switch (action.type) {

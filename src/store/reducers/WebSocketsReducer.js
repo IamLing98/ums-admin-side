@@ -18,31 +18,31 @@ export default (state = initState, action) => {
     case wsTypes.SOCKETS_CONNECTED:
       return Object.assign({}, state, {
         loaded: true,
-        message: "Connected",
+        message: null,
         connected: true,
       });
     case wsTypes.SOCKETS_DISCONNECTING:
       return Object.assign({}, state, {
         loaded: true,
-        message: "Disconnecting...",
+        message: null,
         connected: true,
       });
     case wsTypes.SOCKETS_DISCONNECTED:
       return Object.assign({}, state, {
         loaded: true,
-        message: "Disconnected",
+        message: null,
         connected: false,
       });
     case wsTypes.SOCKETS_MESSAGE_SENDING:
       return Object.assign({}, state, {
         loaded: true,
-        message: action.messageSend,
+        message: null,
         connected: true,
       });
     case wsTypes.SOCKETS_MESSAGE_RECEIVING:
       return Object.assign({}, state, {
         loaded: true,
-        message: action.messageReceive,
+        message:   action.messageReceive  ,
         connected: true,
       });
     default:

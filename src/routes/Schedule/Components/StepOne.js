@@ -4,9 +4,14 @@ import { api } from "Api";
 import { NotificationManager } from "react-notifications"; 
 import SubjectListInTerm from "./StepOneComponents/SubjectListInTerm";
 import SubjectRegistrationOpenning from "./StepOneComponents/SubjectRegistrationOpenning";
-import SubjectSubmittingResult from "./StepOneComponents/SubjectSubmittingResult"; 
+import SubjectSubmittingResult from "./StepOneComponents/SubjectSubmittingResult";  
+import {getListNotifications} from '../../../store/actions/NotificationActions';
+import {useDispatch   } from 'react-redux';
 
 const StepOne = (props) => {
+
+  const dispatch = useDispatch();
+
   const [form] = Form.useForm();
 
   const showErrNoti = (err) => {
@@ -35,6 +40,7 @@ const StepOne = (props) => {
         NotificationManager.success("Mở đăng ký học phần thành công");
         props.getTermDetail(props.term.id);
         callbacks(false);
+        dispatch(getListNotifications());
       })
       .catch((error) => {
         showErrNoti(error);
@@ -42,8 +48,7 @@ const StepOne = (props) => {
   };
 
   const handleSubjectSubmittingClose = () => {
-    let subjectSubmittingEndDate = new Date().toISOString().substring(0, 10);
-    console.log(subjectSubmittingEndDate);
+    let subjectSubmittingEndDate = new Date().toISOString().substring(0, 10); 
     let termObj = { ...props.term };
     termObj.subjectSubmittingEndDate = subjectSubmittingEndDate;
     termObj.actionType = "SSOFF";

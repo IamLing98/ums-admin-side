@@ -60,8 +60,7 @@ class App extends Component {
   componentDidMount() {}
 
   render() {
-    const { location, match, token, userData } = this.props;
-    console.log(userData);
+    const { location, match, token, userData } = this.props; 
     if (location.pathname === "/") {
       if (token === null) {
         return <Redirect to={"/login"} />;

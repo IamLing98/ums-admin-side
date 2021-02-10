@@ -45,8 +45,7 @@ export default (state = INIT_STATE, action) => {
       return { ...state, loading: false };
     case LOGOUT_USER:
       return { ...state, username: null, token: null, isAuthenticated: false };
-    case USER_FETCH_REQUEST:
-      console.log("fetch user request");
+    case USER_FETCH_REQUEST: 
       return { ...state, loading: true };
     case USER_FETCH_SUCCESS:
       return {

@@ -41,13 +41,11 @@ const TermComponent = (props) => {
   }, []);
 
   useEffect(() => {
-    if (term !== null) {
-      console.log("oke");
+    if (term !== null) { 
     }
   }, [JSON.stringify(term)]);
 
-  const handleClick = (e) => {
-    console.log(e.key);
+  const handleClick = (e) => { 
     setCurrent(e.key);
   };
 

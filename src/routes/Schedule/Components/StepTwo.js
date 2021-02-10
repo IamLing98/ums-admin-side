@@ -40,8 +40,7 @@ const StepTwo = (props) => {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-  const onSelectChange = (selectedRowKeys) => {
-    console.log(selectedRowKeys);
+  const onSelectChange = (selectedRowKeys) => { 
     setSelectedRowKeys(selectedRowKeys);
   };
 
@@ -80,8 +79,7 @@ const StepTwo = (props) => {
       onOk() {
         handleCreateSchedule();
       },
-      onCancel() {
-        console.log("Đóng");
+      onCancel() { 
       },
     });
   }
@@ -98,8 +96,7 @@ const StepTwo = (props) => {
       onOk() {
         // handleDeleteMultipleRecord(selectedRowKeys);
       },
-      onCancel() {
-        console.log("Cancel");
+      onCancel() { 
       },
     });
   };
@@ -174,8 +171,7 @@ const StepTwo = (props) => {
 
   const handleOpenSubjectClassRegistration = (values) => {
     setShowSpin(true);
-    setToOpenSubjectClassReg(false);
-    console.log(values);
+    setToOpenSubjectClassReg(false); 
     let subjectClassSubmittingStartDate = values["rangeTime"][0].format(
       "YYYY-MM-DD"
     );

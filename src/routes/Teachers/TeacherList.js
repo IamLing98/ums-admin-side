@@ -247,7 +247,7 @@ const StudentList = (props) => {
       <Table
         columns={columns}
         dataSource={props.data}
-        rowKey="studentId"
+        rowKey="employeeId"
         bordered
         size="small"
         pagination={pagination}

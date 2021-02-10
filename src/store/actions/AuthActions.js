@@ -20,15 +20,13 @@ export const userLoginAttempt = (username, password) => {
     formData.append("password", password);
     return api
       .post("/authenticate", formData, false)
-      .then((response) => {
-        console.log("login success", response);
+      .then((response) => { 
         let store = configureStore();
         store.dispatch(userLoginSuccess(response.token, response.user));
         dispatch(userLoginSuccess(response.token, response.user));
       })
       .catch((error) => {
-        dispatch({ type: LOGIN_USER_FAILURE });
-        console.log(error.message);
+        dispatch({ type: LOGIN_USER_FAILURE }); 
         if (error.message === "Forbidden") {
           NotificationManager.error(
             "Did you forget something? Please activate your account"

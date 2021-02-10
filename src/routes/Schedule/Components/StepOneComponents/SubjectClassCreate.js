@@ -78,8 +78,7 @@ const SubjectClassCreate = (props) => {
       throw new SubmissionError({ _err: "Username or Password Invalid" });
     }
   };
-  const handleSubmitForm = (values) => {
-    console.log(values);
+  const handleSubmitForm = (values) => { 
     subForm.validateFields();
     if (props.subject.eachSubject <= 3) {
       let newSubjectClassList = [...subjectClassList];
@@ -127,8 +126,7 @@ const SubjectClassCreate = (props) => {
       subjectClass.numberOfSeats = values.numberOfSeats;
       subjectClass.isRequireLab = values.isRequireLab;
       subjectClassArr.push(subjectClass);
-    }
-    console.log("arr: ", subjectClassArr);
+    } 
     api
       .post("/subjectClasses", subjectClassArr, true)
       .then((res) => {
@@ -167,8 +165,7 @@ const SubjectClassCreate = (props) => {
 
   useEffect(() => {
     getTeacherList();
-    getSubjectList();
-    console.log(props.subject);
+    getSubjectList(); 
   }, []);
 
   return (
@@ -177,8 +174,7 @@ const SubjectClassCreate = (props) => {
       visible={props.visible}
       onOk={() => {
         let values = form.getFieldsValue();
-        form.resetFields();
-        console.log(values);
+        form.resetFields(); 
         handleSubmitForm(values);
       }}
       onCancel={() => {
@@ -230,8 +226,7 @@ const SubjectClassCreate = (props) => {
               form.setFieldsValue({
                 ...form.getFieldsValue(),
                 numberOfSeats: value,
-              });
-              console.log(value);
+              }); 
               setNumberOfSeats(value);
             }}
           />

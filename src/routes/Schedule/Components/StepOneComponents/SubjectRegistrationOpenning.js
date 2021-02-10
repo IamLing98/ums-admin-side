@@ -12,8 +12,7 @@ import { api } from "Api";
 import { NotificationManager } from "react-notifications";
 import { CheckOutlined, RollbackOutlined } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
-const { RangePicker } = DatePicker;
-
+const { RangePicker } = DatePicker;  
 const rangeConfig = {
   rules: [
     {
@@ -30,7 +29,7 @@ const SubjectRegistrationOpenning = (props) => {
   const [subjectSubmitFormVisible, setSubjectSubmitFormVisible] = useState(
     false
   );
-
+ 
   return (
     <div>
       <Card bordered={true}>

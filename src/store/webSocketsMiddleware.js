@@ -2,22 +2,11 @@ import * as socketActions from "./actions/WebSocketsActions";
 import { wsTypes } from "./actions/types";
 
 import * as SockJS from "sockjs-client";
-import {Stomp} from '@stomp/stompjs'
+import {Stomp} from "@stomp/stompjs"
 
 export const JWT_TOKEN = "jwtToken";
 export const ROLE_ADMIN = "PDT";
-
-export const SOCKETS_CONNECTING = "SOCKETS_CONNECTING";
-export const SOCKETS_CONNECT = "SOCKETS_CONNECT";
-export const SOCKETS_CONNECTED = "SOCKETS_CONNECTED";
-export const SOCKETS_DISCONNECTING = "SOCKETS_DISCONNECTING";
-export const SOCKETS_DISCONNECT = "SOCKETS_DISCONNECT";
-export const SOCKETS_DISCONNECTED = "SOCKETS_DISCONNECTED";
-export const SOCKETS_MESSAGE_SENDING = "SOCKETS_MESSAGE_SENDING";
-export const SOCKETS_MESSAGE_SEND = "SOCKETS_MESSAGE_SEND";
-export const SOCKETS_MESSAGE_RECEIVING = "SOCKETS_MESSAGE_RECEIVING";
-export const SOCKETS_MESSAGE_RECEIVE = "SOCKETS_MESSAGE_RECEIVE";
-export const SOCKETS_MESSAGE_SUBSCRIBE = "SOCKETS_MESSAGE_SUBSCRIBE";
+ 
 
 let socket = null;
 let stompClient = null;
@@ -67,21 +56,15 @@ export const wsMiddleware = (store) => (next) => (action) => {
       break;
 
     case wsTypes.SOCKETS_MESSAGE_SEND:
-      subscription = stompClient.subscribe(
-        action.payload.subscribe,
-        onSingleMessage
-      );
-
+      console.log("socketsMessageSend-data: ",action.payload.data)
+      subscription = stompClient.subscribe(action.payload.subscribe, onSingleMessage);
       stompClient.send(action.payload.api, {}, action.payload.data);
       store.dispatch(socketActions.socketsMessageSending(action.payload.data));
       break;
     case wsTypes.SOCKETS_MESSAGE_SUBSCRIBE:
-      console.log("SOCKETS_MESSAGE_SUBSCRIBE")
       if (stompClient) {
-        subscription = stompClient.subscribe(
-          action.payload.subscribe,
-          onSubscribeMessage
-        );
+        subscription = stompClient.subscribe(action.payload.subscribe, onSubscribeMessage);
+        console.log("subcrise", subscription);
       }
       break;
     default:

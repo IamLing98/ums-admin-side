@@ -51,6 +51,7 @@
       "react-highlight-words":"^0.17.0"
    },
    "dependencies": { 
+      "html-react-parser": "^1.2.4",
       "@stomp/stompjs": "6.0.0",
       "react-to-pdf":"^0.0.13",
       "shortid":"^2.2.15",
