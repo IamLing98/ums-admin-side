@@ -44,17 +44,17 @@ const OpenSubjectClassEdit = (props) => {
         style: { width: "108px" },
       },
       onOk() {
-        props.handleOpenSubjectClassRegistration(values);  
+        props.handleOpenSubjectClassEditRegistration(values);  
       },
       onCancel() {
-        props.setToOpenSubjectClassReg(false);
+        props.setToOpenSubjectClassEditReg(false);
       },
     });
   }
   return (
     <div>
       <Modal
-        title="Mở Đăng Ký Lớp Phần"
+        title="Mở Đăng Ký Điều Chỉnh"
         visible={props.visible}
         onOk={() => {
           form
@@ -67,7 +67,7 @@ const OpenSubjectClassEdit = (props) => {
               console.log("Validate Failed:", info);
             });
         }}
-        onCancel={() => props.setToOpenSubjectClassReg(false)}
+        onCancel={() => props.setToOpenSubjectClassEditReg(false)}
         maskClosable={false}
         okText="Xác Nhận"
         cancelText="Đóng"
@@ -90,7 +90,7 @@ const OpenSubjectClassEdit = (props) => {
           onValuesChange={(changedValues, allValues) => {}}
         >
           <Form.Item name="rangeTime" label="Thời gian" {...rangeConfig}>
-            <RangePicker style={{ width: "100%" }} />
+            <RangePicker style={{ width: "100%" }} showTime={true} />
           </Form.Item>
         </Form>
       </Modal>

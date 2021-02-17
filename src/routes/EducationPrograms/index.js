@@ -128,7 +128,7 @@ export const EducationProgramsComponent = (props) => {
   } else
     return (
       <div className="data-table-wrapper">
-        <Helmet>
+        <Helmet>  
           <title>Chương Trình Đào Tạo</title>
           <meta name="description" content="Danh Sách Giảng Viên" />
         </Helmet>
@@ -150,8 +150,8 @@ export const EducationProgramsComponent = (props) => {
             <div className="rct-full-block">
               <hr style={{ margin: "0px" }} />
               <div className="table-responsive">
-                {isShowDetail === null ? (
-                  <Row>
+                {isShowDetail === null ? ( 
+                  <Row> 
                     <Col
                       md={6}
                       sm={12}

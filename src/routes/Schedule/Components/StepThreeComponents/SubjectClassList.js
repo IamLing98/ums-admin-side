@@ -1,159 +1,15 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
-import {
-  Result,
-  Button,
-  Modal,
-  Tag,
-  Table,
-  Input,
-  Form,
-  Select,
-  DatePicker,
-  Badge,
-  Space,
-  Popconfirm,
-  Alert,
-  Drawer,
-} from "antd";
-import { api } from "Api";
-import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
-import {
-  PlusOutlined,
-  SearchOutlined,
-  CloseCircleOutlined,
-  LockFilled,
-  UnlockFilled,
-  BranchesOutlined,
-  DeleteFilled,
-  CalendarOutlined,
-  FolderViewOutlined,
-  ClearOutlined,
-  RollbackOutlined,
-  CheckOutlined,
-  EditFilled,
-  LockOutlined,
-  CloseSquareOutlined,
-  DeleteOutlined,
-  ExclamationCircleOutlined,
-} from "@ant-design/icons";
-import { Row, Col } from "reactstrap";
-import { NotificationManager } from "react-notifications";
-import OpenSubjectClassEditReg from "../StepThreeComponents/OpenSubjectClassEditReg";
-
-const { confirm } = Modal;
+import React, { useState, useRef } from "react";
+import { Button, Table, Space, Popconfirm, Input, Tag } from "antd";
+import { SearchOutlined, DeleteFilled, EditFilled, ClearOutlined } from "@ant-design/icons";
+import Highlighter from "react-highlight-words";
+import { timeTable, daysOfWeek } from "../../../../util/dataUltil";
 
 const SubjectClassList = (props) => {
-  const [loading, setLoading] = useState(true);
+  const [filteredInfo, setFilteredInfo] = useState({});
 
-  const [scheduleInfo, setScheduleInfo] = useState(null);
-
-  const [selectFilterValue, setSelectFilterValue] = useState(undefined);
-
-  const [visible, setVisible] = useState(false);
-
-  const getScheduleInfo = (scheduleId) => {
-    api
-      .get(`/schedules/${scheduleId}`)
-      .then((res) => {
-        setScheduleInfo(res);
-        setLoading(false);
-      })
-      .catch((err) => console.log(err));
-  };
-  const showErrNoti = (err) => {
-    NotificationManager.err(err.response.data.message);
-    if (err.message === "Forbidden") {
-      NotificationManager.err(
-        "Did you forget something? Please activate your account"
-      );
-    } else if (err.message === "Unauthorized") {
-      throw new SubmissionError({ _err: "Username or Password Invalid" });
-    }
-  };
-  useEffect(() => {
-    if (props.term) {
-      getScheduleInfo(props.term.activeSchedule);
-    }
-  }, [props.term]);
-
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-
-  const onSelectChange = (selectedRowKeys) => {
-    console.log(selectedRowKeys);
-    setSelectedRowKeys(selectedRowKeys);
-  };
-
-  const rowSelection = {
-    selectedRowKeys: selectedRowKeys,
-    onChange: onSelectChange,
-    selections: [
-      {
-        key: "odd",
-        text: "Lớp không đủ tiêu chuẩn",
-        onSelect: (changableRowKeys) => {
-          let newSelectedRowKeys = [];
-          newSelectedRowKeys = changableRowKeys.filter((key, index) => {
-            if (index % 2 !== 0) {
-              return false;
-            }
-            return true;
-          });
-          setSelectedRowKeys(newSelectedRowKeys);
-        },
-      },
-      {
-        key: "even",
-        text: "Select Even Row",
-        onSelect: (changableRowKeys) => {
-          let newSelectedRowKeys = [];
-          newSelectedRowKeys = changableRowKeys.filter((key, index) => {
-            if (index % 2 !== 0) {
-              return true;
-            }
-            return false;
-          });
-          console.log(newSelectedRowKeys);
-          setSelectedRowKeys(newSelectedRowKeys);
-        },
-      },
-    ],
-  };
-
-  const handleCloseSubjectClass = (values) => {
-    api
-      .delete(
-        `/schedules/${props.term.id}/${props.term.activeSchedule}/?${values
-          .map((value, index) => `ids=${value}`)
-          .join("&")}`,
-        true
-      )
-      .then((res) => {
-        NotificationManager.success("Đã xoá" + res + " bản ghi");
-        getScheduleInfo(props.term.activeSchedule);
-      })
-      .catch((err) => {
-        showErrNoti(err);
-      });
-  };
-
-  const handleOpenSubjectClassRegEdit = (values) => {
-    let editSubmittingStartDate = values["rangeTime"][0].format("YYYY-MM-DD");
-    let editSubmittingEndDate = values["rangeTime"][1].format("YYYY-MM-DD");
-    let termObj = {};
-    termObj.id = props.term.id;
-    termObj.progress = 31;
-    termObj.actionType = "SCREON";
-    termObj.editSubmittingStartDate = editSubmittingStartDate;
-    termObj.editSubmittingEndDate = editSubmittingEndDate;
-    api
-      .put(`/terms/${props.term.id}`, termObj)
-      .then((res) => {
-        setSchedule(null);
-        setPageStatus(3);
-        NotificationManager.success("Mở đăng ký điều chỉnh học phần!!!");
-        props.getTermDetail(props.term.id);
-      })
-      .catch((err) => showErrNoti(err));
+  const handleChange = (pagination, filters, sorter) => {
+    console.log("Various parameters", pagination, filters, sorter);
+    setFilteredInfo(filters);
   };
 
   const [searchText, setSearchText] = useState("");
@@ -163,51 +19,33 @@ const SubjectClassList = (props) => {
   const searchInput = useRef(null);
 
   const getColumnSearchProps = (values) => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-    }) => (
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
         <Input
           ref={searchInput}
           placeholder={`Tìm theo ${values.columnName}`}
           value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() =>
-            handleSearch(selectedKeys, confirm, values.dataIndex)
-          }
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm, values.dataIndex)}
           style={{ width: 188, marginBottom: 8, display: "block" }}
         />
         <Space>
           <Button
             type="primary"
-            onClick={() =>
-              handleSearch(selectedKeys, confirm, values.dataIndex)
-            }
+            onClick={() => handleSearch(selectedKeys, confirm, values.dataIndex)}
             icon={<SearchOutlined />}
             size="small"
             style={{ width: 90 }}
           >
             Tìm
           </Button>
-          <Button
-            onClick={() => handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-            icon={<ClearOutlined />}
-          >
+          <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }} icon={<ClearOutlined />}>
             Xoá
           </Button>
         </Space>
       </div>
     ),
-    filterIcon: (filtered) => (
-      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
-    ),
+    filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />,
     onFilter: (value, record) =>
       record[values.dataIndex]
         ? record[values.dataIndex]
@@ -244,62 +82,39 @@ const SubjectClassList = (props) => {
     setSearchText("");
   };
 
-  const daysOfWeek = ["", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu"];
-
   const columns = [
     {
-      title: "Mã lớp",
+      title: "Mã LHP",
       dataIndex: "subjectClassId",
       align: "center",
       ...getColumnSearchProps({
         dataIndex: "subjectClassId",
         columnName: "mã lớp học phần",
       }),
-      render: (text, record) => (
-        <span>
-          <span>{text}</span>
-        </span>
-      ),
     },
     {
-      title: "Mã Học phần",
+      title: "Mã HP",
       dataIndex: "subjectId",
       align: "center",
       ...getColumnSearchProps({
         dataIndex: "subjectId",
         columnName: "mã học phần",
       }),
-      render: (text, record) => (
-        <span>
-          <span>{text}</span>
-        </span>
-      ),
     },
     {
-      title: "Tên Học Phần",
+      title: "Tên HP",
       dataIndex: "subjectName",
       align: "center",
       render: (text, record) => (
-        <span>
+        <a
+          href="javascript:void(0)"
+          onClick={() => {
+            props.setSelecting(record);
+          }}
+        >
           <span>{text}</span>
-        </span>
+        </a>
       ),
-    },
-    {
-      title: "Loại Lớp",
-      dataIndex: "subjectType",
-      align: "center",
-      render: (text, record) => {
-        if (text === 1) {
-          return <span>Lý thuyết</span>;
-        }
-        if (text === 2) {
-          return <span>Lý thuyết/Thảo luận</span>;
-        }
-        if (text === 3) {
-          return <span>Lý thuyết/Thực hành</span>;
-        }
-      },
     },
     {
       title: "Số Tín",
@@ -322,246 +137,157 @@ const SubjectClassList = (props) => {
       ),
     },
     {
+      title: "Giảng viên",
+      dataIndex: "teacherId",
+      align: "center",
+      render: (text, record) => {
+        if (record.teacherId) {
+          return <span>{record.fullName}</span>;
+        }
+        return <Tag color="volcano">None</Tag>;
+      },
+    },
+    {
+      title: "P.M",
+      dataIndex: "isRequireLab",
+      align: "center",
+      filters: [{ key: "1", text: "Có", value: 1 }, { key: "0", text: "Không", value: 0 }],
+      filteredValue: filteredInfo.isRequireLab || null,
+      onFilter: (value, record) => record.isRequireLab === value,
+      render: (text, record) => {
+        if (text === 1) return <span>Có</span>;
+        else return <span>Không</span>;
+      },
+    },
+    {
       title: "Kíp",
       dataIndex: "createdDate",
       align: "center",
       render: (text, record) => {
-        if (record.hourOfDay > 5) {
-          return <span>Buổi chiều</span>;
-        } else return <span>Buổi sáng</span>;
+        if (record.hourOfDay) {
+          if (record.hourOfDay > 5) {
+            return <span>Buổi chiều</span>;
+          } else return <span>Buổi chiều</span>;
+        } else return <Tag color="volcano">None</Tag>;
       },
     },
     {
-      title: "Ngày Trong Tuần",
+      title: "Ngày",
       dataIndex: "dayOfWeek",
       align: "center",
-      render: (text, record) => (
-        <span>
-          <span>{daysOfWeek[text]}</span>
-        </span>
-      ),
+      render: (text, record) => {
+        if (text) {
+          return <span>{daysOfWeek[text]}</span>;
+        } else {
+          return <Tag color="volcano">None</Tag>;
+        }
+      },
     },
     {
       title: "Bắt Đầu",
       dataIndex: "hourOfDay",
       align: "center",
-      render: (text, record) => (
-        <span>
-          <span>Tiết {text}</span>
-        </span>
-      ),
+      render: (text, record) => {
+        if (text) return <span>Tiết {text}</span>;
+        else return <Tag color="volcano">None</Tag>;
+      },
     },
     {
       title: "Kết Thúc",
-      dataIndex: "createdDate",
+      dataIndex: "hourOfDay",
       align: "center",
       render: (text, record) => {
-        return <span>Tiết {record.duration + record.hourOfDay - 1}</span>;
+        if (text) return <span>Tiết {record.duration + record.hourOfDay - 1}</span>;
+        else return <Tag color="volcano">None</Tag>;
       },
     },
     {
       title: "Thời Gian",
-      dataIndex: "createdDate",
+      dataIndex: "hourOfDay",
       align: "center",
-      render: (text, record) => (
-        <span>
-          <span>
-            {timeTable[record.hourOfDay - 1].start +
-              " - " +
-              timeTable[record.hourOfDay + record.duration - 2].end}
-          </span>
-        </span>
-      ),
+      render: (text, record) => {
+        if (text)
+          return (
+            <span>
+              {timeTable[record.hourOfDay - 1].start + " - " + timeTable[record.hourOfDay + record.duration - 2].end}
+            </span>
+          );
+        else return <Tag color="volcano">None</Tag>;
+      },
     },
     {
       title: "Phòng",
       dataIndex: "roomId",
       align: "center",
-      render: (text, record) => (
-        <span>
-          <span>{text}</span>
-        </span>
-      ),
+      render: (text, record) => {
+        if (text) return <span>{text}</span>;
+        else return <Tag color="volcano">None</Tag>;
+      },
     },
     {
-      title: "Giảng Viên",
-      dataIndex: "fullName",
-      align: "center",
-      render: (text, record) => (
-        <span>
-          <span>{text}</span>
-        </span>
-      ),
-    },
-    {
-      title: "Max",
+      title: "MAX",
       dataIndex: "numberOfSeats",
       align: "center",
-      render: (text, record) => (
-        <span>
-          <span>{text}</span>
-        </span>
-      ),
     },
     {
-      title: "ĐK",
-      dataIndex: "currentOfSubmittingNumber",
+      title: "Thao tác",
+      dataIndex: "numberOfSeats",
       align: "center",
-      render: (text, record) => (
-        <span>
-          <span>{text}</span>
-        </span>
-      ),
+      render: (text, record) => {
+        return (
+          <Space size="middle">
+            <Button
+              type=""
+              onClick={() => {
+                props.setRecordUpdate(record);
+              }}
+            >
+              <EditFilled />
+            </Button>
+            <Popconfirm
+              placement="left"
+              title={"Chắc chắn xoá?"}
+              onConfirm={() => props.handleDeleteSubjectClass(record)}
+              okText="Ok"
+              cancelText="Không"
+            >
+              <Button type="">
+                <DeleteFilled />
+              </Button>
+            </Popconfirm>
+          </Space>
+        );
+      },
     },
   ];
 
-  const onSearch = (values) => {
-    if (values === 1) {
-      let newSelectItems = [];
-      for (var i = 0; i < scheduleInfo.length; i++) {
-        let item = scheduleInfo[i];
-        if (item.subjectType === 1) {
-          if (item.currentOfSubmittingNumber < 30) {
-            newSelectItems.push(item.subjectClassId);
-          }
-        } else if (item.subjectType === 2) {
-          if (item.currentOfSubmittingNumber < 15) {
-            newSelectItems.push(item.subjectClassId);
-          }
-        } else if (item.subjectType === 3) {
-          if (item.currentOfSubmittingNumber < 15) {
-            newSelectItems.push(item.subjectClassId);
-          }
-        }
-      }
-      setSelectedRowKeys(newSelectItems);
-    } else if (values === 0) {
-      let newSelectItems = [];
-      for (var i = 0; i < scheduleInfo.length; i++) {
-        let item = scheduleInfo[i];
-        newSelectItems.push(item.subjectClassId);
-      }
-      setSelectedRowKeys(newSelectItems);
-    } else {
-      setSelectedRowKeys([]);
-    }
-  };
-  const showDeleteConfirm = (selectedRowKeys) => {
-    confirm({
-      centered: true,
-      title: "Chắc chắn?",
-      icon: <ExclamationCircleOutlined />,
-      content: "Vui lòng xác nhận",
-      okText: "Đồng ý",
-      okType: "danger",
-      cancelText: "Huỷ",
-      onOk() {
-        handleCloseSubjectClass(selectedRowKeys);
-      },
-      onCancel() {
-        console.log("D");
-      },
-    });
-  };
   return (
     <>
-      <Row>
-        <Col
-          md={6}
-          sm={12}
-          style={{ display: "flex", flexDirection: "column" }}
-        ></Col>
-        <Col md={6} sm={12} xs={12}>
-          <div
-            className="tableListOperator"
-            style={{ textAlign: "right", width: "100%" }}
-          >
-            <Button
-              type="primary"
-              style={{
-                background: "#DC0000",
-                borderColor: "#DC0000",
-                color: "wheat",
-              }}
-              onClick={() => props.handleCloseSubmittingEdit()}
-            >
-              <DeleteOutlined />
-              <span>Kết thúc ĐKĐC</span>
-            </Button>
-          </div>
-        </Col>
-      </Row>
       <Table
         columns={columns}
-        dataSource={scheduleInfo}
+        dataSource={props.data}
         rowKey="subjectClassId"
         bordered
-        pagination={{ pageSize: 25, size: "default" }}
+        pagination={{ pageSize: 15, size: "default" }}
+        selectedRowKeys={props.selectedRowKeys}
+        rowSelection={props.rowSelection}
         size="small"
+        onChange={handleChange}
+        onRow={(record, index) => {
+          if (record.isSelecting === true) return { style: { background: "#4DC2F7" } };
+        }}
         locale={{
           emptyText: (
             <div className="ant-empty ant-empty-normal">
               <div className="ant-empty-image">
                 <SearchOutlined style={{ fontSize: "16px", color: "#08c" }} />
-                <p className="ant-empty-description">
-                  Không có dữ liệu thời khoá biểu
-                </p>
+                <p className="ant-empty-description">Không có dữ liệu lớp học phần</p>
               </div>
             </div>
           ),
         }}
       />
-      <OpenSubjectClassEditReg
-        visible={visible}
-        handleOpenSubjectClassRegEdit={handleOpenSubjectClassRegEdit}
-        setVisible={setVisible}
-        term={props.term}
-      />
     </>
   );
 };
-
-const timeTable = [
-  {
-    start: "07h00'",
-    end: "07h50'",
-  },
-  {
-    start: "07h55'",
-    end: "08h45'",
-  },
-  {
-    start: "08h55'",
-    end: "09h45'",
-  },
-  {
-    start: "09h50'",
-    end: "10h40'",
-  },
-  {
-    start: "10h50'",
-    end: "11h40'",
-  },
-  {
-    start: "12h30'",
-    end: "13h20'",
-  },
-  {
-    start: "13h25'",
-    end: "14h15'",
-  },
-  {
-    start: "14h25'",
-    end: "15h15'",
-  },
-  {
-    start: "15h20'",
-    end: "16h20'",
-  },
-  {
-    start: "16h30'",
-    end: "17h20'",
-  },
-];
-
 export default SubjectClassList;

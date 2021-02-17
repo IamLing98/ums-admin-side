@@ -1,9 +1,9 @@
 /* @flow */
-import { wsTypes } from "../actions/types"; 
+import { wsTypes } from "../actions/types";
 
 const initState = {
   loaded: false,
-  message: "Just created",
+  messages: [],
   connected: false,
 };
 
@@ -12,37 +12,40 @@ export default (state = initState, action) => {
     case wsTypes.SOCKETS_CONNECTING:
       return Object.assign({}, state, {
         loaded: true,
-        message: "Connecting...",
+        messages: [],
         connected: false,
       });
     case wsTypes.SOCKETS_CONNECTED:
       return Object.assign({}, state, {
         loaded: true,
-        message: null,
+        messages: [],
         connected: true,
       });
     case wsTypes.SOCKETS_DISCONNECTING:
       return Object.assign({}, state, {
         loaded: true,
-        message: null,
+        messages: [],
         connected: true,
       });
     case wsTypes.SOCKETS_DISCONNECTED:
       return Object.assign({}, state, {
         loaded: true,
-        message: null,
+        messages: [],
         connected: false,
       });
     case wsTypes.SOCKETS_MESSAGE_SENDING:
       return Object.assign({}, state, {
         loaded: true,
-        message: null,
+        messages: [],
         connected: true,
       });
     case wsTypes.SOCKETS_MESSAGE_RECEIVING:
+      let newMessages = state.messages;
+      console.log("new messages", newMessages);
+      newMessages.unshift(action.messageReceive);
       return Object.assign({}, state, {
         loaded: true,
-        message:   action.messageReceive  ,
+        messages: [...newMessages],
         connected: true,
       });
     default:

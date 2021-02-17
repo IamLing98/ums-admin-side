@@ -1,10 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Button, Input, Popconfirm, Space, Table, Tag } from "antd";
-import {
-  DeleteFilled, 
-  EditFilled, 
-  DoubleLeftOutlined,
-} from "@ant-design/icons";
+import React from "react";
+import { Button, Popconfirm, Space, Table, Tag } from "antd";
+import { DeleteFilled, EditFilled, DoubleLeftOutlined } from "@ant-design/icons";
 import { api } from "Api";
 
 const TermList = (props) => {
@@ -41,8 +37,8 @@ const TermList = (props) => {
                   >
                     <DoubleLeftOutlined />
                   </a>{" "}
-                  Thông tin học kỳ {record.term} năm {record.year}. Tiến trình: 
-                </span>
+                  Thông tin học kỳ {record.term} năm {record.year}. Tiến trình:
+                </span>,
               );
             }}
           >
@@ -79,8 +75,7 @@ const TermList = (props) => {
         } else if (status === 1) {
           color = "green";
           text = "Sắp bắt đầu";
-        }
-        else {
+        } else {
           text = "None";
           color = "orange";
         }
@@ -113,11 +108,10 @@ const TermList = (props) => {
         } else if (progress === 31) {
           color = "green";
           text = "Đang mở đ.ký điều chỉnh";
-        }else if (progress === 32) {
+        } else if (progress === 32) {
           color = "volcano";
           text = "Kết thúc đ.ký điều chỉnh";
-        }
-        else {
+        } else {
           text = "None";
           color = "orange";
         }

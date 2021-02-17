@@ -3,6 +3,7 @@ import { Button, Table, Input, Form, Badge, Space, Spin } from "antd";
 import { api } from "Api";
 import { SearchOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
+import moment from "moment";
 
 const SubjectListInTerm = (props) => {
   const [form] = Form.useForm();
@@ -14,11 +15,7 @@ const SubjectListInTerm = (props) => {
       .get("/subjectsRegistration/" + termId)
       .then((res) => {
         res.forEach(function(element) {
-          if (
-            element.discussNumber ||
-            element.exerciseNumber ||
-            element.practiceNumber
-          ) {
+          if (element.discussNumber || element.exerciseNumber || element.practiceNumber) {
             if (element.theoryNumber) element.subjectType = "BOTH";
             else element.subjectType = "ONLYPRACTICE";
           } else element.subjectType = "ONLYTHEORY";
@@ -71,13 +68,13 @@ const SubjectListInTerm = (props) => {
   ];
 
   return (
-    <Spin spin={true}>
+    <Spin
+      spin={true}
+      tip={`Đang trong quá trình đăng ký. Kết thúc sau: 
+       ${moment(props.term.subjectSubmittingEndDate ).fromNow(true) }  `}
+    >
       <Row>
-        <Col
-          md={6}
-          sm={12}
-          style={{ display: "flex", flexDirection: "column" }}
-        >
+        <Col md={6} sm={12} style={{ display: "flex", flexDirection: "column" }}>
           <Row>
             <Col md={4}>
               <Input placeholder="Mã học phần..." size="middle" />
@@ -98,10 +95,7 @@ const SubjectListInTerm = (props) => {
           </Row>
         </Col>
         <Col md={6} sm={12} xs={12}>
-          <div
-            className="tableListOperator"
-            style={{ textAlign: "right", width: "100%" }}
-          >
+          <div className="tableListOperator" style={{ textAlign: "right", width: "100%" }}>
             <Button
               type="primary"
               onClick={() => props.handleSubjectSubmittingClose()}
@@ -126,9 +120,7 @@ const SubjectListInTerm = (props) => {
             <div className="ant-empty ant-empty-normal">
               <div className="ant-empty-image">
                 <SearchOutlined style={{ fontSize: "16px", color: "#08c" }} />
-                <p className="ant-empty-description">
-                  Không có dữ liệu đăng ký học phần
-                </p>
+                <p className="ant-empty-description">Không có dữ liệu đăng ký học phần</p>
               </div>
             </div>
           ),

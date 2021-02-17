@@ -5,7 +5,7 @@ import { NotificationManager } from "react-notifications";
 import TermList from "./TermList";
 import TermDetail from "./Components/index";
 import { Col, Row } from "reactstrap";
-import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
+import { PlusOutlined  } from "@ant-design/icons";
 import { Button, Alert } from "antd";
 import TermCreate from "./CreateTerm";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";

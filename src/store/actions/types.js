@@ -188,3 +188,9 @@ export const notifiactionsTypes = {
 
 }
  
+export const scheduleActionTypes = {
+    TERM_GET_TERM_DETAILS: 'TERM_GET_TERM_DETAILS',
+    TERM_GET_TERM_DETAILS_SUCCESS: 'TERM_GET_TERM_DETAILS_SUCCESS',
+    TERM_GET_TERM_DETAILS_FAILED: 'TERM_GET_TERM_DETAILS_FAILED'
+    
+}

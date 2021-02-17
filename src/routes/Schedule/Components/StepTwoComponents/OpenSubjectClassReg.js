@@ -90,7 +90,7 @@ const OpenSubjectClassReg = (props) => {
           onValuesChange={(changedValues, allValues) => {}}
         >
           <Form.Item name="rangeTime" label="Thời gian" {...rangeConfig}>
-            <RangePicker style={{ width: "100%" }} />
+            <RangePicker style={{ width: "100%" }} showTime />
           </Form.Item>
         </Form>
       </Modal>

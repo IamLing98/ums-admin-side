@@ -303,7 +303,7 @@ const SubjectSubmittingResult = (props) => {
           <Alert
             message={
               <strong>
-                Danh sách HP theo CTĐT chuẩn - Tìm thấy{" "}
+                Danh sách HP-KHDT. Tìm thấy{" "}
                 {recordFoundNumber} bản ghi
               </strong>
             }

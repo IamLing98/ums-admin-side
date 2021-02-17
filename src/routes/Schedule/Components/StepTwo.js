@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button,  Alert,Modal, Spin, Select } from "antd";
+import { Button, Alert, Modal, Spin, Select } from "antd";
 import { api } from "Api";
 import { NotificationManager } from "react-notifications";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
@@ -10,20 +10,26 @@ import {
   CheckOutlined,
   RollbackOutlined,
   DeleteOutlined,
+  ApartmentOutlined,
 } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
+import { useDispatch } from "react-redux";
 import SubjectClassList from "./StepTwoComponents/SubjectClassList";
 import SubjectClassDetail from "./StepTwoComponents/SubjectClassDetail";
 import SubjectClassUpdate from "./StepTwoComponents/SubjectClassUpdate";
 import SubjectClassCreate from "./StepTwoComponents/SubjectClassCreate";
 import OpenSubjectClassReg from "./StepTwoComponents/OpenSubjectClassReg";
-import SubjectClassListAfterSubmitting from "./StepTwoComponents/SubjectClassListAfterSubmitting"; 
+import SubjectClassListAfterSubmitting from "./StepTwoComponents/SubjectClassListAfterSubmitting";
+import OpenSubjectClassEditReg from "./StepTwoComponents/OpenSubjectClassEditReg";
+import { getListNotifications } from "../../../store/actions/NotificationActions";
 
 const { confirm } = Modal;
 
 import fileSaver from "file-saver";
 
 const StepTwo = (props) => {
+  const dispatch = useDispatch();
+
   const [subjectClassList, setSubjectClassList] = useState([]);
 
   const [showSubjectClassDetail, setShowSubjectClassDetail] = useState(null);
@@ -31,6 +37,8 @@ const StepTwo = (props) => {
   const [toSubjectClassCreate, setToShowSubjectClassCreate] = useState(false);
 
   const [toOpenSubjectClassReg, setToOpenSubjectClassReg] = useState(false);
+
+  const [toOpenSubjectClassEditReg, setToOpenSubjectClassEditReg] = useState(false);
 
   const [recordUpdate, setRecordUpdate] = useState(null);
 
@@ -40,7 +48,7 @@ const StepTwo = (props) => {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-  const onSelectChange = (selectedRowKeys) => { 
+  const onSelectChange = (selectedRowKeys) => {
     setSelectedRowKeys(selectedRowKeys);
   };
 
@@ -51,9 +59,7 @@ const StepTwo = (props) => {
   const showErrNoti = (err) => {
     NotificationManager.error(err.response.data.message);
     if (err.message === "Forbidden") {
-      NotificationManager.err(
-        "Did you forget something? Please activate your account"
-      );
+      NotificationManager.err("Did you forget something? Please activate your account");
     } else if (err.message === "Unauthorized") {
       throw new SubmissionError({ _err: "Username or Password Invalid" });
     }
@@ -79,8 +85,7 @@ const StepTwo = (props) => {
       onOk() {
         handleCreateSchedule();
       },
-      onCancel() { 
-      },
+      onCancel() {},
     });
   }
 
@@ -94,11 +99,22 @@ const StepTwo = (props) => {
       okType: "danger",
       cancelText: "Huỷ",
       onOk() {
-        // handleDeleteMultipleRecord(selectedRowKeys);
+        handleDeleteMultipleRecord(selectedRowKeys);
       },
-      onCancel() { 
-      },
+      onCancel() {},
     });
+  };
+
+  const handleDeleteMultipleRecord = (selectedRowKeys) => {
+    let newList = [];
+    for (var i = 0; i < subjectClassList.length; i++) {
+      for (var j = 0; j < selectedRowKeys.length; j++) {
+        if (selectedRowKeys[j] === subjectClassList[i].subjectClassId) {
+          newList.push(subjectClassList[i]);
+        }
+      }
+    }
+    handleCloseSubjectClass(newList);
   };
 
   const setSelecting = (record) => {
@@ -137,9 +153,10 @@ const StepTwo = (props) => {
       .catch((err) => showErrNoti(err));
   };
 
-  const handleDeleteSubjectClass = (values) => {
+  //delete subject class
+  const handleDeleteSubjectClass = (ids) => {
     api
-      .delete(`/subjectClasses/${values.subjectClassId}`)
+      .delete(`/subjectClasses/?${ids.map((value, index) => `ids=${value}`).join("&")}`)
       .then((response) => {
         getSubjectClassList();
         NotificationManager.success("Xoá lớp học thành công");
@@ -147,11 +164,16 @@ const StepTwo = (props) => {
       .catch((err) => showErrNoti(err));
   };
 
+  //change status of subject class to 0
+  const handleCloseSubjectClass = (values) => {
+    api.put(`/subjectClasses?actionType=OFF `, values).then((res) => {
+      getSubjectClassList();
+      NotificationManager.success("Đã đóng lớp học phần thành công");
+    });
+  };
+
   const saveFile = () => {
-    fileSaver.saveAs(
-      process.env.REACT_APP_CLIENT_URL + "/resources/cv.pdf",
-      "MyCV.pdf"
-    );
+    fileSaver.saveAs(process.env.REACT_APP_CLIENT_URL + "/resources/cv.pdf", "MyCV.pdf");
   };
 
   const handleCreateSchedule = () => {
@@ -171,13 +193,9 @@ const StepTwo = (props) => {
 
   const handleOpenSubjectClassRegistration = (values) => {
     setShowSpin(true);
-    setToOpenSubjectClassReg(false); 
-    let subjectClassSubmittingStartDate = values["rangeTime"][0].format(
-      "YYYY-MM-DD"
-    );
-    let subjectCLassSubmittingEndDate = values["rangeTime"][1].format(
-      "YYYY-MM-DD"
-    );
+    setToOpenSubjectClassReg(false);
+    let subjectClassSubmittingStartDate = values["rangeTime"][0].format("YYYY-MM-DDTHH:mm:ss");
+    let subjectCLassSubmittingEndDate = values["rangeTime"][1].format("YYYY-MM-DDTHH:mm:ss");
     let termObj = { ...props.term };
     termObj.id = props.term.id;
     termObj.progress = 21;
@@ -189,9 +207,36 @@ const StepTwo = (props) => {
       .put(`/terms/${props.term.id}`, termObj)
       .then((res) => {
         NotificationManager.success("Mở đăng ký lớp học phần thành công!!!");
-
+        v;
         setShowSpin(false);
         props.getTermDetail(props.term.id);
+        dispatch(getListNotifications());
+      })
+      .catch((err) => {
+        setShowSpin(false);
+        showErrNoti(err);
+      });
+  };
+
+  const handleOpenSubjectClassEditRegistration = (values) => {
+    setShowSpin(true);
+    let editSubmittingStartDate = values["rangeTime"][0].format("YYYY-MM-DDTHH:mm:ss");
+    let editSubmittingEndDate = values["rangeTime"][1].format("YYYY-MM-DDTHH:mm:ss");
+    let termObj = { ...props.term };
+    termObj.id = props.term.id;
+    termObj.progress = 21;
+    termObj.actionType = "SCREON";
+    termObj.activeSchedule = values.id;
+    termObj.editSubmittingStartDate = editSubmittingStartDate;
+    termObj.editSubmittingEndDate = editSubmittingEndDate;
+    api
+      .put(`/terms/${props.term.id}`, termObj)
+      .then((res) => {
+        NotificationManager.success("Mở đăng ký điều chỉnh thành công!!!");
+        setShowSpin(false);
+        props.getTermDetail(props.term.id);
+        setToOpenSubjectClassEditReg(false);
+        dispatch(getListNotifications());
       })
       .catch((err) => {
         setShowSpin(false);
@@ -217,34 +262,41 @@ const StepTwo = (props) => {
     getSubjectClassList();
   }, []);
 
+  const extractCorrectTip = (progress) => {
+    let initProps = {
+      tip: "",
+      spinning: true,
+    };
+    if (progress < 13) {
+      initProps.tip = "Chưa mở đăng ký lớp học phần";
+      initProps.spinning = true;
+    } else if (progress === 21) {
+      initProps.tip = "Đang trong quá trình đăng ký học phần";
+      initProps.spinning = true;
+    } else if (progress === 31) {
+      initProps.tip = "Đang trong quá trình đăng ký điều chỉnh";
+      initProps.spinning = true;
+    } else {
+      initProps.spinning = showSpin;
+    }
+    return initProps;
+  };
   if (loading) {
     return <RctPageLoader />;
   } else {
     return (
-      <Spin size="large" tip={props.term.progress === 21 ? "Đang trong quá trình đăng ký học phần " : props.term.progress < 13 ? "Tiến trình chưa mở" : ""} spinning={props.term.progress === 21 || props.term.progress < 13 ? true : showSpin}>
-        <Row> 
-          <Col
-            md={3}
-            sm={12}
-            style={{ display: "flex", flexDirection: "column" }}
-          >
+      <Spin size="large" {...extractCorrectTip(props.term.progress)}>
+        <Row>
+          <Col md={3} sm={12} style={{ display: "flex", flexDirection: "column" }}>
             <Alert
-              message={
-                <strong>
-                  Danh sách lớp học phần - Tìm thấy {subjectClassList.length}{" "}
-                  bản ghi
-                </strong>
-              }
+              message={<strong>Danh sách lớp học phần - Tìm thấy {subjectClassList.length} bản ghi</strong>}
               type="info"
               style={{ maxHeight: "32px" }}
             />
           </Col>
           <Col md={9} sm={12} xs={12}>
-            <div
-              className="tableListOperator"
-              style={{ textAlign: "right", width: "100%" }}
-            >
-              {props.term.progress === 22 && (
+            <div className="tableListOperator" style={{ textAlign: "right", width: "100%" }}>
+              {props.term.progress >= 22 && (
                 <Select
                   allowClear
                   placeholder="Tình trạng..."
@@ -315,19 +367,21 @@ const StepTwo = (props) => {
                     width: "180px",
                   }}
                 >
-                  <PlusSquareOutlined />
+                  <ApartmentOutlined />
                   <span>Mở ĐKLHP</span>
                 </Button>
               )}
               {props.term.progress === 22 && (
                 <Button
                   type="primary"
-                  onClick={() => setToOpenSubjectClassReg(true)}
+                  onClick={() => setToOpenSubjectClassEditReg(true)}
                   style={{
                     width: "180px",
+                    background: "#63B175",
+                    borderColor: "#63B175",
                   }}
                 >
-                  <PlusSquareOutlined />
+                  <ApartmentOutlined />
                   <span>Mở ĐKĐC</span>
                 </Button>
               )}
@@ -336,17 +390,11 @@ const StepTwo = (props) => {
         </Row>
         <OpenSubjectClassReg
           visible={toOpenSubjectClassReg}
-          handleOpenSubjectClassRegistration={
-            handleOpenSubjectClassRegistration
-          }
+          handleOpenSubjectClassRegistration={handleOpenSubjectClassRegistration}
           setToOpenSubjectClassReg={setToOpenSubjectClassReg}
           term={props.term}
         />
-        <SubjectClassDetail
-          visible={showSubjectClassDetail}
-          cancelSelecting={cancelSelecting}
-          term={props.term}
-        />
+        <SubjectClassDetail visible={showSubjectClassDetail} cancelSelecting={cancelSelecting} term={props.term} />
         {toSubjectClassCreate && (
           <SubjectClassCreate
             visible={toSubjectClassCreate}
@@ -355,13 +403,14 @@ const StepTwo = (props) => {
             getSubjectClassList={getSubjectClassList}
           ></SubjectClassCreate>
         )}
-        {props.term.progress === 22 ? (
+        {props.term.progress >= 22 ? (
           <SubjectClassListAfterSubmitting
             data={subjectClassList}
             setSelecting={setSelecting}
             term={props.term}
             setRecordUpdate={setRecordUpdate}
             handleDeleteSubjectClass={handleDeleteSubjectClass}
+            handleCloseSubjectClass={handleCloseSubjectClass}
             rowSelection={rowSelection}
             selectedRowKeys={selectedRowKeys}
           />
@@ -388,6 +437,12 @@ const StepTwo = (props) => {
             }}
           />
         )}
+        <OpenSubjectClassEditReg
+          visible={toOpenSubjectClassEditReg}
+          handleOpenSubjectClassEditRegistration={handleOpenSubjectClassEditRegistration}
+          setToOpenSubjectClassEditReg={setToOpenSubjectClassEditReg}
+          term={props.term}
+        />
       </Spin>
     );
   }

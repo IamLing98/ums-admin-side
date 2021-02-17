@@ -1,16 +1,11 @@
 import React, { useState, useRef } from "react";
 import { Button, Table, Space, Popconfirm, Input, Tag } from "antd";
-import {
-  SearchOutlined,
-  DeleteFilled,
-  EditFilled,
-  ClearOutlined,CloseSquareOutlined
-} from "@ant-design/icons";
+import { SearchOutlined, DeleteFilled, EditFilled, ClearOutlined, CloseSquareOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import { timeTable, daysOfWeek } from "../../../../util/dataUltil";
 
 const SubjectClassListAfterSubmitting = (props) => {
-  const [filteredInfo, setFilteredInfo] = useState({}); 
+  const [filteredInfo, setFilteredInfo] = useState({});
 
   const handleChange = (pagination, filters, sorter) => {
     console.log("Various parameters", pagination, filters, sorter);
@@ -24,51 +19,46 @@ const SubjectClassListAfterSubmitting = (props) => {
   const searchInput = useRef(null);
 
   const getColumnSearchProps = (values) => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-    }) => (
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
         <Input
           ref={searchInput}
           placeholder={`Tìm theo ${values.columnName}`}
           value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() =>
-            handleSearch(selectedKeys, confirm, values.dataIndex)
-          }
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm, values.dataIndex)}
           style={{ width: 188, marginBottom: 8, display: "block" }}
         />
         <Space>
           <Button
             type="primary"
-            onClick={() =>
-              handleSearch(selectedKeys, confirm, values.dataIndex)
-            }
+            onClick={() => handleSearch(selectedKeys, confirm, values.dataIndex)}
             icon={<SearchOutlined />}
             size="small"
             style={{ width: 90 }}
           >
             Tìm
           </Button>
-          <Button
-            onClick={() => handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-            icon={<ClearOutlined />}
+          <Popconfirm
+            placement="left"
+            title={"Chắc chắn xoá?"}
+            onConfirm={() => props.handleDeleteRecord(record.id)}
+            okText="Ok"
+            cancelText="Không"
           >
-            Xoá
-          </Button>
+            <Button
+              onClick={() => handleReset(clearFilters)}
+              size="small"
+              style={{ width: 90 }}
+              icon={<ClearOutlined />}
+            >
+              Xoá
+            </Button>
+          </Popconfirm>
         </Space>
       </div>
     ),
-    filterIcon: (filtered) => (
-      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
-    ),
+    filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />,
     onFilter: (value, record) =>
       record[values.dataIndex]
         ? record[values.dataIndex]
@@ -190,10 +180,7 @@ const SubjectClassListAfterSubmitting = (props) => {
       title: "P.M",
       dataIndex: "isRequireLab",
       align: "center",
-      filters: [
-        { key: "1", text: "Có", value: 1 },
-        { key: "0", text: "Không", value: 0 },
-      ],
+      filters: [{ key: "1", text: "Có", value: 1 }, { key: "0", text: "Không", value: 0 }],
       filteredValue: filteredInfo.isRequireLab || null,
       onFilter: (value, record) => record.isRequireLab === value,
       render: (text, record) => {
@@ -239,8 +226,7 @@ const SubjectClassListAfterSubmitting = (props) => {
       dataIndex: "hourOfDay",
       align: "center",
       render: (text, record) => {
-        if (text)
-          return <span>Tiết {record.duration + record.hourOfDay - 1}</span>;
+        if (text) return <span>Tiết {record.duration + record.hourOfDay - 1}</span>;
         else return <Tag color="volcano">None</Tag>;
       },
     },
@@ -252,9 +238,7 @@ const SubjectClassListAfterSubmitting = (props) => {
         if (text)
           return (
             <span>
-              {timeTable[record.hourOfDay - 1].start +
-                " - " +
-                timeTable[record.hourOfDay + record.duration - 2].end}
+              {timeTable[record.hourOfDay - 1].start + " - " + timeTable[record.hourOfDay + record.duration - 2].end}
             </span>
           );
         else return <Tag color="volcano">None</Tag>;
@@ -283,40 +267,58 @@ const SubjectClassListAfterSubmitting = (props) => {
       title: "Status",
       dataIndex: "status",
       align: "center",
-      render:(text)=>{
-          if(text === 1){
-              return <Tag color="green">Đang mở</Tag>
-          }else return <Tag color="volcano">Đã đóng</Tag>
-      }
+      render: (text) => {
+        if (text === 1) {
+          return <Tag color="green">Đang mở</Tag>;
+        } else return <Tag color="volcano">Đã đóng</Tag>;
+      },
     },
     {
       title: "Thao Tác",
       dataIndex: "numberOfSeats",
       align: "center",
       render: (text, record) => {
-        return (
-          <Space size="middle">
-            <Button
-              type=""
-              onClick={() => {
-                props.setRecordUpdate(record);
-              }}
-            >
-              <EditFilled />
-            </Button>
-            <Popconfirm
-              placement="left"
-              title={"Đóng lớp?"}
-              onConfirm={() => props.handleDeleteSubjectClass(record)}
-              okText="Đồng ý"
-              cancelText="Không"
-            >
-              <Button type="">
-                <CloseSquareOutlined />
+        if (record.status === 1) {
+          return (
+            <Space size="middle">
+              <Button
+                type=""
+                onClick={() => {
+                  props.setRecordUpdate(record);
+                }}
+              >
+                <EditFilled />
               </Button>
-            </Popconfirm>
-          </Space>
-        );
+              <Popconfirm
+                placement="left"
+                title={"Đóng lớp?"}
+                onConfirm={() => props.handleCloseSubjectClass([record])}
+                okText="Đồng ý"
+                cancelText="Không"
+              >
+                <Button type="">
+                  <CloseSquareOutlined />
+                </Button>
+              </Popconfirm>
+            </Space>
+          );
+        } else if (record.status === 0) {
+          return (
+            <div style={{ textAlign: "left" }}>
+              <Popconfirm
+                placement="left"
+                title={"Xoá lớp?"}
+                onConfirm={() => props.handleDeleteSubjectClass([record.subjectClassId])}
+                okText="Đồng ý"
+                cancelText="Không"
+              >
+                <Button type="">
+                  <DeleteFilled />
+                </Button>
+              </Popconfirm>
+            </div>
+          );
+        }
       },
     },
   ];
@@ -334,17 +336,14 @@ const SubjectClassListAfterSubmitting = (props) => {
         size="small"
         onChange={handleChange}
         onRow={(record, index) => {
-          if (record.isSelecting === true)
-            return { style: { background: "#4DC2F7" } };
+          if (record.isSelecting === true) return { style: { background: "#4DC2F7" } };
         }}
         locale={{
           emptyText: (
             <div className="ant-empty ant-empty-normal">
               <div className="ant-empty-image">
                 <SearchOutlined style={{ fontSize: "16px", color: "#08c" }} />
-                <p className="ant-empty-description">
-                  Không có dữ liệu lớp học phần
-                </p>
+                <p className="ant-empty-description">Không có dữ liệu lớp học phần</p>
               </div>
             </div>
           ),

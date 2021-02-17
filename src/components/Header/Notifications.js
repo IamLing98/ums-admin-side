@@ -63,10 +63,14 @@ const Notifications = (props) => {
 
   useEffect(() => {
     dispatch(getListNotifications());
-    if(webSocketReducer.connected ){
-      dispatch(socketsSubscribe("/user/queue/greetings"));
+    if (webSocketReducer.connected) {
+      dispatch(socketsSubscribe("/user/queue/notifications"));
     }
-  }, [webSocketReducer.connected ]);
+  }, [webSocketReducer.connected]);
+
+  useEffect(() =>{
+
+  },[notificationsReducer.notifications])
 
   return (
     <Dropdown nav className="list-inline-item notification-dropdown" isOpen={isShow} toggle={setToogle}>
@@ -105,10 +109,15 @@ const Notifications = (props) => {
                       </div> */}
                       <div className="media-body pt-5">
                         <div className="d-flex justify-content-between">
-                          <h5 className="mb-5 text-primary">{notification.senderUsername === "system" ? "Hệ thống" : notification.senderUsername}</h5>
+                          <h5 className="mb-5 text-primary">
+                            <strong>{parse(notification.title)}</strong>{" "}
+                          </h5>
                           <span className="text-muted fs-12">{moment(notification.createdDate).format("hh:mm MM/DD/YYYY")}</span>
                         </div>
-                        <span className="text-muted fs-12 d-block">{parse(notification.content)}</span>
+                        <span className="text-muted fs-12 d-block">
+                          <strong>{notification.senderUsername === "system" ? "Hệ thống: " : notification.senderUsername + ": "}</strong>:
+                          {parse(notification.content)}
+                        </span>
                         {/* <Button className="btn-xs mr-10">
                           <i className="zmdi zmdi-mail-reply mr-2"></i>{" "}
                           <span>Trả lời</span>

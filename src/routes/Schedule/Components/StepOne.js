@@ -1,35 +1,31 @@
-import React, { useState, useEffect } from "react";
-import { Form, DatePicker } from "antd";
+import React from "react";
+import { Form } from "antd";
 import { api } from "Api";
-import { NotificationManager } from "react-notifications"; 
+import { NotificationManager } from "react-notifications";
 import SubjectListInTerm from "./StepOneComponents/SubjectListInTerm";
 import SubjectRegistrationOpenning from "./StepOneComponents/SubjectRegistrationOpenning";
-import SubjectSubmittingResult from "./StepOneComponents/SubjectSubmittingResult";  
-import {getListNotifications} from '../../../store/actions/NotificationActions';
-import {useDispatch   } from 'react-redux';
+import SubjectSubmittingResult from "./StepOneComponents/SubjectSubmittingResult";
+import { getListNotifications } from "../../../store/actions/NotificationActions";
+import { useDispatch } from "react-redux";
 
 const StepOne = (props) => {
-
   const dispatch = useDispatch();
 
   const [form] = Form.useForm();
 
   const showErrNoti = (err) => {
-    NotificationManager.err(err.response.data.message);
+    NotificationManager.error(err.response.data.message);
     if (err.message === "Forbidden") {
-      NotificationManager.err(
-        "Did you forget something? Please activate your account"
-      );
+      NotificationManager.err("Did you forget something? Please activate your account");
     } else if (err.message === "Unauthorized") {
       throw new SubmissionError({ _err: "Username or Password Invalid" });
     }
   };
 
   const handleSubjectSubmittingOpen = (values, callbacks) => {
-    let subjectSubmittingStartDate = values["rangeTime"][0].format(
-      "YYYY-MM-DD"
-    );
-    let subjectSubmittingEndDate = values["rangeTime"][1].format("YYYY-MM-DD");
+    let subjectSubmittingStartDate = values["rangeTime"][0].format("YYYY-MM-DDTHH:mm:ss");
+    let subjectSubmittingEndDate = values["rangeTime"][1].format("YYYY-MM-DDTHH:mm:ss");
+    console.log("start time:", values["rangeTime"][0]);
     let termObj = { ...props.term };
     termObj.subjectSubmittingStartDate = subjectSubmittingStartDate;
     termObj.subjectSubmittingEndDate = subjectSubmittingEndDate;
@@ -48,7 +44,7 @@ const StepOne = (props) => {
   };
 
   const handleSubjectSubmittingClose = () => {
-    let subjectSubmittingEndDate = new Date().toISOString().substring(0, 10); 
+    let subjectSubmittingEndDate = new Date().toISOString().substring(0, 10);
     let termObj = { ...props.term };
     termObj.subjectSubmittingEndDate = subjectSubmittingEndDate;
     termObj.actionType = "SSOFF";
@@ -64,19 +60,9 @@ const StepOne = (props) => {
   };
 
   if (props.term.progress === 11) {
-    return (
-      <SubjectRegistrationOpenning
-        {...props}
-        handleSubjectSubmittingOpen={handleSubjectSubmittingOpen}
-      />
-    );
+    return <SubjectRegistrationOpenning {...props} handleSubjectSubmittingOpen={handleSubjectSubmittingOpen} />;
   } else if (props.term.progress === 12) {
-    return (
-      <SubjectListInTerm
-        {...props}
-        handleSubjectSubmittingClose={handleSubjectSubmittingClose}
-      />
-    );
+    return <SubjectListInTerm {...props} handleSubjectSubmittingClose={handleSubjectSubmittingClose} />;
   } else {
     return <SubjectSubmittingResult {...props} />;
   }

@@ -26,7 +26,7 @@ const SubjectClassDetail = (props) => {
     },
     {
       title: "Giảng viên:",
-      value: subjectClass ? subjectClass.employeeFullName : "",
+      value: subjectClass ? subjectClass.teacherId + ' - ' + subjectClass.fullName : "",
     },
     {
       title: "Khoa phụ trách",
@@ -46,7 +46,7 @@ const SubjectClassDetail = (props) => {
     },
     {
       title: "Số tín chỉ:",
-      value: subjectClass ? subjectClass.eachsubject  : "",
+      value: subjectClass ? subjectClass.eachSubject  : "",
     },
     {
       title: "Số giờ lý thuyết:",
