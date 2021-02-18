@@ -33,9 +33,7 @@ const INIT_STATE = {
 export default (state = INIT_STATE, action) => {
   switch (action.type) {
     case TOGGLE_SUP_MENU:
-      let sup_index = state.sidebarMenus[action.payload.stateCategory].indexOf(
-        action.payload.menu
-      );
+      let sup_index = state.sidebarMenus[action.payload.stateCategory].indexOf(action.payload.menu);
       for (var key in state.sidebarMenus) {
         var obj = state.sidebarMenus[key];
         for (let i = 0; i < obj.length; i++) {
@@ -83,9 +81,7 @@ export default (state = INIT_STATE, action) => {
         },
       });
     case TOGGLE_SUB_MENU:
-      let sub_index = state.subAdminSidebarMenu[
-        action.payload.stateCategory
-      ].indexOf(action.payload.menu);
+      let sub_index = state.subAdminSidebarMenu[action.payload.stateCategory].indexOf(action.payload.menu);
       for (var key in state.subAdminSidebarMenu) {
         var objSub = state.subAdminSidebarMenu[key];
         for (let i = 0; i < objSub.length; i++) {
@@ -133,9 +129,7 @@ export default (state = INIT_STATE, action) => {
         },
       });
     case TOGGLE_ADMIN_MENU:
-      let admin_index = state.AdminSidebarMenu[
-        action.payload.stateCategory
-      ].indexOf(action.payload.menu);
+      let admin_index = state.AdminSidebarMenu[action.payload.stateCategory].indexOf(action.payload.menu);
       for (var key in state.AdminSidebarMenu) {
         var objAdmin = state.AdminSidebarMenu[key];
         for (let i = 0; i < objAdmin.length; i++) {
@@ -183,9 +177,7 @@ export default (state = INIT_STATE, action) => {
         },
       });
     case TOGGLE_CLIENT_MENU:
-      let client_index = state.ClientSidebarMenu[
-        action.payload.stateCategory
-      ].indexOf(action.payload.menu);
+      let client_index = state.ClientSidebarMenu[action.payload.stateCategory].indexOf(action.payload.menu);
       for (var key in state.ClientSidebarMenu) {
         var objClient = state.ClientSidebarMenu[key];
         for (let i = 0; i < objClient.length; i++) {
@@ -233,9 +225,7 @@ export default (state = INIT_STATE, action) => {
         },
       });
     case AGENCY_TOGGLE_MENU:
-      let agencyMenuIndex = state.agencySidebarMenu[
-        action.payload.stateCategory
-      ].indexOf(action.payload.menu);
+      let agencyMenuIndex = state.agencySidebarMenu[action.payload.stateCategory].indexOf(action.payload.menu);
       for (var id in state.agencySidebarMenu) {
         var object = state.agencySidebarMenu[id];
         for (let i = 0; i < object.length; i++) {

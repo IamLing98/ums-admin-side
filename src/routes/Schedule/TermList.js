@@ -66,13 +66,13 @@ const TermList = (props) => {
       render: (status) => {
         let color;
         let text = "";
-        if (status === 2) {
+        if (status === 3) {
           color = "geekblue";
           text = "Đang diên ra";
-        } else if (status === 3) {
+        } else if (status === 0) {
           color = "volcano";
           text = "Kết thúc";
-        } else if (status === 1) {
+        } else if (status === 1 || status === 2) {
           color = "green";
           text = "Sắp bắt đầu";
         } else {

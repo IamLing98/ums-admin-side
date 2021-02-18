@@ -73,6 +73,12 @@ const AsyncRoomConfigComponent = Loadable({
    loading: () => <RctPageLoader />
 });
 
+//FINANCE TUITION FEED
+const AsyncTuiTionFeeComponent = Loadable({
+   loader: () => import('Routes/TuitionFee/index.js'),
+   loading: () => <RctPageLoader />
+});
+
 
 //error
 const AsyncSessionPage404Component = Loadable({
@@ -116,6 +122,8 @@ export {
    //Results
    AsyncResultComponent,
 
+   //finance Tuition fee
+   AsyncTuiTionFeeComponent, 
    AsyncForgotPassComponent,
    AsyncAdminLoginComponent,
    AsyncSessionPage404Component,

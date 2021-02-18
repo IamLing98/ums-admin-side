@@ -1,4 +1,4 @@
-import { EducationRoutes ,ConfigRoutes} from "./index"; 
+import { EducationRoutes ,ConfigRoutes, FinanceRoutes} from "./index"; 
 export default [
   {
     path: "dashboard",
@@ -11,5 +11,9 @@ export default [
   {
     path: "config",
     component: ConfigRoutes,
+  },
+  {
+    path: "finance",
+    component: FinanceRoutes,
   },
 ];
