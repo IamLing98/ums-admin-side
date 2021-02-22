@@ -98,7 +98,7 @@ export default {
   ],
   SupAdmincategory3: [
     {
-      menu_title: "Tài chính",
+      menu_title: "Hành Chính",
       menu_icon: "zmdi zmdi-receipt",
       new_item: false,
       type_multi: null,
@@ -113,7 +113,7 @@ export default {
         },
         {
           menu_icon: "zmdi zmdi-group",
-          menu_title: "Tiền lương",
+          menu_title: "Hồ sơ nhân sự",
           new_item: false,
           path: "/dashboard/home",
           isActive: false,
@@ -122,7 +122,8 @@ export default {
           menu_icon: "zmdi zmdi-group",
           menu_title: "Danh mục thu chi",
           new_item: false,
-          path: "/dashboard/home",
+          path: "/app/finance/feecategories",
+          menu_description: "Tài chính/Danh mục thu chi",
           isActive: false,
         },
       ],

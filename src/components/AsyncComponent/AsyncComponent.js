@@ -96,6 +96,12 @@ const AsyncForgotPassComponent = Loadable({
    loading: () => <RctPageLoader />
 });
 
+//FEE CATEGORIES
+const AsyncFeeCategoriesComponent = Loadable({
+   loader: () => import('Routes/FeeCategories'),
+   loading: () => <RctPageLoader />
+});
+
 
 export {
    //student
@@ -124,6 +130,10 @@ export {
 
    //finance Tuition fee
    AsyncTuiTionFeeComponent, 
+
+   //fee categories
+   AsyncFeeCategoriesComponent,
+
    AsyncForgotPassComponent,
    AsyncAdminLoginComponent,
    AsyncSessionPage404Component,

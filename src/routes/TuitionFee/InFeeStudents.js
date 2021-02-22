@@ -8,10 +8,13 @@ import moment from "moment";
 import { CreditCardOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Alert, Select, Spin } from "antd";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
-import StudentList from "./StudentFeeComponents/StudentList";
+import InFeeStudentList from "./StudentFeeComponents/InFeeStudentList";
+import InFeeReceiptsCreate from "./StudentFeeComponents/InFeeReceiptsCreate";
 
 const StudentsFee = (props) => {
   const [studentList, setStudentList] = useState([]);
+
+  const [showInFeeReceiptsCreate, setShowInFeeReceiptsCreate] = useState(null);
 
   const [recordFoundNumber, setRecordFoundNumber] = useState(0);
 
@@ -34,7 +37,7 @@ const StudentsFee = (props) => {
         setTermList(res);
         for (var i = 0; i < res.length; i++) {
           if (res[i].status === 3) {
-            setSelectedTerm(res[i].id);
+            setSelectedTerm(res[i].id); 
           }
         }
       })
@@ -112,49 +115,6 @@ const StudentsFee = (props) => {
                 );
               })}
             </Select>
-            <Select
-              allowClear
-              placeholder="Khoản thu..."
-              showSearch
-              style={{
-                width: "200px",
-                marginRight: "8px",
-                textAlign: "left",
-              }}
-            >
-              <Option key={+"filtereddd1"} value={1}>
-                Xếp loại xuất sắc
-              </Option>
-              <Option key={+"filtereddd2"} value={2}>
-                Xếp loại giỏi
-              </Option>
-              <Option key={+"filtereddd3"} value={3}>
-                Xếp loại khá
-              </Option>
-              <Option key={+"filtereddd4"} value={4}>
-                Xếp loại trung bình
-              </Option>
-              <Option key={+"filtereddd5"} value={5}>
-                Xếp loại yếu
-              </Option>
-            </Select>
-            <Select
-              allowClear
-              placeholder="Khoản chi..."
-              showSearch
-              style={{
-                width: "200px",
-                marginRight: "8px",
-                textAlign: "left",
-              }}
-            >
-              <Option key={+"filteredddd1"} value={1}>
-                Khen thuởng
-              </Option>
-              <Option key={+"filteredddd2"} value={2}>
-                Kỷ luật
-              </Option>
-            </Select>
             <Button
               style={{
                 background: "#448AE2",
@@ -170,7 +130,16 @@ const StudentsFee = (props) => {
           </div>
         </Col>
       </Row>
-      <StudentList data={studentList} feeCategoryList={feeCategoryList} />
+      <InFeeStudentList
+        data={studentList}
+        feeCategoryList={feeCategoryList}
+        setShowInFeeReceiptsCreate={setShowInFeeReceiptsCreate}
+      />
+      <InFeeReceiptsCreate
+        setShowInFeeReceiptsCreate={setShowInFeeReceiptsCreate}
+        visible={showInFeeReceiptsCreate}
+        selectedTerm={selectedTerm}
+      />
     </Spin>
   );
 };

@@ -4,7 +4,7 @@ import { NotificationManager } from "react-notifications";
 import moment from "moment";
 import { CreditCardOutlined, OrderedListOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
-import StudentFee from "./StudentsFee";
+import InFeeStudent from "./InFeeStudents";
 
 const TuitionFeeHome = (props) => {
   const [current, setCurrent] = useState("setting:1");
@@ -18,7 +18,7 @@ const TuitionFeeHome = (props) => {
       <div className="data-table-wrapper">
         <Helmet>
           <title>Thu Chi Sinh Viên</title>
-          <meta name="description" content="Danh Sách Giảng Viên" />
+          <meta name="description" content="Thu Chi Sinh Viên" />
         </Helmet>
         <div className="rct-block ">
           <div className="collapse show">
@@ -35,17 +35,29 @@ const TuitionFeeHome = (props) => {
                     <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal">
                       <Menu.Item key="setting:1">
                         <OrderedListOutlined />
-                        Danh sách sinh viên
+                        Khoản thu
                       </Menu.Item>
                       <Menu.Item key="setting:2">
-                        <CreditCardOutlined />
+                        <OrderedListOutlined />
+                        Khoản chi
+                      </Menu.Item>
+                      <Menu.Item key="setting:3">
+                        <OrderedListOutlined />
                         Biên lai
+                      </Menu.Item>
+                      <Menu.Item key="setting:4">
+                        <OrderedListOutlined />
+                        Kiểm kê
+                      </Menu.Item>
+                      <Menu.Item key="setting:5">
+                        <CreditCardOutlined />
+                        Báo cáo
                       </Menu.Item>
                     </Menu>
                   </span>
                 </div>
                 <hr style={{ margin: "0px", marginBottom: "15px" }} />
-                {current === "setting:1" && <StudentFee />}
+                {current === "setting:1" && <InFeeStudent />}
               </div>
             </div>
           </div>

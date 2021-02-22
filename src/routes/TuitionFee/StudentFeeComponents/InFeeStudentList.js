@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Button, Input, Select, Popconfirm, Space, Table } from "antd";
-import { DeleteFilled, EyeOutlined, SearchOutlined, RetweetOutlined, ClearOutlined } from "@ant-design/icons";
+import { ExportOutlined, ImportOutlined, SearchOutlined, RetweetOutlined, ClearOutlined } from "@ant-design/icons";
 import { api } from "Api";
 import Highlighter from "react-highlight-words";
 
@@ -137,48 +137,22 @@ const StudentList = (props) => {
       render: (text, record) => <span>{record.startYear + " - " + record.endYear}</span>,
     },
     {
-      title: "Khoản thu",
-      align: "center",
-      width: "20%",
-      render: (text, record) => {
-        return (
-          <Select style={{ width: "100%" }} placeholder="Khoản thu...">
-            {props.feeCategoryList
-              ? props.feeCategoryList.map((item, index) => {
-                  if(item.categoryType === 1){
-                    return (
-                      <Select.Option value={item.id} key={"FeeCategoryOpts" + index}>
-                        {item.feeCategoryName}
-                      </Select.Option>
-                    );
-                  }
-                })
-              : ""}
-          </Select>
-        );
-      },
-    },
-    {
-      title: "Tình trạng",
-      align: "center",
-      render: (text, record) => {
-        return <span></span>;
-      },
-    },
-    {
       title: "Thao Tác",
       align: "center",
       render: (text, record) => (
-        <Button
-          type=""
-          onClick={() => {
-            console.log("cc");
-            console.log(record);
-            props.setShowModalUpdate(record);
-          }}
-        >
-          <EyeOutlined />
-        </Button>
+        <>
+          <Button
+            type=""
+            onClick={() => {
+              console.log("cc");
+              console.log(record);
+              props.setShowInFeeReceiptsCreate(record);
+            }}
+          >
+            <ExportOutlined />
+            Phiếu Thu
+          </Button>
+        </>
       ),
     },
   ];

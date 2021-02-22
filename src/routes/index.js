@@ -9,12 +9,14 @@ import {
   AsyncYearClassComponent,
   AsyncScheduleComponent,
   AsyncTeachersComponent,
-  AsyncTuiTionFeeComponent,
   AsyncResultComponent,
 } from "Components/AsyncComponent/AsyncComponent";
 
 //config routes
 import { AsyncRoomConfigComponent } from "Components/AsyncComponent/AsyncComponent";
+
+//finace routes
+import { AsyncFeeCategoriesComponent, AsyncTuiTionFeeComponent } from "Components/AsyncComponent/AsyncComponent";
 
 export const FinanceRoutes = ({ match }) => {
   return (
@@ -22,7 +24,7 @@ export const FinanceRoutes = ({ match }) => {
       <Switch>
         <Redirect exact from={`${match.url}/`} to={`${match.url}/finance`} />
         <Route path={`${match.url}/tuitionfee`} component={AsyncTuiTionFeeComponent} />
-        <Route path={`${match.url}/rooms`} component={AsyncRoomConfigComponent} />
+        <Route path={`${match.url}/feecategories`} component={AsyncFeeCategoriesComponent} />
         <Route path={`${match.url}/time`} component={AsyncYearClassComponent} />
       </Switch>
     </div>
