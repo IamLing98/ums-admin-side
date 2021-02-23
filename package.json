@@ -51,6 +51,7 @@
       "react-highlight-words":"^0.17.0"
    },
    "dependencies": { 
+      "react-to-print": "2.12.3",
       "pdfmake":"^0.1.70",
       "html-react-parser": "^1.2.4",
       "@stomp/stompjs": "6.0.0",

@@ -5,6 +5,7 @@ import moment from "moment";
 import { CreditCardOutlined, OrderedListOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
 import InFeeStudent from "./InFeeStudents";
+import InFeeReceiptStudentPrint from "../../util/InFeeReceiptStudentPrint";
 
 const TuitionFeeHome = (props) => {
   const [current, setCurrent] = useState("setting:1");
@@ -35,15 +36,7 @@ const TuitionFeeHome = (props) => {
                     <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal">
                       <Menu.Item key="setting:1">
                         <OrderedListOutlined />
-                        Khoản thu
-                      </Menu.Item>
-                      <Menu.Item key="setting:2">
-                        <OrderedListOutlined />
-                        Khoản chi
-                      </Menu.Item>
-                      <Menu.Item key="setting:3">
-                        <OrderedListOutlined />
-                        Biên lai
+                        Thu chi tiền
                       </Menu.Item>
                       <Menu.Item key="setting:4">
                         <OrderedListOutlined />
@@ -58,6 +51,7 @@ const TuitionFeeHome = (props) => {
                 </div>
                 <hr style={{ margin: "0px", marginBottom: "15px" }} />
                 {current === "setting:1" && <InFeeStudent />}
+                {current === "setting:2" && <InFeeReceiptStudentPrint />}
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Divider, Select } from "antd";
+import { Modal, Form, Input, Divider } from "antd";
 import { NotificationManager } from "react-notifications";
 import { api } from "Api";
 import { Row, Col } from "reactstrap";
@@ -25,21 +25,13 @@ const formItemLayout = {
   },
 };
 
-export const InFeeReceiptsCreate = (props) => {
+export const OutFeeReceiptsCreate = (props) => {
   const [initialValues, setInitialValues] = useState({
     studentId: null,
     fullName: null,
     term: null,
     totalFee: 0,
-    reasonId: 1,
   });
-
-  const [reasonList, setReasonList] = useState([
-    {
-      id: 1,
-      text: "Thu tiền học phí định kỳ",
-    },
-  ]);
 
   function format(n) {
     return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(n);
@@ -51,29 +43,6 @@ export const InFeeReceiptsCreate = (props) => {
 
   const handleSubmitForm = (values) => {};
 
-  const getReceiptDetail = (studentId, termId) => {
-    api
-      .get(`/tuitionFee/${termId}/${studentId}`)
-      .then((response) => {
-        console.log(response);
-        let { student } = response;
-        let { feeCategoryGroupList } = response;
-        let { term } = response;
-        let { totalFee } = response;
-        setInitialValues({
-          studentId: student.studentId,
-          fullName: student.fullName,
-          categoryGroupList: feeCategoryGroupList,
-          term: term,
-          totalFee: totalFee,
-        });
-        setFeeCategoryGroupList(feeCategoryGroupList);
-        form.resetFields();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
   useEffect(() => {
     if (props.visible) {
       api
@@ -85,7 +54,6 @@ export const InFeeReceiptsCreate = (props) => {
           let { term } = response;
           let { totalFee } = response;
           setInitialValues({
-              ...initialValues,
             studentId: student.studentId,
             fullName: student.fullName,
             categoryGroupList: feeCategoryGroupList,
@@ -103,7 +71,7 @@ export const InFeeReceiptsCreate = (props) => {
 
   return (
     <Modal
-      title="Tạo Mới Phiếu Thu"
+      title="Tạo Mới Phiếu Chi"
       visible={props.visible}
       onOk={() => {
         form
@@ -150,27 +118,20 @@ export const InFeeReceiptsCreate = (props) => {
             <Divider>Thông tin phiếu thu</Divider>
             <Form.Item
               name="studentId"
-              label="Sinh viên"
+              label="Mã sinh viên"
               hasFeedback
-              rules={[{ required: true, message: "Vui lòng chọn sinh viên!" }]}
+              rules={[{ required: true, message: "Vui lòng chọn kỳ!" }]}
             >
-              <Select
-                allowClear
-                showSearch
-                onSelect={(value) => {
-                  form.setFieldsValue({ ...form.getFieldsValue, studentId: value });
-                  getReceiptDetail(value, props.selectedTerm);
-                }}
-              >
-                {props.studentList.map((student, index) => {
-                  return (
-                    <Select.Option key={"inReceiptStudentOpts" + student.studentId + index} value={student.studentId}>
-                      {student.studentId + " - " + student.fullName}
-                    </Select.Option>
-                  );
-                })}
-              </Select>
+              <Input disabled />
             </Form.Item>
+            <Form.Item
+              name="fullName"
+              label="Họ và tên"
+              hasFeedback
+              rules={[{ required: true, message: "Vui lòng chọn kỳ!" }]}
+            >
+              <Input disabled />
+            </Form.Item>{" "}
             <Form.Item
               name={["term", "term"]}
               label="Học kỳ"
@@ -188,20 +149,12 @@ export const InFeeReceiptsCreate = (props) => {
               <Input disabled />
             </Form.Item>
             <Form.Item
-              name={"reasonId"}
+              name={"reason"}
               label="Lý do thu tiền"
               hasFeedback
               rules={[{ required: true, message: "Vui lòng chọn kỳ!" }]}
             >
-              <Select>
-                {reasonList.map((reason, index) => {
-                  return (
-                    <Select.Option key={"InreasonOptios" + index} value={reason.id}>
-                      {reason.text}
-                    </Select.Option>
-                  );
-                })}
-              </Select>
+              <Input defaultValue="Thu tiền học phí" />
             </Form.Item>
           </Col>
           <Col md={6} xs={6} style={{ display: "block" }}>
@@ -229,4 +182,4 @@ export const InFeeReceiptsCreate = (props) => {
   );
 };
 
-export default InFeeReceiptsCreate;
+export default OutFeeReceiptsCreate;

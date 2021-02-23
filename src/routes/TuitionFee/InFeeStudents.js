@@ -5,22 +5,27 @@ import { NotificationManager } from "react-notifications";
 // import StudentImport from './Import';
 import { Col, Row } from "reactstrap";
 import moment from "moment";
-import { CreditCardOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Alert, Select, Spin } from "antd";
+import { ExportOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Tabs, Select, Spin } from "antd";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import InFeeStudentList from "./StudentFeeComponents/InFeeStudentList";
 import InFeeReceiptsCreate from "./StudentFeeComponents/InFeeReceiptsCreate";
+import OutFeeReceiptsCreate from "./StudentFeeComponents/OutFeeReceiptsCreate";
+import BillListBadge from "../../components/BillList/BillListBadge";
+import BillList from "./StudentFeeComponents/BillList";
+
+const { TabPane } = Tabs;
 
 const StudentsFee = (props) => {
   const [studentList, setStudentList] = useState([]);
 
-  const [showInFeeReceiptsCreate, setShowInFeeReceiptsCreate] = useState(null);
+  const [showInFeeReceiptsCreate, setShowInFeeReceiptsCreate] = useState(false);
+
+  const [showOutFeeReceiptsCreate, setShowOutFeeReceiptsCreate] = useState(false);
 
   const [recordFoundNumber, setRecordFoundNumber] = useState(0);
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-
-  const [current, setCurrent] = useState("setting:1");
 
   const [loading, setLoading] = useState(true);
 
@@ -37,7 +42,7 @@ const StudentsFee = (props) => {
         setTermList(res);
         for (var i = 0; i < res.length; i++) {
           if (res[i].status === 3) {
-            setSelectedTerm(res[i].id); 
+            setSelectedTerm(res[i].id);
           }
         }
       })
@@ -122,6 +127,34 @@ const StudentsFee = (props) => {
                 width: "180px",
               }}
               type="primary"
+              onClick={() => {
+                setShowInFeeReceiptsCreate(true);
+              }}
+            >
+              <ExportOutlined />
+              Tạo Phiếu Thu
+            </Button>
+            <Button
+              style={{
+                background: "#448AE2",
+                borderColor: "#448AE2",
+                width: "180px",
+              }}
+              type="primary"
+              onClick={() => {
+                setShowOutFeeReceiptsCreate(true);
+              }}
+            >
+              <ExportOutlined />
+              Tạo Phiếu Chi
+            </Button>
+            <Button
+              style={{
+                background: "#448AE2",
+                borderColor: "#448AE2",
+                width: "180px",
+              }}
+              type="primary"
               onClick={() => setShowModalCreate(true)}
             >
               <PlusOutlined></PlusOutlined>
@@ -130,14 +163,42 @@ const StudentsFee = (props) => {
           </div>
         </Col>
       </Row>
-      <InFeeStudentList
-        data={studentList}
-        feeCategoryList={feeCategoryList}
-        setShowInFeeReceiptsCreate={setShowInFeeReceiptsCreate}
-      />
+      <Row style={{ marginBottom: "15px" }}>
+        <Col md={4}>
+          <BillListBadge style={{ background: "#ff7f2c" }} number={0} text="Tổng thu đầu kỳ đến hiện tại" />
+        </Col>
+        <Col md={4}>
+          <BillListBadge style={{ background: "#00a9f2" }} number={0} text="Tổng chi đầu kỳ đến hiện tại" />
+        </Col>
+        <Col md={4}>
+          <BillListBadge style={{ background: "#74cb2f" }} number={0} text="Tồn quỹ hiện tại" />
+        </Col>
+      </Row>
+      <Tabs type="card">
+        <TabPane tab="Tất cả" key="1">
+          <BillList
+            data={studentList}
+            feeCategoryList={feeCategoryList}
+            setShowInFeeReceiptsCreate={setShowInFeeReceiptsCreate}
+          />
+        </TabPane>
+        <TabPane tab="Phiếu thu" key="2">
+          Content of Tab Pane 2
+        </TabPane>
+        <TabPane tab="Phiếu chi" key="3">
+          Content of Tab Pane 3
+        </TabPane>
+      </Tabs>
+
       <InFeeReceiptsCreate
-        setShowInFeeReceiptsCreate={setShowInFeeReceiptsCreate}
+        studentList={studentList}
+        onCancel={setShowInFeeReceiptsCreate}
         visible={showInFeeReceiptsCreate}
+        selectedTerm={selectedTerm}
+      />
+      <OutFeeReceiptsCreate
+        onCancel={setShowOutFeeReceiptsCreate}
+        visible={showOutFeeReceiptsCreate}
         selectedTerm={selectedTerm}
       />
     </Spin>
