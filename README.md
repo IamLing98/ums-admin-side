@@ -37,13 +37,14 @@ _Schedule Creator_
 ![Schedule Creator](https://i.ibb.co/28qzp6B/Capture.png) 
 
 _Student Management_ 
-![Student Management](https://i.ibb.co/zScR33j/Capture.png) 
+![Student Management](https://i.ibb.co/8jKpwTN/Capture.png) 
 
 _Education Programs Management_ 
 ![Education Programs](https://i.ibb.co/rG001zH/Capture.png) 
 
 _Invoice Management_ 
 ![Invoice Management](https://i.ibb.co/n0NPmcy/Capture.png) 
+
 ![Print&Export](https://i.ibb.co/vdKWxkD/Capture.png) 
 
 <!-- REFERENCE  -->
