@@ -31,7 +31,7 @@ npm run build
  
 
 _Subject Management_ 
-![SubjectManagement](https://i.ibb.co/m9kRPDK/Capture.png)
+![SubjectManagement](https://i.ibb.co/gwngBFn/Capture.png)
 
 _Schedule Creator_ 
 ![Schedule Creator](https://i.ibb.co/28qzp6B/Capture.png) 
