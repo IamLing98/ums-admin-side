@@ -1,23 +1,26 @@
 import { api } from "Api";
 import React, { useEffect, useState } from "react";
-import { Helmet } from "react-helmet";
 import { NotificationManager } from "react-notifications";
 // import StudentImport from './Import';
 import { Col, Row } from "reactstrap";
 import moment from "moment";
-import { ArrowLeftOutlined, ArrowRightOutlined, SettingOutlined } from "@ant-design/icons";
-import { Button, Tabs, Select, Spin } from "antd";
-import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
-import InFeeStudentList from "./StudentFeeComponents/InFeeStudentList";
+import { ArrowLeftOutlined, ArrowRightOutlined, SettingOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import { Button, Tabs, Select, Spin, Modal } from "antd";
 import InFeeReceiptsCreate from "./StudentFeeComponents/InFeeReceiptsCreate";
 import OutFeeReceiptsCreate from "./StudentFeeComponents/OutFeeReceiptsCreate";
 import BillListBadge from "../../components/BillList/BillListBadge";
-import BillList from "./StudentFeeComponents/BillList";
+import BillList from "./StudentFeeComponents/InvoiceList";
 import Setting from "./StudentFeeComponents/Setting";
+import InvoiceDetail from "./StudentFeeComponents/InvoiceDetail";  
+import InvoicePrint from './InvoicePrint';
+
 
 const { TabPane } = Tabs;
 
-const StudentsFee = (props) => {
+const { confirm } = Modal;
+
+const StudentsFee = (props) => { 
+
   const [studentInvoiceList, setStudentInvoicesList] = useState([]);
 
   const [studentList, setStudentList] = useState([]);
@@ -27,6 +30,10 @@ const StudentsFee = (props) => {
   const [showOutFeeReceiptsCreate, setShowOutFeeReceiptsCreate] = useState(false);
 
   const [showSettingModal, setShowSettingModal] = useState(false);
+
+  const [showInvoiceDetail, setShowInvoiceDetail] = useState(null);
+
+  const [showInvoicePrint, setShowInvoicePrint] = useState(false);
 
   const [recordFoundNumber, setRecordFoundNumber] = useState(0);
 
@@ -42,7 +49,7 @@ const StudentsFee = (props) => {
 
   const [term, setTerm] = useState(undefined);
 
-  const [studentInvoiceType, setStudentInvoiceType] = useState(null);
+  const [studentInvoiceType, setStudentInvoiceType] = useState(null); 
 
   const showErrNoti = (err) => {
     NotificationManager.error(err.response.data.message);
@@ -51,6 +58,26 @@ const StudentsFee = (props) => {
     } else if (err.message === "Unauthorized") {
       throw new SubmissionError({ _err: "Username or Password Invalid" });
     }
+  };
+
+  const handlePrrintStudentInvoice = (values) => {};
+
+  const showPrintConfirm = (record) => {
+    confirm({
+      centered: true,
+      title: "Có muốn in phiếu?",
+      icon: <ExclamationCircleOutlined />,
+      content: "Vui lòng xác nhận",
+      okText: "Đồng ý",
+      okType: "danger",
+      cancelText: "Huỷ",
+      onOk() {
+        handlePrrintStudentInvoice(record);
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
   };
 
   const handleSettingTerm = (values) => {
@@ -88,12 +115,18 @@ const StudentsFee = (props) => {
 
   const getStudentInvoiceList = (termId, type) => {
     api
-      .get(`/studentInvoices/${termId}${type !== null ? "?type=" + type : ""}`)
+      .get(`/studentInvoices?${termId ? "termId=" + termId : ""}${type ? "&&type=" + type : ""}`)
       .then((response) => {
-        setStudentInvoicesList(response);
+        let rs = [];
+        response.map((item) => {
+          rs.push({ ...item, isSelecting: false });
+        });
+        setStudentInvoicesList([...rs]);
         setLoading(false);
       })
-      .catch((error) => {console.log(error);});
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const getStudentList = () => {
@@ -118,6 +151,28 @@ const StudentsFee = (props) => {
         setTerm(res);
       })
       .catch((err) => console.log(err));
+  };
+
+  const onSelectRow = (record) => {
+    let newArr = [];
+    studentInvoiceList.map((item) => {
+      if (item.invoiceNo === record.invoiceNo) {
+        newArr.push({ ...item, isSelecting: true });
+      } else {
+        newArr.push({ ...item, isSelecting: false });
+      }
+    });
+    setStudentInvoicesList([...newArr]);
+    setShowInvoiceDetail(record);
+  };
+
+  const onDeselectRow = (record) => {
+    let newArr = [];
+    studentInvoiceList.map((item) => {
+      newArr.push({ ...item, isSelecting: false });
+    });
+    setStudentInvoicesList([...newArr]);
+    setShowInvoiceDetail(null);
   };
 
   useEffect(() => {
@@ -212,6 +267,18 @@ const StudentsFee = (props) => {
               <SettingOutlined />
               <span>Cài đặt</span>
             </Button>
+            <Button
+              style={{
+                background: "#448AE2",
+                borderColor: "#448AE2",
+                width: "180px",
+              }}
+              type="primary"
+              onClick={() => setShowInvoicePrint(true)}
+            >
+              <SettingOutlined />
+              <span>Cài đặt</span>
+            </Button>
             <Setting
               visible={showSettingModal}
               term={term}
@@ -259,6 +326,7 @@ const StudentsFee = (props) => {
             data={studentInvoiceList}
             feeCategoryList={feeCategoryList}
             setShowInFeeReceiptsCreate={setShowInFeeReceiptsCreate}
+            onSelectRow={onSelectRow}
           />
         </TabPane>
         <TabPane tab="Phiếu thu" key="2">
@@ -266,6 +334,7 @@ const StudentsFee = (props) => {
             data={studentInvoiceList}
             feeCategoryList={feeCategoryList}
             setShowInFeeReceiptsCreate={setShowInFeeReceiptsCreate}
+            onSelectRow={onSelectRow}
           />
         </TabPane>
         <TabPane tab="Phiếu chi" key="3">
@@ -273,6 +342,8 @@ const StudentsFee = (props) => {
             data={studentInvoiceList}
             feeCategoryList={feeCategoryList}
             setShowInFeeReceiptsCreate={setShowInFeeReceiptsCreate}
+            setShowInvoiceDetail={setShowInvoiceDetail}
+            onSelectRow={onSelectRow}
           />
         </TabPane>
       </Tabs>
@@ -284,12 +355,15 @@ const StudentsFee = (props) => {
         selectedTerm={selectedTerm}
         getStudentInvoiceList={getStudentInvoiceList}
         getTermDetail={getTermDetail}
+        showPrintConfirm={showPrintConfirm}
       />
       <OutFeeReceiptsCreate
         onCancel={setShowOutFeeReceiptsCreate}
         visible={showOutFeeReceiptsCreate}
         selectedTerm={selectedTerm}
       />
+      <InvoiceDetail visible={showInvoiceDetail} onDeselectRow={onDeselectRow} />  
+      <InvoicePrint visible={showInvoicePrint} onCancel={setShowInvoicePrint}/>
     </Spin>
   );
 };

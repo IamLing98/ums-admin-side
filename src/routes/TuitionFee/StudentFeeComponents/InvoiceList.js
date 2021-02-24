@@ -101,7 +101,7 @@ const BillList = (props) => {
           href="javascript:void(0)"
           onClick={() => {
             console.log(record);
-            props.setSelecting(record);
+            props.onSelectRow(record);
           }}
         >
           {text}

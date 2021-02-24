@@ -115,7 +115,7 @@ export const OutFeeReceiptsCreate = (props) => {
       >
         <Row>
           <Col md={6} xs={6} style={{ display: "block" }}>
-            <Divider>Thông tin phiếu thu</Divider>
+            <Divider>Thông tin phiếu chi</Divider>
             <Form.Item
               name="studentId"
               label="Mã sinh viên"
@@ -150,7 +150,7 @@ export const OutFeeReceiptsCreate = (props) => {
             </Form.Item>
             <Form.Item
               name={"reason"}
-              label="Lý do thu tiền"
+              label="Lý do chi tiền"
               hasFeedback
               rules={[{ required: true, message: "Vui lòng chọn kỳ!" }]}
             >
@@ -158,7 +158,7 @@ export const OutFeeReceiptsCreate = (props) => {
             </Form.Item>
           </Col>
           <Col md={6} xs={6} style={{ display: "block" }}>
-            <Divider>Khoản thu</Divider>
+            <Divider>Khoản chi</Divider>
             {feeCategoryGroupList.map((feeCategoryGroup, index) => {
               return (
                 <FeeCategoryGroup

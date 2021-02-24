@@ -23,7 +23,7 @@ const formItemLayout = {
       span: 16,
     },
   },
-};
+}; 
 
 export const InFeeReceiptsCreate = (props) => {
   const [initialValues, setInitialValues] = useState({
@@ -46,6 +46,14 @@ export const InFeeReceiptsCreate = (props) => {
 
   const [form] = Form.useForm();
 
+  const showErrNoti = (err) => {
+    NotificationManager.error(err.response.data.message);
+    if (err.message === "Forbidden") {
+      NotificationManager.err("Did you forget something? Please activate your account");
+    } else if (err.message === "Unauthorized") {
+      throw new SubmissionError({ _err: "Username or Password Invalid" });
+    }
+  }; 
   const handleSubmitForm = (values) => {
     let feeCategories = [];
     feeCategoryGroupList.map((feeCategoryGroup) => {
@@ -69,10 +77,11 @@ export const InFeeReceiptsCreate = (props) => {
         NotificationManager.success("Tạo phiếu thu thành công");
         props.getStudentInvoiceList(props.selectedTerm);
         props.getTermDetail(props.selectedTerm);
+        props.showPrintConfirm(values);
         props.onCancel(false);
       })
       .catch((error) => {
-        NotificationManager.error(error.body.message.data);
+        showErrNoti(error);
         props.onCancel(false);
       });
   };

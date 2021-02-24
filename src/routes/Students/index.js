@@ -65,9 +65,7 @@ export const StudentHome = (props) => {
   const showErrNoti = (err) => {
     NotificationManager.error(err.response.data.message);
     if (err.message === "Forbidden") {
-      NotificationManager.err(
-        "Did you forget something? Please activate your account"
-      );
+      NotificationManager.err("Did you forget something? Please activate your account");
     } else if (err.message === "Unauthorized") {
       throw new SubmissionError({ _err: "Username or Password Invalid" });
     }
@@ -156,10 +154,7 @@ export const StudentHome = (props) => {
 
   const handleDeleteRecord = (values) => {
     api
-      .delete(
-        `/students?${values.map((value, index) => `ids=${value}`).join("&")}`,
-        true
-      )
+      .delete(`/students?${values.map((value, index) => `ids=${value}`).join("&")}`, true)
       .then((res) => {
         NotificationManager.success("Đã xoá" + res + " bản ghi");
         getStudentList();
@@ -171,10 +166,7 @@ export const StudentHome = (props) => {
 
   const handleDeleteMultipleRecord = (values) => {
     api
-      .delete(
-        `/students?${values.map((value, index) => `ids=${value}`).join("&")}`,
-        true
-      )
+      .delete(`/students?${values.map((value, index) => `ids=${value}`).join("&")}`, true)
       .then((res) => {
         NotificationManager.success("Đã xoá" + res + " bản ghi");
         getStudentList();
@@ -283,24 +275,15 @@ export const StudentHome = (props) => {
               <hr style={{ margin: "0px" }} />
               <div className="table-responsive">
                 <Row>
-                  <Col
-                    md={3}
-                    sm={12}
-                    style={{ display: "flex", flexDirection: "column" }}
-                  >
+                  <Col md={3} sm={12} style={{ display: "flex", flexDirection: "column" }}>
                     <Alert
-                      message={
-                        <strong>Tìm thấy {recordFoundNumber} bản ghi</strong>
-                      }
+                      message={<strong>Tìm thấy {recordFoundNumber} bản ghi</strong>}
                       type="info"
                       style={{ maxHeight: "32px" }}
                     />
                   </Col>
                   <Col md={9} sm={12} xs={12}>
-                    <div
-                      className="tableListOperator"
-                      style={{ textAlign: "right", width: "100%" }}
-                    >
+                    <div className="tableListOperator" style={{ textAlign: "right", width: "100%" }}>
                       <Select
                         allowClear
                         placeholder="Xếp loại..."
