@@ -1,11 +1,11 @@
 import { api } from "Api";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { NotificationManager } from "react-notifications";
 // import StudentImport from './Import';
 import { Col, Row } from "reactstrap";
 import moment from "moment";
-import { ExportOutlined, PlusOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, ArrowRightOutlined, SettingOutlined } from "@ant-design/icons";
 import { Button, Tabs, Select, Spin } from "antd";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import InFeeStudentList from "./StudentFeeComponents/InFeeStudentList";
@@ -13,15 +13,20 @@ import InFeeReceiptsCreate from "./StudentFeeComponents/InFeeReceiptsCreate";
 import OutFeeReceiptsCreate from "./StudentFeeComponents/OutFeeReceiptsCreate";
 import BillListBadge from "../../components/BillList/BillListBadge";
 import BillList from "./StudentFeeComponents/BillList";
+import Setting from "./StudentFeeComponents/Setting";
 
 const { TabPane } = Tabs;
 
 const StudentsFee = (props) => {
+  const [studentInvoiceList, setStudentInvoicesList] = useState([]);
+
   const [studentList, setStudentList] = useState([]);
 
   const [showInFeeReceiptsCreate, setShowInFeeReceiptsCreate] = useState(false);
 
   const [showOutFeeReceiptsCreate, setShowOutFeeReceiptsCreate] = useState(false);
+
+  const [showSettingModal, setShowSettingModal] = useState(false);
 
   const [recordFoundNumber, setRecordFoundNumber] = useState(0);
 
@@ -34,6 +39,29 @@ const StudentsFee = (props) => {
   const [termList, setTermList] = useState([]);
 
   const [selectedTerm, setSelectedTerm] = useState(undefined);
+
+  const [term, setTerm] = useState(undefined);
+
+  const [studentInvoiceType, setStudentInvoiceType] = useState(null);
+
+  const showErrNoti = (err) => {
+    NotificationManager.error(err.response.data.message);
+    if (err.message === "Forbidden") {
+      NotificationManager.err("Did you forget something? Please activate your account");
+    } else if (err.message === "Unauthorized") {
+      throw new SubmissionError({ _err: "Username or Password Invalid" });
+    }
+  };
+
+  const handleSettingTerm = (values) => {
+    values.actionType = "STFT";
+    api.put(`/terms`, values).then((response) => {
+      NotificationManager.success("Cài đặt thành công!!!").catch((err) => {
+        showErrNoti(err);
+      });
+    });
+    setShowSettingModal(false);
+  };
 
   const getTermList = () => {
     api
@@ -58,13 +86,14 @@ const StudentsFee = (props) => {
       .catch((err) => showNoti(err));
   };
 
-  const showErrNoti = (err) => {
-    NotificationManager.error(err.response.data.message);
-    if (err.message === "Forbidden") {
-      NotificationManager.err("Did you forget something? Please activate your account");
-    } else if (err.message === "Unauthorized") {
-      throw new SubmissionError({ _err: "Username or Password Invalid" });
-    }
+  const getStudentInvoiceList = (termId, type) => {
+    api
+      .get(`/studentInvoices/${termId}${type !== null ? "?type=" + type : ""}`)
+      .then((response) => {
+        setStudentInvoicesList(response);
+        setLoading(false);
+      })
+      .catch((error) => {console.log(error);});
   };
 
   const getStudentList = () => {
@@ -76,11 +105,19 @@ const StudentsFee = (props) => {
         }
         setStudentList(res);
         setRecordFoundNumber(res.length);
-        setLoading(false);
       })
       .catch((err) => {
         showErrNoti(err);
       });
+  };
+
+  const getTermDetail = (id) => {
+    api
+      .get(`/terms/${id}`)
+      .then((res) => {
+        setTerm(res);
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -89,6 +126,17 @@ const StudentsFee = (props) => {
     getStudentList();
   }, []);
 
+  useEffect(() => {
+    if (selectedTerm) {
+      getTermDetail(selectedTerm);
+    }
+  }, [selectedTerm]);
+
+  useEffect(() => {
+    if (selectedTerm) {
+      getStudentInvoiceList(selectedTerm, studentInvoiceType);
+    }
+  }, [selectedTerm, studentInvoiceType]);
   return (
     <Spin spinning={loading}>
       <Row>
@@ -111,6 +159,10 @@ const StudentsFee = (props) => {
                 textAlign: "left",
               }}
               value={selectedTerm}
+              onSelect={(value) => {
+                console.log(value);
+                setSelectedTerm(value);
+              }}
             >
               {termList.map((item, index) => {
                 return (
@@ -131,7 +183,7 @@ const StudentsFee = (props) => {
                 setShowInFeeReceiptsCreate(true);
               }}
             >
-              <ExportOutlined />
+              <ArrowRightOutlined />
               Tạo Phiếu Thu
             </Button>
             <Button
@@ -145,7 +197,7 @@ const StudentsFee = (props) => {
                 setShowOutFeeReceiptsCreate(true);
               }}
             >
-              <ExportOutlined />
+              <ArrowLeftOutlined />
               Tạo Phiếu Chi
             </Button>
             <Button
@@ -155,38 +207,73 @@ const StudentsFee = (props) => {
                 width: "180px",
               }}
               type="primary"
-              onClick={() => setShowModalCreate(true)}
+              onClick={() => setShowSettingModal(true)}
             >
-              <PlusOutlined></PlusOutlined>
-              <span>Lập Danh Sách</span>
+              <SettingOutlined />
+              <span>Cài đặt</span>
             </Button>
+            <Setting
+              visible={showSettingModal}
+              term={term}
+              handleSettingTerm={handleSettingTerm}
+              onCancel={() => setShowSettingModal(false)}
+            />
           </div>
         </Col>
       </Row>
       <Row style={{ marginBottom: "15px" }}>
         <Col md={4}>
-          <BillListBadge style={{ background: "#ff7f2c" }} number={0} text="Tổng thu đầu kỳ đến hiện tại" />
+          <BillListBadge
+            style={{ background: "#ff7f2c" }}
+            number={term ? term.inFeeTotalValue : 0}
+            text="Tổng thu đầu kỳ đến hiện tại"
+          />
         </Col>
         <Col md={4}>
-          <BillListBadge style={{ background: "#00a9f2" }} number={0} text="Tổng chi đầu kỳ đến hiện tại" />
+          <BillListBadge
+            style={{ background: "#00a9f2" }}
+            number={term ? term.outFeeTotalValue : 0}
+            text="Tổng chi đầu kỳ đến hiện tại"
+          />
         </Col>
         <Col md={4}>
-          <BillListBadge style={{ background: "#74cb2f" }} number={0} text="Tồn quỹ hiện tại" />
+          <BillListBadge
+            style={{ background: "#74cb2f" }}
+            number={term ? term.inFeeTotalValue - term.outFeeTotalValue : 0}
+            text="Tồn quỹ hiện tại"
+          />
         </Col>
       </Row>
-      <Tabs type="card">
+      <Tabs
+        type="card"
+        onChange={(value) => {
+          if (value === "1") {
+            setStudentInvoiceType(null);
+          } else {
+            setStudentInvoiceType(parseInt(value) - 2);
+          }
+        }}
+      >
         <TabPane tab="Tất cả" key="1">
           <BillList
-            data={studentList}
+            data={studentInvoiceList}
             feeCategoryList={feeCategoryList}
             setShowInFeeReceiptsCreate={setShowInFeeReceiptsCreate}
           />
         </TabPane>
         <TabPane tab="Phiếu thu" key="2">
-          Content of Tab Pane 2
+          <BillList
+            data={studentInvoiceList}
+            feeCategoryList={feeCategoryList}
+            setShowInFeeReceiptsCreate={setShowInFeeReceiptsCreate}
+          />
         </TabPane>
         <TabPane tab="Phiếu chi" key="3">
-          Content of Tab Pane 3
+          <BillList
+            data={studentInvoiceList}
+            feeCategoryList={feeCategoryList}
+            setShowInFeeReceiptsCreate={setShowInFeeReceiptsCreate}
+          />
         </TabPane>
       </Tabs>
 
@@ -195,6 +282,8 @@ const StudentsFee = (props) => {
         onCancel={setShowInFeeReceiptsCreate}
         visible={showInFeeReceiptsCreate}
         selectedTerm={selectedTerm}
+        getStudentInvoiceList={getStudentInvoiceList}
+        getTermDetail={getTermDetail}
       />
       <OutFeeReceiptsCreate
         onCancel={setShowOutFeeReceiptsCreate}

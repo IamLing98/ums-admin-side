@@ -3,6 +3,7 @@ import { Button, Input, Select, Popconfirm, Space, Table } from "antd";
 import { ExportOutlined, PrinterFilled, SearchOutlined, RetweetOutlined, ClearOutlined } from "@ant-design/icons";
 import { api } from "Api";
 import Highlighter from "react-highlight-words";
+import moment from "moment";
 
 const BillList = (props) => {
   const [pagination, setPagination] = useState({
@@ -10,6 +11,10 @@ const BillList = (props) => {
     pageSize: 10,
     size: "default",
   });
+
+  function format(n) {
+    return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(n);
+  }
 
   const [searchText, setSearchText] = useState("");
 
@@ -83,34 +88,15 @@ const BillList = (props) => {
 
   const columns = [
     {
-      title: "Mã Phiếu Thu ",
-      dataIndex: "studentId",
+      title: "Mã Phiếu",
+      dataIndex: "invoiceNo",
       align: "center",
       ...getColumnSearchProps({
         dataIndex: "studentId",
-        columnName: "mã sinh viên",
+        columnName: "mã phiếu thu",
       }),
-    },
-    {
-      title: "Mã Sinh Viên",
-      align: "center",
-      render: (text, record) => <span>{record.startYear + " - " + record.endYear}</span>,
-    },
-    {
-      title: "Họ Tên",
-      align: "center",
-      render: (text, record) => <span>{record.startYear + " - " + record.endYear}</span>,
-    },
-    {
-      title: "Ngày Thu",
-      dataIndex: "fullName",
-      align: "center",
-      ...getColumnSearchProps({
-        dataIndex: "fullName",
-        columnName: "tên sinh viên",
-      }),
-      render: (text, record) => (
-        <a
+      render: (text,record) => {
+       return <a
           // className="ant-anchor-link-title ant-anchor-link-title-active"
           href="javascript:void(0)"
           onClick={() => {
@@ -119,37 +105,49 @@ const BillList = (props) => {
           }}
         >
           {text}
-        </a>
-      ),
+        </a>;
+      },
+    },
+    {
+      title: "Mã Sinh Viên",
+      align: "center",
+      dataIndex: "studentABN",
+      ...getColumnSearchProps({
+        dataIndex: "studentABN",
+        columnName: "mã sinh viên",
+      }),
+    },
+    {
+      title: "Họ Tên",
+      align: "center",
+      dataIndex: "fullName",
+    },
+    {
+      title: "Ngày Thu",
+      dataIndex: "invoiceCreatedDate",
+      align: "center",
+      render: (text, record) => moment(text).format("HH:mm DD/MM/YYYY"),
     },
     {
       title: "Lý Do Thu ",
       align: "center",
-      dataIndex: "yearClassId",
-      ...getColumnSearchProps({
-        dataIndex: "yearClassId",
-        columnName: "lớp niên khoá",
-      }),
-      render: (text, record) => <>{record.yearClassId + " - " + record.yearClassName + " K" + record.courseNumber}</>,
+      dataIndex: "reasonName",  
     },
     {
       title: "Diễn Giải",
       align: "center",
-      dataIndex: "yearClassId",
-      ...getColumnSearchProps({
-        dataIndex: "yearClassId",
-        columnName: "lớp niên khoá",
-      }),
-      render: (text, record) => <>{record.yearClassId + " - " + record.yearClassName + " K" + record.courseNumber}</>,
+      dataIndex: "invoiceName",  
+    },
+    {
+      title: "Người Thu",
+      align: "center",
+      dataIndex: "creatorName", 
     },
     {
       title: "Số Tiền",
-      dataIndex: "departmentName",
+      dataIndex: "amount",
       align: "center",
-      ...getColumnSearchProps({
-        dataIndex: "departmentName",
-        columnName: "khoa đào tạo",
-      }),
+      render: (text, record) => <>{format(text)}</>,
     }, 
     {
       title: "Thao Tác",
@@ -165,7 +163,6 @@ const BillList = (props) => {
             }}
           >
             <PrinterFilled />
-             
           </Button>
         </>
       ),
@@ -224,7 +221,7 @@ const BillList = (props) => {
       <Table
         columns={columns}
         dataSource={props.data}
-        rowKey="studentId"
+        rowKey="invoiceNo"
         bordered
         size="small"
         pagination={pagination}

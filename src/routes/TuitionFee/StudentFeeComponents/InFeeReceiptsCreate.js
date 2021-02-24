@@ -34,12 +34,9 @@ export const InFeeReceiptsCreate = (props) => {
     reasonId: 1,
   });
 
-  const [reasonList, setReasonList] = useState([
-    {
-      id: 1,
-      text: "Thu tiền học phí định kỳ",
-    },
-  ]);
+  const [studentFeeInfo, setStudentFeeInfo] = useState({});
+
+  const [reasonList, setReasonList] = useState([]);
 
   function format(n) {
     return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(n);
@@ -49,7 +46,36 @@ export const InFeeReceiptsCreate = (props) => {
 
   const [form] = Form.useForm();
 
-  const handleSubmitForm = (values) => {};
+  const handleSubmitForm = (values) => {
+    let feeCategories = [];
+    feeCategoryGroupList.map((feeCategoryGroup) => {
+      feeCategoryGroup.feeCategoryList.map((feeCategory) => {
+        feeCategories.push(feeCategory);
+      });
+    });
+    let studentInvoice = {
+      student: studentFeeInfo.student,
+      amount: studentFeeInfo.totalFee,
+      reasonId: values.reasonId,
+      term: studentFeeInfo.term,
+      feeCategories: feeCategories,
+      invoiceType: 0,
+    };
+
+    console.log("studentInvoice: ", studentInvoice);
+    api
+      .post(`/studentInvoices`, studentInvoice)
+      .then((response) => {
+        NotificationManager.success("Tạo phiếu thu thành công");
+        props.getStudentInvoiceList(props.selectedTerm);
+        props.getTermDetail(props.selectedTerm);
+        props.onCancel(false);
+      })
+      .catch((error) => {
+        NotificationManager.error(error.body.message.data);
+        props.onCancel(false);
+      });
+  };
 
   const getReceiptDetail = (studentId, termId) => {
     api
@@ -60,7 +86,9 @@ export const InFeeReceiptsCreate = (props) => {
         let { feeCategoryGroupList } = response;
         let { term } = response;
         let { totalFee } = response;
+        console.log("response: ", response);
         setInitialValues({
+          ...initialValues,
           studentId: student.studentId,
           fullName: student.fullName,
           categoryGroupList: feeCategoryGroupList,
@@ -68,37 +96,29 @@ export const InFeeReceiptsCreate = (props) => {
           totalFee: totalFee,
         });
         setFeeCategoryGroupList(feeCategoryGroupList);
+        setStudentFeeInfo(response);
         form.resetFields();
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
+  const getFeeReason = () => {
+    api
+      .get("/feeReasons")
+      .then((response) => {
+        setReasonList(response);
+      })
+      .catch((error) => {});
+  };
+
   useEffect(() => {
-    if (props.visible) {
-      api
-        .get(`/tuitionFee/${props.selectedTerm}/${props.visible.studentId}`)
-        .then((response) => {
-          console.log(response);
-          let { student } = response;
-          let { feeCategoryGroupList } = response;
-          let { term } = response;
-          let { totalFee } = response;
-          setInitialValues({
-              ...initialValues,
-            studentId: student.studentId,
-            fullName: student.fullName,
-            categoryGroupList: feeCategoryGroupList,
-            term: term,
-            totalFee: totalFee,
-          });
-          setFeeCategoryGroupList(feeCategoryGroupList);
-          form.resetFields();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
+    getFeeReason();
+  }, []);
+
+  useEffect(() => {
+    form.resetFields();
   }, [props.visible]);
 
   return (
@@ -197,7 +217,7 @@ export const InFeeReceiptsCreate = (props) => {
                 {reasonList.map((reason, index) => {
                   return (
                     <Select.Option key={"InreasonOptios" + index} value={reason.id}>
-                      {reason.text}
+                      {reason.reasonName}
                     </Select.Option>
                   );
                 })}
