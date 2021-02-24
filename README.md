@@ -37,7 +37,7 @@ _Schedule Creator_
 ![Schedule Creator](https://i.ibb.co/28qzp6B/Capture.png) 
 
 _Student Management_ 
-![Student Management](https://i.ibb.co/G0vMrfT/Capture.png) 
+![Student Management](https://i.ibb.co/zScR33j/Capture.png) 
 
 _Education Programs Management_ 
 ![Education Programs](https://i.ibb.co/rG001zH/Capture.png) 
@@ -45,16 +45,20 @@ _Education Programs Management_
 _Invoice Management_ 
 ![Invoice Management](https://i.ibb.co/n0NPmcy/Capture.png) 
 ![Print&Export](https://i.ibb.co/vdKWxkD/Capture.png) 
+
+<!-- REFERENCE  -->
+## Reference
+Admin Dashboard Link: [Admin](https://github.com/lingdev1998/ums-admin-side)
+
+User UI Link: [User UI](https://github.com/lingdev1998/ums-client-side)
+
+Backend Link: [Backend](https://github.com/lingdev1998/crm-springboot-j2ee)
+
 <!-- CONTACT -->
 ## Contact
 
 Doan Van Linh - [@https://www.facebook.com/linkfromthemid/](https://www.facebook.com/linkfromthemid/) - vandoan1029i@gmail.com
-
-Admin FE Side Link: [FE Side](https://github.com/lingdev1998/ums-admin-side)
-
-User FE Side Link: [FE Side](https://github.com/lingdev1998/ums-client-side)
-
-BE Side Link: [BE Side](https://github.com/lingdev1998/crm-springboot-j2ee)
+ 
 
 
 
