@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import {   PrinterFilled    , RollbackOutlined  } from "@ant-design/icons";
-import { Button, Tabs, Select, Spin, Modal } from "antd";
+import { PrinterFilled, RollbackOutlined } from "@ant-design/icons";
+import { Spin, Modal } from "antd";
 import { Viewer } from "@react-pdf-viewer/core";
 import { printPlugin } from "@react-pdf-viewer/print";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
+import { api } from "Api";
 
 const InvoicePrint = (props) => {
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
@@ -11,6 +12,13 @@ const InvoicePrint = (props) => {
   const printPluginInstance = printPlugin();
 
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (props.visible) {
+      console.log(props.filePrintName);
+    }
+    return;
+  }, [props.visible, props.filePrintName]);
   return (
     <Modal
       title="In phiếu thu"
@@ -44,11 +52,14 @@ const InvoicePrint = (props) => {
       destroyOnClose={true}
       centered
       closable={true}
-      width={"70%"}
+      width={"50%"}
       forceRender
     >
       <Spin spinning={loading}>
-        <Viewer plugins={[printPluginInstance,defaultLayoutPluginInstance]} fileUrl="http://localhost:8080/downloadFile/pdf.pdf" />
+        <Viewer
+          plugins={[printPluginInstance, defaultLayoutPluginInstance]}
+          fileUrl={`http://localhost:8080/downloadFile/${props.filePrintName}`}
+        />
       </Spin>
     </Modal>
   );

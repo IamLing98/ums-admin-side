@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { NotificationManager } from "react-notifications";
 import moment from "moment";
-import { CreditCardOutlined, OrderedListOutlined } from "@ant-design/icons";
+import { CreditCardOutlined, OrderedListOutlined,SettingOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
 import InFeeStudent from "./InFeeStudents";
 import InFeeReceiptStudentPrint from "../../util/InFeeReceiptStudentPrint";
@@ -45,6 +45,10 @@ const TuitionFeeHome = (props) => {
                       <Menu.Item key="setting:5">
                         <CreditCardOutlined />
                         Báo cáo
+                      </Menu.Item>
+                      <Menu.Item key="setting:2">
+                        <SettingOutlined />
+                        Cài đặt
                       </Menu.Item>
                     </Menu>
                   </span>

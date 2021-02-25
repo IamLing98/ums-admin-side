@@ -2,12 +2,12 @@
 
 ## About The Project
 
-This is my final year project in my university. An university information management system. 
+This is my final year project in my university. The university information management system. 
 
 ### Built With
  
 * [ReactJS](https://reactjs.org/)
-* [Antd](https://ant.design/)
+* [Ant design](https://ant.design/)
 * [Redux](https://redux.js.org/)
 * [Webpack](https://webpack.js.org/)
 

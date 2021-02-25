@@ -4,28 +4,33 @@ import { RollbackOutlined, PrinterFilled } from "@ant-design/icons";
 import { api } from "Api";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import { Row, Col } from "reactstrap";
+import moment from "moment";
 
 const BillDetail = (props) => {
   const [loading, setLoading] = useState(true);
 
   const [record, setRecord] = useState(null);
 
+  function format(n) {
+    return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(n);
+  }
+
   const dataHeaderLeft = [
     {
       title: "Mã phiếu thu:",
-      values: record ? record.fullName : "",
+      values: record ? record.invoiceNo : "",
     },
     {
       title: "Mã sinh viên:",
-      values: record ? record.fullName : "",
+      values: record ? record.student.studentId : "",
     },
     {
       title: "Học kỳ:",
-      values: record ? record.nationalityName : "",
+      values: record ? record.term.term : "",
     },
     {
-      title: "Lý do:",
-      values: record ? record.religion : "",
+      title: "Loại phiếu:",
+      values: record ? (record.invoiceType === 0 ? "Phiếu thu" : "Phiếu chi") : "",
     },
     {
       title: "Người thu :",
@@ -51,23 +56,23 @@ const BillDetail = (props) => {
   const dataHeaderRight = [
     {
       title: "Ngày thu:",
-      values: record ? record.dateBirth : "",
+      values: record ? moment(record.invoiceCreatedDate).format("HH:mm DD/MM/YYYY") : "",
     },
     {
       title: "Họ tên:",
-      values: record ? record.fullName : "",
+      values: record ? record.student.fullName : "",
     },
     {
       title: "Năm học:",
-      values: record ? record.religion : "",
+      values: record ? record.term.year : "",
     },
     {
-      title: "Diễn giải:",
-      values: record ? record.religion : "",
+      title: "Lý do:",
+      values: record ? record.invoiceName : "",
     },
     {
       title: "Tổng tiền :",
-      values: record ? record.permanentResidence : "",
+      values: record ? format(record.amount) : "",
     },
   ];
   const columnsHeaderRight = [
@@ -90,12 +95,10 @@ const BillDetail = (props) => {
   const feeCategoryTableColumns = [
     { title: "Mã Danh Mục", dataIndex: "id", align: "center" },
     { title: "Tên Danh Mục", dataIndex: "feeCategoryName", align: "center" },
-    { title: "Nhóm Danh Mục", dataIndex: "values", align: "center" },
+    { title: "Nhóm Danh Mục", dataIndex: "feeCategoryGroupName", align: "center" },
     { title: "Mô tả", dataIndex: "description", align: "center" },
     { title: "Giá Trị", dataIndex: "value", align: "center" },
   ];
-
-  const [invoiceDetail, setInvoiceDetail] = useState(null);
 
   const getInvoiceDetail = (invoiceNo) => {
     api
@@ -135,7 +138,27 @@ const BillDetail = (props) => {
               <RollbackOutlined />
               Quay lại
             </Button>
-            <Button onClick={props.onClose} type="primary" style={{ width: "108px" }}>
+            <Button
+              onClick={() => {
+                if (record) {
+                  let obj = {
+                    invoiceNo: record.invoiceNo,
+                    studentId: record.student.studentId,
+                    fullName: record.student.fullName,
+                    yearClassId: record.student.yearClassId,
+                    departmentName: record.student.departmentName,
+                    content: "Thu tiền học phí kỳ " + record.term.term + " năm " + record.term.year  ,
+                    totalFee: record.amount,
+                    textMoney: record.textMoney,
+                    studentSign: record.student.fullName,
+                    username: 5372000,
+                  };
+                  props.handlePrintStudentInvoice(obj,1);
+                }
+              }}
+              type="primary"
+              style={{ width: "108px" }}
+            >
               <PrinterFilled />
               In
             </Button>
@@ -178,10 +201,10 @@ const BillDetail = (props) => {
                 <Divider orientation="left">Danh mục</Divider>
                 <Table
                   bordered
-                  rowKey="title"
+                  rowKey="id"
                   pagination={false}
                   columns={feeCategoryTableColumns}
-                  dataSource={dataHeaderLeft}
+                  dataSource={record ? record.items : []}
                 ></Table>
               </Col>
             </Row>

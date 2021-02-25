@@ -23,7 +23,7 @@ const formItemLayout = {
       span: 16,
     },
   },
-}; 
+};
 
 export const InFeeReceiptsCreate = (props) => {
   const [initialValues, setInitialValues] = useState({
@@ -53,7 +53,7 @@ export const InFeeReceiptsCreate = (props) => {
     } else if (err.message === "Unauthorized") {
       throw new SubmissionError({ _err: "Username or Password Invalid" });
     }
-  }; 
+  };
   const handleSubmitForm = (values) => {
     let feeCategories = [];
     feeCategoryGroupList.map((feeCategoryGroup) => {
@@ -66,7 +66,7 @@ export const InFeeReceiptsCreate = (props) => {
       amount: studentFeeInfo.totalFee,
       reasonId: values.reasonId,
       term: studentFeeInfo.term,
-      feeCategories: feeCategories,
+      studentsFeeCategories: feeCategories,
       invoiceType: 0,
     };
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Button, Input, Select, Popconfirm, Space, Table } from "antd";
-import { ExportOutlined, PrinterFilled, SearchOutlined, RetweetOutlined, ClearOutlined } from "@ant-design/icons";
+import { Button, Input, Space, Table } from "antd";
+import { PrinterFilled, SearchOutlined, ClearOutlined } from "@ant-design/icons";
 import { api } from "Api";
 import Highlighter from "react-highlight-words";
 import moment from "moment";
@@ -92,20 +92,22 @@ const BillList = (props) => {
       dataIndex: "invoiceNo",
       align: "center",
       ...getColumnSearchProps({
-        dataIndex: "studentId",
+        dataIndex: "invoiceNo",
         columnName: "mã phiếu thu",
       }),
-      render: (text,record) => {
-       return <a
-          // className="ant-anchor-link-title ant-anchor-link-title-active"
-          href="javascript:void(0)"
-          onClick={() => {
-            console.log(record);
-            props.onSelectRow(record);
-          }}
-        >
-          {text}
-        </a>;
+      render: (text, record) => {
+        return (
+          <a
+            // className="ant-anchor-link-title ant-anchor-link-title-active"
+            href="javascript:void(0)"
+            onClick={() => {
+              console.log(record);
+              props.onSelectRow(record);
+            }}
+          >
+            {text}
+          </a>
+        );
       },
     },
     {
@@ -131,24 +133,24 @@ const BillList = (props) => {
     {
       title: "Lý Do Thu ",
       align: "center",
-      dataIndex: "reasonName",  
+      dataIndex: "reasonName",
     },
     {
       title: "Diễn Giải",
       align: "center",
-      dataIndex: "invoiceName",  
+      dataIndex: "invoiceName",
     },
     {
       title: "Người Thu",
       align: "center",
-      dataIndex: "creatorName", 
+      dataIndex: "creatorName",
     },
     {
       title: "Số Tiền",
       dataIndex: "amount",
       align: "center",
       render: (text, record) => <>{format(text)}</>,
-    }, 
+    },
     {
       title: "Thao Tác",
       align: "center",
@@ -157,9 +159,7 @@ const BillList = (props) => {
           <Button
             type=""
             onClick={() => {
-              console.log("cc");
-              console.log(record);
-              props.setShowInFeeReceiptsCreate(record);
+              props.setShowInvoicePrint(record);
             }}
           >
             <PrinterFilled />

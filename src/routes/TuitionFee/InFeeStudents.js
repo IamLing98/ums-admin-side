@@ -4,23 +4,28 @@ import { NotificationManager } from "react-notifications";
 // import StudentImport from './Import';
 import { Col, Row } from "reactstrap";
 import moment from "moment";
-import { ArrowLeftOutlined, ArrowRightOutlined, SettingOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import {
+  ArrowLeftOutlined,
+  ArrowRightOutlined,
+  SettingOutlined,
+  ExclamationCircleOutlined,
+  ImportOutlined,
+  ExportOutlined,
+} from "@ant-design/icons";
 import { Button, Tabs, Select, Spin, Modal } from "antd";
 import InFeeReceiptsCreate from "./StudentFeeComponents/InFeeReceiptsCreate";
 import OutFeeReceiptsCreate from "./StudentFeeComponents/OutFeeReceiptsCreate";
 import BillListBadge from "../../components/BillList/BillListBadge";
 import BillList from "./StudentFeeComponents/InvoiceList";
 import Setting from "./StudentFeeComponents/Setting";
-import InvoiceDetail from "./StudentFeeComponents/InvoiceDetail";  
-import InvoicePrint from './InvoicePrint';
-
+import InvoiceDetail from "./StudentFeeComponents/InvoiceDetail";
+import InvoicePrint from "./InvoicePrint";
 
 const { TabPane } = Tabs;
 
 const { confirm } = Modal;
 
-const StudentsFee = (props) => { 
-
+const StudentsFee = (props) => {
   const [studentInvoiceList, setStudentInvoicesList] = useState([]);
 
   const [studentList, setStudentList] = useState([]);
@@ -49,7 +54,9 @@ const StudentsFee = (props) => {
 
   const [term, setTerm] = useState(undefined);
 
-  const [studentInvoiceType, setStudentInvoiceType] = useState(null); 
+  const [studentInvoiceType, setStudentInvoiceType] = useState(null);
+
+  const [filePrintName, setFilePrintName] = useState(null);
 
   const showErrNoti = (err) => {
     NotificationManager.error(err.response.data.message);
@@ -60,7 +67,17 @@ const StudentsFee = (props) => {
     }
   };
 
-  const handlePrrintStudentInvoice = (values) => {};
+  const handlePrintStudentInvoice = (values, id) => {
+    api
+      .post(`/public/api/items?id=${id}`, values)
+      .then((response) => {
+        setFilePrintName(response);
+        setShowInvoicePrint(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const showPrintConfirm = (record) => {
     confirm({
@@ -72,7 +89,7 @@ const StudentsFee = (props) => {
       okType: "danger",
       cancelText: "Huỷ",
       onOk() {
-        handlePrrintStudentInvoice(record);
+        setShowInvoicePrint(record);
       },
       onCancel() {
         console.log("Cancel");
@@ -262,10 +279,10 @@ const StudentsFee = (props) => {
                 width: "180px",
               }}
               type="primary"
-              onClick={() => setShowSettingModal(true)}
+              onClick={() => setShowInvoicePrint(true)}
             >
-              <SettingOutlined />
-              <span>Cài đặt</span>
+              <ExportOutlined />
+              <span>Export</span>
             </Button>
             <Button
               style={{
@@ -275,6 +292,18 @@ const StudentsFee = (props) => {
               }}
               type="primary"
               onClick={() => setShowInvoicePrint(true)}
+            >
+              <ImportOutlined />
+              <span>Import</span>
+            </Button>
+            <Button
+              style={{
+                background: "#448AE2",
+                borderColor: "#448AE2",
+                width: "180px",
+              }}
+              type="primary"
+              onClick={() => setShowSettingModal(true)}
             >
               <SettingOutlined />
               <span>Cài đặt</span>
@@ -327,6 +356,7 @@ const StudentsFee = (props) => {
             feeCategoryList={feeCategoryList}
             setShowInFeeReceiptsCreate={setShowInFeeReceiptsCreate}
             onSelectRow={onSelectRow}
+            setShowInvoicePrint={setShowInvoicePrint}
           />
         </TabPane>
         <TabPane tab="Phiếu thu" key="2">
@@ -335,6 +365,7 @@ const StudentsFee = (props) => {
             feeCategoryList={feeCategoryList}
             setShowInFeeReceiptsCreate={setShowInFeeReceiptsCreate}
             onSelectRow={onSelectRow}
+            setShowInvoicePrint={setShowInvoicePrint}
           />
         </TabPane>
         <TabPane tab="Phiếu chi" key="3">
@@ -344,6 +375,7 @@ const StudentsFee = (props) => {
             setShowInFeeReceiptsCreate={setShowInFeeReceiptsCreate}
             setShowInvoiceDetail={setShowInvoiceDetail}
             onSelectRow={onSelectRow}
+            setShowInvoicePrint={setShowInvoicePrint}
           />
         </TabPane>
       </Tabs>
@@ -362,8 +394,12 @@ const StudentsFee = (props) => {
         visible={showOutFeeReceiptsCreate}
         selectedTerm={selectedTerm}
       />
-      <InvoiceDetail visible={showInvoiceDetail} onDeselectRow={onDeselectRow} />  
-      <InvoicePrint visible={showInvoicePrint} onCancel={setShowInvoicePrint}/>
+      <InvoiceDetail
+        visible={showInvoiceDetail}
+        onDeselectRow={onDeselectRow}
+        handlePrintStudentInvoice={handlePrintStudentInvoice}
+      />
+      {showInvoicePrint &&<InvoicePrint visible={showInvoicePrint} filePrintName={filePrintName} onCancel={setShowInvoicePrint} />}
     </Spin>
   );
 };
