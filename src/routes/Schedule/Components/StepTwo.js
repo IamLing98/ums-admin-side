@@ -317,7 +317,10 @@ const StepTwo = (props) => {
               )}
               <Button
                 type="primary"
-                onClick={() => setToShowSubjectClassCreate(true)}
+                onClick={() => {
+                  console.log("as");
+                  setToShowSubjectClassCreate(true);
+                }}
                 style={{
                   width: "180px",
                 }}

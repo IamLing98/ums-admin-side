@@ -168,7 +168,7 @@ const TermComponent = (props) => {
               <ClockCircleOutlined />
               Kế hoạch học tập
             </Menu.Item>
-            <Menu.Item key={term.progress === 2 ? "setting:2" : "setting:3"} disabled={term.progress < 13}>
+            <Menu.Item key={term.progress < 32 ? "setting:2" : "setting:3"} disabled={term.progress < 13}>
               <CodeOutlined />
               {term.status === 2 ? "Đăng ký học tập" : "Lớp học phần"}
             </Menu.Item>

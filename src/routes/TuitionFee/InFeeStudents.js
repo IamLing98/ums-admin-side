@@ -69,7 +69,7 @@ const StudentsFee = (props) => {
 
   const handlePrintStudentInvoice = (values, id) => {
     api
-      .post(`/public/api/items?id=${id}`, values)
+      .post(`/documents?id=${id}`, values)
       .then((response) => {
         setFilePrintName(response);
         setShowInvoicePrint(true);
@@ -399,7 +399,9 @@ const StudentsFee = (props) => {
         onDeselectRow={onDeselectRow}
         handlePrintStudentInvoice={handlePrintStudentInvoice}
       />
-      {showInvoicePrint &&<InvoicePrint visible={showInvoicePrint} filePrintName={filePrintName} onCancel={setShowInvoicePrint} />}
+      {showInvoicePrint && (
+        <InvoicePrint visible={showInvoicePrint} filePrintName={filePrintName} onCancel={setShowInvoicePrint} />
+      )}
     </Spin>
   );
 };
