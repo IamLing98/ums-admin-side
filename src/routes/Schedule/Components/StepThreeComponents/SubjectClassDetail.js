@@ -1,32 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { Drawer, Button, Table, Divider } from "antd";
+import { Drawer, Button, Table, Divider, Tag, Popover } from "antd";
 import { RollbackOutlined, PrinterFilled, ExportOutlined } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
+import { api } from "Api";
 import StudentDetail from "./StudentDetail";
 import TeacherDetail from "./TeacherDetail";
+import { daysOfWeek } from "../../../../util/dataUltil";
 
 const SubjectClassDetail = (props) => {
   const [subjectClass, setSubjectClass] = useState(undefined);
 
   const [showTeacherDetail, setShowTeacherDetail] = useState(false);
 
-  const [showStudentDetail, setShowStudentDetail] = useState(false); 
-  
+  const [showStudentDetail, setShowStudentDetail] = useState(false);
+
   useEffect(() => {
     if (props.visible) {
-      console.log(props.visible);
-      setSubjectClass(props.visible);
-      let newA = [];
-      for (var i = 0; i < 20; i++) {
-        newA.push({
-          studentId: "517100001",
-          fullName: "Seymour Abneyy",
-          departmentName: "Công nghệ thông tin ",
-          yearClassId: "517100",
-          yearClassName: "Công Nghệ Thông Tin",
-        });
-      }
-      setStudentList([...newA]);
+      api
+        .get(`/subjectClasses/getDetail/${props.visible.subjectClassId}`)
+        .then((result) => setSubjectClass(result))
+        .catch((err) => console.log(err));
     }
   }, [props.visible]);
   const data = [
@@ -58,20 +51,26 @@ const SubjectClassDetail = (props) => {
       ),
     },
     {
+      title: "Thời lượng:",
+      value: subjectClass ? subjectClass.duration + " tiết" : "",
+    },
+    {
       title: "Lịch học",
-      value: subjectClass ? subjectClass.departmentName : "",
+      value: subjectClass
+        ? daysOfWeek[subjectClass.dayOfWeek] +
+          ". Tiết: " +
+          subjectClass.hourOfDay +
+          " - " +
+          (subjectClass.duration + subjectClass.hourOfDay - 1)
+        : "",
     },
     {
       title: "Phòng học",
-      value: subjectClass ? subjectClass.departmentName : "",
+      value: subjectClass ? subjectClass.roomId : "",
     },
     {
       title: "Khoa phụ trách",
       value: subjectClass ? subjectClass.departmentName : "",
-    },
-    {
-      title: "Thời lượng:",
-      value: subjectClass ? subjectClass.duration + " tiết" : "",
     },
     {
       title: "Yêu cầu phòng máy:",
@@ -119,16 +118,6 @@ const SubjectClassDetail = (props) => {
     },
   ];
 
-  const [studentList, setStudentList] = useState([
-    {
-      studentId: "517100001",
-      fullName: "Seymour Abneyy",
-      departmentName: "Công nghệ thông tin ",
-      yearClassId: "517100",
-      yearClassName: "Công Nghệ Thông Tin",
-    },
-  ]);
-
   const studentListColumns = [
     {
       title: "Mã sinh viên",
@@ -160,17 +149,34 @@ const SubjectClassDetail = (props) => {
     },
     {
       title: "Lớp niên khoá",
-      dataIndex: "yearClassId",
+      dataIndex: "className",
       align: "center",
       defaultSortOrder: "descend",
       sorter: (a, b) => a.age - b.age,
     },
     {
       title: "Trạng thái",
-      dataIndex: "title",
+      dataIndex: "status",
       defaultSortOrder: "descend",
       align: "center",
-      sorter: (a, b) => a.age - b.age,
+      render: (text, record) => {
+        if (text === 0) {
+          return (
+            <Popover
+              content={
+                record.rejectReason
+              }
+              title="Lý do huỷ"
+            >
+              <Tag color="#f50">Đã huỷ</Tag>
+            </Popover>
+          );
+        } else if (text === 1) {
+          return <Tag color="#2db7f5">Chờ đóng học phí</Tag>;
+        } else if (text === 2) {
+          return <Tag color="#87d068">Đã đóng học phí</Tag>;
+        }
+      },
     },
   ];
 
@@ -234,12 +240,12 @@ const SubjectClassDetail = (props) => {
               rowKey="title"
               bordered
               columns={studentListColumns}
-              dataSource={studentList}
+              dataSource={subjectClass ? subjectClass.studentList : []}
             ></Table>
           </Col>
         </Row>
         <TeacherDetail visible={showTeacherDetail} setShowTeacherDetail={setShowTeacherDetail} />
-        <StudentDetail  visible={showStudentDetail} setShowStudentDetail={setShowStudentDetail} />
+        <StudentDetail visible={showStudentDetail} setShowStudentDetail={setShowStudentDetail} />
       </Drawer>
     </>
   );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Drawer, Button, Table, Avatar } from "antd";
-import { RollbackOutlined, CheckOutlined } from "@ant-design/icons";
+import { Drawer, Button, Table  } from "antd";
+import { RollbackOutlined  } from "@ant-design/icons"; 
 
 const SubjectClassDetail = (props) => {
   const [subjectClass, setSubjectClass] = useState(undefined);
@@ -8,7 +8,7 @@ const SubjectClassDetail = (props) => {
   useEffect(() => {
     if (props.visible) {
       console.log(props.visible);
-      setSubjectClass(props.visible);
+      setSubjectClass(props.visible); 
     }
   }, [props.visible]);
   const data = [
@@ -26,7 +26,7 @@ const SubjectClassDetail = (props) => {
     },
     {
       title: "Giảng viên:",
-      value: subjectClass ? subjectClass.teacherId + ' - ' + subjectClass.fullName : "",
+      value: subjectClass ? subjectClass.teacherId + " - " + subjectClass.fullName : "",
     },
     {
       title: "Khoa phụ trách",
@@ -38,15 +38,11 @@ const SubjectClassDetail = (props) => {
     },
     {
       title: "Yêu cầu phòng máy:",
-      value: subjectClass
-        ? subjectClass.isRequireLab === true
-          ? "Có"
-          : "Không"
-        : "",
+      value: subjectClass ? (subjectClass.isRequireLab === true ? "Có" : "Không") : "",
     },
     {
       title: "Số tín chỉ:",
-      value: subjectClass ? subjectClass.eachSubject  : "",
+      value: subjectClass ? subjectClass.eachSubject : "",
     },
     {
       title: "Số giờ lý thuyết:",
@@ -100,10 +96,7 @@ const SubjectClassDetail = (props) => {
               textAlign: "right",
             }}
           >
-            <Button
-              onClick={() => props.cancelSelecting(subjectClass)}
-              style={{ marginRight: 8 }}
-            >
+            <Button onClick={() => props.cancelSelecting(subjectClass)} style={{ marginRight: 8 }}>
               <RollbackOutlined />
               Đóng
             </Button>

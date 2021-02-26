@@ -1,26 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { Drawer, Table, Divider } from "antd";
+import { Drawer, Table, Divider, Badge  } from "antd";
 import { RollbackOutlined } from "@ant-design/icons";
 import { api } from "Api";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import { Row, Col } from "reactstrap";
+import moment from "moment";
 
 const StudentDetail = (props) => {
   const [loading, setLoading] = useState(true);
 
   const [studentDetail, setStudentDetail] = useState(null);
 
-  const [gradeData, setGradeData] = useState([]);
-
-  const getStudentDetail = (studentId) => {
-    api
-      .get(`/students/${studentId}`)
-      .then((res) => {
-        setStudentDetail(res);
-        setLoading(false);
-      })
-      .catch((err) => console.log(err));
+  const extractStatus = (status) => {
+    if (status === 1 || status === 2)
+      return (
+        <div>
+          <Badge status="success" /> Đang theo học
+        </div>
+      );
+    else
+      return (
+        <div>
+          <Badge status="error" /> Đã huỷ
+        </div>
+      );
   };
+
   const studentData = [
     {
       title: "Mã sinh viên:",
@@ -32,19 +37,23 @@ const StudentDetail = (props) => {
     },
     {
       title: "Ngày sinh:",
-      values: studentDetail ? studentDetail.dateBirth : "",
+      values: studentDetail ? moment(studentDetail.dateBirth).format("MM/DD/YYYY") : "",
     },
     {
       title: "Giới tính:",
-      values: studentDetail ? studentDetail.nationalityName : "",
+      values: studentDetail ? (studentDetail.sex === 1 ? "Nam" : "Nữ") : "",
     },
     {
       title: "Lớp niên khoá:",
-      values: studentDetail ? studentDetail.religion : "",
+      values: studentDetail ? studentDetail.className : "",
     },
     {
       title: "Khoa:",
-      values: studentDetail ? studentDetail.permanentResidence : "",
+      values: studentDetail ? studentDetail.departmentName : "",
+    },
+    {
+      title: "Trạng thái:",
+      values: studentDetail ? <div>{extractStatus(studentDetail.status)}</div> : "",
     },
   ];
 
@@ -52,8 +61,6 @@ const StudentDetail = (props) => {
     {
       title: "Danh mục",
       dataIndex: "title",
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.age - b.age,
       render: (text, record) => {
         return <strong style={{ fontWeight: "700" }}>{text}</strong>;
       },
@@ -104,7 +111,8 @@ const StudentDetail = (props) => {
 
   useEffect(() => {
     if (props.visible) {
-      getStudentDetail(props.visible.studentId);
+      console.log(props.visible);
+      setStudentDetail(props.visible);
     }
   }, [JSON.stringify(props.visible)]);
 
@@ -128,14 +136,20 @@ const StudentDetail = (props) => {
               showHeader={false}
               pagination={false}
               columns={studentTitle}
-              dataSource={studentData}
+              dataSource={studentData ? studentData : []}
             />
           </Col>
         </Row>
         <Row>
           <Col md={12} style={{ display: "block" }}>
             <Divider orientation="left">Kết quả học tập</Divider>
-            <Table bordered rowKey="title" pagination={false} columns={gradeColumns} dataSource={gradeData} />
+            <Table
+              bordered
+              rowKey="title"
+              pagination={false}
+              columns={gradeColumns}
+              dataSource={studentDetail ? [studentDetail] : []}
+            />
           </Col>
         </Row>
       </Drawer>
