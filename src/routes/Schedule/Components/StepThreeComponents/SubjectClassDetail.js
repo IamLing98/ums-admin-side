@@ -162,19 +162,12 @@ const SubjectClassDetail = (props) => {
       render: (text, record) => {
         if (text === 0) {
           return (
-            <Popover
-              content={
-                record.rejectReason
-              }
-              title="Lý do huỷ"
-            >
+            <Popover content={record.rejectReason} title="Lý do huỷ">
               <Tag color="#f50">Đã huỷ</Tag>
             </Popover>
           );
         } else if (text === 1) {
-          return <Tag color="#2db7f5">Chờ đóng học phí</Tag>;
-        } else if (text === 2) {
-          return <Tag color="#87d068">Đã đóng học phí</Tag>;
+          return <Tag color="#2db7f5">Đang theo học</Tag>;
         }
       },
     },
