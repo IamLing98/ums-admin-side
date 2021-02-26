@@ -2,10 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Drawer, Button, Table, Divider } from "antd";
 import { RollbackOutlined, PrinterFilled, ExportOutlined } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
+import StudentDetail from "./StudentDetail";
+import TeacherDetail from "./TeacherDetail";
 
 const SubjectClassDetail = (props) => {
   const [subjectClass, setSubjectClass] = useState(undefined);
 
+  const [showTeacherDetail, setShowTeacherDetail] = useState(false);
+
+  const [showStudentDetail, setShowStudentDetail] = useState(false); 
+  
   useEffect(() => {
     if (props.visible) {
       console.log(props.visible);
@@ -42,7 +48,7 @@ const SubjectClassDetail = (props) => {
         <a
           href="javascript:void(0)"
           onClick={() => {
-            props.setSelecting(record);
+            setShowTeacherDetail(true);
           }}
         >
           <span>{subjectClass.teacherId + " - " + subjectClass.fullName}</span>
@@ -50,6 +56,14 @@ const SubjectClassDetail = (props) => {
       ) : (
         ""
       ),
+    },
+    {
+      title: "Lịch học",
+      value: subjectClass ? subjectClass.departmentName : "",
+    },
+    {
+      title: "Phòng học",
+      value: subjectClass ? subjectClass.departmentName : "",
     },
     {
       title: "Khoa phụ trách",
@@ -126,7 +140,7 @@ const SubjectClassDetail = (props) => {
         <a
           href="javascript:void(0)"
           onClick={() => {
-            props.setSelecting(record);
+            setShowStudentDetail(record);
           }}
         >
           <span>{text}</span>
@@ -224,6 +238,8 @@ const SubjectClassDetail = (props) => {
             ></Table>
           </Col>
         </Row>
+        <TeacherDetail visible={showTeacherDetail} setShowTeacherDetail={setShowTeacherDetail} />
+        <StudentDetail  visible={showStudentDetail} setShowStudentDetail={setShowStudentDetail} />
       </Drawer>
     </>
   );
