@@ -93,7 +93,7 @@ class UserBlock extends Component {
                 <li className="p-15 border-bottom user-profile-top bg-primary rounded-top">
                   {userData ? (
                     <p className="text-white mb-0 fs-14">
-                      {userData.firstName + " " + userData.lastName}
+                      {/* {userData.firstName + " " + userData.lastName} */}
                     </p>
                   ) : (
                     <CircularProgress

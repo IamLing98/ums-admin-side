@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Table,
-  Tag,
-  Space,
-  Button,
+import { 
   Modal,
   Select,
   Input,
@@ -12,6 +8,7 @@ import {
 } from "antd";
 import { connect } from "react-redux";
 import { api } from "Api";
+import moment from 'moment';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -45,15 +42,11 @@ const formItemLayout = {
 };
 
 export const CreateYearClass = (props) => {
-  const [departmentId, setDepartmentId] = useState(undefined);
-
-  const [branchId, setBranchId] = useState(undefined);
+  const [departmentId, setDepartmentId] = useState(undefined); 
 
   const [branchList, setBranchList] = useState([]);
 
-  const [yearClassName, setYearClassName] = useState(null);
-
-  const [startYear, setStartYear] = useState(undefined);
+  const [yearClassName, setYearClassName] = useState(null); 
 
   const [educationProgramList, setEducationProgramList] = useState([]);
 
@@ -76,9 +69,7 @@ export const CreateYearClass = (props) => {
     formData.append("educationProgramStatus", "2");
     props.onOk(formData);
   };
-  useEffect(() => {}, [JSON.stringify(props.visible)]);
-
-  const onFieldsChange = (changedFields, allFields) => {};
+  useEffect(() => {}, [JSON.stringify(props.visible)]); 
 
   return (
     <Modal

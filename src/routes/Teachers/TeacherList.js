@@ -14,6 +14,7 @@ import {
 } from "@ant-design/icons";
 import { api } from "Api";
 import Highlighter from "react-highlight-words";
+import moment from "moment";
 
 const StudentList = (props) => {
   const [pagination, setPagination] = useState({
@@ -29,57 +30,39 @@ const StudentList = (props) => {
   const searchInput = useRef(null);
 
   const getColumnSearchProps = (values) => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-    }) => (
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
         <Input
           ref={searchInput}
           placeholder={`Tìm theo ${values.columnName}`}
           value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() =>
-            handleSearch(selectedKeys, confirm, values.dataIndex)
-          }
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm, values.dataIndex)}
           style={{ width: 188, marginBottom: 8, display: "block" }}
         />
         <Space>
           <Button
             type="primary"
-            onClick={() =>
-              handleSearch(selectedKeys, confirm, values.dataIndex)
-            }
+            onClick={() => handleSearch(selectedKeys, confirm, values.dataIndex)}
             icon={<SearchOutlined />}
             size="small"
             style={{ width: 90 }}
           >
             Tìm
           </Button>
-          <Button
-            onClick={() => handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-            icon={<ClearOutlined />}
-          >
+          <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }} icon={<ClearOutlined />}>
             Xoá
           </Button>
         </Space>
       </div>
     ),
-    filterIcon: (filtered) => (
-      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
-    ),
+    filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />,
     onFilter: (value, record) =>
       record[values.dataIndex]
         ? record[values.dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -95,8 +78,8 @@ const StudentList = (props) => {
           textToHighlight={text ? text.toString() : ""}
         />
       ) : (
-          text
-        ),
+        text
+      ),
   });
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -116,22 +99,8 @@ const StudentList = (props) => {
       dataIndex: "employeeId",
       align: "center",
       ...getColumnSearchProps({
-        dataIndex: "studentId",
+        dataIndex: "employeeId",
         columnName: "mã giảng viên",
-      }),
-      render: (text, record) => {
-        if (record.isSelecting === true) {
-          return <Alert message={text} type="success" />
-        } else return <span >{text}</span>;
-      },
-    },
-    {
-      title: "Họ Và Tên ",
-      dataIndex: "fullName",
-      align: "center",
-      ...getColumnSearchProps({
-        dataIndex: "fullName",
-        columnName: "tên sinh viên",
       }),
       render: (text, record) => (
         <a
@@ -145,36 +114,83 @@ const StudentList = (props) => {
           {text}
         </a>
       ),
+    },
+    {
+      title: "Họ Và Tên",
+      dataIndex: "fullName",
+      align: "center",
+      ...getColumnSearchProps({
+        dataIndex: "fullName",
+        columnName: "tên sinh viên",
+      }),
+    },
+    {
+      title: "Giới Tính",
+      dataIndex: "sex",
+      align: "center",
+      render: (text, record) => <span>{text === 1 ? "Nam" : "Nữ"}</span>,
+    },
+    {
+      title: "Ngày Sinh",
+      dataIndex: "dateBirth",
+      align: "center",
+      render: (text, record) => <span>{moment(text).format("DD.MM.YYYY")}</span>,
     }, 
     {
+      title: "Học hàm",
+      dataIndex: "degree",
+      align: "center",
+      render: (text, record) => {
+        switch (text) {
+          case 2:
+            return <span>Tiến sỹ</span>;
+          default:
+            return <span>Thạc sỹ</span>;
+        }
+      },
+    },
+    {
+      title: "Học Vị",
+      dataIndex: "scientific_titles",
+      align: "center",
+      render: (text, record) => {
+        switch (text) {
+          case 2:
+            return <span>GS</span>;
+          default:
+            return <span>PGS</span>;
+        }
+      },
+    },
+    {
       title: "Khoa Đào Tạo",
-      dataIndex: "departmentName",
+      dataIndex: ["department", "departmentName"],
       align: "center",
       ...getColumnSearchProps({
         dataIndex: "departmentName",
         columnName: "khoa đào tạo",
       }),
-    }, 
+    },
     {
       title: "Thao Tác",
       align: "center",
       render: (text, record) => (
         <Space size="middle">
           {record.educationProgramStatus === "2" ? (
-            <Button type="" onClick={() => { }}>
+            <Button type="" onClick={() => {}}>
               <RetweetOutlined />
             </Button>
           ) : (
-              <Button type="" disabled>
-                <RetweetOutlined />
-              </Button>
-            )}
+            <Button type="" disabled>
+              <RetweetOutlined />
+            </Button>
+          )}
           <Button
             type=""
             onClick={() => {
-              console.log("cc")
-              console.log(record)
-              props.setShowModalUpdate(record); 
+              console.log("cc");
+              console.log(record);
+              props.setShowModalUpdate(record);
             }}
           >
             <EditFilled />
@@ -254,6 +270,9 @@ const StudentList = (props) => {
         onChange={(paging) => handleChangeTable(paging)}
         showSizeChanger={true}
         rowSelection={rowSelection}
+        onRow={(record, index) => {
+          if (record.isSelecting === true) return { style: { background: "#4DC2F7", fontWeight: "bolder" } };
+        }}
         locale={{
           emptyText: (
             <div className="ant-empty ant-empty-normal">

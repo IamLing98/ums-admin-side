@@ -20,12 +20,7 @@ import SidebarContentSubAdmin from "Components/Sidebar/SidebarContentSubAdmin";
 import SidebarContentClient from "Components/Sidebar/SidebarContentClient";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 import RctSectionLoader from "Components/RctSectionLoader/RctSectionLoader";
-import {
-  ROLE_ADMIN,
-  ROLE_CLIENT,
-  ROLE_SUBADMIN,
-  ROLE_SUPERADMIN,
-} from "Util/apiUtils";
+import { ROLE_ADMIN, ROLE_CLIENT, ROLE_SUBADMIN, ROLE_SUPERADMIN } from "Util/apiUtils";
 
 class Sidebar extends Component {
   componentWillMount() {
@@ -33,18 +28,14 @@ class Sidebar extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    const {
-      enableSidebarBackgroundImage,
-      selectedSidebarImage,
-      isDarkSidenav,
-      locale,
-    } = this.props;
-    const {userData} = this.props.auth;
+    const { enableSidebarBackgroundImage, selectedSidebarImage, isDarkSidenav, locale } = this.props;
+    const { userData } = this.props.auth;
     if (
       enableSidebarBackgroundImage !== nextProps.enableSidebarBackgroundImage ||
       selectedSidebarImage !== nextProps.selectedSidebarImage ||
       isDarkSidenav !== nextProps.isDarkSidenav ||
-      locale || userData !== nextProps.auth.userData 
+      locale ||
+      userData !== nextProps.auth.userData
     ) {
       return true;
     } else {
@@ -64,14 +55,14 @@ class Sidebar extends Component {
     window.removeEventListener("resize", this.updateDimensions);
   }
 
-  componentWillReceiveProps(nextProps) { 
+  componentWillReceiveProps(nextProps) {
     const { windowWidth } = this.state;
     const { collapsedSidebar } = this.props;
     if (nextProps.location !== this.props.location) {
       if (windowWidth <= 1199) {
         this.props.collapsedSidebarAction(false);
       }
-    } 
+    }
   }
 
   updateDimensions = () => {
@@ -82,15 +73,11 @@ class Sidebar extends Component {
   };
 
   render() {
-    const {
-      enableSidebarBackgroundImage,
-      selectedSidebarImage,
-      isDarkSidenav,
-    } = this.props;
+    const { enableSidebarBackgroundImage, selectedSidebarImage, isDarkSidenav } = this.props;
     const { userData } = this.props.auth;
     var ROLE = null;
     if (userData) {
-      ROLE = userData.roles[0].roleName;
+      ROLE = userData.roleDTO.roleName;
     }
     console.log(ROLE);
     return (
@@ -100,9 +87,7 @@ class Sidebar extends Component {
             "background-none": !enableSidebarBackgroundImage,
           })}
           style={{
-            backgroundImage: enableSidebarBackgroundImage
-              ? `url(${selectedSidebarImage})`
-              : "none",
+            backgroundImage: enableSidebarBackgroundImage ? `url(${selectedSidebarImage})` : "none",
           }}
         >
           <div
@@ -133,9 +118,7 @@ class Sidebar extends Component {
                   ) : ROLE === ROLE_SUBADMIN ? (
                     <SidebarContentSubAdmin userData={userData} />
                   ) : (
-                    ROLE === ROLE_CLIENT && (
-                      <SidebarContentClient userData={userData} />
-                    )
+                    ROLE === ROLE_CLIENT && <SidebarContentClient userData={userData} />
                   )
                 ) : (
                   <RctSectionLoader />
@@ -151,13 +134,7 @@ class Sidebar extends Component {
 
 // map state to props
 const mapStateToProps = ({ settings, auth }) => {
-  const {
-    enableSidebarBackgroundImage,
-    selectedSidebarImage,
-    collapsedSidebar,
-    isDarkSidenav,
-    locale,
-  } = settings;
+  const { enableSidebarBackgroundImage, selectedSidebarImage, collapsedSidebar, isDarkSidenav, locale } = settings;
   return {
     enableSidebarBackgroundImage,
     selectedSidebarImage,
@@ -174,6 +151,6 @@ export default withRouter(
     {
       collapsedSidebarAction,
       fetchUserDetails,
-    }
-  )(Sidebar)
+    },
+  )(Sidebar),
 );

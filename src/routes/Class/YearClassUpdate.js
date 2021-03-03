@@ -3,6 +3,7 @@ import { Modal, Form, Row, Col, Select, Input, DatePicker } from "antd";
 import { NotificationManager } from "react-notifications";
 import { RollbackOutlined, CheckOutlined } from "@ant-design/icons";
 import { api } from "Api";
+import moment from "moment";
 
 const { Option } = Select;
 
@@ -24,10 +25,9 @@ const formItemLayout = {
     sm: {
       span: 16,
     },
-  }, 
+  },
 };
 
- 
 export const YearClassCreate = (props) => {
   const [form] = Form.useForm();
 
@@ -79,8 +79,8 @@ export const YearClassCreate = (props) => {
         onFieldsChange={(changedFields, allFields) => {}}
         preserve={false}
         onValuesChange={(changedValues, allValues) => {}}
-        initialValues={{...props.visible}}
-      > 
+        initialValues={{ ...props.visible }}
+      >
         <Form.Item
           name="departmentId"
           label="Khoa"
@@ -101,9 +101,7 @@ export const YearClassCreate = (props) => {
           name="educationProgramLevel"
           label="Trình độ đào tạo"
           hasFeedback
-          rules={[
-            { required: true, message: "Vui lòng chọn trình độ đào tạo!" },
-          ]}
+          rules={[{ required: true, message: "Vui lòng chọn trình độ đào tạo!" }]}
         >
           <Select allowClear placeholder="Trình độ đào tạo..." disabled>
             <Option value={1}>Cao học</Option>
@@ -111,13 +109,13 @@ export const YearClassCreate = (props) => {
             <Option value={3}>Cao đẳng</Option>
           </Select>
         </Form.Item>
-        <Form.Item name="rangeTime" label="Niên khoá"  >
+        <Form.Item name="rangeTime" label="Niên khoá">
           <RangePicker
-           style={{ width: "100%" }} 
-           picker="year" 
-           disabled
-           defaultValue={[moment(`${props.visible.startYear}`, 'YYYY'), moment(`${props.visible.endYear}`, 'YYYY')]}  
-            />
+            style={{ width: "100%" }}
+            picker="year"
+            disabled
+            value={[moment(`${props.visible.startYear}`, "YYYY"), moment(`${props.visible.endYear}`, "YYYY")]}
+          />
         </Form.Item>
         <Form.Item
           name="teacherId"

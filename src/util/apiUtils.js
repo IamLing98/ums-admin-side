@@ -9,6 +9,7 @@ export const ROLE_ADMIN_BADGE = "badge-primary";
 export const ROLE_SUBADMIN_BADGE = "badge-info";
 export const ROLE_CLIENT_BADGE = "badge-warning";
 export const ROLE_SURVEYOR_BADGE = "badge-dark";
+
 export const parseApiErrors = (error) => {
   return error.response.body.violations.reduce((parsedErrors, violation) => {
     parsedErrors[violation["propertyPath"]] = violation["message"];

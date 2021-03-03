@@ -2,11 +2,11 @@ import { api } from "Api";
 import React, { useEffect, useState, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { NotificationManager } from "react-notifications";
-// import StudentCreate from "./StudentCreate";
+import TeacherCreate from "./TeacherCreate";
 // import StudentUpdate from "./StudentUpdate";
 // import StudentImport from './Import';
 import { Col, Row } from "reactstrap";
-import moment from 'moment';
+import moment from "moment";
 import {
   PlusOutlined,
   SearchOutlined,
@@ -16,9 +16,9 @@ import {
   ExclamationCircleOutlined,
   RetweetOutlined,
 } from "@ant-design/icons";
-import { Button,   Alert, Modal } from "antd";
+import { Button, Alert, Modal } from "antd";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
-import StudentDetail from "./StudentDetail";
+import TeacherDetails from "./TeacherDetails";
 import TeacherList from "./TeacherList";
 
 const { confirm } = Modal;
@@ -54,14 +54,12 @@ export const TeacherHome = (props) => {
 
   const input = useRef(null);
 
-  const onSearch = () => { };
+  const onSearch = () => {};
 
   const showErrNoti = (err) => {
     NotificationManager.err(err.response.data.message);
     if (err.message === "Forbidden") {
-      NotificationManager.err(
-        "Did you forget something? Please activate your account"
-      );
+      NotificationManager.err("Did you forget something? Please activate your account");
     } else if (err.message === "Unauthorized") {
       throw new SubmissionError({ _err: "Username or Password Invalid" });
     }
@@ -69,7 +67,7 @@ export const TeacherHome = (props) => {
 
   const getTeacherList = () => {
     api
-      .get("/teachers", true)
+      .get("/employee?type=1", true)
       .then((res) => {
         for (var i = 0; i < res.length; i++) {
           res[i].isSelecting = false;
@@ -85,8 +83,10 @@ export const TeacherHome = (props) => {
   const setSelecting = (record) => {
     let newList = teacherList;
     for (var i = 0; i < newList.length; i++) {
-      if (record.studentId === newList[i].studentId) {
+      if (record.employeeId === newList[i].employeeId) {
         newList[i].isSelecting = true;
+      } else {
+        newList[i].isSelecting = false;
       }
     }
     setTeacherList(newList);
@@ -96,9 +96,7 @@ export const TeacherHome = (props) => {
   const cancelShowDetail = (record) => {
     let newList = teacherList;
     for (var i = 0; i < newList.length; i++) {
-      if (record.studentId === newList[i].studentId) {
-        newList[i].isSelecting = false;
-      }
+      newList[i].isSelecting = false;
     }
     setTeacherList(newList);
     setShowDetail(null);
@@ -117,7 +115,7 @@ export const TeacherHome = (props) => {
 
   const handleSubmitForm = (values) => {
     for (var i = 0; i < values.length; i++) {
-      values.dateBirth = moment(values.dateBirth, 'YYYY-MM-DD');
+      values.dateBirth = moment(values.dateBirth, "YYYY-MM-DD");
     }
     api
       .post("/students", values, true)
@@ -133,7 +131,7 @@ export const TeacherHome = (props) => {
 
   const handleSubmitUpdateForm = (values) => {
     for (var i = 0; i < values.length; i++) {
-      values.dateBirth = moment(values.dateBirth, 'YYYY-MM-DD');
+      values.dateBirth = moment(values.dateBirth, "YYYY-MM-DD");
     }
     api
       .put("/students", values, true)
@@ -149,10 +147,7 @@ export const TeacherHome = (props) => {
 
   const handleDeleteRecord = (values) => {
     api
-      .delete(
-        `/students?${values.map((value, index) => `ids=${value}`).join("&")}`,
-        true
-      )
+      .delete(`/students?${values.map((value, index) => `ids=${value}`).join("&")}`, true)
       .then((res) => {
         NotificationManager.success("Đã xoá" + res + " bản ghi");
         getTeacherList();
@@ -164,10 +159,7 @@ export const TeacherHome = (props) => {
 
   const handleDeleteMultipleRecord = (values) => {
     api
-      .delete(
-        `/students?${values.map((value, index) => `ids=${value}`).join("&")}`,
-        true
-      )
+      .delete(`/students?${values.map((value, index) => `ids=${value}`).join("&")}`, true)
       .then((res) => {
         NotificationManager.success("Đã xoá" + res + " bản ghi");
         getTeacherList();
@@ -205,7 +197,7 @@ export const TeacherHome = (props) => {
       .catch((err) => {
         showErrNoti(err);
       });
-  }
+  };
 
   const getProvinceList = (id) => {
     api
@@ -216,7 +208,7 @@ export const TeacherHome = (props) => {
       .catch((err) => {
         showErrNoti(err);
       });
-  }
+  };
 
   const getEducationProgramList = () => {
     api
@@ -227,7 +219,7 @@ export const TeacherHome = (props) => {
       .catch((err) => {
         showErrNoti(err);
       });
-  }
+  };
 
   const getClassList = () => {
     api
@@ -238,13 +230,13 @@ export const TeacherHome = (props) => {
       .catch((err) => {
         showErrNoti(err);
       });
-  }
+  };
 
   useEffect(() => {
     getTeacherList();
     getDepartmentList();
     getEthnicList();
-    getProvinceList('VNM');
+    getProvinceList("VNM");
     getEducationProgramList();
     getClassList();
   }, []);
@@ -252,7 +244,6 @@ export const TeacherHome = (props) => {
   if (loading) {
     return (
       <>
-        {" "}
         <RctPageLoader />
       </>
     );
@@ -268,30 +259,18 @@ export const TeacherHome = (props) => {
             <h4>
               <span>{currentTitle}</span>{" "}
             </h4>
-            <div className="contextual-link" style={{ top: "15px" }}>
-            </div>
+            <div className="contextual-link" style={{ top: "15px" }}></div>
           </div>
           <div className="collapse show">
             <div className="rct-full-block">
               <hr style={{ margin: "0px" }} />
               <div className="table-responsive">
                 <Row>
-                  <Col
-                    md={6}
-                    sm={12}
-                    style={{ display: "flex", flexDirection: "column" }}
-                  >
-                     <Alert
-                      message="Success Text"
-                      type="info"
-                      style={{ maxHeight: "32px" }}
-                    />
+                  <Col md={6} sm={12} style={{ display: "flex", flexDirection: "column" }}>
+                    <Alert message="Success Text" type="info" style={{ maxHeight: "32px" }} />
                   </Col>
                   <Col md={6} sm={12} xs={12}>
-                    <div
-                      className="tableListOperator"
-                      style={{ textAlign: "right", width: "100%" }}
-                    >
+                    <div className="tableListOperator" style={{ textAlign: "right", width: "100%" }}>
                       <Button
                         type="primary"
                         style={{
@@ -306,26 +285,14 @@ export const TeacherHome = (props) => {
                       </Button>
                       <Button
                         type="primary"
-                        style={{
-                          background: "#63B175",
-                          borderColor: "#63B175",
-                          width: "122px",
-                        }}
-                        onClick={() => setShowModalImport(true)}
-                      >
-                        <VerticalAlignBottomOutlined />
-                        <span>Import </span>
-                      </Button>
-                      <Button
-                        type="primary"
                         style={
                           selectedRowKeys.length > 1
                             ? {
-                              background: "#DC0000",
-                              borderColor: "#DC0000",
-                              color: "wheat",
-                              width: "122px",
-                            }
+                                background: "#DC0000",
+                                borderColor: "#DC0000",
+                                color: "wheat",
+                                width: "122px",
+                              }
                             : {}
                         }
                         disabled={selectedRowKeys.length > 1 ? false : true}
@@ -342,7 +309,7 @@ export const TeacherHome = (props) => {
                           color: "black",
                           width: "122px",
                         }}
-                        onClick={() => { }}
+                        onClick={() => {}}
                       >
                         <DiffOutlined />
                         <span>In Exel</span>
@@ -361,15 +328,15 @@ export const TeacherHome = (props) => {
                   setSelecting={setSelecting}
                 />
               </div>
-              {/* {showDetail !== null
-                && <StudentDetail
+              {showDetail !== null && (
+                <TeacherDetails
                   visible={showDetail !== null ? true : false}
                   record={showDetail}
                   setShowDetail={setShowDetail}
                   cancelShowDetail={cancelShowDetail}
-                />}
-
-              <StudentCreate
+                />
+              )}
+              <TeacherCreate
                 visible={showModalCreate}
                 setShowModalCreate={setShowModalCreate}
                 getTeacherList={getTeacherList}
@@ -380,8 +347,10 @@ export const TeacherHome = (props) => {
                 provinceList={provinceList}
                 educationProgramList={educationProgramList}
                 classList={classList}
-              // options={prerequisitesStudent}
-              />
+                // options={prerequisitesStudent}
+              /> 
+              {/* 
+
               <StudentUpdate
                 visible={showModalUpdate  }
                 setShowModalUpdate={setShowModalUpdate}

@@ -1,14 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Button, Input, Popconfirm, Space, Table  } from "antd";
-import {
-  DeleteFilled, 
-  EditFilled, 
-  SearchOutlined, 
-  RetweetOutlined,
-  ClearOutlined,
-} from "@ant-design/icons";
+import { Button, Input, Popconfirm, Space, Table } from "antd";
+import { DeleteFilled, EditFilled, SearchOutlined, RetweetOutlined, ClearOutlined } from "@ant-design/icons";
 import { api } from "Api";
 import Highlighter from "react-highlight-words";
+import moment from 'moment';
+
 
 const StudentList = (props) => {
   const [pagination, setPagination] = useState({
@@ -24,57 +20,39 @@ const StudentList = (props) => {
   const searchInput = useRef(null);
 
   const getColumnSearchProps = (values) => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-    }) => (
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
         <Input
           ref={searchInput}
           placeholder={`Tìm theo ${values.columnName}`}
           value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() =>
-            handleSearch(selectedKeys, confirm, values.dataIndex)
-          }
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm, values.dataIndex)}
           style={{ width: 188, marginBottom: 8, display: "block" }}
         />
         <Space>
           <Button
             type="primary"
-            onClick={() =>
-              handleSearch(selectedKeys, confirm, values.dataIndex)
-            }
+            onClick={() => handleSearch(selectedKeys, confirm, values.dataIndex)}
             icon={<SearchOutlined />}
             size="small"
             style={{ width: 90 }}
           >
             Tìm
           </Button>
-          <Button
-            onClick={() => handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-            icon={<ClearOutlined />}
-          >
+          <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }} icon={<ClearOutlined />}>
             Xoá
           </Button>
         </Space>
       </div>
     ),
-    filterIcon: (filtered) => (
-      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
-    ),
+    filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />,
     onFilter: (value, record) =>
       record[values.dataIndex]
         ? record[values.dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -90,12 +68,12 @@ const StudentList = (props) => {
           textToHighlight={text ? text.toString() : ""}
         />
       ) : (
-          text
-        ),
+        text
+      ),
   });
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();  
+    confirm();
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   };
@@ -113,15 +91,6 @@ const StudentList = (props) => {
       ...getColumnSearchProps({
         dataIndex: "studentId",
         columnName: "mã sinh viên",
-      }), 
-    },
-    {
-      title: "Họ Và Tên ",
-      dataIndex: "fullName",
-      align: "center",
-      ...getColumnSearchProps({
-        dataIndex: "fullName",
-        columnName: "tên sinh viên",
       }),
       render: (text, record) => (
         <a
@@ -137,6 +106,30 @@ const StudentList = (props) => {
       ),
     },
     {
+      title: "Họ Và Tên",
+      dataIndex: "fullName",
+      align: "center", 
+    },
+    {
+      title: "Giới Tính",
+      dataIndex: "sex",
+      align: "center",
+      render: (text, record) =>{
+        if(text == 1){
+          return <span>Nam</span>
+          
+        }else return <span>Nữ</span>
+      }
+    },
+    {
+      title: "Ngày Sinh",
+      dataIndex: "dateBirth",
+      align: "center", 
+      render: (text, record) => (
+        <span>{moment(text).format("DD.MM.YYYY")}</span>
+      ),
+    },
+    {
       title: "Lớp ",
       align: "center",
       dataIndex: "yearClassId",
@@ -144,15 +137,7 @@ const StudentList = (props) => {
         dataIndex: "yearClassId",
         columnName: "lớp niên khoá",
       }),
-      render: (text, record) => (
-        <>
-          {record.yearClassId +
-            " - " +
-            record.yearClassName +
-            " K" +
-            record.courseNumber}
-        </>
-      ),
+      render: (text, record) => <>{record.yearClassId + " - " + record.yearClassName + " K" + record.courseNumber}</>,
     },
     {
       title: "Khoa Đào Tạo",
@@ -166,9 +151,7 @@ const StudentList = (props) => {
     {
       title: "Niên Khoá",
       align: "center",
-      render: (text, record) => (
-        <span>{record.startYear + " - " + record.endYear}</span>
-      ),
+      render: (text, record) => <span>{record.startYear + " - " + record.endYear}</span>,
     },
     {
       title: "Thao Tác",
@@ -176,20 +159,20 @@ const StudentList = (props) => {
       render: (text, record) => (
         <Space size="middle">
           {record.educationProgramStatus === "2" ? (
-            <Button type="" onClick={() => { }}>
+            <Button type="" onClick={() => {}}>
               <RetweetOutlined />
             </Button>
           ) : (
-              <Button type="" disabled>
-                <RetweetOutlined />
-              </Button>
-            )}
+            <Button type="" disabled>
+              <RetweetOutlined />
+            </Button>
+          )}
           <Button
             type=""
             onClick={() => {
-              console.log("cc")
-              console.log(record)
-              props.setShowModalUpdate(record); 
+              console.log("cc");
+              console.log(record);
+              props.setShowModalUpdate(record);
             }}
           >
             <EditFilled />
@@ -270,8 +253,7 @@ const StudentList = (props) => {
         showSizeChanger={true}
         rowSelection={rowSelection}
         onRow={(record, index) => {
-          if (record.isSelecting === true)
-            return { style: { background: "#4DC2F7", fontWeight:"bolder" } };
+          if (record.isSelecting === true) return { style: { background: "#4DC2F7", fontWeight: "bolder" } };
         }}
         locale={{
           emptyText: (

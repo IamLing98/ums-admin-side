@@ -294,21 +294,21 @@ export const StudentHome = (props) => {
                           textAlign: "left",
                         }}
                       >
-                        <Option key={+"filtereddd1"} value={1}>
+                        <Select.Option key={+"filtereddd1"} value={1}>
                           Xếp loại xuất sắc
-                        </Option>
-                        <Option key={+"filtereddd2"} value={2}>
+                        </Select.Option>
+                        <Select.Option key={+"filtereddd2"} value={2}>
                           Xếp loại giỏi
-                        </Option>
-                        <Option key={+"filtereddd3"} value={3}>
+                        </Select.Option>
+                        <Select.Option key={+"filtereddd3"} value={3}>
                           Xếp loại khá
-                        </Option>
-                        <Option key={+"filtereddd4"} value={4}>
+                        </Select.Option>
+                        <Select.Option key={+"filtereddd4"} value={4}>
                           Xếp loại trung bình
-                        </Option>
-                        <Option key={+"filtereddd5"} value={5}>
+                        </Select.Option>
+                        <Select.Option key={+"filtereddd5"} value={5}>
                           Xếp loại yếu
-                        </Option>
+                        </Select.Option>
                       </Select>
                       <Select
                         allowClear
@@ -320,12 +320,12 @@ export const StudentHome = (props) => {
                           textAlign: "left",
                         }}
                       >
-                        <Option key={+"filteredddd1"} value={1}>
+                        <Select.Option key={+"filteredddd1"} value={1}>
                           Khen thuởng
-                        </Option>
-                        <Option key={+"filteredddd2"} value={2}>
+                        </Select.Option>
+                        <Select.Option key={+"filteredddd2"} value={2}>
                           Kỷ luật
-                        </Option>
+                        </Select.Option>
                       </Select>
                       <Button
                         type="primary"
