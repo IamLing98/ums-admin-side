@@ -34,7 +34,7 @@ const EducationLevel = (props) => {
     },
     {
       title: "Nội dung đào tạo",
-      dataIndex: "banchName",
+      dataIndex: "branchName",
       align: "center",
     },
     {

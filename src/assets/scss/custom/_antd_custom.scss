@@ -1,6 +1,25 @@
-.ant-modal-wrap{
+.ant-modal-wrap {
     z-index: 1001 !important;
 }
-.ant-modal-mask{
+
+.ant-modal-mask {
     z-index: 1001 !important;
+}
+
+
+.ant-collapse {
+    border:none !important;
+    background-color: #fff !important;
+}
+.ant-collapse-content .ant-collapse-content-active {
+    background-color: #fff !important;
+    border-radius: none !important;
+
+    .ant-collapse-content-box {
+        padding: 4px 0px !important;
+    }
+
+}
+.ant-collapse-content-box{
+    padding:0 !important;
 }
