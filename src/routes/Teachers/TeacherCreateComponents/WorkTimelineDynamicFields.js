@@ -20,16 +20,7 @@ function DynamicField(props) {
                       hasFeedback
                       rules={[{ required: true, message: "Vui lòng nhập năm bắt đầu!!!" }]}
                     >
-                      <Select allowClear style={{ width: "100%" }} placeholder="Năm bắt đầu..." showSearch>
-                        {/* {props.departmentList.map((item, index) => {
-                      return (
-                        <Option key={index + "depOpts" + item.departmentId} value={item.departmentId}>
-                          {" "}
-                          {item.departmentName}{" "}
-                        </Option>
-                      );
-                    })} */}
-                      </Select>
+                      <Input allowClear style={{ width: "100%" }} placeholder="Năm bắt đầu..." type="number"   />
                     </Form.Item>
                     <Form.Item
                       name={[index, "job"]}
@@ -37,16 +28,7 @@ function DynamicField(props) {
                       hasFeedback
                       rules={[{ required: true, message: "Vui lòng nhập công việc!!!" }]}
                     >
-                      <Select allowClear style={{ width: "100%" }} placeholder="Công việc..." showSearch>
-                        {/* {props.departmentList.map((item, index) => {
-                      return (
-                        <Option key={index + "depOpts" + item.departmentId} value={item.departmentId}>
-                          {" "}
-                          {item.departmentName}{" "}
-                        </Option>
-                      );
-                    })} */}
-                      </Select>
+                      <Input allowClear style={{ width: "100%" }} placeholder="Công việc..." />
                     </Form.Item>
                     <Form.Item
                       name={[index, "workUnit"]}
@@ -54,16 +36,7 @@ function DynamicField(props) {
                       hasFeedback
                       rules={[{ required: true, message: "Vui lòng nhập đơn vị đào tạo!!!" }]}
                     >
-                      <Select allowClear style={{ width: "100%" }} placeholder="Đơn vị đào tạo..." showSearch>
-                        {/* {props.departmentList.map((item, index) => {
-                      return (
-                        <Option key={index + "depOpts" + item.departmentId} value={item.departmentId}>
-                          {" "}
-                          {item.departmentName}{" "}
-                        </Option>
-                      );
-                    })} */}
-                      </Select>
+                      <Input allowClear style={{ width: "100%" }} placeholder="Đơn vị đào tạo..." showSearch />
                     </Form.Item>
                     <Form.Item
                       name={[index, "endDate"]}
@@ -71,16 +44,7 @@ function DynamicField(props) {
                       hasFeedback
                       rules={[{ required: true, message: "Vui lòng nhập năm kết thúc!!!" }]}
                     >
-                      <Select allowClear style={{ width: "100%" }} placeholder="Năm kết thúc..." showSearch>
-                        {/* {props.departmentList.map((item, index) => {
-                      return (
-                        <Option key={index + "depOpts" + item.departmentId} value={item.departmentId}>
-                          {" "}
-                          {item.departmentName}{" "}
-                        </Option>
-                      );
-                    })} */}
-                      </Select>
+                      <Input allowClear style={{ width: "100%" }} placeholder="Năm kết thúc..." type="number"   />
                     </Form.Item>
                     {fields.length > 0 ? (
                       <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>

@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { NotificationManager } from "react-notifications";
 import TeacherCreate from "./TeacherCreate";
-// import StudentUpdate from "./StudentUpdate";
+import TeacherUpdate from "./TeacherUpdate";
 // import StudentImport from './Import';
 import { Col, Row } from "reactstrap";
 import moment from "moment";
@@ -35,6 +35,8 @@ export const TeacherHome = (props) => {
   const [showDetail, setShowDetail] = useState(null);
 
   const [teacherList, setTeacherList] = useState([]);
+
+  const [subjectList, setSubjectList] = useState([]);
 
   const [recordUpdate, setRecordUpdate] = useState(null);
 
@@ -113,14 +115,57 @@ export const TeacherHome = (props) => {
       });
   };
 
-  const handleSubmitForm = (values) => {
-    for (var i = 0; i < values.length; i++) {
-      values.dateBirth = moment(values.dateBirth, "YYYY-MM-DD");
-    }
+  const getSubjectList = () => {
     api
-      .post("/students", values, true)
+      .get(`/subjects`)
       .then((res) => {
-        NotificationManager.success(`Tạo mới ${res} sinh viên.`);
+        setSubjectList(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleSubmitForm = (values) => {
+    values.dateBirth = moment(values.dateBirth).format("YYYY-MM-DD");
+    let newValues = { ...values };
+
+    newValues.subjectList = [];
+    if (values.subjectList !== null && values.subjectList !== undefined) {
+      values.subjectList.forEach((element) => {
+        newValues.subjectList.push({ subjectId: element });
+      });
+    }
+
+    newValues.teacherEducationTimeLineList = [];
+    if (values.teacherEducationTimeLineList !== null && values.teacherEducationTimeLineList !== undefined) {
+      values.teacherEducationTimeLineList.forEach((item) => {
+        newValues.teacherEducationTimeLineList.push({
+          graduationYear: item.graduationYear,
+          educationLevel: item.educationLevel,
+          branchName: item.branchName,
+          educationPlace: item.educationPlace,
+        });
+      });
+    }
+
+    newValues.teacherWorkTimeLineList = [];
+    if (values.teacherWorkTimeLineList !== null && values.teacherWorkTimeLineList !== undefined) {
+      values.teacherWorkTimeLineList.forEach((item) => {
+        newValues.teacherWorkTimeLineList.push({
+          startDate: item.startDate,
+          endDate: item.endDate,
+          job: item.job,
+          workUnit: item.workUnit,
+        });
+      });
+    }
+
+    console.log("newValues: ", newValues);
+    api
+      .post("/employee", newValues, true)
+      .then((res) => {
+        NotificationManager.success(`Tạo mới ${res} giảng viên.`);
         getTeacherList();
       })
       .catch((err) => {
@@ -130,13 +175,46 @@ export const TeacherHome = (props) => {
   };
 
   const handleSubmitUpdateForm = (values) => {
-    for (var i = 0; i < values.length; i++) {
-      values.dateBirth = moment(values.dateBirth, "YYYY-MM-DD");
+    values.dateBirth = moment(values.dateBirth).format("YYYY-MM-DD");
+    let newValues = { ...values };
+    console.log(newValues);
+
+    newValues.subjectList = [];
+    if (values.subjectList !== null && values.subjectList !== undefined) {
+      values.subjectList.forEach((element) => {
+        newValues.subjectList.push({ subjectId: element });
+      });
     }
+
+    newValues.teacherEducationTimeLineList = [];
+    if (values.teacherEducationTimeLineList !== null && values.teacherEducationTimeLineList !== undefined) {
+      values.teacherEducationTimeLineList.forEach((item) => {
+        newValues.teacherEducationTimeLineList.push({
+          graduationYear: item.graduationYear,
+          educationLevel: item.educationLevel,
+          branchName: item.branchName,
+          educationPlace: item.educationPlace,
+        });
+      });
+    }
+
+    newValues.teacherWorkTimeLineList = [];
+    if (values.teacherWorkTimeLineList !== null && values.teacherWorkTimeLineList !== undefined) {
+      values.teacherWorkTimeLineList.forEach((item) => {
+        newValues.teacherWorkTimeLineList.push({
+          startDate: item.startDate,
+          endDate: item.endDate,
+          job: item.job,
+          workUnit: item.workUnit,
+        });
+      });
+    }
+
+    console.log("newValues: ", newValues);
     api
-      .put("/students", values, true)
+      .put(`/employee/${newValues.employeeId}`, newValues, true)
       .then((res) => {
-        NotificationManager.success(`Tạo mới ${res} sinh viên.`);
+        NotificationManager.success(`Cập nhật thành công ${res} giảng viên.`);
         getTeacherList();
       })
       .catch((err) => {
@@ -145,9 +223,9 @@ export const TeacherHome = (props) => {
     setShowModalUpdate(false);
   };
 
-  const handleDeleteRecord = (values) => {
+  const handleDeleteRecord = (id) => {
     api
-      .delete(`/students?${values.map((value, index) => `ids=${value}`).join("&")}`, true)
+      .delete(`/employee/${id}`)
       .then((res) => {
         NotificationManager.success("Đã xoá" + res + " bản ghi");
         getTeacherList();
@@ -159,7 +237,7 @@ export const TeacherHome = (props) => {
 
   const handleDeleteMultipleRecord = (values) => {
     api
-      .delete(`/students?${values.map((value, index) => `ids=${value}`).join("&")}`, true)
+      .delete(`/employee?${values.map((value, index) => `ids=${value}`).join("&")}`, true)
       .then((res) => {
         NotificationManager.success("Đã xoá" + res + " bản ghi");
         getTeacherList();
@@ -235,6 +313,7 @@ export const TeacherHome = (props) => {
   useEffect(() => {
     getTeacherList();
     getDepartmentList();
+    getSubjectList();
     getEthnicList();
     getProvinceList("VNM");
     getEducationProgramList();
@@ -347,23 +426,24 @@ export const TeacherHome = (props) => {
                 provinceList={provinceList}
                 educationProgramList={educationProgramList}
                 classList={classList}
+                subjectList={subjectList}
                 // options={prerequisitesStudent}
-              /> 
-              {/* 
+              />
 
-              <StudentUpdate
-                visible={showModalUpdate  }
+              <TeacherUpdate
+                visible={showModalUpdate}
                 setShowModalUpdate={setShowModalUpdate}
                 getTeacherList={getTeacherList}
                 departmentList={departmentList}
                 teacherList={teacherList}
-                handleSubmitUpdateForm={handleSubmitUpdateForm}
+                handleSubmitForm={handleSubmitUpdateForm}
                 ethnicList={ethnicList}
                 provinceList={provinceList}
                 educationProgramList={educationProgramList}
                 classList={classList}
-              // options={prerequisitesStudent}
-              /> */}
+                subjectList={subjectList}
+                // options={prerequisitesStudent}
+              />
               {/* 
               <StudentImport
                 visible={showModalImport}

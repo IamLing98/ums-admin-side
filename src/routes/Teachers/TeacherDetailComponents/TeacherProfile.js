@@ -23,11 +23,11 @@ const TeacherProfile = (props) => {
     },
     {
       title: "Quốc tịch:",
-      values: record ? record.nationalityName : "",
+      values: record ? record.nationality : "",
     },
     {
       title: "Tôn giáo:",
-      values: record ? record.religion : "",
+      values: record && record.religion ? record.religion : "Không",
     },
     {
       title: "Hộ khẩu thường trú:",
@@ -69,7 +69,7 @@ const TeacherProfile = (props) => {
   const dataRight = [
     {
       title: "Giới tính:",
-      values: "",
+      values: record ? record.sex === 0 ?"Nam" : "Nữ" : ""
     },
     {
       title: "Nơi sinh:",
@@ -77,7 +77,7 @@ const TeacherProfile = (props) => {
     },
     {
       title: "Dân tộc:",
-      values: record ? record.ethnicName : "",
+      values: record ? record.ethnic : "Kinh",
     },
     {
       title: "Nguyên quán:",

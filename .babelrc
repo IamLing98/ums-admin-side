@@ -7,6 +7,7 @@
     "plugins": [
         "react-hot-loader/babel",
         "@babel/plugin-proposal-class-properties",
-        ["emotion"]
+        ["emotion"],
+        "@babel/plugin-proposal-optional-chaining"
     ]
 }

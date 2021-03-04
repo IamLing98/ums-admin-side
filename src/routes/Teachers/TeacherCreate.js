@@ -28,10 +28,7 @@ const formItemLayout = {
     sm: {
       span: 16,
     },
-  },
-  initialValues: {
-    ...data,
-  },
+  }, 
 };
 
 export const TeacherCreate = (props) => {
@@ -47,9 +44,8 @@ export const TeacherCreate = (props) => {
         form
           .validateFields()
           .then((values) => {
-            form.resetFields();
-            console.log(values);
-            props.handleSubmitForm([values]);
+            form.resetFields(); 
+            props.handleSubmitForm(values);
           })
           .catch((info) => {
             console.log("Validate Failed:", info);
@@ -71,10 +67,7 @@ export const TeacherCreate = (props) => {
     >
       <Form
         form={form}
-        {...formItemLayout}
-        onFieldsChange={(changedFields, allFields) => {
-          console.log(changedFields);
-        }}
+        {...formItemLayout} 
         preserve={false}
         onValuesChange={(changedValues, allValues) => {}}
       >
@@ -85,9 +78,9 @@ export const TeacherCreate = (props) => {
               name="fullName"
               label="Họ Và Tên"
               hasFeedback
-              rules={[{ required: true, message: "Vui lòng chọn cấp đào tạo!!!" }]}
+              rules={[{ required: true, message: "Vui lòng nhập tên giảng viên!!!" }]}
             >
-              <Input placeholder="Họ và tên sinh viên..." />
+              <Input placeholder="Họ và tên giảng viên..."  allowClear/>
             </Form.Item>
             <Form.Item
               name="sex"
@@ -114,7 +107,7 @@ export const TeacherCreate = (props) => {
               hasFeedback
               rules={[{ required: true, message: "Vui lòng chọn dân tộc!!!" }]}
             >
-              <Select allowClear style={{ width: "100%" }} placeholder="Dân tộc...">
+              <Select allowClear showSearch style={{ width: "100%" }} placeholder="Dân tộc...">
                 {props.ethnicList.map((item, index) => {
                   return (
                     <Option key={index + `ethnicOpts`} value={item.label}>
@@ -138,7 +131,7 @@ export const TeacherCreate = (props) => {
               hasFeedback
               rules={[{ required: true, message: "Vui lòng nhập quê quán!!!" }]}
             >
-              <Select allowClear style={{ width: "100%" }} placeholder="Quê quán...">
+              <Select allowClear showSearch style={{ width: "100%" }} placeholder="Quê quán...">
                 {props.provinceList.map((item, index) => {
                   return (
                     <Option key={index + `provinceOpts`} value={item.label}>
@@ -185,7 +178,7 @@ export const TeacherCreate = (props) => {
               hasFeedback
               rules={[{ required: true, message: "Vui lòng chọn khoa!!!" }]}
             >
-              <Select allowClear style={{ width: "100%" }} placeholder="Khoa..." showSearch>
+              <Select style={{ width: "100%" }} placeholder="Khoa..." allowClear showSearch>
                 {props.departmentList.map((item, index) => {
                   return (
                     <Option key={index + "depOpts" + item.departmentId} value={item.departmentId}>
@@ -197,17 +190,16 @@ export const TeacherCreate = (props) => {
               </Select>
             </Form.Item>
             <Form.Item
-              name="Môn giảng dạy"
-              label="Môn Phụ Trách "
+              name="subjectList"
+              label="H.Phần Phụ Trách"
               hasFeedback
               rules={[{ required: true, message: "Vui lòng chọn khoa!!!" }]}
             >
-              <Select allowClear style={{ width: "100%" }} placeholder="Môn phụ trách ..." showSearch>
-                {props.departmentList.map((item, index) => {
+              <Select mode="multiple" allowClear style={{ width: "100%" }} placeholder="Môn phụ trách ..." showSearch>
+                {props.subjectList.map((item, index) => {
                   return (
-                    <Option key={index + "depOpts" + item.departmentId} value={item.departmentId}>
-                      {" "}
-                      {item.departmentName}{" "}
+                    <Option key={index + "subjectOpts" + item.subjectId} value={item.subjectId}>
+                      {item.subjectId + " - " + item.subjectName}
                     </Option>
                   );
                 })}

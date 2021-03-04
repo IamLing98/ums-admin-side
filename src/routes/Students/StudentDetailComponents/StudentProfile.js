@@ -20,19 +20,19 @@ const StudentProfile = (props) => {
     },
     {
       title: "Ngày sinh:",
-      values: record ? moment(record.dateBirth).format("DD.MM.YYYY") : "",
+      values: record && record.dateBirth ? moment(record.dateBirth).format("DD.MM.YYYY") : "",
     },
     {
       title: "Quốc tịch:",
-      values: record ? record.nationalityName : "",
+      values: record ? record.nationality : "",
     },
     {
       title: "Tôn giáo:",
-      values: record ? record.religion : "",
+      values: record && record.religion ? record.religion : "Không",
     },
     {
       title: "Hộ khẩu thường trú:",
-      values: record ? record.permanentResidence : "",
+      values: record ? record.contactAddress : "",
     },
     {
       title: "Khu vực tuyển sinh:",
@@ -40,7 +40,7 @@ const StudentProfile = (props) => {
     }, 
     {
       title: "Diện chính sách:",
-      values: record ? record.incentivesType : "",
+      values: record && record.incentivesType ? record.incentivesType : "Không",
     },
     {
       title: "Số CMND:",
@@ -82,7 +82,7 @@ const StudentProfile = (props) => {
   const dataRight = [
     {
       title: "Giới tính:",
-      values: "",
+      values: record ? record.sex === 0 ? "Nam" : "Nữ" :""
     },
     {
       title: "Nơi sinh:",
@@ -90,7 +90,7 @@ const StudentProfile = (props) => {
     },
     {
       title: "Dân tộc:",
-      values: record ? record.ethnicName : "",
+      values: record ? record.ethnic : "",
     },
     {
       title: "Nguyên quán:",
@@ -98,7 +98,7 @@ const StudentProfile = (props) => {
     },
     {
       title: "Đối tượng:",
-      values: "",
+      values: "Không",
     },
     {
       title: "Trình độ văn hoá:",
@@ -143,20 +143,7 @@ const StudentProfile = (props) => {
       title: "Giá trị",
       dataIndex: "values",
     },
-  ];
-  const enrollmentAreaDisplay = (value) => {
-    if (value === 1) {
-      return <>Khu vực 1 (KV1)</>;
-    } else if (value === 2) {
-      return <>Khu vực 2 (KV2)</>;
-    } else if (value === 3) {
-      return <>Khu vực 2 nông thôn (KV2-NT)</>;
-    } else if (value === 4) {
-      return <>Khu vực 3</>;
-    } else {
-      return <></>;
-    }
-  };
+  ]; 
 
   if (props.record) {
     return (

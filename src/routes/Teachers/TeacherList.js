@@ -137,7 +137,7 @@ const StudentList = (props) => {
       render: (text, record) => <span>{moment(text).format("DD.MM.YYYY")}</span>,
     }, 
     {
-      title: "Học hàm",
+      title: "Học Vị",
       dataIndex: "degree",
       align: "center",
       render: (text, record) => {
@@ -150,7 +150,7 @@ const StudentList = (props) => {
       },
     },
     {
-      title: "Học Vị",
+      title: "Học Hàm",
       dataIndex: "scientific_titles",
       align: "center",
       render: (text, record) => {
@@ -187,10 +187,8 @@ const StudentList = (props) => {
           )}
           <Button
             type=""
-            onClick={() => {
-              console.log("cc");
-              console.log(record);
-              props.setShowModalUpdate(record);
+            onClick={() => {  
+              props.setShowModalUpdate(record.employeeId);
             }}
           >
             <EditFilled />
@@ -198,7 +196,7 @@ const StudentList = (props) => {
           <Popconfirm
             placement="left"
             title={"Chắc chắn xoá?"}
-            onConfirm={() => props.handleDeleteRecord([record.studentId])}
+            onConfirm={() => props.handleDeleteRecord(record.employeeId)}
             okText="Ok"
             cancelText="Không"
           >
