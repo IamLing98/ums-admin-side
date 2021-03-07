@@ -51,7 +51,7 @@ export const TeacherCreate = (props) => {
           newSubjectList.push(res.subjectList[i].subjectId);
         }
         res.subjectList = [...newSubjectList];
-        setRecord(res); 
+        setRecord(res);
         form.resetFields();
         setLoading(false);
       })
@@ -72,7 +72,7 @@ export const TeacherCreate = (props) => {
           .validateFields()
           .then((values) => {
             form.resetFields();
-            props.handleSubmitForm({...values});
+            props.handleSubmitForm({ ...values });
           })
           .catch((info) => {
             console.log("Validate Failed:", info);
@@ -209,10 +209,6 @@ export const TeacherCreate = (props) => {
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Divider>Trình độ học vấn</Divider>
-              <EducationLevelDynamicFields />
-              <Divider>Quá trình công tác</Divider>
-              <WorkerTimeLineDynamicFields />
               <Divider>Giảng dạy</Divider>
               <Form.Item
                 name="departmentId"
@@ -246,6 +242,10 @@ export const TeacherCreate = (props) => {
                   })}
                 </Select>
               </Form.Item>
+              <Divider>Trình độ học vấn</Divider>
+              <EducationLevelDynamicFields />
+              <Divider>Quá trình công tác</Divider>
+              <WorkerTimeLineDynamicFields />
             </Col>
           </Row>
           <Dragger {...propss}>

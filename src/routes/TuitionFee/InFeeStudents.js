@@ -69,7 +69,7 @@ const StudentsFee = (props) => {
 
   const handlePrintStudentInvoice = (values, id) => {
     api
-      .post(`/documents?id=${id}`, values)
+      .post(`/documents/pdf?id=${id}`, values)
       .then((response) => {
         setFilePrintName(response);
         setShowInvoicePrint(true);
@@ -357,6 +357,7 @@ const StudentsFee = (props) => {
             setShowInFeeReceiptsCreate={setShowInFeeReceiptsCreate}
             onSelectRow={onSelectRow}
             setShowInvoicePrint={setShowInvoicePrint}
+            handlePrintStudentInvoice={handlePrintStudentInvoice}
           />
         </TabPane>
         <TabPane tab="Phiếu thu" key="2">

@@ -159,7 +159,7 @@ const BillList = (props) => {
           <Button
             type=""
             onClick={() => {
-              props.setShowInvoicePrint(record);
+              props.handlePrintStudentInvoice(record, 1);
             }}
           >
             <PrinterFilled />

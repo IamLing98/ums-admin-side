@@ -28,7 +28,7 @@ const formItemLayout = {
     sm: {
       span: 16,
     },
-  }, 
+  },
 };
 
 export const TeacherCreate = (props) => {
@@ -44,7 +44,7 @@ export const TeacherCreate = (props) => {
         form
           .validateFields()
           .then((values) => {
-            form.resetFields(); 
+            form.resetFields();
             props.handleSubmitForm(values);
           })
           .catch((info) => {
@@ -65,12 +65,7 @@ export const TeacherCreate = (props) => {
       width={"70%"}
       forceRender
     >
-      <Form
-        form={form}
-        {...formItemLayout} 
-        preserve={false}
-        onValuesChange={(changedValues, allValues) => {}}
-      >
+      <Form form={form} {...formItemLayout} preserve={false} onValuesChange={(changedValues, allValues) => {}}>
         <Row gutter={[16, 24]}>
           <Col span={12}>
             <Divider>Thông tin cá nhân</Divider>
@@ -80,7 +75,7 @@ export const TeacherCreate = (props) => {
               hasFeedback
               rules={[{ required: true, message: "Vui lòng nhập tên giảng viên!!!" }]}
             >
-              <Input placeholder="Họ và tên giảng viên..."  allowClear/>
+              <Input placeholder="Họ và tên giảng viên..." allowClear />
             </Form.Item>
             <Form.Item
               name="sex"
@@ -167,10 +162,6 @@ export const TeacherCreate = (props) => {
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Divider>Trình độ học vấn</Divider>
-            <EducationLevelDynamicFields />
-            <Divider>Quá trình công tác</Divider>
-            <WorkerTimeLineDynamicFields />
             <Divider>Giảng dạy</Divider>
             <Form.Item
               name="departmentId"
@@ -205,6 +196,10 @@ export const TeacherCreate = (props) => {
                 })}
               </Select>
             </Form.Item>
+            <Divider>Trình độ học vấn</Divider>
+            <EducationLevelDynamicFields />
+            <Divider>Quá trình công tác</Divider>
+            <WorkerTimeLineDynamicFields />
           </Col>
         </Row>
         <Dragger {...propss}>
