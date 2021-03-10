@@ -243,18 +243,7 @@ const SubjectClassList = (props) => {
               }}
             >
               <EditFilled />
-            </Button>
-            <Popconfirm
-              placement="left"
-              title={"Chắc chắn xoá?"}
-              onConfirm={() => props.handleDeleteSubjectClass(record)}
-              okText="Ok"
-              cancelText="Không"
-            >
-              <Button type="">
-                <DeleteFilled />
-              </Button>
-            </Popconfirm>
+            </Button> 
           </Space>
         );
       },

@@ -26,7 +26,7 @@ const TermComponent = (props) => {
 
   const [current, setCurrent] = useState("setting:1");
 
-  const webSocketReducer = useSelector((state) => state.webSocketReducer);
+  const webSocketReducer = useSelector((state) => state.webSocketReducer);  
 
   const getTermDetail = (id) => {
     api
@@ -69,7 +69,11 @@ const TermComponent = (props) => {
     if (term.term.progress === 11) {
       return (
         <>
-          <Tag style={{ fontSize: "15px" }} icon={<ClockCircleOutlined />} color="default">
+          <Tag
+            style={{ fontSize: "15px" }}
+            icon={<ClockCircleOutlined />}
+            color="default"
+          >
             Khởi tạo
           </Tag>
           <Tag color="default">default</Tag>
@@ -78,10 +82,18 @@ const TermComponent = (props) => {
     } else if (term.progress === 12)
       return (
         <>
-          <Tag style={{ fontSize: "15px" }} icon={<SyncOutlined spin />} color="processing">
+          <Tag
+            style={{ fontSize: "15px" }}
+            icon={<SyncOutlined spin />}
+            color="processing"
+          >
             Đang mở đăng ký học phần
           </Tag>{" "}
-          <Tag style={{ fontSize: "15px" }} icon={<ClockCircleOutlined />} color="default">
+          <Tag
+            style={{ fontSize: "15px" }}
+            icon={<ClockCircleOutlined />}
+            color="default"
+          >
             {moment(term.subjectSubmittingStartDate).format("hh:mm DD/MM/YYYY") +
               " - " +
               moment(term.subjectSubmittingEndDate).format("hh:mm DD/MM/YYYY")}
@@ -91,10 +103,18 @@ const TermComponent = (props) => {
     else if (term.progress === 13)
       return (
         <>
-          <Tag style={{ fontSize: "15px" }} icon={<CheckCircleOutlined />} color="success">
+          <Tag
+            style={{ fontSize: "15px" }}
+            icon={<CheckCircleOutlined />}
+            color="success"
+          >
             Hoàn tất đăng ký học phần
           </Tag>
-          <Tag style={{ fontSize: "15px" }} icon={<ClockCircleOutlined />} color="default">
+          <Tag
+            style={{ fontSize: "15px" }}
+            icon={<ClockCircleOutlined />}
+            color="default"
+          >
             {moment(term.subjectSubmittingStartDate).format("hh:mm DD/MM/YYYY") +
               " - " +
               moment(term.subjectSubmittingEndDate).format("hh:mm DD/MM/YYYY")}
@@ -105,10 +125,18 @@ const TermComponent = (props) => {
       return (
         <>
           {" "}
-          <Tag style={{ fontSize: "15px" }} icon={<SyncOutlined spin />} color="processing">
+          <Tag
+            style={{ fontSize: "15px" }}
+            icon={<SyncOutlined spin />}
+            color="processing"
+          >
             Đang mở đăng ký lớp học phần
           </Tag>{" "}
-          <Tag style={{ fontSize: "15px" }} icon={<ClockCircleOutlined />} color="default">
+          <Tag
+            style={{ fontSize: "15px" }}
+            icon={<ClockCircleOutlined />}
+            color="default"
+          >
             {moment(term.subjectClassSubmittingStartDate).format("hh:mm DD/MM/YYYY") +
               " - " +
               moment(term.subjectCLassSubmittingEndDate).format("hh:mm DD/MM/YYYY")}
@@ -124,10 +152,18 @@ const TermComponent = (props) => {
     else if (term.progress === 31)
       return (
         <>
-          <Tag style={{ fontSize: "15px" }} icon={<SyncOutlined spin />} color="processing">
+          <Tag
+            style={{ fontSize: "15px" }}
+            icon={<SyncOutlined spin />}
+            color="processing"
+          >
             Đang mở đăng ký điều chỉnh
           </Tag>
-          <Tag style={{ fontSize: "15px" }} icon={<ClockCircleOutlined />} color="default">
+          <Tag
+            style={{ fontSize: "15px" }}
+            icon={<ClockCircleOutlined />}
+            color="default"
+          >
             {moment(term.editSubmittingStartDate).format("hh:mm DD/MM/YYYY") +
               " - " +
               moment(term.editSubmittingEndDate).format("hh:mm DD/MM/YYYY")}
@@ -140,6 +176,53 @@ const TermComponent = (props) => {
           Hoàn tất đăng ký điều chỉnh
         </Tag>
       );
+    else if (term.progress === 33) {
+      return (
+        <Tag
+          style={{ fontSize: "15px" }}
+          icon={<SyncOutlined spin  />}
+          color="processing"
+        >
+          Đang đóng học phí
+        </Tag>
+      );
+    } else if (term.progress === 34) {
+      return (
+        <Tag style={{ fontSize: "15px" }} icon={<CheckCircleOutlined />} color="success">
+          Kết thúc đóng học phí
+        </Tag>
+      );
+    } else if (term.progress === 35) {
+      return (
+        <Tag
+          style={{ fontSize: "15px" }}
+          icon={<SyncOutlined spin  />}
+          color="processing"
+        >
+          Đang mở nhập điểm
+        </Tag>
+      );
+    } else if (term.progress === 36) {
+      return (
+        <Tag
+          style={{ fontSize: "15px" }}
+          icon={<CheckCircleOutlined />}
+          color="processing"
+        >
+          Kết thúc nhập điểm
+        </Tag>
+      );
+    }else if (term.progress === 37) {
+      return (
+        <Tag
+          style={{ fontSize: "15px" }}
+          icon={<CheckCircleOutlined />}
+          color="processing"
+        >
+          Đã tổng hợp kết quả
+        </Tag>
+      );
+    }
   };
   if (loading && !term) {
     return <RctPageLoader />;
@@ -157,7 +240,7 @@ const TermComponent = (props) => {
                 }}
               >
                 <DoubleLeftOutlined />
-              </a>{" "}
+              </a>
               Thông tin học kỳ {term.term} năm {term.year} {getProgressName(term)}
             </span>
           </h4>
@@ -168,20 +251,21 @@ const TermComponent = (props) => {
               <ClockCircleOutlined />
               Kế hoạch học tập
             </Menu.Item>
-            <Menu.Item key={term.progress < 32 ? "setting:2" : "setting:3"} disabled={term.progress < 13}>
+            <Menu.Item
+              key={term.progress < 32 ? "setting:2" : "setting:3"}
+              disabled={term.progress < 13}
+            >
               <CodeOutlined />
               {term.status === 2 ? "Đăng ký học tập" : "Lớp học phần"}
             </Menu.Item>
-            <SubMenu key="result" icon={<SettingOutlined />} title="Kết quả học tập ">
-              <Menu.Item key="result:1">Thời khoá biểu</Menu.Item>
-              <Menu.Item key="result:2">Danh sách lớp học phần</Menu.Item>
-            </SubMenu>
           </Menu>
         </span>
       </div>
       <hr style={{ margin: "0px", marginBottom: "15px" }} />
       {current === "setting:1" && <StepOne term={term} getTermDetail={getTermDetail} />}
-      {current === "setting:2" && <StepTwo term={term} getTermDetail={getTermDetail} setCurrent={setCurrent} />}
+      {current === "setting:2" && (
+        <StepTwo term={term} getTermDetail={getTermDetail} setCurrent={setCurrent} />
+      )}
       {current === "setting:3" && <StepThree term={term} getTermDetail={getTermDetail} />}
     </div>
   );

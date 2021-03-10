@@ -150,18 +150,7 @@ export const ScheduleHome = (props) => {
                 onCancel={() => setShowModalCreate(false)}
                 getTermList={getTermList}
                 // options={prerequisitesSubject}
-              />
-
-              {/*} <UpdateSubject
-              visible={showModalUpdate}
-              onOk={(values) => handleSubmitFormUpdate(values)}
-              onCancel={() => {
-                setShowModalUpdate(false);
-                setRecordUpdate(defaultRecord);
-              }}
-              record={recordUpdate}
-              options={prerequisitesSubject}
-            /> */}
+              /> 
             </div>
           </div>
         </div>

@@ -132,7 +132,11 @@ const StudentsFee = (props) => {
 
   const getStudentInvoiceList = (termId, type) => {
     api
-      .get(`/studentInvoices?${termId ? "termId=" + termId : ""}${type ? "&&type=" + type : ""}`)
+      .get(
+        `/studentInvoices?${termId ? "termId=" + termId : ""}${
+          type ? "&&type=" + type : ""
+        }`,
+      )
       .then((response) => {
         let rs = [];
         response.map((item) => {
@@ -205,10 +209,12 @@ const StudentsFee = (props) => {
   }, [selectedTerm]);
 
   useEffect(() => {
+    getStudentInvoiceList(selectedTerm, studentInvoiceType);
     if (selectedTerm) {
       getStudentInvoiceList(selectedTerm, studentInvoiceType);
     }
   }, [selectedTerm, studentInvoiceType]);
+
   return (
     <Spin spinning={loading}>
       <Row>
@@ -220,7 +226,10 @@ const StudentsFee = (props) => {
                     /> */}
         </Col>
         <Col md={9} sm={12} xs={12}>
-          <div className="tableListOperator" style={{ textAlign: "right", width: "100%" }}>
+          <div
+            className="tableListOperator"
+            style={{ textAlign: "right", width: "100%" }}
+          >
             <Select
               allowClear
               placeholder="Kỳ học..."
@@ -401,7 +410,11 @@ const StudentsFee = (props) => {
         handlePrintStudentInvoice={handlePrintStudentInvoice}
       />
       {showInvoicePrint && (
-        <InvoicePrint visible={showInvoicePrint} filePrintName={filePrintName} onCancel={setShowInvoicePrint} />
+        <InvoicePrint
+          visible={showInvoicePrint}
+          filePrintName={filePrintName}
+          onCancel={setShowInvoicePrint}
+        />
       )}
     </Spin>
   );

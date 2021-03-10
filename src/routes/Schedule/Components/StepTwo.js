@@ -194,8 +194,12 @@ const StepTwo = (props) => {
   const handleOpenSubjectClassRegistration = (values) => {
     setShowSpin(true);
     setToOpenSubjectClassReg(false);
-    let subjectClassSubmittingStartDate = values["rangeTime"][0].format("YYYY-MM-DDTHH:mm:ss");
-    let subjectCLassSubmittingEndDate = values["rangeTime"][1].format("YYYY-MM-DDTHH:mm:ss");
+    let subjectClassSubmittingStartDate = values["rangeTime"][0].format(
+      "YYYY-MM-DDTHH:mm:ss",
+    );
+    let subjectCLassSubmittingEndDate = values["rangeTime"][1].format(
+      "YYYY-MM-DDTHH:mm:ss",
+    );
     let termObj = { ...props.term };
     termObj.id = props.term.id;
     termObj.progress = 21;
@@ -289,13 +293,20 @@ const StepTwo = (props) => {
         <Row>
           <Col md={3} sm={12} style={{ display: "flex", flexDirection: "column" }}>
             <Alert
-              message={<strong>Danh sách lớp học phần - Tìm thấy {subjectClassList.length} bản ghi</strong>}
+              message={
+                <strong>
+                  Danh sách lớp học phần - Tìm thấy {subjectClassList.length} bản ghi
+                </strong>
+              }
               type="info"
               style={{ maxHeight: "32px" }}
             />
           </Col>
           <Col md={9} sm={12} xs={12}>
-            <div className="tableListOperator" style={{ textAlign: "right", width: "100%" }}>
+            <div
+              className="tableListOperator"
+              style={{ textAlign: "right", width: "100%" }}
+            >
               {props.term.progress >= 22 && (
                 <Select
                   allowClear
@@ -397,7 +408,11 @@ const StepTwo = (props) => {
           setToOpenSubjectClassReg={setToOpenSubjectClassReg}
           term={props.term}
         />
-        <SubjectClassDetail visible={showSubjectClassDetail} cancelSelecting={cancelSelecting} term={props.term} />
+        <SubjectClassDetail
+          visible={showSubjectClassDetail}
+          cancelSelecting={cancelSelecting}
+          term={props.term}
+        />
         {toSubjectClassCreate && (
           <SubjectClassCreate
             visible={toSubjectClassCreate}
