@@ -1,7 +1,10 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom"; 
+// import dotenv from 'dotenv'
+
 // Save a reference to the root element for reuse
 const rootEl = document.getElementById("root");
+// dotenv.config();
 // Create a reusable render method that we can call more than once
 
 let render = () => {

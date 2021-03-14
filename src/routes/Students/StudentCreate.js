@@ -1,9 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Row, Col, Select, Input, DatePicker, AutoComplete, Upload, message } from "antd";
+import {
+  Modal,
+  Form,
+  Row,
+  Col,
+  Select,
+  Input,
+  DatePicker,
+  AutoComplete,
+  Upload,
+  message,
+} from "antd";
 import { NotificationManager } from "react-notifications";
 import { RollbackOutlined, CheckOutlined, InboxOutlined } from "@ant-design/icons";
 import { api } from "Api";
-import { data } from './data';
+import { data } from "./data";
 
 const { Option } = Select;
 
@@ -27,7 +38,7 @@ const formItemLayout = {
     },
   },
   initialValues: {
-    ...data
+    ...data,
   },
 };
 
@@ -56,8 +67,16 @@ export const StudentCreate = (props) => {
         form.resetFields();
         props.setShowModalCreate(false);
       }}
-      okButtonProps={{ icon: <CheckOutlined />, disabled: false, style: { width: "108px" } }}
-      cancelButtonProps={{ icon: <RollbackOutlined />, disabled: false, style: { width: "108px" } }}
+      okButtonProps={{
+        icon: <CheckOutlined />,
+        disabled: false,
+        style: { width: "108px" },
+      }}
+      cancelButtonProps={{
+        icon: <RollbackOutlined />,
+        disabled: false,
+        style: { width: "108px" },
+      }}
       maskClosable={false}
       okText="Tạo Mới"
       cancelText="Đóng"
@@ -70,11 +89,10 @@ export const StudentCreate = (props) => {
         form={form}
         {...formItemLayout}
         onFieldsChange={(changedFields, allFields) => {
-          console.log(changedFields)
+          console.log(changedFields);
         }}
         preserve={false}
-        onValuesChange={(changedValues, allValues) => {
-        }}
+        onValuesChange={(changedValues, allValues) => {}}
       >
         <Row gutter={[16, 24]}>
           <Col span={12}>
@@ -82,9 +100,7 @@ export const StudentCreate = (props) => {
               name="fullName"
               label="Họ Và Tên"
               hasFeedback
-              rules={[
-                { required: true, message: "Vui lòng chọn cấp đào tạo!!!" },
-              ]}
+              rules={[{ required: true, message: "Vui lòng chọn cấp đào tạo!!!" }]}
             >
               <Input placeholder="Họ và tên sinh viên..." />
             </Form.Item>
@@ -92,84 +108,63 @@ export const StudentCreate = (props) => {
               name="sex"
               label="Giới Tính"
               hasFeedback
-              rules={[
-                { required: true, message: "Vui lòng chọn giới tính!!!" },
-              ]}
+              rules={[{ required: true, message: "Vui lòng chọn giới tính!!!" }]}
             >
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Giới tính..."
-              >
-                <Option value={0}>
-                  Nam
-                  </Option>
-                <Option value={1}>
-                  Nữ
-                  </Option>
+              <Select allowClear style={{ width: "100%" }} placeholder="Giới tính...">
+                <Option value={0}>Nam</Option>
+                <Option value={1}>Nữ</Option>
               </Select>
             </Form.Item>
             <Form.Item
               name="dateBirth"
               label="Ngày Sinh"
               hasFeedback
-              rules={[
-                { required: true, message: "Vui lòng chọn ngày sinh!!!" },
-              ]}
+              rules={[{ required: true, message: "Vui lòng chọn ngày sinh!!!" }]}
             >
               <DatePicker
                 allowClear
                 style={{ width: "100%" }}
                 placeholder="Ngày sinh..."
-              >
-              </DatePicker>
+              ></DatePicker>
             </Form.Item>
             <Form.Item
               name="ethnic"
               label="Dân Tộc"
               hasFeedback
-              rules={[
-                { required: true, message: "Vui lòng chọn dân tộc!!!" },
-              ]}
+              rules={[{ required: true, message: "Vui lòng chọn dân tộc!!!" }]}
             >
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Dân tộc..."
-              >
-                {
-                  props.ethnicList.map((item, index) => {
-                    return <Option key={index + `ethnicOpts`} value={item.label}>{item.label}</Option>
-                  })
-                }
+              <Select allowClear style={{ width: "100%" }} placeholder="Dân tộc...">
+                {props.ethnicList.map((item, index) => {
+                  return (
+                    <Option key={index + `ethnicOpts`} value={item.label}>
+                      {item.label}
+                    </Option>
+                  );
+                })}
               </Select>
             </Form.Item>
             <Form.Item
               name="identityNumber"
               label="CMND/Căn Cước"
               hasFeedback
-              rules={[
-                { required: true, message: "Vui lòng nhập CMND/Căn cước!!!" },
-              ]} >
+              rules={[{ required: true, message: "Vui lòng nhập CMND/Căn cước!!!" }]}
+            >
               <Input placeholder="Số CMND/Căn cước..." />
             </Form.Item>
             <Form.Item
               name="homeTown"
               label="Quê Quán"
               hasFeedback
-              rules={[
-                { required: true, message: "Vui lòng nhập quê quán!!!" },
-              ]} >
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Quê quán..."
-              >
-                {
-                  props.provinceList.map((item, index) => {
-                    return <Option key={index + `provinceOpts`} value={item.label}>{item.label}</Option>
-                  })
-                }
+              rules={[{ required: true, message: "Vui lòng nhập quê quán!!!" }]}
+            >
+              <Select allowClear style={{ width: "100%" }} placeholder="Quê quán...">
+                {props.provinceList.map((item, index) => {
+                  return (
+                    <Option key={index + `provinceOpts`} value={item.label}>
+                      {item.label}
+                    </Option>
+                  );
+                })}
               </Select>
             </Form.Item>
             <Form.Item
@@ -178,16 +173,16 @@ export const StudentCreate = (props) => {
               hasFeedback
               rules={[
                 { required: false, message: "Vui lòng nhập địa chỉ thường trú!!!" },
-              ]} >
+              ]}
+            >
               <Input placeholder="Địa chỉ thường trú..." />
             </Form.Item>
             <Form.Item
               name="phoneNumber"
               label="Số Điện Thoại"
               hasFeedback
-              rules={[
-                { required: false, message: "Vui lòng nhập số điện thoại!!!" },
-              ]} >
+              rules={[{ required: false, message: "Vui lòng nhập số điện thoại!!!" }]}
+            >
               <Input placeholder="Số điện thoại..." />
             </Form.Item>
           </Col>
@@ -196,9 +191,7 @@ export const StudentCreate = (props) => {
               name="fatherName"
               label="Họ Và Tên Bố"
               hasFeedback
-              rules={[
-                { required: false, message: "Vui lòng nhập họ và tên bố!!!" },
-              ]}
+              rules={[{ required: false, message: "Vui lòng nhập họ và tên bố!!!" }]}
             >
               <Input placeholder="Họ và tên bố..." />
             </Form.Item>
@@ -206,9 +199,7 @@ export const StudentCreate = (props) => {
               name="fatherDateBirth"
               label="Năm sinh bố"
               hasFeedback
-              rules={[
-                { required: false, message: "Vui lòng nhập năm sinh của bố!!!" },
-              ]}
+              rules={[{ required: false, message: "Vui lòng nhập năm sinh của bố!!!" }]}
             >
               <Input type="number" placeholder="Năm sinh của bố..." />
             </Form.Item>
@@ -216,9 +207,7 @@ export const StudentCreate = (props) => {
               name="motherName"
               label="Họ Và Tên Mẹ"
               hasFeedback
-              rules={[
-                { required: false, message: "Vui lòng nhập họ và tên mẹ!!!" },
-              ]}
+              rules={[{ required: false, message: "Vui lòng nhập họ và tên mẹ!!!" }]}
             >
               <Input placeholder="Họ và tên mẹ..." />
             </Form.Item>
@@ -226,9 +215,7 @@ export const StudentCreate = (props) => {
               name="motherDateBirth"
               label="Năm sinh mẹ"
               hasFeedback
-              rules={[
-                { required: false, message: "Vui lòng nhập năm sinh của mẹ!!!" },
-              ]}
+              rules={[{ required: false, message: "Vui lòng nhập năm sinh của mẹ!!!" }]}
             >
               <Input type="number" placeholder="Năm sinh của mẹ..." />
             </Form.Item>
@@ -236,9 +223,7 @@ export const StudentCreate = (props) => {
               name="priorityType"
               label="Chính Sách Ưu Tiên"
               hasFeedback
-              rules={[
-                { required: true, message: "Vui lòng chọn chính sách ưu tiên!!!" },
-              ]}
+              rules={[{ required: true, message: "Vui lòng chọn chính sách ưu tiên!!!" }]}
               disabled
             >
               <Select
@@ -246,10 +231,22 @@ export const StudentCreate = (props) => {
                 style={{ width: "100%" }}
                 placeholder="Chính sách ưu tiên..."
               >
-                <Option key={"priorityType0"} value={0}>  Không  </Option>
-                <Option key={1 + "priorityType"} value={1}>  Đối tượng 1  </Option>
-                <Option key={2 + "priorityType"} value={2}>  Đối tượng 2  </Option>
-                <Option key={3 + "priorityType"} value={3}>  Đối tượng 3  </Option>
+                <Option key={"priorityType0"} value={0}>
+                  {" "}
+                  Không{" "}
+                </Option>
+                <Option key={1 + "priorityType"} value={1}>
+                  {" "}
+                  Đối tượng 1{" "}
+                </Option>
+                <Option key={2 + "priorityType"} value={2}>
+                  {" "}
+                  Đối tượng 2{" "}
+                </Option>
+                <Option key={3 + "priorityType"} value={3}>
+                  {" "}
+                  Đối tượng 3{" "}
+                </Option>
               </Select>
             </Form.Item>
             <Form.Item
@@ -259,7 +256,6 @@ export const StudentCreate = (props) => {
               rules={[
                 { required: true, message: "Vui lòng chọn chương trình đào tạo!!!" },
               ]}
-
             >
               <Select
                 allowClear
@@ -267,18 +263,22 @@ export const StudentCreate = (props) => {
                 placeholder="Chương trình đào tạo..."
                 showSearch
                 onChange={(value) => {
-                  let edu = props.educationProgramList.filter(item => item.educationProgramId == value); 
+                  let edu = props.educationProgramList.filter(
+                    (item) => item.educationProgramId == value,
+                  );
                   if (edu.length) {
-                    const value = form.getFieldValue('departmentId')
-                    console.log('edu', edu[0].departmentId)
-                    form.setFieldsValue({ departmentId: edu[0].departmentId })
-                    let classList = props.classList.filter(item => item.departmentId == edu[0].departmentId);
+                    const value = form.getFieldValue("departmentId");
+                    console.log("edu", edu[0].departmentId);
+                    form.setFieldsValue({ departmentId: edu[0].departmentId });
+                    let classList = props.classList.filter(
+                      (item) => item.departmentId == edu[0].departmentId,
+                    );
                     if (classList.length) {
-                    console.log('classList', classList)
-                    setCLassList(classList);
-                  } else {
-                    setCLassList([]);
-                  }
+                      console.log("classList", classList);
+                      setCLassList(classList);
+                    } else {
+                      setCLassList([]);
+                    }
                   } else {
                     form.setFieldsValue({ departmentId: undefined });
                   }
@@ -287,20 +287,24 @@ export const StudentCreate = (props) => {
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
               >
-                {
-                  props.educationProgramList.map((item, index) => {
-                    return <Option key={index + "eduOpts" + item.educationProgramId} value={item.educationProgramId}>  {item.educationProgramName}  </Option>
-                  })
-                }
+                {props.educationProgramList.map((item, index) => {
+                  return (
+                    <Option
+                      key={index + "eduOpts" + item.educationProgramId}
+                      value={item.educationProgramId}
+                    >
+                      {" "}
+                      {item.educationProgramName}{" "}
+                    </Option>
+                  );
+                })}
               </Select>
             </Form.Item>
             <Form.Item
               name="departmentId"
               label="Khoa "
               hasFeedback
-              rules={[
-                { required: true, message: "Vui lòng chọn khoa!!!" },
-              ]}
+              rules={[{ required: true, message: "Vui lòng chọn khoa!!!" }]}
             >
               <Select
                 allowClear
@@ -309,20 +313,24 @@ export const StudentCreate = (props) => {
                 showSearch
                 disabled
               >
-                {
-                  props.departmentList.map((item, index) => {
-                    return <Option key={index + "depOpts" + item.departmentId} value={item.departmentId}>  {item.departmentName}  </Option>
-                  })
-                }
+                {props.departmentList.map((item, index) => {
+                  return (
+                    <Option
+                      key={index + "depOpts" + item.departmentId}
+                      value={item.departmentId}
+                    >
+                      {" "}
+                      {item.departmentName}{" "}
+                    </Option>
+                  );
+                })}
               </Select>
-            </Form.Item> 
+            </Form.Item>
             <Form.Item
               name="courseNumber"
               label="Khoá "
               hasFeedback
-              rules={[
-                { required: false, message: "Vui lòng chọn khoa!!!" },
-              ]}
+              rules={[{ required: false, message: "Vui lòng chọn khoa!!!" }]}
             >
               <Select
                 allowClear
@@ -331,20 +339,24 @@ export const StudentCreate = (props) => {
                 showSearch
                 disabled
               >
-                {
-                  props.departmentList.map((item, index) => {
-                    return <Option key={index + "depOpts" + item.departmentId} value={item.departmentId}>  {item.departmentName}  </Option>
-                  })
-                }
+                {props.departmentList.map((item, index) => {
+                  return (
+                    <Option
+                      key={index + "depOpts" + item.departmentId}
+                      value={item.departmentId}
+                    >
+                      {" "}
+                      {item.departmentName}{" "}
+                    </Option>
+                  );
+                })}
               </Select>
             </Form.Item>
             <Form.Item
               name="yearClassId"
               label="Lớp Niên Khoá"
               hasFeedback
-              rules={[
-                { required: true, message: "Vui lòng chọn lớp niên khoá!!!" },
-              ]}
+              rules={[{ required: true, message: "Vui lòng chọn lớp niên khoá!!!" }]}
             >
               <Select
                 allowClear
@@ -352,37 +364,40 @@ export const StudentCreate = (props) => {
                 placeholder="Lớp niên khoá..."
                 showSearch
               >
-                {
-                  classList.map((item, index) => {
-                    return <Option key={index + "ClassOpts" + item.classId} value={item.classId}>  {item.className + item.classId}  </Option>
-                  })
-                }
+                {classList.map((item, index) => {
+                  return (
+                    <Option key={index + "ClassOpts" + item.classId} value={item.classId}>
+                      {" "}
+                      {item.className + item.classId}{" "}
+                    </Option>
+                  );
+                })}
               </Select>
             </Form.Item>
           </Col>
-        </Row> 
+        </Row>
         <Dragger {...propss}>
           <p className="ant-upload-drag-icon">
             <InboxOutlined />
           </p>
-          <p className="ant-upload-text">Kéo file ảnh sinh viên</p> 
+          <p className="ant-upload-text">Kéo file ảnh sinh viên</p>
         </Dragger>
       </Form>
     </Modal>
   );
 };
 const propss = {
-  name: 'file',
+  name: "file",
   multiple: true,
-  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+  action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
   onChange(info) {
     const { status } = info.file;
-    if (status !== 'uploading') {
+    if (status !== "uploading") {
       console.log(info.file, info.fileList);
     }
-    if (status === 'done') {
+    if (status === "done") {
       message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === 'error') {
+    } else if (status === "error") {
       message.error(`${info.file.name} file upload failed.`);
     }
   },

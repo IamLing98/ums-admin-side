@@ -52,6 +52,7 @@
       "react-highlight-words":"^0.17.0"
    },
    "dependencies": { 
+      "dotenv": "^8.2.0",
       "pdfjs-dist":"2.6.347",
       "@react-pdf-viewer/print":"^2.4.0",
       "@react-pdf-viewer/default-layout":"^2.4.0",

@@ -14,27 +14,66 @@ import {
   ExclamationCircleOutlined,
   RetweetOutlined,
 } from "@ant-design/icons";
-import { Button, Alert, Modal, Select } from "antd";
+import { Button, TreeSelect, Modal, Select } from "antd";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
+import ResultList from "./ResultList";
+import FileSaver from "file-saver";
 
 const { confirm } = Modal;
+
+const treeData = [
+  {
+    title: "Học bổng",
+    value: "HB",
+    children: [
+      {
+        title: "Xuất sắc",
+        value: "HB1",
+      },
+      {
+        title: "Giỏi",
+        value: "HB2",
+      },
+      {
+        title: "Khá",
+        value: "HB3",
+      },
+    ],
+  },
+  {
+    title: "Kỷ luật",
+    value: "KL",
+  },
+];
 
 export const ResultsHome = (props) => {
   const [loading, setLoading] = useState(false);
 
   const [currentTitle, setCurrentTitle] = useState("Kết quả học tập");
 
-  const [recordFoundNumber, setRecordFoundNumber] = useState(0);
-
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const [termList, setTermList] = useState([]);
 
-  const [result, setResult] = useState([]);
+  const [resultList, setResultList] = useState([]);
 
-  const [rank, setRank] = useState("0");
+  const [currentData, setCurrentData] = useState([]);
+
+  const [rank, setRank] = useState(null);
 
   const [termSelected, setTermSelected] = useState(null);
+
+  const [term, setTerm] = useState(null);
+
+  const [departmentList, setDepartmentList] = useState([]);
+
+  const buttonType = {
+    text: "In Danh Sách",
+    action: "TOPDF",
+    disabled: true,
+  };
+
+  const [buttonActionType, setButtonActionType] = useState(buttonType);
 
   const getTermList = () => {
     api
@@ -42,6 +81,7 @@ export const ResultsHome = (props) => {
       .then((result) => {
         let currentTerm = result.find((term) => term.status === 3);
         setTermList(result);
+        setTerm(currentTerm);
         setTermSelected(currentTerm.id);
         getResult(currentTerm.id, rank);
       })
@@ -51,12 +91,101 @@ export const ResultsHome = (props) => {
   const getResult = (term, rank) => {
     api
       .get(`/results?${term ? "termId=" + term : ""}${rank ? "&&rank=" + rank : ""}`)
-      .then((result) => setResult(result))
+      .then((result) => {
+        setCurrentData(result);
+        setResultList(result);
+      })
       .catch((err) => console.log(err));
   };
+  const saveFile = (fileName) => {
+    FileSaver.saveAs(
+      "http://localhost:8080" + `/downloadFile/${fileName}`,
+      `${fileName}`,
+    );
+  };
+
+  const createHBExportFile = () => {
+    console.log(term);
+    let scholarship = resultList
+      .filter((item) => item.gpa >= 2.75 && item.diemRenLuyen >= 80)
+      .map((item, index) => {
+        let studentInfo = {
+          id: index,
+          studentId: item.student.studentId,
+          fullName: item.student.fullName,
+          yearClass: item.yearClass.classId + " " + item.yearClass.className,
+          departmentName: item.department.departmentName,
+          diemRenLuyen: item.diemRenLuyen,
+          GPA: item.gpa,
+          hbType: "",
+          hbTypeName: "",
+          hbValue: "",
+        };
+        if (item.gpa >= 3.6) {
+          studentInfo.hbType = 1;
+          studentInfo.hbValue = 2750000;
+          studentInfo.hbTypeName = "Học bổng xuất sắc";
+        } else if (item.gpa >= 3.2 && item.gpa < 3.6) {
+          studentInfo.hbType = 2;
+          studentInfo.hbValue = 2500000;
+          studentInfo.hbTypeName = "Học bổng giỏi";
+        } else if (item.gpa >= 2.75 && item.gpa < 3.2) {
+          studentInfo.hbType = 3;
+          studentInfo.hbValue = 2000000;
+          studentInfo.hbTypeName = "Học bổng khá";
+        }
+        return studentInfo;
+      });
+    console.log("scholarship: ", scholarship);
+    let values = {
+      map: {
+        term: term.term,
+        preYear: term.year - 1,
+        year: term.year,
+        totalStudent: scholarship.length,
+      },
+      list: [...scholarship],
+    };
+    console.log("map:", values);
+
+    api
+      .post(`/documents/excel?id=3`, values)
+      .then((res) => {
+        saveFile(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  function handleExportHBFile() {
+    Modal.confirm({
+      title: "In danh sách học bổng",
+      icon: <ExclamationCircleOutlined />,
+      content: "Chắc chắn??? ...",
+      okText: "Đồng ý",
+      cancelText: "Huỷ",
+      onOk() {
+        return createHBExportFile();
+      },
+    });
+  }
+
+  const getDepartmentList = () => {
+    api
+      .get(`/departments`)
+      .then((response) => setDepartmentList(response))
+      .catch((error) => console.log(error));
+  };
+
   useEffect(() => {
     getTermList();
+    getDepartmentList();
   }, []);
+
+  useEffect(() => {
+    getResult(termSelected, rank);
+  }, [termSelected]);
 
   if (loading) {
     return (
@@ -68,7 +197,7 @@ export const ResultsHome = (props) => {
     return (
       <div className="data-table-wrapper">
         <Helmet>
-          <title>Kết Qẩu Học Tập</title>
+          <title>Kết Quả Học Tập</title>
           <meta name="description" content="Danh Sách Giảng Viên" />
         </Helmet>
         <div className="rct-block ">
@@ -98,7 +227,11 @@ export const ResultsHome = (props) => {
                           textAlign: "left",
                         }}
                         value={termSelected}
-                        onChange={(value) => setTermSelected(value)}
+                        onChange={(value) => {
+                          let term = termList.find((item) => item.id === value);
+                          setTerm(term);
+                          setTermSelected(value);
+                        }}
                       >
                         {termList.map((term, index) => {
                           return (
@@ -108,58 +241,106 @@ export const ResultsHome = (props) => {
                           );
                         })}
                       </Select>
-                      <Select
-                        allowClear
-                        placeholder="Kết quả học tập..."
-                        showSearch
+                      <TreeSelect
                         style={{
                           width: "200px",
                           marginRight: "8px",
                           textAlign: "left",
                         }}
                         value={rank}
-                        onChange={(value) => setRank(value)}
-                      >
-                        <Select.Option key={"filtereddd1"} value={1}>
-                          Xuất sắc
-                        </Select.Option>
-                        <Select.Option key={"filtereddd2"} value={2}>
-                          giỏi
-                        </Select.Option>
-                        <Select.Option key={"filtereddd3"} value={3}>
-                          khá
-                        </Select.Option>
-                        <Select.Option key={"filtereddd4"} value={4}>
-                          trung bình
-                        </Select.Option>
-                        <Select.Option key={"filtereddd5"} value={5}>
-                          Yếu
-                        </Select.Option>
-                      </Select>
-                      <Select
+                        dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                        treeData={treeData}
+                        placeholder="Học bổng..."
+                        treeDefaultExpandAll
                         allowClear
-                        placeholder="Rèn luyện..."
-                        showSearch
-                        style={{
-                          width: "200px",
-                          marginRight: "8px",
-                          textAlign: "left",
+                        onChange={(value) => {
+                          if (value === "HB") {
+                            let newData = resultList.filter(
+                              (item) => item.gpa >= 2.75 && item.diemRenLuyen >= 80,
+                            );
+                            setCurrentData([...newData]);
+                            setButtonActionType({
+                              text: "In danh sách HB",
+                              disabled: false,
+                            });
+                          } else if (value === "HB1") {
+                            let newData = resultList.filter(
+                              (item) => item.gpa >= 3.6 && item.diemRenLuyen >= 80,
+                            );
+                            setButtonActionType({
+                              text: "In danh sách HB",
+                              disabled: false,
+                            });
+                            setCurrentData([...newData]);
+                          } else if (value === "HB2") {
+                            let newData = resultList.filter(
+                              (item) =>
+                                item.gpa < 3.6 &&
+                                item.gpa >= 3.2 &&
+                                item.diemRenLuyen >= 80,
+                            );
+                            setButtonActionType({
+                              text: "In danh sách HB",
+                              disabled: false,
+                            });
+                            setCurrentData([...newData]);
+                          } else if (value === "HB3") {
+                            let newData = resultList.filter(
+                              (item) =>
+                                item.gpa >= 2.75 &&
+                                item.gpa < 3.2 &&
+                                item.diemRenLuyen >= 80,
+                            );
+                            setButtonActionType({
+                              text: "In danh sách HB",
+                              disabled: false,
+                            });
+                            setCurrentData([...newData]);
+                          } else if (value === "KL") {
+                            setButtonActionType({
+                              text: "In danh sách KL",
+                              disabled: false,
+                            });
+                            setCurrentData(resultList);
+                          } else {
+                            setButtonActionType({
+                              text: "In danh sách ",
+                              disabled: true,
+                            });
+                            setCurrentData(resultList);
+                          }
+                          setRank(value);
                         }}
-                      >
-                        <Select.Option key={+"filteredddd1"} value={1}>
-                          Khen thuởng
-                        </Select.Option>
-                        <Select.Option key={+"filteredddd2"} value={2}>
-                          Kỷ luật
-                        </Select.Option>
-                      </Select>
+                      />
                       <Button
                         type="primary"
                         style={
                           selectedRowKeys.length > 1
                             ? {
-                                background: "#DEC544",
-                                borderColor: "#DEC544",
+                                background: "#2962FF",
+                                borderColor: "#2962FF",
+                                color: "black",
+                                width: "180px",
+                              }
+                            : {
+                                width: "180px",
+                              }
+                        }
+                        onClick={() => {
+                          handleExportHBFile();
+                        }}
+                        disabled={buttonActionType.disabled}
+                      >
+                        <DiffOutlined />
+                        <span>{buttonActionType.text}</span>
+                      </Button>
+                      <Button
+                        type="primary"
+                        style={
+                          selectedRowKeys.length > 1
+                            ? {
+                                background: "#2962FF",
+                                borderColor: "#2962FF",
                                 color: "black",
                                 width: "180px",
                               }
@@ -173,11 +354,12 @@ export const ResultsHome = (props) => {
                         disabled={selectedRowKeys.length > 1 ? false : true}
                       >
                         <DiffOutlined />
-                        <span>PDF</span>
+                        <span>{buttonActionType.text}</span>
                       </Button>
                     </div>
                   </Col>
                 </Row>
+                <ResultList data={currentData}  departmentList={departmentList}/>
               </div>
             </div>
           </div>

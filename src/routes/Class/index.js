@@ -185,15 +185,8 @@ export const YearClassHome = (props) => {
             <div className="rct-full-block">
               <hr style={{ margin: "0px" }} />
               <div className="table-responsive">
-                <Row>
-                  <Col
-                    md={6}
-                    sm={12}
-                    style={{ display: "flex", flexDirection: "column" }}
-                  > 
-                  <Alert message="Success Text" type="info" style={{maxHeight:"32px"}} />  
-                  </Col>
-                  <Col md={6} sm={12} xs={12}>
+                <Row> 
+                  <Col md={12} sm={12} xs={12}>
                     <div
                       className="tableListOperator"
                       style={{ textAlign: "right", width: "100%" }}

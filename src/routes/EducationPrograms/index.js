@@ -8,19 +8,16 @@ import EducationProgramCreate from "./CreateEducationProgram";
 import EducationProgramUpdate from "./UpdateEducationProgram";
 import { Col, Row } from "reactstrap";
 import {
-  PlusOutlined,
-  SearchOutlined,
+  PlusOutlined, 
   VerticalAlignBottomOutlined,
   DiffOutlined,
   DoubleLeftOutlined,
 } from "@ant-design/icons";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
-import { Button, Input,  Alert, } from "antd";
+import { Button } from "antd";
 
 export const EducationProgramsComponent = (props) => {
-  const [currentTitle, setCurrentTitle] = useState(
-    "Danh sách chương trình đào tạo"
-  );
+  const [currentTitle, setCurrentTitle] = useState("Danh sách chương trình đào tạo");
 
   const [loading, setLoading] = useState(true);
 
@@ -41,9 +38,7 @@ export const EducationProgramsComponent = (props) => {
   const showErrNoti = (err) => {
     NotificationManager.err(err.response.data.message);
     if (err.message === "Forbidden") {
-      NotificationManager.err(
-        "Did you forget something? Please activate your account"
-      );
+      NotificationManager.err("Did you forget something? Please activate your account");
     } else if (err.message === "Unauthorized") {
       throw new SubmissionError({ _err: "Username or Password Invalid" });
     }
@@ -82,7 +77,7 @@ export const EducationProgramsComponent = (props) => {
         showErrNoti(err);
       });
   };
-  
+
   const handleDeleteRecord = (id) => {
     api
       .delete(`/education-program/${id}`, true)
@@ -107,10 +102,10 @@ export const EducationProgramsComponent = (props) => {
         >
           <DoubleLeftOutlined />
         </a>{" "}
-        Thông Tin Chi Tiết Chương Trình Đào Tạo:  {record.educationProgramName}
-      </span>
+        Thông Tin Chi Tiết Chương Trình Đào Tạo: {record.educationProgramName}
+      </span>,
     );
-    setIsShowDetail(record); 
+    setIsShowDetail(record);
   };
 
   useEffect(() => {
@@ -128,7 +123,7 @@ export const EducationProgramsComponent = (props) => {
   } else
     return (
       <div className="data-table-wrapper">
-        <Helmet>  
+        <Helmet>
           <title>Chương Trình Đào Tạo</title>
           <meta name="description" content="Danh Sách Giảng Viên" />
         </Helmet>
@@ -150,16 +145,9 @@ export const EducationProgramsComponent = (props) => {
             <div className="rct-full-block">
               <hr style={{ margin: "0px" }} />
               <div className="table-responsive">
-                {isShowDetail === null ? ( 
-                  <Row> 
-                    <Col
-                      md={6}
-                      sm={12}
-                      style={{ display: "flex", flexDirection: "column" }}
-                    >
-                    <Alert message="Success Text" type="info" style={{maxHeight:"32px"}} />  
-                    </Col>
-                    <Col md={6} sm={12} xs={12}>
+                {isShowDetail === null ? (
+                  <Row>
+                    <Col md={12} sm={12} xs={12}>
                       <div
                         className="tableListOperator"
                         style={{ textAlign: "right", width: "100%" }}
@@ -222,7 +210,7 @@ export const EducationProgramsComponent = (props) => {
                   <EducationProgramDetail
                     educationProgram={isShowDetail}
                     setIsShowDetail={setIsShowDetail}
-                  /> 
+                  />
                 )}
               </div>
 

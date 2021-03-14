@@ -93,20 +93,7 @@ export const ScheduleHome = (props) => {
               <div className="table-responsive">
                 {isShowDetail === null ? (
                   <Row>
-                    <Col
-                      md={3}
-                      sm={12}
-                      style={{ display: "flex", flexDirection: "column" }}
-                    > 
-                      <Alert
-                        message={
-                          <strong>Danh sách học kỳ - Tìm thấy {recordFoundNumber} bản ghi</strong>
-                        }
-                        type="info"
-                        style={{ maxHeight: "32px" }}
-                      />
-                    </Col>
-                    <Col md={9} sm={12} xs={12}>
+                    <Col md={12} sm={12} xs={12}>
                       <div
                         className="tableListOperator"
                         style={{ textAlign: "right", width: "100%" }}

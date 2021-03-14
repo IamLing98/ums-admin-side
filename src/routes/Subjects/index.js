@@ -173,34 +173,7 @@ export const SubjectHome = (props) => {
               <hr style={{ margin: "0px" }} />
               <div className="table-responsive">
                 <Row>
-                  <Col
-                    md={6}
-                    sm={12}
-                    style={{ display: "flex", flexDirection: "column" }}
-                  >
-                    <Row>
-                      <Col md={4}>
-                        <Input placeholder="Mã Học Phần..." size="middle" />
-                      </Col>
-                      <Col md={4}>
-                        <Input placeholder="Tên Học Phần..." size="middle" />
-                      </Col>
-                      <Col
-                        md={4}
-                        style={{ display: "block", flexDirection: "column" }}
-                      >
-                        <button
-                          type="button"
-                          className="ant-btn ant-btn-primary"
-                          onClick={() => onSearch()}
-                        >
-                          <SearchOutlined />
-                          <span>Tìm Kiếm</span>
-                        </button>
-                      </Col>
-                    </Row>
-                  </Col>
-                  <Col md={6} sm={12} xs={12}>
+                  <Col md={12} sm={12} xs={12}>
                     <div
                       className="tableListOperator"
                       style={{ textAlign: "right", width: "100%" }}

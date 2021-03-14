@@ -2,31 +2,27 @@ import { api } from "Api";
 import React, { useEffect, useState, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { NotificationManager } from "react-notifications";
-import StudentCreate from "./StudentCreate";
-import StudentUpdate from "./StudentUpdate";
+// import TeacherCreate from "./TeacherCreate";
+// import TeacherUpdate from "./TeacherUpdate";
 // import StudentImport from './Import';
 import { Col, Row } from "reactstrap";
 import moment from "moment";
 import {
-  PlusOutlined,
-  SearchOutlined,
+  PlusOutlined, 
   DeleteOutlined,
-  DiffOutlined,
-  VerticalAlignBottomOutlined,
+  DiffOutlined, 
   ExclamationCircleOutlined,
   RetweetOutlined,
 } from "@ant-design/icons";
-import { Button, Alert, Modal, Select } from "antd";
+import { Button, Alert, Modal } from "antd";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
-import StudentDetail from "./StudentDetail";
-import StudentList from "./StudentList";
-import ToPdf from "./ExportToPdf";
-import ImportStudent from "./Import";
+// import TeacherDetails from "./TeacherDetails";
+import EmployeeList from "./EmployeeList";
 
 const { confirm } = Modal;
 
-export const StudentHome = (props) => {
-  const [currentTitle, setCurrentTitle] = useState("Danh Sách Sinh Viên");
+export const EmployeeHome = (props) => {
+  const [currentTitle, setCurrentTitle] = useState("Danh Sách Cán Bộ/Giảng Viên");
 
   const [showModalCreate, setShowModalCreate] = useState(false);
 
@@ -34,11 +30,11 @@ export const StudentHome = (props) => {
 
   const [showModalImport, setShowModalImport] = useState(false);
 
-  const [showModalPDF, setShowModalPDF] = useState(false);
-
   const [showDetail, setShowDetail] = useState(null);
 
-  const [studentList, setStudentList] = useState([]);
+  const [teacherList, setTeacherList] = useState([]);
+
+  const [subjectList, setSubjectList] = useState([]);
 
   const [recordUpdate, setRecordUpdate] = useState(null);
 
@@ -54,8 +50,6 @@ export const StudentHome = (props) => {
 
   const [classList, setClassList] = useState([]);
 
-  const [recordFoundNumber, setRecordFoundNumber] = useState(0);
-
   const [loading, setLoading] = useState(true);
 
   const input = useRef(null);
@@ -63,7 +57,7 @@ export const StudentHome = (props) => {
   const onSearch = () => {};
 
   const showErrNoti = (err) => {
-    NotificationManager.error(err.response.data.message);
+    NotificationManager.err(err.response.data.message);
     if (err.message === "Forbidden") {
       NotificationManager.err("Did you forget something? Please activate your account");
     } else if (err.message === "Unauthorized") {
@@ -71,15 +65,14 @@ export const StudentHome = (props) => {
     }
   };
 
-  const getStudentList = () => {
+  const getTeacherList = () => {
     api
-      .get("/students", true)
+      .get("/employee?type=1", true)
       .then((res) => {
         for (var i = 0; i < res.length; i++) {
           res[i].isSelecting = false;
         }
-        setStudentList(res);
-        setRecordFoundNumber(res.length);
+        setTeacherList(res);
         setLoading(false);
       })
       .catch((err) => {
@@ -88,24 +81,24 @@ export const StudentHome = (props) => {
   };
 
   const setSelecting = (record) => {
-    let newList = studentList;
+    let newList = teacherList;
     for (var i = 0; i < newList.length; i++) {
-      if (record.studentId === newList[i].studentId) {
+      if (record.employeeId === newList[i].employeeId) {
         newList[i].isSelecting = true;
+      } else {
+        newList[i].isSelecting = false;
       }
     }
-    setStudentList(newList);
+    setTeacherList(newList);
     setShowDetail(record);
   };
 
   const cancelShowDetail = (record) => {
-    let newList = studentList;
+    let newList = teacherList;
     for (var i = 0; i < newList.length; i++) {
-      if (record.studentId === newList[i].studentId) {
-        newList[i].isSelecting = false;
-      }
+      newList[i].isSelecting = false;
     }
-    setStudentList(newList);
+    setTeacherList(newList);
     setShowDetail(null);
   };
 
@@ -120,15 +113,58 @@ export const StudentHome = (props) => {
       });
   };
 
-  const handleSubmitForm = (values) => {
-    for (var i = 0; i < values.length; i++) {
-      values.dateBirth = moment(values.dateBirth, "YYYY-MM-DD");
-    }
+  const getSubjectList = () => {
     api
-      .post("/students", values, true)
+      .get(`/subjects`)
       .then((res) => {
-        NotificationManager.success(`Tạo mới ${res} sinh viên.`);
-        getStudentList();
+        setSubjectList(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleSubmitForm = (values) => {
+    values.dateBirth = moment(values.dateBirth).format("YYYY-MM-DD");
+    let newValues = { ...values };
+
+    newValues.subjectList = [];
+    if (values.subjectList !== null && values.subjectList !== undefined) {
+      values.subjectList.forEach((element) => {
+        newValues.subjectList.push({ subjectId: element });
+      });
+    }
+
+    newValues.teacherEducationTimeLineList = [];
+    if (values.teacherEducationTimeLineList !== null && values.teacherEducationTimeLineList !== undefined) {
+      values.teacherEducationTimeLineList.forEach((item) => {
+        newValues.teacherEducationTimeLineList.push({
+          graduationYear: item.graduationYear,
+          educationLevel: item.educationLevel,
+          branchName: item.branchName,
+          educationPlace: item.educationPlace,
+        });
+      });
+    }
+
+    newValues.teacherWorkTimeLineList = [];
+    if (values.teacherWorkTimeLineList !== null && values.teacherWorkTimeLineList !== undefined) {
+      values.teacherWorkTimeLineList.forEach((item) => {
+        newValues.teacherWorkTimeLineList.push({
+          startDate: item.startDate,
+          endDate: item.endDate,
+          job: item.job,
+          workUnit: item.workUnit,
+        });
+      });
+    }
+
+    console.log("newValues: ", newValues);
+    api
+      .post("/employee", newValues, true)
+      .then((res) => {
+        NotificationManager.success(`Tạo mới ${res} giảng viên.`);
+        getTeacherList();
       })
       .catch((err) => {
         showErrNoti(err);
@@ -137,14 +173,47 @@ export const StudentHome = (props) => {
   };
 
   const handleSubmitUpdateForm = (values) => {
-    for (var i = 0; i < values.length; i++) {
-      values.dateBirth = moment(values.dateBirth, "YYYY-MM-DD");
+    values.dateBirth = moment(values.dateBirth).format("YYYY-MM-DD");
+    let newValues = { ...values };
+    console.log(newValues);
+
+    newValues.subjectList = [];
+    if (values.subjectList !== null && values.subjectList !== undefined) {
+      values.subjectList.forEach((element) => {
+        newValues.subjectList.push({ subjectId: element });
+      });
     }
+
+    newValues.teacherEducationTimeLineList = [];
+    if (values.teacherEducationTimeLineList !== null && values.teacherEducationTimeLineList !== undefined) {
+      values.teacherEducationTimeLineList.forEach((item) => {
+        newValues.teacherEducationTimeLineList.push({
+          graduationYear: item.graduationYear,
+          educationLevel: item.educationLevel,
+          branchName: item.branchName,
+          educationPlace: item.educationPlace,
+        });
+      });
+    }
+
+    newValues.teacherWorkTimeLineList = [];
+    if (values.teacherWorkTimeLineList !== null && values.teacherWorkTimeLineList !== undefined) {
+      values.teacherWorkTimeLineList.forEach((item) => {
+        newValues.teacherWorkTimeLineList.push({
+          startDate: item.startDate,
+          endDate: item.endDate,
+          job: item.job,
+          workUnit: item.workUnit,
+        });
+      });
+    }
+
+    console.log("newValues: ", newValues);
     api
-      .put("/students", values, true)
+      .put(`/employee/${newValues.employeeId}`, newValues, true)
       .then((res) => {
-        NotificationManager.success(`Tạo mới ${res} sinh viên.`);
-        getStudentList();
+        NotificationManager.success(`Cập nhật thành công ${res} giảng viên.`);
+        getTeacherList();
       })
       .catch((err) => {
         showErrNoti(err);
@@ -152,12 +221,12 @@ export const StudentHome = (props) => {
     setShowModalUpdate(false);
   };
 
-  const handleDeleteRecord = (values) => {
+  const handleDeleteRecord = (id) => {
     api
-      .delete(`/students?${values.map((value, index) => `ids=${value}`).join("&")}`, true)
+      .delete(`/employee/${id}`)
       .then((res) => {
         NotificationManager.success("Đã xoá" + res + " bản ghi");
-        getStudentList();
+        getTeacherList();
       })
       .catch((err) => {
         showErrNoti(err);
@@ -166,10 +235,10 @@ export const StudentHome = (props) => {
 
   const handleDeleteMultipleRecord = (values) => {
     api
-      .delete(`/students?${values.map((value, index) => `ids=${value}`).join("&")}`, true)
+      .delete(`/employee?${values.map((value, index) => `ids=${value}`).join("&")}`, true)
       .then((res) => {
         NotificationManager.success("Đã xoá" + res + " bản ghi");
-        getStudentList();
+        getTeacherList();
         setSelectedRowKeys([]);
       })
       .catch((err) => {
@@ -240,19 +309,18 @@ export const StudentHome = (props) => {
   };
 
   useEffect(() => {
-    getStudentList();
+    getTeacherList();
     getDepartmentList();
+    getSubjectList();
     getEthnicList();
     getProvinceList("VNM");
     getEducationProgramList();
     getClassList();
-    console.log(process.env.REACT_APP_MODE);
   }, []);
 
   if (loading) {
     return (
       <>
-        {" "}
         <RctPageLoader />
       </>
     );
@@ -260,7 +328,7 @@ export const StudentHome = (props) => {
     return (
       <div className="data-table-wrapper">
         <Helmet>
-          <title>Hồ Sơ Sinh Viên</title>
+          <title>Hồ Sơ Giảng Viên</title>
           <meta name="description" content="Danh Sách Giảng Viên" />
         </Helmet>
         <div className="rct-block ">
@@ -275,14 +343,17 @@ export const StudentHome = (props) => {
               <hr style={{ margin: "0px" }} />
               <div className="table-responsive">
                 <Row>
-                  <Col md={12} sm={12} xs={12}>
-                    <div className="tableListOperator" style={{ textAlign: "right", width: "100%" }}>  
+                  <Col md={6} sm={12} style={{ display: "flex", flexDirection: "column" }}>
+                    <Alert message="Success Text" type="info" style={{ maxHeight: "32px" }} />
+                  </Col>
+                  <Col md={6} sm={12} xs={12}>
+                    <div className="tableListOperator" style={{ textAlign: "right", width: "100%" }}>
                       <Button
                         type="primary"
                         style={{
                           background: "#448AE2",
                           borderColor: "#448AE2",
-                          width: "180px",
+                          width: "122px",
                         }}
                         onClick={() => setShowModalCreate(true)}
                       >
@@ -297,11 +368,9 @@ export const StudentHome = (props) => {
                                 background: "#DC0000",
                                 borderColor: "#DC0000",
                                 color: "wheat",
-                                width: "180px",
+                                width: "122px",
                               }
-                            : {
-                                width: "180px",
-                              }
+                            : {}
                         }
                         disabled={selectedRowKeys.length > 1 ? false : true}
                         onClick={() => showDeleteConfirm(selectedRowKeys)}
@@ -312,121 +381,76 @@ export const StudentHome = (props) => {
                       <Button
                         type="primary"
                         style={{
-                          background: "#63B175",
-                          borderColor: "#63B175",
-                          width: "180px",
+                          background: "#DEC544",
+                          borderColor: "#DEC544",
+                          color: "black",
+                          width: "122px",
                         }}
-                        onClick={() => setShowModalImport(true)}
-                      >
-                        <VerticalAlignBottomOutlined />
-                        <span>Import </span>
-                      </Button>
-                      {/* <Button
-                        style={
-                          selectedRowKeys.length > 1
-                            ? {
-                                background: "#DEC544",
-                                borderColor: "#DEC544",
-                                color: "black",
-                                width: "180px",
-                              }
-                            : {
-                                width: "180px",
-                              }
-                        }
                         onClick={() => {}}
-                        disabled={selectedRowKeys.length > 1 ? false : true}
                       >
                         <DiffOutlined />
                         <span>In Exel</span>
-                      </Button> */}
-                      <Button
-                        type="primary"
-                        style={
-                          selectedRowKeys.length > 1
-                            ? {
-                                background: "#DEC544",
-                                borderColor: "#DEC544",
-                                color: "black",
-                                width: "180px",
-                              }
-                            : {
-                                width: "180px",
-                              }
-                        }
-                        onClick={() => {
-                          setShowModalPDF(true);
-                        }}
-                        disabled={selectedRowKeys.length > 1 ? false : true}
-                      >
-                        <DiffOutlined />
-                        <span>PDF</span>
                       </Button>
-                      <ToPdf
-                        selectedRowKeys={selectedRowKeys}
-                        visible={showModalPDF}
-                        setShowModalPDF={setShowModalPDF}
-                        studentList={studentList}
-                      />
                     </div>
                   </Col>
                 </Row>
-                <StudentList
+                <EmployeeList
                   setCurrentTitle={setCurrentTitle}
                   handleDeleteRecord={handleDeleteRecord}
-                  data={studentList}
+                  data={teacherList}
                   setShowModalUpdate={setShowModalUpdate}
                   selectedRowKeys={selectedRowKeys}
                   setSelectedRowKeys={setSelectedRowKeys}
                   setShowDetail={setShowDetail}
                   setSelecting={setSelecting}
-                  setRecordFoundNumber={setRecordFoundNumber}
                 />
               </div>
               {showDetail !== null && (
-                <StudentDetail
+                <TeacherDetails
                   visible={showDetail !== null ? true : false}
                   record={showDetail}
                   setShowDetail={setShowDetail}
                   cancelShowDetail={cancelShowDetail}
                 />
               )}
-
-              <StudentCreate
+              {/* <TeacherCreate
                 visible={showModalCreate}
                 setShowModalCreate={setShowModalCreate}
-                getStudentList={getStudentList}
+                getTeacherList={getTeacherList}
                 departmentList={departmentList}
-                studentList={studentList}
+                teacherList={teacherList}
                 handleSubmitForm={handleSubmitForm}
                 ethnicList={ethnicList}
                 provinceList={provinceList}
                 educationProgramList={educationProgramList}
                 classList={classList}
+                subjectList={subjectList}
                 // options={prerequisitesStudent}
-              />
-              <StudentUpdate
+              /> */}
+{/* 
+              <TeacherUpdate
                 visible={showModalUpdate}
                 setShowModalUpdate={setShowModalUpdate}
-                getStudentList={getStudentList}
+                getTeacherList={getTeacherList}
                 departmentList={departmentList}
-                studentList={studentList}
-                handleSubmitUpdateForm={handleSubmitUpdateForm}
+                teacherList={teacherList}
+                handleSubmitForm={handleSubmitUpdateForm}
                 ethnicList={ethnicList}
                 provinceList={provinceList}
                 educationProgramList={educationProgramList}
                 classList={classList}
+                subjectList={subjectList}
                 // options={prerequisitesStudent}
-              />
+              /> */}
               {/* 
               <StudentImport
                 visible={showModalImport}
                 setShowModalImport={setShowModalImport}
                 setRecordUpdate={setRecordUpdate}
                 record={recordUpdate}
-                studentList={studentList}
+                teacherList={teacherList}
                 departmentList={departmentList}
-                getStudentList={getStudentList}
+                getTeacherList={getTeacherList}
                 // options={prerequisitesStudent}
               /> */}
             </div>
@@ -436,4 +460,4 @@ export const StudentHome = (props) => {
     );
 };
 
-export default StudentHome;
+export default EmployeeHome;

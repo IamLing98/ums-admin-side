@@ -32,7 +32,7 @@ const formItemLayout = {
   },
 };
 
-export const TeacherCreate = (props) => {
+export const TeacherUpdate = (props) => {
   const [form] = Form.useForm();
 
   const [record, setRecord] = useState(null);
@@ -279,4 +279,4 @@ const propss = {
   },
 };
 
-export default TeacherCreate;
+export default TeacherUpdate;

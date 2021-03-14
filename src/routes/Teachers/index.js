@@ -8,13 +8,8 @@ import TeacherUpdate from "./TeacherUpdate";
 import { Col, Row } from "reactstrap";
 import moment from "moment";
 import {
-  PlusOutlined,
-  SearchOutlined,
-  DeleteOutlined,
   DiffOutlined,
-  VerticalAlignBottomOutlined,
   ExclamationCircleOutlined,
-  RetweetOutlined,
 } from "@ant-design/icons";
 import { Button, Alert, Modal } from "antd";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
@@ -345,41 +340,8 @@ export const TeacherHome = (props) => {
               <hr style={{ margin: "0px" }} />
               <div className="table-responsive">
                 <Row>
-                  <Col md={6} sm={12} style={{ display: "flex", flexDirection: "column" }}>
-                    <Alert message="Success Text" type="info" style={{ maxHeight: "32px" }} />
-                  </Col>
-                  <Col md={6} sm={12} xs={12}>
-                    <div className="tableListOperator" style={{ textAlign: "right", width: "100%" }}>
-                      <Button
-                        type="primary"
-                        style={{
-                          background: "#448AE2",
-                          borderColor: "#448AE2",
-                          width: "122px",
-                        }}
-                        onClick={() => setShowModalCreate(true)}
-                      >
-                        <PlusOutlined></PlusOutlined>
-                        <span>Tạo Mới </span>
-                      </Button>
-                      <Button
-                        type="primary"
-                        style={
-                          selectedRowKeys.length > 1
-                            ? {
-                                background: "#DC0000",
-                                borderColor: "#DC0000",
-                                color: "wheat",
-                                width: "122px",
-                              }
-                            : {}
-                        }
-                        disabled={selectedRowKeys.length > 1 ? false : true}
-                        onClick={() => showDeleteConfirm(selectedRowKeys)}
-                      >
-                        <DeleteOutlined />
-                        <span>Xoá Nhiều</span>
-                      </Button>
+                  <Col md={12} sm={12} xs={12}>
+                    <div className="tableListOperator" style={{ textAlign: "right", width: "100%" }}>  
                       <Button
                         type="primary"
                         style={{

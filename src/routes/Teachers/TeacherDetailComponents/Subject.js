@@ -17,13 +17,6 @@ const SubjectList = (props) => {
       title: "Mã học phần",
       dataIndex: "subjectId",
       align: "center",
-      render: (text, record) => {
-        return (
-          <span>
-            {record.startDate} - {record.endDate ? record.endDate : "nay"}{" "}
-          </span>
-        );
-      },
     },
     {
       title: "Tên học phần",

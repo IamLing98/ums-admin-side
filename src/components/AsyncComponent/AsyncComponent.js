@@ -66,6 +66,11 @@ const AsyncAdminLoginComponent = Loadable({
    loading: () => <RctPageLoader />
 });
 
+//Employee
+const AsyncAdminEmployeeComponent = Loadable({
+   loader: () => import('Routes/Employees'),
+   loading: () => <RctPageLoader />
+});
 
 // CONFIG - Room
 const AsyncRoomConfigComponent = Loadable({
@@ -133,6 +138,9 @@ export {
 
    //fee categories
    AsyncFeeCategoriesComponent,
+
+   //Employee
+   AsyncAdminEmployeeComponent,
 
    AsyncForgotPassComponent,
    AsyncAdminLoginComponent,
