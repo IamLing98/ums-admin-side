@@ -1,27 +1,20 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Button, Input, Popconfirm, Space, Table, Tag, Alert } from "antd";
-import {
-  DeleteFilled,
-  DeleteOutlined,
-  DiffOutlined,
-  EditFilled,
-  PlusOutlined,
-  SearchOutlined,
-  DoubleLeftOutlined,
-  EditOutlined,
-  RetweetOutlined,
-  ClearOutlined,
-} from "@ant-design/icons";
+import { Button, Input, Space, Table } from "antd";
+import { PrinterFilled, SearchOutlined, ClearOutlined } from "@ant-design/icons";
 import { api } from "Api";
 import Highlighter from "react-highlight-words";
 import moment from "moment";
 
-const StudentList = (props) => {
+const BillList = (props) => {
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
     size: "default",
   });
+
+  function format(n) {
+    return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(n);
+  }
 
   const [searchText, setSearchText] = useState("");
 
@@ -95,116 +88,83 @@ const StudentList = (props) => {
 
   const columns = [
     {
-      title: "Mã Giảng Viên ",
-      dataIndex: "employeeId",
+      title: "Mã Phiếu",
+      dataIndex: "invoiceNo",
       align: "center",
       ...getColumnSearchProps({
-        dataIndex: "employeeId",
-        columnName: "mã giảng viên",
+        dataIndex: "invoiceNo",
+        columnName: "mã phiếu thu",
       }),
-      render: (text, record) => (
-        <a
-          // className="ant-anchor-link-title ant-anchor-link-title-active"
-          href="javascript:void(0)"
-          onClick={() => {
-            console.log(record);
-            props.setSelecting(record);
-          }}
-        >
-          {text}
-        </a>
-      ),
+      render: (text, record) => {
+        return (
+          <a
+            // className="ant-anchor-link-title ant-anchor-link-title-active"
+            href="javascript:void(0)"
+            onClick={() => {
+              console.log(record);
+              props.onSelectRow(record);
+            }}
+          >
+            {text}
+          </a>
+        );
+      },
     },
     {
-      title: "Họ Và Tên",
+      title: "Mã Sinh Viên",
+      align: "center",
+      dataIndex: "studentABN",
+      ...getColumnSearchProps({
+        dataIndex: "studentABN",
+        columnName: "mã sinh viên",
+      }),
+    },
+    {
+      title: "Họ Tên",
+      align: "center",
       dataIndex: "fullName",
-      align: "center",
-      ...getColumnSearchProps({
-        dataIndex: "fullName",
-        columnName: "tên sinh viên",
-      }),
     },
     {
-      title: "Giới Tính",
-      dataIndex: "sex",
+      title: "Ngày Thu",
+      dataIndex: "invoiceCreatedDate",
       align: "center",
-      render: (text, record) => <span>{text === 1 ? "Nam" : "Nữ"}</span>,
+      render: (text, record) => moment(text).format("HH:mm DD/MM/YYYY"),
     },
     {
-      title: "Ngày Sinh",
-      dataIndex: "dateBirth",
+      title: "Lý Do Thu ",
       align: "center",
-      render: (text, record) => <span>{moment(text).format("DD.MM.YYYY")}</span>,
-    }, 
-    {
-      title: "Học Vị",
-      dataIndex: "degree",
-      align: "center",
-      render: (text, record) => {
-        switch (text) {
-          case 2:
-            return <span>Tiến sỹ</span>;
-          default:
-            return <span>Thạc sỹ</span>;
-        }
-      },
+      dataIndex: "reasonName",
     },
     {
-      title: "Học Hàm",
-      dataIndex: "scientific_titles",
+      title: "Diễn Giải",
       align: "center",
-      render: (text, record) => {
-        switch (text) {
-          case 2:
-            return <span>GS</span>;
-          default:
-            return <span>PGS</span>;
-        }
-      },
+      dataIndex: "invoiceName",
     },
     {
-      title: "Khoa Đào Tạo",
-      dataIndex: ["department", "departmentName"],
+      title: "Người Thu",
       align: "center",
-      ...getColumnSearchProps({
-        dataIndex: "departmentName",
-        columnName: "khoa đào tạo",
-      }),
+      dataIndex: "creatorName",
+    },
+    {
+      title: "Số Tiền",
+      dataIndex: "amount",
+      align: "center",
+      render: (text, record) => <>{format(text)}</>,
     },
     {
       title: "Thao Tác",
       align: "center",
       render: (text, record) => (
-        <Space size="middle">
-          {record.educationProgramStatus === "2" ? (
-            <Button type="" onClick={() => {}}>
-              <RetweetOutlined />
-            </Button>
-          ) : (
-            <Button type="" disabled>
-              <RetweetOutlined />
-            </Button>
-          )}
+        <>
           <Button
             type=""
-            onClick={() => {  
-              props.setShowModalUpdate(record.employeeId);
+            onClick={() => {
+              props.handlePrintStudentInvoice(record, 1);
             }}
           >
-            <EditFilled />
+            <PrinterFilled />
           </Button>
-          <Popconfirm
-            placement="left"
-            title={"Chắc chắn xoá?"}
-            onConfirm={() => props.handleDeleteRecord(record.employeeId)}
-            okText="Ok"
-            cancelText="Không"
-          >
-            <Button type="">
-              <DeleteFilled />
-            </Button>
-          </Popconfirm>
-        </Space>
+        </>
       ),
     },
   ];
@@ -261,7 +221,7 @@ const StudentList = (props) => {
       <Table
         columns={columns}
         dataSource={props.data}
-        rowKey="employeeId"
+        rowKey="invoiceNo"
         bordered
         size="small"
         pagination={pagination}
@@ -286,4 +246,4 @@ const StudentList = (props) => {
   );
 };
 
-export default StudentList;
+export default BillList;

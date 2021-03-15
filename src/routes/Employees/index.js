@@ -2,22 +2,16 @@ import { api } from "Api";
 import React, { useEffect, useState, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { NotificationManager } from "react-notifications";
-// import TeacherCreate from "./TeacherCreate";
-// import TeacherUpdate from "./TeacherUpdate";
+import TeacherCreate from "./TeacherCreate";
+import TeacherUpdate from "./TeacherUpdate";
 // import StudentImport from './Import';
 import { Col, Row } from "reactstrap";
 import moment from "moment";
-import {
-  PlusOutlined, 
-  DeleteOutlined,
-  DiffOutlined, 
-  ExclamationCircleOutlined,
-  RetweetOutlined,
-} from "@ant-design/icons";
+import { DiffOutlined, ExclamationCircleOutlined, PlusOutlined, ImportOutlined } from "@ant-design/icons";
 import { Button, Alert, Modal } from "antd";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
-// import TeacherDetails from "./TeacherDetails";
-import EmployeeList from "./EmployeeList";
+import TeacherDetails from "./TeacherDetails";
+import TeacherList from "./TeacherList";
 
 const { confirm } = Modal;
 
@@ -136,7 +130,10 @@ export const EmployeeHome = (props) => {
     }
 
     newValues.teacherEducationTimeLineList = [];
-    if (values.teacherEducationTimeLineList !== null && values.teacherEducationTimeLineList !== undefined) {
+    if (
+      values.teacherEducationTimeLineList !== null &&
+      values.teacherEducationTimeLineList !== undefined
+    ) {
       values.teacherEducationTimeLineList.forEach((item) => {
         newValues.teacherEducationTimeLineList.push({
           graduationYear: item.graduationYear,
@@ -148,7 +145,10 @@ export const EmployeeHome = (props) => {
     }
 
     newValues.teacherWorkTimeLineList = [];
-    if (values.teacherWorkTimeLineList !== null && values.teacherWorkTimeLineList !== undefined) {
+    if (
+      values.teacherWorkTimeLineList !== null &&
+      values.teacherWorkTimeLineList !== undefined
+    ) {
       values.teacherWorkTimeLineList.forEach((item) => {
         newValues.teacherWorkTimeLineList.push({
           startDate: item.startDate,
@@ -185,7 +185,10 @@ export const EmployeeHome = (props) => {
     }
 
     newValues.teacherEducationTimeLineList = [];
-    if (values.teacherEducationTimeLineList !== null && values.teacherEducationTimeLineList !== undefined) {
+    if (
+      values.teacherEducationTimeLineList !== null &&
+      values.teacherEducationTimeLineList !== undefined
+    ) {
       values.teacherEducationTimeLineList.forEach((item) => {
         newValues.teacherEducationTimeLineList.push({
           graduationYear: item.graduationYear,
@@ -197,7 +200,10 @@ export const EmployeeHome = (props) => {
     }
 
     newValues.teacherWorkTimeLineList = [];
-    if (values.teacherWorkTimeLineList !== null && values.teacherWorkTimeLineList !== undefined) {
+    if (
+      values.teacherWorkTimeLineList !== null &&
+      values.teacherWorkTimeLineList !== undefined
+    ) {
       values.teacherWorkTimeLineList.forEach((item) => {
         newValues.teacherWorkTimeLineList.push({
           startDate: item.startDate,
@@ -328,7 +334,7 @@ export const EmployeeHome = (props) => {
     return (
       <div className="data-table-wrapper">
         <Helmet>
-          <title>Hồ Sơ Giảng Viên</title>
+          <title>Hồ Sơ Cán Bộ/Giảng Viên</title>
           <meta name="description" content="Danh Sách Giảng Viên" />
         </Helmet>
         <div className="rct-block ">
@@ -343,17 +349,17 @@ export const EmployeeHome = (props) => {
               <hr style={{ margin: "0px" }} />
               <div className="table-responsive">
                 <Row>
-                  <Col md={6} sm={12} style={{ display: "flex", flexDirection: "column" }}>
-                    <Alert message="Success Text" type="info" style={{ maxHeight: "32px" }} />
-                  </Col>
-                  <Col md={6} sm={12} xs={12}>
-                    <div className="tableListOperator" style={{ textAlign: "right", width: "100%" }}>
+                  <Col md={12} sm={12} xs={12}>
+                    <div
+                      className="tableListOperator"
+                      style={{ textAlign: "right", width: "100%" }}
+                    >
                       <Button
                         type="primary"
                         style={{
                           background: "#448AE2",
                           borderColor: "#448AE2",
-                          width: "122px",
+                          width: "180px",
                         }}
                         onClick={() => setShowModalCreate(true)}
                       >
@@ -362,21 +368,15 @@ export const EmployeeHome = (props) => {
                       </Button>
                       <Button
                         type="primary"
-                        style={
-                          selectedRowKeys.length > 1
-                            ? {
-                                background: "#DC0000",
-                                borderColor: "#DC0000",
-                                color: "wheat",
-                                width: "122px",
-                              }
-                            : {}
-                        }
-                        disabled={selectedRowKeys.length > 1 ? false : true}
-                        onClick={() => showDeleteConfirm(selectedRowKeys)}
+                        style={{
+                          background: "#448AE2",
+                          borderColor: "#448AE2",
+                          width: "180px",
+                        }}
+                        onClick={() => setShowModalCreate(true)}
                       >
-                        <DeleteOutlined />
-                        <span>Xoá Nhiều</span>
+                        <ImportOutlined></ImportOutlined>
+                        <span>Import</span>
                       </Button>
                       <Button
                         type="primary"
@@ -384,7 +384,7 @@ export const EmployeeHome = (props) => {
                           background: "#DEC544",
                           borderColor: "#DEC544",
                           color: "black",
-                          width: "122px",
+                          width: "180px",
                         }}
                         onClick={() => {}}
                       >
@@ -394,7 +394,7 @@ export const EmployeeHome = (props) => {
                     </div>
                   </Col>
                 </Row>
-                <EmployeeList
+                <TeacherList
                   setCurrentTitle={setCurrentTitle}
                   handleDeleteRecord={handleDeleteRecord}
                   data={teacherList}
@@ -413,7 +413,7 @@ export const EmployeeHome = (props) => {
                   cancelShowDetail={cancelShowDetail}
                 />
               )}
-              {/* <TeacherCreate
+              <TeacherCreate
                 visible={showModalCreate}
                 setShowModalCreate={setShowModalCreate}
                 getTeacherList={getTeacherList}
@@ -426,8 +426,8 @@ export const EmployeeHome = (props) => {
                 classList={classList}
                 subjectList={subjectList}
                 // options={prerequisitesStudent}
-              /> */}
-{/* 
+              />
+
               <TeacherUpdate
                 visible={showModalUpdate}
                 setShowModalUpdate={setShowModalUpdate}
@@ -441,7 +441,7 @@ export const EmployeeHome = (props) => {
                 classList={classList}
                 subjectList={subjectList}
                 // options={prerequisitesStudent}
-              /> */}
+              />
               {/* 
               <StudentImport
                 visible={showModalImport}

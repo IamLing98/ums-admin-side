@@ -106,6 +106,17 @@ const AsyncFeeCategoriesComponent = Loadable({
    loader: () => import('Routes/FeeCategories'),
    loading: () => <RctPageLoader />
 });
+//DEPARTMENT_
+const AsyncDepartmentComponent = Loadable({
+   loader: () => import('Routes/Departments'),
+   loading: () => <RctPageLoader />
+});
+
+//SALARY
+const AsyncSalaryComponent = Loadable({
+   loader: () => import('Routes/Salary'),
+   loading: () => <RctPageLoader />
+});
 
 
 export {
@@ -141,6 +152,12 @@ export {
 
    //Employee
    AsyncAdminEmployeeComponent,
+
+   //Departmet
+   AsyncDepartmentComponent,
+
+   //SalaryHome
+   AsyncSalaryComponent,
 
    AsyncForgotPassComponent,
    AsyncAdminLoginComponent,

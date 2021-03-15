@@ -113,18 +113,35 @@ export default {
       child_routes: [
         {
           menu_icon: "zmdi zmdi-group",
+          menu_title: "Hồ sơ nhân sự",
+          new_item: false,
+          path: "/app/finance/employees",
+          isActive: false,
+          menu_description: "Tài chính/Hồ sơ nhân sự",
+        },
+        {
+          menu_icon: "zmdi zmdi-group",
+          menu_title: "Phòng ban",
+          new_item: false,
+          path: "/app/finance/departments",
+          isActive: false,
+          menu_description: "Hành chính/Phòng ban",
+        },
+        {
+          menu_icon: "zmdi zmdi-group",
           menu_title: "Thu chi sinh viên",
           new_item: false,
           path: "/app/finance/tuitionfee",
           isActive: false,
           menu_description: "Tài chính/Thu chi sinh viên",
-        },
+        }, 
         {
           menu_icon: "zmdi zmdi-group",
-          menu_title: "Hồ sơ nhân sự",
+          menu_title: "Bảng lương",
           new_item: false,
-          path: "/dashboard/home",
+          path: "/app/finance/salary",
           isActive: false,
+          menu_description: "Tài chính/Bảng lương",
         },
         {
           menu_icon: "zmdi zmdi-group",

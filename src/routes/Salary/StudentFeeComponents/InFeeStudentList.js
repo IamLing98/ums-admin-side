@@ -1,25 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Button, Input, Popconfirm, Space, Table, Tag, Alert } from "antd";
-import {
-  DeleteFilled,
-  DeleteOutlined,
-  DiffOutlined,
-  EditFilled,
-  PlusOutlined,
-  SearchOutlined,
-  DoubleLeftOutlined,
-  EditOutlined,
-  RetweetOutlined,
-  ClearOutlined,
-} from "@ant-design/icons";
+import { Button, Input, Select, Popconfirm, Space, Table } from "antd";
+import { ExportOutlined, ImportOutlined, SearchOutlined, RetweetOutlined, ClearOutlined } from "@ant-design/icons";
 import { api } from "Api";
 import Highlighter from "react-highlight-words";
-import moment from "moment";
 
-const TeacherList = (props) => {
+const StudentList = (props) => {
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 10,
+    pageSize: 15,
     size: "default",
   });
 
@@ -50,20 +38,13 @@ const TeacherList = (props) => {
           >
             Tìm
           </Button>
-          <Button
-            onClick={() => handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-            icon={<ClearOutlined />}
-          >
+          <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }} icon={<ClearOutlined />}>
             Xoá
           </Button>
         </Space>
       </div>
     ),
-    filterIcon: (filtered) => (
-      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
-    ),
+    filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />,
     onFilter: (value, record) =>
       record[values.dataIndex]
         ? record[values.dataIndex]
@@ -102,12 +83,21 @@ const TeacherList = (props) => {
 
   const columns = [
     {
-      title: "Mã Giảng Viên ",
-      dataIndex: "employeeId",
+      title: "Mã Sinh Viên ",
+      dataIndex: "studentId",
       align: "center",
       ...getColumnSearchProps({
-        dataIndex: "employeeId",
-        columnName: "mã giảng viên",
+        dataIndex: "studentId",
+        columnName: "mã sinh viên",
+      }),
+    },
+    {
+      title: "Họ Và Tên ",
+      dataIndex: "fullName",
+      align: "center",
+      ...getColumnSearchProps({
+        dataIndex: "fullName",
+        columnName: "tên sinh viên",
       }),
       render: (text, record) => (
         <a
@@ -123,55 +113,18 @@ const TeacherList = (props) => {
       ),
     },
     {
-      title: "Họ Và Tên",
-      dataIndex: "fullName",
+      title: "Lớp ",
       align: "center",
+      dataIndex: "yearClassId",
       ...getColumnSearchProps({
-        dataIndex: "fullName",
-        columnName: "tên sinh viên",
+        dataIndex: "yearClassId",
+        columnName: "lớp niên khoá",
       }),
-    },
-    {
-      title: "Giới Tính",
-      dataIndex: "sex",
-      align: "center",
-      render: (text, record) => <span>{text === 1 ? "Nam" : "Nữ"}</span>,
-    },
-    {
-      title: "Ngày Sinh",
-      dataIndex: "dateBirth",
-      align: "center",
-      render: (text, record) => <span>{moment(text).format("DD.MM.YYYY")}</span>,
-    },
-    {
-      title: "Học Vị",
-      dataIndex: "degree",
-      align: "center",
-      render: (text, record) => {
-        switch (text) {
-          case 2:
-            return <span>Tiến sỹ</span>;
-          default:
-            return <span>Thạc sỹ</span>;
-        }
-      },
-    },
-    {
-      title: "Học Hàm",
-      dataIndex: "scientific_titles",
-      align: "center",
-      render: (text, record) => {
-        switch (text) {
-          case 2:
-            return <span>GS</span>;
-          default:
-            return <span>PGS</span>;
-        }
-      },
+      render: (text, record) => <>{record.yearClassId + " - " + record.yearClassName + " K" + record.courseNumber}</>,
     },
     {
       title: "Khoa Đào Tạo",
-      dataIndex: ["department", "departmentName"],
+      dataIndex: "departmentName",
       align: "center",
       ...getColumnSearchProps({
         dataIndex: "departmentName",
@@ -179,19 +132,27 @@ const TeacherList = (props) => {
       }),
     },
     {
+      title: "Niên Khoá",
+      align: "center",
+      render: (text, record) => <span>{record.startYear + " - " + record.endYear}</span>,
+    },
+    {
       title: "Thao Tác",
       align: "center",
       render: (text, record) => (
-        <Space size="middle">
+        <>
           <Button
             type=""
             onClick={() => {
-              props.setShowModalUpdate(record.employeeId);
+              console.log("cc");
+              console.log(record);
+              props.setShowInFeeReceiptsCreate(record);
             }}
           >
-            <EditFilled />
+            <ExportOutlined />
+            Phiếu Thu
           </Button>
-        </Space>
+        </>
       ),
     },
   ];
@@ -248,7 +209,7 @@ const TeacherList = (props) => {
       <Table
         columns={columns}
         dataSource={props.data}
-        rowKey="employeeId"
+        rowKey="studentId"
         bordered
         size="small"
         pagination={pagination}
@@ -256,8 +217,7 @@ const TeacherList = (props) => {
         showSizeChanger={true}
         rowSelection={rowSelection}
         onRow={(record, index) => {
-          if (record.isSelecting === true)
-            return { style: { background: "#4DC2F7", fontWeight: "bolder" } };
+          if (record.isSelecting === true) return { style: { background: "#4DC2F7", fontWeight: "bolder" } };
         }}
         locale={{
           emptyText: (
@@ -274,4 +234,4 @@ const TeacherList = (props) => {
   );
 };
 
-export default TeacherList;
+export default StudentList;

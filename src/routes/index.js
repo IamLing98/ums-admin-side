@@ -16,7 +16,13 @@ import {
 import { AsyncRoomConfigComponent } from "Components/AsyncComponent/AsyncComponent";
 
 //finace routes
-import { AsyncFeeCategoriesComponent, AsyncTuiTionFeeComponent } from "Components/AsyncComponent/AsyncComponent";
+import {
+  AsyncFeeCategoriesComponent,
+  AsyncTuiTionFeeComponent,
+  AsyncAdminEmployeeComponent,
+  AsyncDepartmentComponent,
+  AsyncSalaryComponent,
+} from "Components/AsyncComponent/AsyncComponent";
 
 export const FinanceRoutes = ({ match }) => {
   return (
@@ -24,8 +30,14 @@ export const FinanceRoutes = ({ match }) => {
       <Switch>
         <Redirect exact from={`${match.url}/`} to={`${match.url}/finance`} />
         <Route path={`${match.url}/tuitionfee`} component={AsyncTuiTionFeeComponent} />
-        <Route path={`${match.url}/feecategories`} component={AsyncFeeCategoriesComponent} />
+        <Route
+          path={`${match.url}/feecategories`}
+          component={AsyncFeeCategoriesComponent}
+        />
+        <Route path={`${match.url}/salary`} component={AsyncSalaryComponent} />
+        <Route path={`${match.url}/departments`} component={AsyncDepartmentComponent} />
         <Route path={`${match.url}/time`} component={AsyncYearClassComponent} />
+        <Route path={`${match.url}/employees`} component={AsyncAdminEmployeeComponent} />
       </Switch>
     </div>
   );
@@ -58,7 +70,10 @@ export const EducationRoutes = ({ match }) => {
     <div className="content-wrapper">
       <Switch>
         <Redirect exact from={`${match.url}/`} to={`${match.url}/education-programs`} />
-        <Route path={`${match.url}/education-programs`} component={AsyncEducationProgramsComponent} />
+        <Route
+          path={`${match.url}/education-programs`}
+          component={AsyncEducationProgramsComponent}
+        />
         <Route path={`${match.url}/subjects`} component={AsyncSubjectsComponent} />
         <Route path={`${match.url}/students`} component={AsyncStudentComponent} />
         <Route path={`${match.url}/teachers`} component={AsyncTeachersComponent} />

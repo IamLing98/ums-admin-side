@@ -16,7 +16,7 @@ import { api } from "Api";
 import Highlighter from "react-highlight-words";
 import moment from "moment";
 
-const TeacherList = (props) => {
+const StudentList = (props) => {
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -50,20 +50,13 @@ const TeacherList = (props) => {
           >
             Tìm
           </Button>
-          <Button
-            onClick={() => handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-            icon={<ClearOutlined />}
-          >
+          <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }} icon={<ClearOutlined />}>
             Xoá
           </Button>
         </Space>
       </div>
     ),
-    filterIcon: (filtered) => (
-      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
-    ),
+    filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />,
     onFilter: (value, record) =>
       record[values.dataIndex]
         ? record[values.dataIndex]
@@ -102,7 +95,7 @@ const TeacherList = (props) => {
 
   const columns = [
     {
-      title: "Mã Giảng Viên ",
+      title: "Mã CB/GV ",
       dataIndex: "employeeId",
       align: "center",
       ...getColumnSearchProps({
@@ -142,7 +135,7 @@ const TeacherList = (props) => {
       dataIndex: "dateBirth",
       align: "center",
       render: (text, record) => <span>{moment(text).format("DD.MM.YYYY")}</span>,
-    },
+    }, 
     {
       title: "Học Vị",
       dataIndex: "degree",
@@ -168,29 +161,40 @@ const TeacherList = (props) => {
             return <span>PGS</span>;
         }
       },
-    },
-    {
-      title: "Khoa Đào Tạo",
-      dataIndex: ["department", "departmentName"],
-      align: "center",
-      ...getColumnSearchProps({
-        dataIndex: "departmentName",
-        columnName: "khoa đào tạo",
-      }),
-    },
+    }, 
     {
       title: "Thao Tác",
       align: "center",
       render: (text, record) => (
         <Space size="middle">
+          {record.educationProgramStatus === "2" ? (
+            <Button type="" onClick={() => {}}>
+              <RetweetOutlined />
+            </Button>
+          ) : (
+            <Button type="" disabled>
+              <RetweetOutlined />
+            </Button>
+          )}
           <Button
             type=""
-            onClick={() => {
+            onClick={() => {  
               props.setShowModalUpdate(record.employeeId);
             }}
           >
             <EditFilled />
           </Button>
+          <Popconfirm
+            placement="left"
+            title={"Chắc chắn xoá?"}
+            onConfirm={() => props.handleDeleteRecord(record.employeeId)}
+            okText="Ok"
+            cancelText="Không"
+          >
+            <Button type="">
+              <DeleteFilled />
+            </Button>
+          </Popconfirm>
         </Space>
       ),
     },
@@ -256,8 +260,7 @@ const TeacherList = (props) => {
         showSizeChanger={true}
         rowSelection={rowSelection}
         onRow={(record, index) => {
-          if (record.isSelecting === true)
-            return { style: { background: "#4DC2F7", fontWeight: "bolder" } };
+          if (record.isSelecting === true) return { style: { background: "#4DC2F7", fontWeight: "bolder" } };
         }}
         locale={{
           emptyText: (
@@ -274,4 +277,4 @@ const TeacherList = (props) => {
   );
 };
 
-export default TeacherList;
+export default StudentList;
