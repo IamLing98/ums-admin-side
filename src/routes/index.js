@@ -34,8 +34,7 @@ export const FinanceRoutes = ({ match }) => {
           path={`${match.url}/feecategories`}
           component={AsyncFeeCategoriesComponent}
         />
-        <Route path={`${match.url}/salary`} component={AsyncSalaryComponent} />
-        <Route path={`${match.url}/departments`} component={AsyncDepartmentComponent} />
+        <Route path={`${match.url}/salary`} component={AsyncSalaryComponent} /> 
         <Route path={`${match.url}/time`} component={AsyncYearClassComponent} />
         <Route path={`${match.url}/employees`} component={AsyncAdminEmployeeComponent} />
       </Switch>

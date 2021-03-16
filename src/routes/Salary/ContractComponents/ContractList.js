@@ -5,7 +5,7 @@ import { api } from "Api";
 import Highlighter from "react-highlight-words";
 import moment from "moment";
 
-const BillList = (props) => {
+const ContractList = (props) => {
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -13,7 +13,9 @@ const BillList = (props) => {
   });
 
   function format(n) {
-    return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(n);
+    return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(
+      n,
+    );
   }
 
   const [searchText, setSearchText] = useState("");
@@ -43,13 +45,20 @@ const BillList = (props) => {
           >
             Tìm
           </Button>
-          <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }} icon={<ClearOutlined />}>
+          <Button
+            onClick={() => handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+            icon={<ClearOutlined />}
+          >
             Xoá
           </Button>
         </Space>
       </div>
     ),
-    filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />,
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+    ),
     onFilter: (value, record) =>
       record[values.dataIndex]
         ? record[values.dataIndex]
@@ -88,68 +97,62 @@ const BillList = (props) => {
 
   const columns = [
     {
-      title: "Mã Phiếu",
-      dataIndex: "invoiceNo",
+      title: "Mã Hợp Đồng",
+      dataIndex: "studentId",
       align: "center",
       ...getColumnSearchProps({
-        dataIndex: "invoiceNo",
-        columnName: "mã phiếu thu",
-      }),
-      render: (text, record) => {
-        return (
-          <a
-            // className="ant-anchor-link-title ant-anchor-link-title-active"
-            href="javascript:void(0)"
-            onClick={() => {
-              console.log(record);
-              props.onSelectRow(record);
-            }}
-          >
-            {text}
-          </a>
-        );
-      },
-    },
-    {
-      title: "Mã Sinh Viên",
-      align: "center",
-      dataIndex: "studentABN",
-      ...getColumnSearchProps({
-        dataIndex: "studentABN",
+        dataIndex: "studentId",
         columnName: "mã sinh viên",
       }),
     },
     {
-      title: "Họ Tên",
-      align: "center",
+      title: "Mã CB/GV ",
       dataIndex: "fullName",
+      align: "center",
+      ...getColumnSearchProps({
+        dataIndex: "fullName",
+        columnName: "tên sinh viên",
+      }),
+      render: (text, record) => (
+        <a
+          // className="ant-anchor-link-title ant-anchor-link-title-active"
+          href="javascript:void(0)"
+          onClick={() => {
+            console.log(record);
+            props.setSelecting(record);
+          }}
+        >
+          {text}
+        </a>
+      ),
     },
     {
-      title: "Ngày Thu",
-      dataIndex: "invoiceCreatedDate",
+      title: "Phòng Ban ",
       align: "center",
-      render: (text, record) => moment(text).format("HH:mm DD/MM/YYYY"),
+      dataIndex: "yearClassId",
+      ...getColumnSearchProps({
+        dataIndex: "yearClassId",
+        columnName: "lớp niên khoá",
+      }),
+      render: (text, record) => (
+        <>
+          {record.yearClassId + " - " + record.yearClassName + " K" + record.courseNumber}
+        </>
+      ),
     },
     {
-      title: "Lý Do Thu ",
+      title: "Chức Vụ",
+      dataIndex: "departmentName",
       align: "center",
-      dataIndex: "reasonName",
+      ...getColumnSearchProps({
+        dataIndex: "departmentName",
+        columnName: "khoa đào tạo",
+      }),
     },
     {
-      title: "Diễn Giải",
+      title: "Ngày Bắt Đầu",
       align: "center",
-      dataIndex: "invoiceName",
-    },
-    {
-      title: "Người Thu",
-      align: "center",
-      dataIndex: "creatorName",
-    },
-    {
-      title: "Số Tiền",
-      dataIndex: "amount",
-      align: "center",
-      render: (text, record) => <>{format(text)}</>,
+      render: (text, record) => <span>{record.startYear + " - " + record.endYear}</span>,
     },
     {
       title: "Thao Tác",
@@ -221,7 +224,7 @@ const BillList = (props) => {
       <Table
         columns={columns}
         dataSource={props.data}
-        rowKey="invoiceNo"
+        rowKey="id"
         bordered
         size="small"
         pagination={pagination}
@@ -229,7 +232,8 @@ const BillList = (props) => {
         showSizeChanger={true}
         rowSelection={rowSelection}
         onRow={(record, index) => {
-          if (record.isSelecting === true) return { style: { background: "#4DC2F7", fontWeight: "bolder" } };
+          if (record.isSelecting === true)
+            return { style: { background: "#4DC2F7", fontWeight: "bolder" } };
         }}
         locale={{
           emptyText: (
@@ -246,4 +250,4 @@ const BillList = (props) => {
   );
 };
 
-export default BillList;
+export default ContractList;

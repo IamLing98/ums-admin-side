@@ -4,8 +4,9 @@ import { NotificationManager } from "react-notifications";
 import moment from "moment";
 import { CreditCardOutlined, OrderedListOutlined,SettingOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
-import InFeeStudent from "./InFeeStudents";
+// import InFeeStudent from "./InFeeStudents";
 import InFeeReceiptStudentPrint from "../../util/InFeeReceiptStudentPrint";
+import Contract from './Contract';
 
 const TuitionFeeHome = (props) => {
   const [current, setCurrent] = useState("setting:1");
@@ -54,8 +55,8 @@ const TuitionFeeHome = (props) => {
                   </span>
                 </div>
                 <hr style={{ margin: "0px", marginBottom: "15px" }} />
-                {current === "setting:1" && <InFeeStudent />}
-                {current === "setting:2" && <InFeeReceiptStudentPrint />}
+                {current === "setting:1" && <Contract />}
+                {/* {current === "setting:2" && <InFeeReceiptStudentPrint />} */}
               </div>
             </div>
           </div>

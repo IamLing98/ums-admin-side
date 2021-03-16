@@ -118,15 +118,7 @@ export default {
           path: "/app/finance/employees",
           isActive: false,
           menu_description: "Tài chính/Hồ sơ nhân sự",
-        },
-        {
-          menu_icon: "zmdi zmdi-group",
-          menu_title: "Phòng ban",
-          new_item: false,
-          path: "/app/finance/departments",
-          isActive: false,
-          menu_description: "Hành chính/Phòng ban",
-        },
+        }, 
         {
           menu_icon: "zmdi zmdi-group",
           menu_title: "Thu chi sinh viên",
