@@ -5,7 +5,7 @@ import { api } from "Api";
 import Highlighter from "react-highlight-words";
 import moment from "moment";
 
-const ContractList = (props) => {
+const SalaryTableList = (props) => {
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -97,58 +97,14 @@ const ContractList = (props) => {
 
   const columns = [
     {
-      title: "Mã Hợp Đồng",
+      title: "Mã Bảng Lương",
       dataIndex: "id",
       align: "center",
       ...getColumnSearchProps({
         dataIndex: "id",
         columnName: "mã hợp đồng",
       }),
-    },
-    {
-      title: "Mã CB/GV ",
-      dataIndex: ["employee", "employeeId"],
-      align: "center",
-      ...getColumnSearchProps({
-        dataIndex: "fullName",
-        columnName: "tên sinh viên",
-      }),
-      render: (text, record) => (
-        <a
-          // className="ant-anchor-link-title ant-anchor-link-title-active"
-          href="javascript:void(0)"
-          onClick={() => {
-            console.log(record);
-            props.setSelecting(record);
-          }}
-        >
-          {text}
-        </a>
-      ),
-    },
-    {
-      title: "Tên Nhân Viên ",
-      dataIndex: ["employee", "fullName"],
-      align: "center",
-    },
-    {
-      title: "Phòng Ban ",
-      align: "center",
-      dataIndex: ["department", "departmentName"],
-      ...getColumnSearchProps({
-        dataIndex: "yearClassId",
-        columnName: "lớp niên khoá",
-      }), 
-    },
-    {
-      title: "Chức Vụ",
-      dataIndex: ["employeeLevel", "employeeLevelName"],
-      align: "center",
-      ...getColumnSearchProps({
-        dataIndex: "departmentName",
-        columnName: "khoa đào tạo",
-      }),
-    },
+    }, 
     {
       title: "Ngày Bắt Đầu",
       align: "center",
@@ -263,4 +219,4 @@ const ContractList = (props) => {
   );
 };
 
-export default ContractList;
+export default SalaryTableList;

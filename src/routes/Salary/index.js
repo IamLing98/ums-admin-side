@@ -7,6 +7,7 @@ import { Menu } from "antd";
 // import InFeeStudent from "./InFeeStudents";
 import InFeeReceiptStudentPrint from "../../util/InFeeReceiptStudentPrint";
 import Contract from './Contract';
+import SalaryTable from './SalaryTable';
 
 const TuitionFeeHome = (props) => {
   const [current, setCurrent] = useState("setting:1");
@@ -19,7 +20,7 @@ const TuitionFeeHome = (props) => {
     <>
       <div className="data-table-wrapper">
         <Helmet>
-          <title>Thu Chi Sinh Viên</title>
+          <title>Lương</title>
           <meta name="description" content="Thu Chi Sinh Viên" />
         </Helmet>
         <div className="rct-block ">
@@ -30,7 +31,7 @@ const TuitionFeeHome = (props) => {
                 <div className="ant-page-header-heading">
                   <div className=" ant-page-header-heading-left">
                     <h4>
-                      <span>Thu chi sinh viên</span>
+                      <span>Bảng Lương</span>
                     </h4>
                   </div>
                   <span className="ant-page-header-heading-extra">
@@ -39,7 +40,7 @@ const TuitionFeeHome = (props) => {
                         <OrderedListOutlined />
                         Hợp đồng
                       </Menu.Item>
-                      <Menu.Item key="setting:4">
+                      <Menu.Item key="setting:2">
                         <OrderedListOutlined />
                         Phiếu lương
                       </Menu.Item>
@@ -47,7 +48,7 @@ const TuitionFeeHome = (props) => {
                         <CreditCardOutlined />
                         Báo cáo
                       </Menu.Item>
-                      <Menu.Item key="setting:2">
+                      <Menu.Item key="setting:4">
                         <SettingOutlined />
                         Cài đặt
                       </Menu.Item>
@@ -56,7 +57,7 @@ const TuitionFeeHome = (props) => {
                 </div>
                 <hr style={{ margin: "0px", marginBottom: "15px" }} />
                 {current === "setting:1" && <Contract />}
-                {/* {current === "setting:2" && <InFeeReceiptStudentPrint />} */}
+                {current === "setting:2" && <SalaryTable />}
               </div>
             </div>
           </div>

@@ -39,14 +39,15 @@ const formItemLayout = {
 const departmentEmployeeLevel = [
   { employeeLevelId: 1, employeeLevelName: "Trưởng Khoa" },
   { employeeLevelId: 2, employeeLevelName: "Phó Khoa" },
-  { employeeLevelId: 3, employeeLevelName: "Giáo Vụ" },
-  { employeeLevelId: 4, employeeLevelName: "Giảng Viên" },
+  { employeeLevelId: 3, employeeLevelName: "Trưởng Bộ Môn" },
+  { employeeLevelId: 4, employeeLevelName: "Giáo Vụ" },
+  { employeeLevelId: 5, employeeLevelName: "Giảng Viên" },
 ];
 
 const officeEmployeeLevel = [
-  { employeeLevelId: 5, employeeLevelName: "Trưởng Phòng" },
-  { employeeLevelId: 6, employeeLevelName: "Phó Phòng" },
-  { employeeLevelId: 7, employeeLevelName: "Nhân Viên" },
+  { employeeLevelId: 6, employeeLevelName: "Trưởng Phòng" },
+  { employeeLevelId: 7, employeeLevelName: "Phó Phòng" },
+  { employeeLevelId: 8, employeeLevelName: "Nhân Viên" },
 ];
 
 const salaryStructList = [
@@ -75,6 +76,18 @@ export const ContractCreate = (props) => {
   const [employeeLevelOpts, setEmployeeLevelOpts] = useState([]);
 
   const [showCoefficient, setShowCoefficient] = useState(false);
+
+  const [showPerHourPrice, setShowPerHourPrice] = useState(false);
+
+  const [employeeCoefficientLevelList, setEmployeeCoefficientLevelList] = useState([]);
+
+  const getEmployeeCoefficientLevelList = (employeeLevelId) => {
+    api
+      .get(`/employeeCoefficientLevel?employeeLevelId=${employeeLevelId}`)
+      .then((response) => setEmployeeCoefficientLevelList(response))
+      .catch((err) => console.log(err));
+  };
+
   return (
     <Modal
       title="Tạo Mới Hợp Đồng"
@@ -84,7 +97,7 @@ export const ContractCreate = (props) => {
           .validateFields()
           .then((values) => {
             form.resetFields();
-            props.handleSubmitForm(values);
+            props.handleCreateContract(values);
           })
           .catch((info) => {
             console.log("Validate Failed:", info);
@@ -119,10 +132,9 @@ export const ContractCreate = (props) => {
         onValuesChange={(changedValues, allValues) => {}}
       >
         <Row gutter={[16, 24]}>
-          <Col span={24}>
-            <Divider>Thông tin cá nhân</Divider>
+          <Col span={24}> 
             <Form.Item
-              name="fullName"
+              name="employeeId"
               label="Nhân Viên"
               hasFeedback
               rules={[{ required: true, message: "Vui lòng chọn nhân viên!!!" }]}
@@ -189,33 +201,23 @@ export const ContractCreate = (props) => {
             </Form.Item>
             {showEmployeeLevelOpts && (
               <Form.Item
-                name="dateBirth"
+                name="employeeLevelId"
                 label="Chức Vụ"
                 hasFeedback
                 rules={[{ required: true, message: "Vui lòng chọn chức vụ!!!" }]}
               >
-                <Select allowClear style={{ width: "100%" }} placeholder="Chức vụ...">
-                  {employeeLevelOpts.map((employeeLevel, index) => {
-                    return (
-                      <Select.Option
-                        value={employeeLevel.employeeLevelId}
-                        key={"employeeLevelOpts" + index}
-                      >
-                        {employeeLevel.employeeLevelName}
-                      </Select.Option>
-                    );
-                  })}
-                </Select>
-              </Form.Item>
-            )}  
-            {showEmployeeLevelOpts && (
-              <Form.Item
-                name="dateBirth"
-                label="Chức Danh"
-                hasFeedback
-                rules={[{ required: true, message: "Vui lòng chọn chức danh!!!" }]}
-              >
-                <Select allowClear style={{ width: "100%" }} placeholder="Chức danh...">
+                <Select
+                  allowClear
+                  style={{ width: "100%" }}
+                  placeholder="Chức vụ..."
+                  onChange={(value) => {
+                    form.setFieldsValue({
+                      ...form.getFieldsValue,
+                      employeeLevelId: value,
+                    });
+                    getEmployeeCoefficientLevelList(value);
+                  }}
+                >
                   {employeeLevelOpts.map((employeeLevel, index) => {
                     return (
                       <Select.Option
@@ -230,12 +232,31 @@ export const ContractCreate = (props) => {
               </Form.Item>
             )}
             <Form.Item
-              name="identityNumber"
+              name="salaryStructType"
               label="Loại Lương"
               hasFeedback
               rules={[{ required: true, message: "Vui lòng chon cấu trúc lương!!!" }]}
             >
-              <Select allowClear style={{ width: "100%" }} placeholder="Loại lương...">
+              <Select
+                allowClear
+                style={{ width: "100%" }}
+                placeholder="Loại lương..."
+                onChange={(value) => {
+                  form.setFieldsValue({ ...form.getFieldsValue, salaryStructId: value });
+                  if (value) {
+                    if (value === 2) {
+                      setShowCoefficient(true);
+                      setShowPerHourPrice(false);
+                    } else if (value === 1) {
+                      setShowCoefficient(false);
+                      setShowPerHourPrice(true);
+                    }
+                  } else {
+                    setShowCoefficient(false);
+                    setShowPerHourPrice(false);
+                  }
+                }}
+              >
                 {salaryStructList.map((salaryStruct, index) => {
                   return (
                     <Select.Option
@@ -248,21 +269,31 @@ export const ContractCreate = (props) => {
                 })}
               </Select>
             </Form.Item>
+            {showPerHourPrice && (
+              <Form.Item
+                name="perHourPrice"
+                label="Lương/giờ"
+                hasFeedback
+                rules={[{ required: true, message: "Vui lòng nhập lương!!!" }]}
+              >
+                <Input placeholder="Lương theo giờ..." type="number" />
+              </Form.Item>
+            )}
             {showCoefficient && (
               <Form.Item
-                name="dateBirth"
+                name="employeeCoefficientLevelId"
                 label="Bậc lương"
                 hasFeedback
                 rules={[{ required: true, message: "Vui lòng chọn hệ số lương!!!" }]}
               >
                 <Select allowClear style={{ width: "100%" }} placeholder="Hệ số lương...">
-                  {employeeLevelOpts.map((employeeLevel, index) => {
+                  {employeeCoefficientLevelList.map((employeeCoefficientLevel, index) => {
                     return (
                       <Select.Option
-                        value={employeeLevel.employeeLevelId}
-                        key={"employeeLevelOpts" + index}
+                        value={employeeCoefficientLevel.id}
+                        key={"employeeCoefficientLevelOpts" + index}
                       >
-                        {employeeLevel.employeeLevelName}
+                        {employeeCoefficientLevel.employeeCoefficientLevelName}
                       </Select.Option>
                     );
                   })}
@@ -270,7 +301,7 @@ export const ContractCreate = (props) => {
               </Form.Item>
             )}
             <Form.Item
-              name="identityNumber"
+              name="paymentPlanId"
               label="Kế Hoạch Thanh Toán"
               hasFeedback
               rules={[
@@ -295,20 +326,20 @@ export const ContractCreate = (props) => {
               </Select>
             </Form.Item>
             <Form.Item
-              name="contactAddress"
+              name="startedDate"
               label="Ngày Bắt Đầu"
               hasFeedback
-              rules={[{ required: false, message: "Vui lòng chọn ngày bắt đầu!!!" }]}
+              rules={[{ required: true, message: "Vui lòng chọn ngày bắt đầu!!!" }]}
             >
-              <Input placeholder="Địa chỉ thường trú..." />
+              <DatePicker placeholder="Ngày bắt đầu..." />
             </Form.Item>
             <Form.Item
-              name="phoneNumber"
+              name="endDate"
               label="Ngày Kết Thúc"
               hasFeedback
               rules={[{ required: false, message: "Vui lòng nhập ngày kết thúc!!!" }]}
             >
-              <Input placeholder="Số điện thoại..." />
+              <DatePicker placeholder="Ngày kết thúc..." />
             </Form.Item>
           </Col>
           <Col span={12}></Col>
