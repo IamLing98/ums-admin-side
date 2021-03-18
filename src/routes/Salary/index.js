@@ -8,6 +8,7 @@ import { Menu } from "antd";
 import InFeeReceiptStudentPrint from "../../util/InFeeReceiptStudentPrint";
 import Contract from './Contract';
 import SalaryTable from './SalaryTable';
+import SalaryReport from './SalaryReport';
 
 const TuitionFeeHome = (props) => {
   const [current, setCurrent] = useState("setting:1");
@@ -42,6 +43,10 @@ const TuitionFeeHome = (props) => {
                       </Menu.Item>
                       <Menu.Item key="setting:2">
                         <OrderedListOutlined />
+                        Bảng lương
+                      </Menu.Item>
+                      <Menu.Item key="setting:3">
+                        <OrderedListOutlined />
                         Phiếu lương
                       </Menu.Item>
                       <Menu.Item key="setting:5">
@@ -58,6 +63,7 @@ const TuitionFeeHome = (props) => {
                 <hr style={{ margin: "0px", marginBottom: "15px" }} />
                 {current === "setting:1" && <Contract />}
                 {current === "setting:2" && <SalaryTable />}
+                {current === "setting:3" && <SalaryReport />}
               </div>
             </div>
           </div>

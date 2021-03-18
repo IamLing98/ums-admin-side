@@ -293,7 +293,7 @@ const StudentsFee = (props) => {
               <ExportOutlined />
               <span>Export</span>
             </Button>
-            <Button
+            {/* <Button
               style={{
                 background: "#448AE2",
                 borderColor: "#448AE2",
@@ -304,7 +304,7 @@ const StudentsFee = (props) => {
             >
               <ImportOutlined />
               <span>Import</span>
-            </Button>
+            </Button> */}
             <Button
               style={{
                 background: "#448AE2",

@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Button, Input, Popconfirm, Space, Table, Tag, Badge } from "antd";
 import {
   DeleteFilled,
@@ -11,7 +11,7 @@ import {
   EditOutlined,
 } from "@ant-design/icons";
 import { api } from "Api";
-import Highlighter from 'react-highlight-words';
+import Highlighter from "react-highlight-words";
 const YearClassList = (props) => {
   const [pagination, setPagination] = useState({
     current: 1,
@@ -20,23 +20,14 @@ const YearClassList = (props) => {
   });
 
   const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-    }) => (
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
         <Input
           ref={searchInput}
           placeholder={`Tìm theo ${dataIndex}`}
           value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() =>
-            handleSearch(selectedKeys, confirm, dataIndex)
-          }
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
           style={{ width: 188, marginBottom: 8, display: "block" }}
         />
         <Space>
@@ -91,7 +82,7 @@ const YearClassList = (props) => {
 
   const [searchedColumn, setSearchedColumn] = useState("");
 
-  const searchInput = useRef(null)
+  const searchInput = useRef(null);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -100,62 +91,40 @@ const YearClassList = (props) => {
   };
 
   const handleReset = (clearFilters) => {
-    clearFilters(); 
-    setSearchText('');
+    clearFilters();
+    setSearchText("");
   };
 
   const columns = [
     {
       title: "Mã Lớp ",
       dataIndex: "classId",
-      align:"center",
+      align: "center",
     },
     {
       title: "Tên Lớp ",
       dataIndex: "className",
-      align:"center",
+      align: "center",
       render: (text, record) => (
-        // <a
-          // className="ant-anchor-link-title ant-anchor-link-title-active"
-        //   href="javascript:void(0)"
-        //   onClick={() => {
-        //     setShowDetails(true);
-        //     setRecordShowDetails(record);
-        //     setCurrentTitle(
-        //       <span>
-        //         <a
-        //           href="javascript:void(0)"
-        //           onClick={() => {
-        //             setCurrentTitle(<span>Danh Sách Lớp Niên Khoá</span>);
-        //             setShowDetails(false);
-        //           }}
-        //         >
-        //           <DoubleLeftOutlined />
-        //         </a>{" "}
-        //         Thông Tin Chi Tiết Lớp:{" "}
-        //         {record.classId +
-        //           " | " +
-        //           record.className +
-        //           " - " +
-        //           "K" +
-        //           record.courseNumber}
-        //       </span>
-        //     );
-        //   }}
-        // >
+        <a
+          href="javascript:void(0)"
+          onClick={() => {
+            props.setSelecting(record);
+          }}
+        >
           <span>{record.className + " - " + "K" + record.courseNumber}</span>
-        // </a>
+        </a>
       ),
     },
     {
       title: "Khoa Đào Tạo",
       dataIndex: "departmentName",
-      align:"center",
-    },  
+      align: "center",
+    },
     {
       title: "Trình Độ Đào Tạo",
       dataIndex: "educationProgramLevel",
-      align:"center",
+      align: "center",
       render: (text) => {
         if (text === 1) {
           return <span>Cao học</span>;
@@ -167,10 +136,10 @@ const YearClassList = (props) => {
           return <span></span>;
         }
       },
-    }, 
+    },
     {
       title: "Niên Khoá",
-      align:"center",
+      align: "center",
       render: (text, record) => {
         return <>{record.startYear + " - " + record.endYear}</>;
       },
@@ -178,22 +147,22 @@ const YearClassList = (props) => {
     {
       title: "GVCN",
       dataIndex: "teacherFullName",
-      align:"center",
+      align: "center",
     },
     {
       title: "Sỹ Số",
       dataIndex: "totalMember",
-      align:"center",
+      align: "center",
     },
     {
       title: "Thao Tác",
-      align:"center",
+      align: "center",
       render: (text, record) => (
-        <Space size="middle"> 
+        <Space size="middle">
           <Button
             type=""
             onClick={() => {
-              props.setShowModalUpdate(record); 
+              props.setShowModalUpdate(record);
             }}
           >
             <EditFilled />
@@ -271,6 +240,10 @@ const YearClassList = (props) => {
       onChange={(paging) => handleChangeTable(paging)}
       showSizeChanger={true}
       rowSelection={rowSelection}
+      onRow={(record, index) => {
+        if (record.isSelecting === true)
+          return { style: { background: "#4DC2F7", fontWeight: "bolder" } };
+      }}
       locale={{
         emptyText: (
           <div className="ant-empty ant-empty-normal">

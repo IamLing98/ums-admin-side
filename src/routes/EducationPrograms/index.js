@@ -6,9 +6,10 @@ import EducationProgramList from "./EducationProgramList";
 import EducationProgramDetail from "./Components/index";
 import EducationProgramCreate from "./CreateEducationProgram";
 import EducationProgramUpdate from "./UpdateEducationProgram";
+import ImportEducation from "./Import";
 import { Col, Row } from "reactstrap";
 import {
-  PlusOutlined, 
+  PlusOutlined,
   VerticalAlignBottomOutlined,
   DiffOutlined,
   DoubleLeftOutlined,
@@ -34,6 +35,8 @@ export const EducationProgramsComponent = (props) => {
   const [branchList, setBranchList] = useState([]);
 
   const [departmentList, setDepartmentList] = useState([]);
+
+  const [showImportEducationProgram, setShowImportEducationProgram] = useState(false);
 
   const showErrNoti = (err) => {
     NotificationManager.err(err.response.data.message);
@@ -164,31 +167,6 @@ export const EducationProgramsComponent = (props) => {
                           <PlusOutlined></PlusOutlined>
                           <span>Tạo Mới </span>
                         </Button>
-                        <Button
-                          type="primary"
-                          style={{
-                            background: "#63B175",
-                            borderColor: "#63B175",
-                            width: "180px",
-                          }}
-                          onClick={() => setShowModalImport(true)}
-                        >
-                          <VerticalAlignBottomOutlined />
-                          <span>Import </span>
-                        </Button>
-                        <Button
-                          type="primary"
-                          style={{
-                            background: "#DEC544",
-                            borderColor: "#DEC544",
-                            color: "black",
-                            width: "180px",
-                          }}
-                          onClick={() => handleDeleteMultipleRecord()}
-                        >
-                          <DiffOutlined />
-                          <span>In Exel</span>
-                        </Button>
                       </div>
                     </Col>
                   </Row>
@@ -222,6 +200,7 @@ export const EducationProgramsComponent = (props) => {
                 departmentList={departmentList}
                 // options={prerequisitesSubject}
               />
+
               <EducationProgramUpdate
                 visible={isShowModalUpdate}
                 record={recordUpdate}
@@ -231,6 +210,10 @@ export const EducationProgramsComponent = (props) => {
                 setRecordUpdate={setRecordUpdate}
                 departmentList={departmentList}
                 // options={prerequisitesSubject}
+              />
+              <ImportEducation
+                visible={showImportEducationProgram}
+                setShowImportEducationProgram={setShowImportEducationProgram}
               />
             </div>
           </div>

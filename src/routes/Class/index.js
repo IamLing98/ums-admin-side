@@ -5,6 +5,8 @@ import { NotificationManager } from "react-notifications";
 import YearClassList from "./YearClassList";
 import YearClassCreate from "./YearClassCreate";
 import YearClassUpdate from "./YearClassUpdate";
+import YearClassDetails from "./YearClassDetails";
+
 // import SubjectImport from './Import';
 import { Col, Row } from "reactstrap";
 import {
@@ -28,28 +30,48 @@ export const YearClassHome = (props) => {
   const [showModalImport, setShowModalImport] = useState(false);
 
   const [showModalUpdate, setShowModalUpdate] = useState(false);
- 
-  const [yearClassList, setYearClassList] = useState([]); 
+
+  const [yearClassList, setYearClassList] = useState([]);
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const [departmentList, setDepartmentList] = useState([]);
 
+  const [showDetails, setShowDetails] = useState(false);
+
   const [brachList, setBranchList] = useState([]);
 
   const [loading, setLoading] = useState(true);
 
-  const onSearch = () => { };
+  const onSearch = () => {};
 
   const showErrNoti = (err) => {
     NotificationManager.err(err.response.data.message);
     if (err.message === "Forbidden") {
-      NotificationManager.err(
-        "Did you forget something? Please activate your account"
-      );
+      NotificationManager.err("Did you forget something? Please activate your account");
     } else if (err.message === "Unauthorized") {
       throw new SubmissionError({ _err: "Username or Password Invalid" });
     }
+  };
+
+  const setSelecting = (record) => {
+    let newList = yearClassList;
+    for (var i = 0; i < newList.length; i++) {
+      if (record.classId === newList[i].classId) {
+        newList[i].isSelecting = true;
+      }
+    }
+    setYearClassList(newList);
+    setShowDetails(record);
+  };
+
+  const deSelecting = () => {
+    let newList = yearClassList;
+    for (var i = 0; i < newList.length; i++) {
+      newList[i].isSelecting = false;
+    }
+    setYearClassList(newList);
+    setShowDetails(false);
   };
 
   const getYearClassList = () => {
@@ -86,14 +108,13 @@ export const YearClassHome = (props) => {
       });
   };
 
-
   const handleSubmitForm = (values) => {
     let object = {};
     object.departmentId = values.departmentId;
     object.startYear = moment(values.rangeTime[0]).year();
     object.endYear = moment(values.rangeTime[1]).year();
     object.educationProgramLevel = values.educationProgramLevel;
-    console.log(object)
+    console.log(object);
     api
       .post("/yearClasses", object, true)
       .then((res) => {
@@ -108,10 +129,7 @@ export const YearClassHome = (props) => {
 
   const handleDeleteRecord = (id) => {
     api
-      .delete(
-        `/yearClasses/${id}`,
-        true
-      )
+      .delete(`/yearClasses/${id}`, true)
       .then((res) => {
         NotificationManager.success("Đã xoá" + res + " bản ghi");
         getYearClassList();
@@ -123,10 +141,7 @@ export const YearClassHome = (props) => {
 
   const handleDeleteMultipleRecord = (values) => {
     api
-      .delete(
-        `/subjects?${values.map((value, index) => `ids=${value}`).join("&")}`,
-        true
-      )
+      .delete(`/subjects?${values.map((value, index) => `ids=${value}`).join("&")}`, true)
       .then((res) => {
         NotificationManager.success("Đã xoá" + res + " bản ghi");
         getYearClassList();
@@ -163,7 +178,6 @@ export const YearClassHome = (props) => {
   if (loading) {
     return (
       <>
-        {" "}
         <RctPageLoader />
       </>
     );
@@ -185,7 +199,7 @@ export const YearClassHome = (props) => {
             <div className="rct-full-block">
               <hr style={{ margin: "0px" }} />
               <div className="table-responsive">
-                <Row> 
+                <Row>
                   <Col md={12} sm={12} xs={12}>
                     <div
                       className="tableListOperator"
@@ -203,41 +217,18 @@ export const YearClassHome = (props) => {
                         <PlusOutlined></PlusOutlined>
                         <span>Tạo Mới </span>
                       </Button>
-                      {/* <Button
-                        type="primary"
-                        style={{
-                          background: "#63B175",
-                          borderColor: "#63B175",
-                          width: "122px",
-                        }}
-                        onClick={() => setShowModalImport(true)}
-                      >
-                        <VerticalAlignBottomOutlined />
-                        <span>Import </span>
-                      </Button>  */}
-                      {/* <Button
-                        type="primary"
-                        style={{
-                          background: "#DEC544",
-                          borderColor: "#DEC544",
-                          color: "black",
-                          width: "122px",
-                        }}
-                        onClick={() => {}}
-                      >
-                        <DiffOutlined />
-                        <span>In Exel</span>
-                      </Button> */}
                     </div>
                   </Col>
                 </Row>
                 <YearClassList
+                  setSelecting={setSelecting}
                   setCurrentTitle={setCurrentTitle}
                   handleDeleteRecord={handleDeleteRecord}
                   data={yearClassList}
                   setShowModalUpdate={setShowModalUpdate}
                   selectedRowKeys={selectedRowKeys}
                   setSelectedRowKeys={setSelectedRowKeys}
+                  setShowDetails={setShowDetails}
                 />
               </div>
 
@@ -247,15 +238,20 @@ export const YearClassHome = (props) => {
                 getYearClassList={getYearClassList}
                 departmentList={departmentList}
                 handleSubmitForm={handleSubmitForm}
-              // options={prerequisitesSubject}
+                // options={prerequisitesSubject}
               />
               <YearClassUpdate
                 visible={showModalUpdate}
-                setShowModalUpdate={setShowModalUpdate} 
+                setShowModalUpdate={setShowModalUpdate}
                 yearClassList={yearClassList}
                 departmentList={departmentList}
-                getYearClassList={getYearClassList} 
-              // options={prerequisitesSubject}
+                getYearClassList={getYearClassList}
+                // options={prerequisitesSubject}
+              />
+              <YearClassDetails
+                visible={showDetails}
+                setShowDetails={setShowDetails}
+                deSelecting={deSelecting}
               />
               {/*
               <SubjectImport

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Select, Input, Slider } from "antd";
+import { Modal, Form, Select, Input, Slider, Upload, Button } from "antd";
 import { NotificationManager } from "react-notifications";
 import { api } from "Api";
-import { RollbackOutlined, CheckOutlined } from "@ant-design/icons";
+import { RollbackOutlined, CheckOutlined, UploadOutlined } from "@ant-design/icons";
 const { Option } = Select;
+
+const { Dragger } = Upload;
 
 const formItemLayout = {
   labelCol: {
@@ -42,31 +44,60 @@ export const EducationProgramCreate = (props) => {
 
   const [isAllowBranchField, setIsAllowBranchField] = useState(false);
 
+  const [fileList, setFileList] = useState(null);
+
   const handleSubmitForm = (values) => {
-    console.log(values);
+    console.log(fileList);
+    const formData = new FormData();
+    formData.append("file", fileList);
+
+    // You can use any AJAX library you like 
     api
-      .post("/education-programs", values, true)
-      .then((res) => {
-        NotificationManager.success("Tạo mới kỳ học thành công.");
-        props.getEducationProgramList();
+      .post(`/uploadFile`, formData)
+      .then((response) => {
+        console.log(response);
+        let data = response;
+        values.fileName = data.fileName;
+        api
+          .post("/education-programs", values, true)
+          .then((res) => {
+            NotificationManager.success("Tạo mới kỳ học thành công.");
+            props.getEducationProgramList();
+          })
+          .catch((error) => {
+            console.log(error.response);
+            NotificationManager.error(error.response.data.message);
+            if (error.response.status === 403) {
+              NotificationManager.error(
+                "Did you forget something? Please activate your account",
+              );
+            } else if (error.response.status === "Lỗi xác thực") {
+              throw new SubmissionError({ _error: "Username or Password Invalid" });
+            }
+          });
       })
-      .catch((error) => {
-        console.log(error.response);
-        NotificationManager.error(error.response.data.message);
-        if (error.response.status === 403) {
-          NotificationManager.error(
-            "Did you forget something? Please activate your account"
-          );
-        } else if (error.response.status === "Lỗi xác thực") {
-          throw new SubmissionError({ _error: "Username or Password Invalid" });
-        }
-      });
+      .catch((err) => console.log(err));  
     props.onCancel();
   };
 
   function formatter(value) {
     return `${value} kỳ`;
   }
+
+  const importModalProps = {
+    onRemove: (file) => {
+      setFileList(null);
+    },
+    beforeUpload: (file) => {
+      console.log(file.type);
+      let fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+      setFileList(file);
+      if (file.type !== fileType) {
+        message.error(`${file.name} is not a spread sheet file`);
+      }
+      return false;
+    },
+  };
 
   return (
     <Modal
@@ -86,8 +117,16 @@ export const EducationProgramCreate = (props) => {
       onCancel={() => {
         props.onCancel();
       }}
-      okButtonProps={{ icon:<CheckOutlined/>,disabled: false, style:{width:"108px"} }}
-      cancelButtonProps={{ icon: <RollbackOutlined />,   disabled: false, style:{width:"108px"} }}
+      okButtonProps={{
+        icon: <CheckOutlined />,
+        disabled: false,
+        style: { width: "108px" },
+      }}
+      cancelButtonProps={{
+        icon: <RollbackOutlined />,
+        disabled: false,
+        style: { width: "108px" },
+      }}
       maskClosable={false}
       okText="Tạo Mới"
       cancelText="Đóng"
@@ -112,7 +151,7 @@ export const EducationProgramCreate = (props) => {
           name="educationProgramId"
           label="Mã CTĐT"
           hasFeedback
-          rules={[{ required: true, message: "Vui lòng chọn kỳ!" }]}
+          rules={[{ required: true, message: "Vui lòng nhập mã CTDT!" }]}
         >
           <Input placeholder="Mã chương trình đào tạo..." />
         </Form.Item>
@@ -120,7 +159,7 @@ export const EducationProgramCreate = (props) => {
           name="educationProgramName"
           label="Tên CTĐT"
           hasFeedback
-          rules={[{ required: true, message: "Vui lòng chọn kỳ!" }]}
+          rules={[{ required: true, message: "Vui lòng nhap tên CTDT!" }]}
         >
           <Input placeholder="Tên chương trình đào tạo..." />
         </Form.Item>
@@ -128,14 +167,10 @@ export const EducationProgramCreate = (props) => {
           name="departmentId"
           label="Khoa Phụ Trách"
           hasFeedback
-          rules={[{ required: true, message: "Vui lòng chọn kỳ!" }]}
+          rules={[{ required: true, message: "Vui lòng chọn khoa!" }]}
         >
-          <Select
-            allowClear
-            style={{ width: "100%" }}
-            placeholder="Khoa phụ trách..."
-          >
-            {props.departmentList.map((item) => (
+          <Select allowClear style={{ width: "100%" }} placeholder="Khoa phụ trách...">
+            {props.departmentList.filter(item=>item.departmentType !== 0).map((item) => (
               <Option key={item.departmentId} value={item.departmentId}>
                 {item.departmentName}
               </Option>
@@ -165,13 +200,9 @@ export const EducationProgramCreate = (props) => {
           name="educationProgramLevel"
           label="Cấp Đào Tạo"
           hasFeedback
-          rules={[{ required: true, message: "Vui lòng chọn kỳ!" }]}
+          rules={[{ required: true, message: "Vui lòng chọn cấp đào tạo!" }]}
         >
-          <Select
-            allowClear
-            style={{ width: "100%" }}
-            placeholder="Cấp đào tạo..."
-          >
+          <Select allowClear style={{ width: "100%" }} placeholder="Cấp đào tạo...">
             <Option key={"as" + 1} value={1}>
               Cao học
             </Option>
@@ -187,30 +218,29 @@ export const EducationProgramCreate = (props) => {
           name="educationProgramType"
           label="Hình Thức Đào Tạo"
           hasFeedback
-          rules={[{ required: true, message: "Vui lòng chọn kỳ!" }]}
+          rules={[{ required: true, message: "Vui lòng chọn hình thức đào tạo!" }]}
         >
-          <Select
-            allowClear
-            style={{ width: "100%" }}
-            placeholder="Hình thức đào tạo..."
-          >
+          <Select allowClear style={{ width: "100%" }} placeholder="Hình thức đào tạo...">
             <Option value={1}>Đại Học Chính Quy</Option>
             <Option value={2}>Văn Bằng 2</Option>
-            {/* <Option value="4">Liên Thông Cao Đẳng</Option>
-          <Option value="5">Liên Thông Trung Cấp</Option>
-          <Option value="6">Liên Kết Đào Tạo Quốc Tế</Option>
-          <Option value="7">Đại Học Từ Xa</Option> */}
           </Select>
         </Form.Item>
         <Form.Item
           name="totalTerm"
           label="Thời Gian"
           // hasFeedback
-          rules={[{ required: true, message: "Vui lòng chọn sĩ số!" }]}
+          rules={[{ required: true, message: "Vui lòng chọn giới hạn!" }]}
         >
           <Slider min={6} max={10} tipFormatter={formatter} />
         </Form.Item>
       </Form>
+      <div style={{ width: "100%", display: "grid", justifyContent: "center" }}>
+        <Upload {...importModalProps} maxCount={1}>
+          <Button icon={<UploadOutlined />}>
+            Danh sách học phần, file định dạng .xls,.xlsx
+          </Button>
+        </Upload>
+      </div>
     </Modal>
   );
 };

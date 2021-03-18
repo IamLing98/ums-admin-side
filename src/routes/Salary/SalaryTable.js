@@ -11,22 +11,27 @@ import {
   ExclamationCircleOutlined,
   ImportOutlined,
   ExportOutlined,
-  PlusOutlined
+  PlusOutlined,
 } from "@ant-design/icons";
 import { Button, Tabs, Select, Spin, Modal } from "antd";
 import SalaryTableList from "./SalaryTableComponents/SalaryTableList.js";
 import SalaryTableCreate from "./SalaryTableComponents/SalaryTableCreate";
+import SalaryTableDetail from "./SalaryTableComponents/SalaryTableDetail";
 
 const SalaryTable = (props) => {
   const [loading, setLoading] = useState(false);
 
   const [showSalaryTableCreate, setShowSalaryTableCreate] = useState(false);
 
-  const [contractList, setSalaryTableList] = useState([]);
+  const [contractList, setContractList] = useState([]);
 
   const [employeeList, setEmployeeList] = useState([]);
 
+  const [salaryTableList, setSalaryTableList] = useState([]);
+
   const [departmentList, setDepartmentList] = useState([]);
+
+  const [isShowDetail, setIsShowDetail] = useState(false);
 
   const showErrNoti = (err) => {
     NotificationManager.err(err.response.data.message);
@@ -81,9 +86,20 @@ const SalaryTable = (props) => {
       });
   };
 
-  const getSalaryTableList = () => {
+  const getContractList = () => {
     api
       .get(`/contracts`)
+      .then((res) => {
+        setContractList(res);
+      })
+      .catch((err) => {
+        showErrNoti(err);
+      });
+  };
+
+  const getSalaryTableList = () => {
+    api
+      .get(`/salaryTables`)
       .then((res) => {
         setSalaryTableList(res);
       })
@@ -93,8 +109,9 @@ const SalaryTable = (props) => {
   };
 
   const handleCreateSalaryTable = (values) => {
+    console.log("salary table: ", values);
     api
-      .post(`/contracts`, values)
+      .post(`/salaryTables`, values)
       .then((res) => {
         setShowSalaryTableCreate(false);
         NotificationManager.success("Tạo mới hợp đồng thành công");
@@ -107,6 +124,7 @@ const SalaryTable = (props) => {
     getEmployeeList();
     getDepartmentList();
     getSalaryTableList();
+    getContractList();
   }, []);
 
   return (
@@ -130,27 +148,16 @@ const SalaryTable = (props) => {
             >
               <PlusOutlined />
               Tạo Bảng Lương
-            </Button>
-            <Button
-              style={{
-                background: "#448AE2",
-                borderColor: "#448AE2",
-                width: "180px",
-              }}
-              type="primary"
-              onClick={() => setShowSettingModal(true)}
-            >
-              <SettingOutlined />
-              <span>Cài đặt</span>
-            </Button>
+            </Button> 
           </div>
         </Col>
       </Row>
       <SalaryTableList
-        data={contractList}
+        data={salaryTableList}
         onSelectRow={onSelectRow}
         onDeselectRow={onDeselectRow}
         setShowSalaryTableCreate={setShowSalaryTableCreate}
+        setIsShowDetail={setIsShowDetail}
       />
 
       <SalaryTableCreate
@@ -159,14 +166,11 @@ const SalaryTable = (props) => {
         employeeList={employeeList}
         departmentList={departmentList}
         handleCreateSalaryTable={handleCreateSalaryTable}
-      />
-      {/*
-      <OutFeeReceiptsCreate
-        onCancel={setShowOutFeeReceiptsCreate}
-        visible={showOutFeeReceiptsCreate}
-        selectedTerm={selectedTerm}
+        contractList={contractList}
       />
 
+      <SalaryTableDetail visible={isShowDetail} setIsShowDetail={setIsShowDetail}  />
+      {/*
       <InvoiceDetail
         visible={showInvoiceDetail}
         onDeselectRow={onDeselectRow}

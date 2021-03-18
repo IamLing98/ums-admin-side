@@ -192,18 +192,6 @@ export const SubjectHome = (props) => {
                       </Button>
                       <Button
                         type="primary"
-                        style={{
-                          background: "#63B175",
-                          borderColor: "#63B175",
-                          width: "180px",
-                        }}
-                        onClick={() => setShowModalImport(true)}
-                      >
-                        <VerticalAlignBottomOutlined />
-                        <span>Import </span>
-                      </Button>
-                      <Button
-                        type="primary"
                         style={
                           selectedRowKeys.length > 1
                             ? {

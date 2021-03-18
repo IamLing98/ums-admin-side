@@ -98,6 +98,8 @@ export const StudentHome = (props) => {
     setShowDetail(record);
   };
 
+  
+
   const cancelShowDetail = (record) => {
     let newList = studentList;
     for (var i = 0; i < newList.length; i++) {
@@ -251,8 +253,7 @@ export const StudentHome = (props) => {
 
   if (loading) {
     return (
-      <>
-        {" "}
+      <> 
         <RctPageLoader />
       </>
     );
@@ -319,7 +320,7 @@ export const StudentHome = (props) => {
                         onClick={() => setShowModalImport(true)}
                       >
                         <VerticalAlignBottomOutlined />
-                        <span>Import </span>
+                        <span>Nhập </span>
                       </Button>
                       {/* <Button
                         style={
@@ -360,7 +361,7 @@ export const StudentHome = (props) => {
                         disabled={selectedRowKeys.length > 1 ? false : true}
                       >
                         <DiffOutlined />
-                        <span>PDF</span>
+                        <span>Xuất</span>
                       </Button>
                       <ToPdf
                         selectedRowKeys={selectedRowKeys}

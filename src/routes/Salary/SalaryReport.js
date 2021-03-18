@@ -11,19 +11,22 @@ import {
   ExclamationCircleOutlined,
   ImportOutlined,
   ExportOutlined,
+  PlusOutlined,
 } from "@ant-design/icons";
 import { Button, Tabs, Select, Spin, Modal } from "antd";
-import ContractList from "./ContractComponents/ContractList.js";
-import ContractCreate from "./ContractComponents/ContractCreate.js";
+import SalaryReportList from "./SalaryReportComponents/SalaryReportList.js";
+// import SalaryReportCreate from "./SalaryReportComponents/SalaryReportCreate";
 
-const Contract = (props) => {
+const SalaryReport = (props) => {
   const [loading, setLoading] = useState(false);
 
-  const [showContractCreate, setShowContractCreate] = useState(false);
+  const [showSalaryReportCreate, setShowSalaryReportCreate] = useState(false);
 
   const [contractList, setContractList] = useState([]);
 
   const [employeeList, setEmployeeList] = useState([]);
+
+  const [salaryTableList, setSalaryReportList] = useState([]);
 
   const [departmentList, setDepartmentList] = useState([]);
 
@@ -91,13 +94,24 @@ const Contract = (props) => {
       });
   };
 
-  const handleCreateContract = (values) => {
+  const getSalaryReportList = () => {
+    api
+      .get(`/salaryTableContracts`)
+      .then((res) => {
+        setSalaryReportList(res);
+      })
+      .catch((err) => {
+        showErrNoti(err);
+      });
+  };
+
+  const handleCreateSalaryReport = (values) => {
     api
       .post(`/contracts`, values)
       .then((res) => {
-        setShowContractCreate(false);
+        setShowSalaryReportCreate(false);
         NotificationManager.success("Tạo mới hợp đồng thành công");
-        getContractList();
+        getSalaryReportList();
       })
       .catch((err) => showErrNoti(err));
   };
@@ -105,6 +119,7 @@ const Contract = (props) => {
   useEffect(() => {
     getEmployeeList();
     getDepartmentList();
+    getSalaryReportList();
     getContractList();
   }, []);
 
@@ -124,29 +139,30 @@ const Contract = (props) => {
               }}
               type="primary"
               onClick={() => {
-                setShowContractCreate(true);
+                setShowSalaryReportCreate(true);
               }}
             >
-              <ArrowRightOutlined />
-              Tạo Hợp Đồng
+              <PlusOutlined />
+              Tạo Phiếu Lương
             </Button> 
           </div>
         </Col>
       </Row>
-      <ContractList
-        data={contractList}
+      <SalaryReportList
+        data={salaryTableList}
         onSelectRow={onSelectRow}
         onDeselectRow={onDeselectRow}
-        setShowContractCreate={setShowContractCreate}
+        setShowSalaryReportCreate={setShowSalaryReportCreate}
       />
-
-      <ContractCreate
-        visible={showContractCreate}
-        setShowContractCreate={setShowContractCreate}
+      {/* 
+      <SalaryReportCreate
+        visible={showSalaryReportCreate}
+        setShowSalaryReportCreate={setShowSalaryReportCreate}
         employeeList={employeeList}
         departmentList={departmentList}
-        handleCreateContract={handleCreateContract}
-      />
+        handleCreateSalaryReport={handleCreateSalaryReport}
+        contractList={contractList}
+      /> */}
       {/*
       <OutFeeReceiptsCreate
         onCancel={setShowOutFeeReceiptsCreate}
@@ -171,4 +187,4 @@ const Contract = (props) => {
   );
 };
 
-export default Contract;
+export default SalaryReport;

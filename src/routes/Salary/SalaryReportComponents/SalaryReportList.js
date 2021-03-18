@@ -1,17 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Button, Input, Space, Table ,Badge} from "antd";
+import { Button, Input, Space, Table,Badge  } from "antd";
 import { PrinterFilled, SearchOutlined, ClearOutlined } from "@ant-design/icons";
 import { api } from "Api";
 import Highlighter from "react-highlight-words";
 import moment from "moment";
 
-const SalaryTableList = (props) => {
-  function format(n) {
-    return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(
-      n,
-    );
-  }
-
+const SalaryReportList = (props) => {
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -103,78 +97,84 @@ const SalaryTableList = (props) => {
 
   const columns = [
     {
-      title: "Mã Đợt Lương",
+      title: "Mã PL",
       dataIndex: "id",
       align: "center",
       ...getColumnSearchProps({
         dataIndex: "id",
-        columnName: "mã bảng lương",
+        columnName: "mã hợp đồng",
       }),
     },
     {
-      title: "Tên Đợt Lương",
-      dataIndex: "salaryTableName",
+      title: "Nhân Viên",
+      dataIndex: ["contractDTO", "employee", "fullName"],
       align: "center",
-      render: (text, record) => (
-        <a
-          href="javascript:void(0)"
-          onClick={() => {
-            console.log(record);
-            // props.setSelecting(record);
-            props.setIsShowDetail(record);
-          }}
-        >
-          {text}
-        </a>
-      ),
+    },
+    {
+      title: "Đợt Lương",
+      align: "center",
+      dataIndex: ["salaryTable", "salaryTableName"],
     },
     {
       title: "Ngày Bắt Đầu",
       align: "center",
-      dataIndex: "startedDate",
+      dataIndex: ["salaryTable", "startedDate"],
       render: (text, record) => <span>{moment(text).format("DD.MM.YYYY")}</span>,
     },
     {
       title: "Ngày Kết Thúc",
       align: "center",
+      dataIndex: ["salaryTable", "endDate"],
+      render: (text, record) => <span>{moment(text).format("DD.MM.YYYY")}</span>,
+    },
+    {
+      title: "Lương Cơ Bản",
+      align: "center",
+      dataIndex: "basicSalary",
+      render: (text, record) => <span>{format(text)}</span>,
+      sorter: (a, b) => a.basicSalary - b.basicSalary,
+    },
+    {
+      title: "Hệ Số",
+      align: "center",
       dataIndex: "endDate",
       render: (text, record) => <span>{moment(text).format("DD.MM.YYYY")}</span>,
     },
     {
-      title: "Tổng Lương",
+      title: "Phụ Cấp",
       align: "center",
-      dataIndex: "totalValue",
+      dataIndex: "endDate",
+      render: (text, record) => <span>{moment(text).format("DD.MM.YYYY")}</span>,
+    },
+    {
+      title: "Thực Lĩnh",
+      align: "center",
+      dataIndex: "willPaymentSalary",
       render: (text, record) => <span>{format(text)}</span>,
+      sorter: (a, b) => a.willPaymentSalary - b.willPaymentSalary,
     },
     {
       title: "Trạng Thái",
       align: "center",
       dataIndex: "status",
+      filters: [
+        {
+          text: "Đã thanh toán",
+          value: 1,
+        },
+        {
+          text: "Chưa thanh toán",
+          value: 0,
+        },  
+      ],
+      onFilter: (value, record) => record.status === value,
       render: (text, record) => {
         if (text === 0) {
-          return <Badge status="warning" text="Chờ" />
+          return <Badge status="warning" text="Chờ TT" />;
         } else if (text === 1) {
-          return <Badge status="processing" text="Đã xác nhận" />
-        } else if (text === 2) {
-          return <Badge status="success" text="Hoàn thành" />
+          return <Badge status="success" text="Đã Thanh Toán" />;
         }
       },
-    },
-    {
-      title: "Thao Tác",
-      align: "center",
-      render: (text, record) => (
-        <>
-          <Button
-            type=""
-            onClick={() => {
-              props.handlePrintStudentInvoice(record, 1);
-            }}
-          >
-            <PrinterFilled />
-          </Button>
-        </>
-      ),
     },
   ];
 
@@ -256,4 +256,4 @@ const SalaryTableList = (props) => {
   );
 };
 
-export default SalaryTableList;
+export default SalaryReportList;

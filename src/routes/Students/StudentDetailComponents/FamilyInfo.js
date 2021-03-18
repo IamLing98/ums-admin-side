@@ -1,46 +1,106 @@
-import { Descriptions, Tabs } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Row, Col } from "reactstrap";
+import { Table } from "antd";
+import moment from "moment";
+
 const FamilyInfo = (props) => {
-    const enrollmentAreaDisplay = (value) => {
-        if (value === 1) {
-            return <>Khu vực 1 (KV1)</>;
-        } else if (value === 2) {
-            return <>Khu vực 2 (KV2)</>;
-        } else if (value === 3) {
-            return <>Khu vực 2 nông thôn (KV2-NT)</>;
-        } else if (value === 4) {
-            return <>Khu vực 3</>;
-        } else {
-            return <></>;
-        }
-    };
+  const [record, setRecord] = useState(undefined);
 
+  useEffect(() => {
     if (props.record) {
-        return (
-            <div className="student-description-wrapper">
-                <Descriptions layout="horizontal" column={6}>
-                    <Descriptions.Item label="Họ và tên bố" span={3}>
-                        {props.record.fatherName}
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Năm sinh" span={3}>
-                        {props.record.fatherDateBirth}
-                    </Descriptions.Item>
-                </Descriptions>
+      setRecord(props.record);
+    }
+  }, [props.record]);
 
-                <Descriptions layout="horizontal" column={6}>
-                    <Descriptions.Item label="Họ và tên mẹ" span={3}>
-                        {props.record.motherName}
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Năm sinh" span={3}>
-                        {props.record.motherDateBirth}
-                    </Descriptions.Item>
-                </Descriptions>
-            </div>
-        );
-    }
-    else {
-        return <div></div>
-    }
+  const dataLeft = [
+    {
+      title: "Họ và tên bố:",
+      values: record ? record.fatherName : "",
+    },
+    {
+      title: "Năm sinh bố:",
+      values: record ? record.fatherDateBirth : "",
+    },
+    {
+      title: "Nghề nghiệp bố:",
+      values: record ? record.fatherWork : "",
+    },
+  ];
+  const columnsLeft = [
+    {
+      title: "Danh mục",
+      dataIndex: "title",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.age - b.age,
+      render: (text, record) => {
+        return <strong style={{ fontWeight: "700" }}>{text}</strong>;
+      },
+    },
+    {
+      title: "Giá trị",
+      dataIndex: "values",
+    },
+  ];
+
+  const dataRight = [
+    {
+      title: "Họ và tên mẹ:",
+      values: record ? record.motherName : "",
+    },
+    {
+      title: "Năm sinh mẹ:",  
+      values: record ? record.motherDateBirth : "",
+    },
+    {
+      title: "Nghề nghiệp mẹ:",
+      values: record ? record.motherWork : "",
+    },
+  ];
+  const columnsRigth = [
+    {
+      title: "Danh mục",
+      dataIndex: "title",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.age - b.age,
+      render: (text, record) => {
+        return <strong style={{ fontWeight: "700" }}>{text}</strong>;
+      },
+    },
+    {
+      title: "Giá trị",
+      dataIndex: "values",
+    },
+  ];
+  if (props.record) {
+    return (
+      <div className="student-description-wrapper">
+        <Row>
+          <Col md={6}>
+            <Table
+              bordered
+              rowKey="title"
+              showHeader={false}
+              pagination={false}
+              columns={columnsLeft}
+              dataSource={dataLeft}
+            ></Table>
+          </Col>
+          <Col>
+            <Table
+              bordered
+              rowKey="title"
+              showHeader={false}
+              pagination={false}
+              columns={columnsRigth}
+              dataSource={dataRight}
+            ></Table>
+          </Col>
+        </Row>
+      </div>
+    );
+  } else {
+    return <div></div>;
+  }
 };
 
 export default FamilyInfo;

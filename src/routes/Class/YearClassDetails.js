@@ -3,11 +3,13 @@ import { Drawer, Button, Table, Divider, Tag, Popover } from "antd";
 import { RollbackOutlined, PrinterFilled, ExportOutlined } from "@ant-design/icons";
 import { Row, Col } from "reactstrap";
 import { api } from "Api";
-import StudentDetail from "./StudentDetail";
-import TeacherDetail from "./TeacherDetail";
-import { daysOfWeek } from "../../../../util/dataUltil";
+import StudentDetail from "./Components/StudentDetail";
+import TeacherDetail from "./Components/TeacherDetail";
+import { daysOfWeek } from "../../util/dataUltil";
+import moment from "moment";
+import FileSaver from "file-saver";
 
-const ClassDetail = (props) => {
+const YearClassDetail = (props) => {
   const [subjectClass, setSubjectClass] = useState(undefined);
 
   const [showTeacherDetail, setShowTeacherDetail] = useState(false);
@@ -17,23 +19,55 @@ const ClassDetail = (props) => {
   useEffect(() => {
     if (props.visible) {
       api
-        .get(`/subjectClasses/getDetail/${props.visible.subjectClassId}`)
+        .get(`/yearClasses/${props.visible.classId}`)
         .then((result) => setSubjectClass(result))
         .catch((err) => console.log(err));
     }
   }, [props.visible]);
+
+  const saveFile = (fileName) => {
+    FileSaver.saveAs(
+        `http://localhost:8080/downloadFile/${fileName}`,
+      `${fileName}`,
+    );
+  };
+
+  const handleCreateSubjectClassListExcel = (values) => {
+    console.log(values);
+    let excelData = {
+      map: {
+        yearClassId: values.classId,
+        yearClassName: values.className,
+        teacherName: values.teacherFullName,
+      },
+      list: values.studentDTOList.map((student, index) => {
+        return {
+          id: index,
+          ...student,
+          sex: student.sex === 1 ? "Nam" : "Nữ",
+        };
+      }),
+    };
+    console.log("excelData: ", excelData);
+    api
+      .post(`/documents/excel?id=5`, excelData)
+      .then((response) => {
+        console.log(response);
+        saveFile(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const data = [
     {
-      title: "Mã lớp học phần:",
-      value: subjectClass ? subjectClass.subjectClassId : "",
+      title: "Mã lớp:",
+      value: subjectClass ? subjectClass.classId : "",
     },
     {
-      title: "Mã học phần:",
-      value: subjectClass ? subjectClass.subjectId : "",
-    },
-    {
-      title: "Tên học phần:",
-      value: subjectClass ? subjectClass.subjectName : "",
+      title: "Tên lớp:",
+      value: subjectClass ? subjectClass.className : "",
     },
     {
       title: "Giảng viên:",
@@ -44,61 +78,23 @@ const ClassDetail = (props) => {
             setShowTeacherDetail(true);
           }}
         >
-          <span>{subjectClass.teacherId + " - " + subjectClass.fullName}</span>
+          <span>{subjectClass.teacherFullName}</span>
         </a>
       ) : (
         ""
       ),
     },
     {
-      title: "Thời lượng:",
-      value: subjectClass ? subjectClass.duration + " tiết" : "",
-    },
-    {
-      title: "Lịch học",
-      value: subjectClass
-        ? daysOfWeek[subjectClass.dayOfWeek] +
-          ". Tiết: " +
-          subjectClass.hourOfDay +
-          " - " +
-          (subjectClass.duration + subjectClass.hourOfDay - 1)
-        : "",
-    },
-    {
-      title: "Phòng học",
-      value: subjectClass ? subjectClass.roomId : "",
-    },
-    {
-      title: "Khoa phụ trách",
+      title: "Khoa",
       value: subjectClass ? subjectClass.departmentName : "",
     },
     {
-      title: "Yêu cầu phòng máy:",
-      value: subjectClass ? (subjectClass.isRequireLab === true ? "Có" : "Không") : "",
+      title: "Khoá",
+      value: subjectClass ? subjectClass.courseNumber : "",
     },
     {
-      title: "Số tín chỉ:",
-      value: subjectClass ? subjectClass.eachSubject : "",
-    },
-    {
-      title: "Số giờ lý thuyết:",
-      value: subjectClass ? subjectClass.theoryNumber : "",
-    },
-    {
-      title: "Số giờ bài tập:",
-      value: subjectClass ? subjectClass.exerciseNumber : "",
-    },
-    {
-      title: "Số giờ thảo luận:",
-      value: subjectClass ? subjectClass.discussNumber : "",
-    },
-    {
-      title: "Số giờ thực hành:",
-      value: subjectClass ? subjectClass.practiceNumber : "",
-    },
-    {
-      title: "Số giờ tự học:",
-      value: subjectClass ? subjectClass.selfLearningNumber : "",
+      title: "Sỹ số",
+      value: subjectClass ? subjectClass.totalMember : "",
     },
   ];
 
@@ -107,6 +103,7 @@ const ClassDetail = (props) => {
       title: "Danh mục",
       dataIndex: "title",
       defaultSortOrder: "descend",
+      width: "50%",
       sorter: (a, b) => a.age - b.age,
       render: (text, record) => {
         return <strong style={{ fontWeight: "700" }}>{text}</strong>;
@@ -143,42 +140,29 @@ const ClassDetail = (props) => {
       align: "center",
     },
     {
-      title: "Khoa",
+      title: "Giới tính",
       align: "center",
-      dataIndex: "departmentName",
-    },
-    {
-      title: "Lớp niên khoá",
-      dataIndex: "className",
-      align: "center",
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.age - b.age,
-    },
-    {
-      title: "Trạng thái",
-      dataIndex: "status",
-      defaultSortOrder: "descend",
-      align: "center",
-      render: (text, record) => {
+      dataIndex: "sex",
+      render: (text) => {
         if (text === 0) {
-          return (
-            <Popover content={record.rejectReason} title="Lý do huỷ">
-              <Tag color="#f50">Đã huỷ</Tag>
-            </Popover>
-          );
-        } else if (text === 1) {
-          return <Tag color="#2db7f5">Đang theo học</Tag>;
-        }
+          return <span>Nam</span>;
+        } else return <span>Nữ</span>;
       },
+    },
+    {
+      title: "Ngày sinh",
+      dataIndex: "dateBirth",
+      align: "center",
+      render: (text) => moment(text).format("DD.MM.YYYY"),
     },
   ];
 
   return (
     <>
       <Drawer
-        title="Thông tin chi tiết lớp học phần"
+        title="Thông tin chi tiết lớp niên khoá"
         width={1400}
-        onClose={() => props.cancelSelecting(subjectClass)}
+        onClose={() => props.deSelecting()}
         visible={props.visible}
         bodyStyle={{ paddingBottom: 80 }}
         footer={
@@ -189,7 +173,7 @@ const ClassDetail = (props) => {
           >
             <Button
               style={{ width: "108px" }}
-              onClick={() => props.cancelSelecting(subjectClass)}
+              onClick={() => props.deSelecting(props.visible)}
               style={{ marginRight: 8 }}
             >
               <RollbackOutlined />
@@ -205,7 +189,7 @@ const ClassDetail = (props) => {
             </Button>{" "}
             <Button
               style={{ width: "108px" }}
-              onClick={() => props.cancelSelecting(subjectClass)}
+              onClick={() => handleCreateSubjectClassListExcel(subjectClass)}
               style={{ marginRight: 8 }}
             >
               <ExportOutlined />
@@ -233,15 +217,21 @@ const ClassDetail = (props) => {
               rowKey="title"
               bordered
               columns={studentListColumns}
-              dataSource={subjectClass ? subjectClass.studentList : []}
+              dataSource={subjectClass ? subjectClass.studentDTOList : []}
             ></Table>
           </Col>
         </Row>
-        <TeacherDetail visible={showTeacherDetail} setShowTeacherDetail={setShowTeacherDetail} />
-        <StudentDetail visible={showStudentDetail} setShowStudentDetail={setShowStudentDetail} />
+        <TeacherDetail
+          visible={showTeacherDetail}
+          setShowTeacherDetail={setShowTeacherDetail}
+        />
+        <StudentDetail
+          visible={showStudentDetail}
+          setShowStudentDetail={setShowStudentDetail}
+        />
       </Drawer>
     </>
   );
 };
 
-export default ClassDetail;
+export default YearClassDetail;

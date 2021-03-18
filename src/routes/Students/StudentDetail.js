@@ -3,10 +3,9 @@ import { Drawer, Form, Button, Col, Row, Input, Select, DatePicker, Tabs } from 
 import { RollbackOutlined } from "@ant-design/icons";
 import StudentProfile from "./StudentDetailComponents/StudentProfile";
 import FamilyInfo from "./StudentDetailComponents/FamilyInfo";
+import Result from "./StudentDetailComponents/Result";
 import { api } from "Api";
 import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
-
-const { Option } = Select;
 
 const { TabPane } = Tabs;
 
@@ -25,9 +24,29 @@ const StudentDetail = (props) => {
       .catch((err) => console.log(err));
   };
 
+  const getResult = (studentId) => {
+    api
+      .get(`/results/details/${studentId}`)
+      .then((res) => {
+        let  data  = res;
+        // setResult(res.data);
+        // setStudentSubjectList(res.data.educationProgramDTO.studentSubjects);
+        let CPA = 0.0;
+        for (var i = 0; i < data.resultDTOs.length; i++) {
+          let term = data.resultDTOs[i];
+          CPA += term.GPA;
+        }
+        CPA = CPA / data.resultDTOs.length;
+        // setCPA(CPA);
+        // setLoading(false);
+      })
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     if (props.record) {
       getStudentDetail(props.record.studentId);
+      getResult(props.record.studentId);
     }
   }, [props.record]);
 
@@ -45,7 +64,10 @@ const StudentDetail = (props) => {
               textAlign: "right",
             }}
           >
-            <Button onClick={() => props.cancelShowDetail(props.record)} style={{ marginRight: 8 }}>
+            <Button
+              onClick={() => props.cancelShowDetail(props.record)}
+              style={{ marginRight: 8 }}
+            >
               <RollbackOutlined />
               Quay lại
             </Button>
@@ -77,26 +99,21 @@ const StudentDetail = (props) => {
                 <br />
                 <ul className="list-group">
                   <li className="list-group-item text-muted">
-                    <strong>Thông tin sinh viên</strong> <i className="fa fa-dashboard fa-1x" />
+                    <strong>Thông tin sinh viên</strong>{" "}
+                    <i className="fa fa-dashboard fa-1x" />
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
                       <strong>Mã sinh viên:</strong>
-                    </span>{" "}
+                    </span>
                     {studentDetail.studentId}
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
                       <strong>Lớp:</strong>
-                    </span>{" "}
-                    {studentDetail.yearClassName}
+                    </span>
+                    {studentDetail.yearClassId}
                   </li>
-                  {/* <li className="list-group-item text-right">
-                    <span className="pull-left">
-                      <strong>CTĐT:</strong>{studentDetail.yearClassName}
-                    </span>{" "}
-                    37
-                  </li> */}
                 </ul>
               </Col>
               <Col span={20}>
@@ -108,7 +125,7 @@ const StudentDetail = (props) => {
                     <FamilyInfo record={studentDetail} />
                   </TabPane>
                   <TabPane tab="Kết Quả Học Tập" key="3">
-                    Content of card tab 3
+                    <Result  record={studentDetail}/>
                   </TabPane>
                   <TabPane tab="Khen Thưởng" key="4">
                     Content of card tab 3

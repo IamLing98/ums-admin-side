@@ -1,21 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {
-  Modal,
-  Form,
-  Row,
-  Col,
-  Select,
-  Input,
-  DatePicker,
-  Divider,
-  Upload,
-  message,
-} from "antd";
+import { Modal, Form, Row, Col, Input, DatePicker, Table, Button } from "antd";
 import { NotificationManager } from "react-notifications";
-import { RollbackOutlined, CheckOutlined, InboxOutlined } from "@ant-design/icons";
+import { RollbackOutlined, CheckOutlined, SearchOutlined } from "@ant-design/icons";
 import { api } from "Api";
-
-const { Dragger } = Upload;
+import EmployeeSelect from "./EmployeeSelect";
+import moment from "moment";
 
 const formItemLayout = {
   labelCol: {
@@ -36,34 +25,6 @@ const formItemLayout = {
   },
 };
 
-const departmentEmployeeLevel = [
-  { employeeLevelId: 1, employeeLevelName: "Trưởng Khoa" },
-  { employeeLevelId: 2, employeeLevelName: "Phó Khoa" },
-  { employeeLevelId: 3, employeeLevelName: "Trưởng Bộ Môn" },
-  { employeeLevelId: 4, employeeLevelName: "Giáo Vụ" },
-  { employeeLevelId: 5, employeeLevelName: "Giảng Viên" },
-];
-
-const officeEmployeeLevel = [
-  { employeeLevelId: 6, employeeLevelName: "Trưởng Phòng" },
-  { employeeLevelId: 7, employeeLevelName: "Phó Phòng" },
-  { employeeLevelId: 8, employeeLevelName: "Nhân Viên" },
-];
-
-const salaryStructList = [
-  { salaryStructId: 1, salaryStructName: "Lương theo giờ" },
-  { salaryStructId: 2, salaryStructName: "Lương cố định hàng tháng" },
-];
-
-const salaryPlanList = [
-  { salaryPlanId: 4, salaryPlanName: "Hàng tuần" },
-  { salaryPlanId: 1, salaryPlanName: "Hàng tháng" },
-  { salaryPlanId: 2, salaryPlanName: "Hàng quý" },
-  { salaryPlanId: 5, salaryPlanName: "Hai tuần một lần" },
-  { salaryPlanId: 6, salaryPlanName: "Hai tháng một lần" },
-  { salaryPlanId: 3, salaryPlanName: "Nửa năm một" },
-];
-
 const coefficientList = [
   { coefficientId: 1, coefficientName: "asdsad", coefficientValue: 1.5 },
 ];
@@ -71,40 +32,87 @@ const coefficientList = [
 export const SalaryCreate = (props) => {
   const [form] = Form.useForm();
 
-  const [showEmployeeLevelOpts, setShowEmployeeLevelOpts] = useState(false);
+  const [showEmployeeSelect, setShowEmployeeSelect] = useState(false);
 
-  const [employeeLevelOpts, setEmployeeLevelOpts] = useState([]);
+  const [selectedContractList, setSelectedContractList] = useState([]);
 
-  const [showCoefficient, setShowCoefficient] = useState(false);
+  const [isSelectedContract, setIsSelectedContract] = useState(false);
 
-  const [showPerHourPrice, setShowPerHourPrice] = useState(false);
-
-  const [employeeCoefficientLevelList, setEmployeeCoefficientLevelList] = useState([]);
-
-  const getEmployeeCoefficientLevelList = (employeeLevelId) => {
-    api
-      .get(`/employeeCoefficientLevel?employeeLevelId=${employeeLevelId}`)
-      .then((response) => setEmployeeCoefficientLevelList(response))
-      .catch((err) => console.log(err));
-  };
-
+  const columns = [
+    {
+      title: "Mã CB/GV ",
+      dataIndex: "employeeId",
+      align: "center",
+      render: (text, record) => (
+        <a
+          // className="ant-anchor-link-title ant-anchor-link-title-active"
+          href="javascript:void(0)"
+          onClick={() => {
+            console.log(record);
+            props.setSelecting(record);
+          }}
+        >
+          {text}
+        </a>
+      ),
+    },
+    {
+      title: "Họ Và Tên",
+      dataIndex: ["employee", "fullName"],
+      align: "center",
+    },
+    {
+      title: "Giới Tính",
+      dataIndex: ["employee", "sex"],
+      align: "center",
+      render: (text, record) => <span>{text === 1 ? "Nam" : "Nữ"}</span>,
+    },
+    {
+      title: "Ngày Sinh",
+      dataIndex: ["employee", "dateBirth"],
+      align: "center",
+      render: (text, record) => <span>{moment(text).format("DD.MM.YYYY")}</span>,
+    },
+    {
+      title: "Phòng Ban",
+      dataIndex: ["department", "departmentName"],
+      align: "center",
+    },
+    {
+      title: "Chức Vụ",
+      dataIndex: ["employeeLevel", "employeeLevelName"],
+      align: "center",
+    },
+  ];
   return (
     <Modal
       title="Tạo Mới Bảng Lương"
       visible={props.visible}
       onOk={() => {
-        form
-          .validateFields()
-          .then((values) => {
-            form.resetFields();
-            props.handleCreateSalaryTableList(values);
-          })
-          .catch((info) => {
-            console.log("Validate Failed:", info);
-          });
+        if (isSelectedContract) {
+          form
+            .validateFields()
+            .then((values) => {
+              let newValues = values;
+              console.log("selectedContractList: ",selectedContractList )
+              newValues.contractDTOList = selectedContractList;
+              props.handleCreateSalaryTable(values);
+            })
+            .catch((info) => {
+              console.log("Validate Failed:", info);
+            });
+        } else {
+          form
+            .validateFields()
+            .then((values) => {
+              setShowEmployeeSelect(true);
+            })
+            .catch((info) => {
+              console.log("Validate Failed:", info);
+            });
+        }
       }}
       onCancel={() => {
-        form.resetFields();
         props.setShowSalaryTableCreate(false);
       }}
       okButtonProps={{
@@ -118,11 +126,11 @@ export const SalaryCreate = (props) => {
         style: { width: "108px" },
       }}
       maskClosable={false}
-      okText="Tạo Mới"
+      okText={isSelectedContract ? "Tạo Mới" : "Tiếp"}
       cancelText="Đóng"
       centered
       closable={false}
-      width={"40%"}
+      width={isSelectedContract ? "60%" : "40%"}
       forceRender
     >
       <Form
@@ -147,20 +155,50 @@ export const SalaryCreate = (props) => {
               hasFeedback
               rules={[{ required: true, message: "Vui lòng chọn ngày bắt đầu!!!" }]}
             >
-              <DatePicker placeholder="Ngày bắt đầu..." />
+              <DatePicker placeholder="Ngày bắt đầu..." style={{ width: "50%" }} />
             </Form.Item>
             <Form.Item
               name="endDate"
               label="Ngày Kết Thúc"
               hasFeedback
-              rules={[{ required: false, message: "Vui lòng nhập ngày kết thúc!!!" }]}
+              rules={[{ required: true, message: "Vui lòng nhập ngày kết thúc!!!" }]}
             >
-              <DatePicker placeholder="Ngày kết thúc..." />
+              <DatePicker placeholder="Ngày kết thúc..." style={{ width: "50%" }} />
             </Form.Item>
           </Col>
           <Col span={12}></Col>
         </Row>
       </Form>
+      <EmployeeSelect
+        visible={showEmployeeSelect}
+        setShowEmployeeSelect={setShowEmployeeSelect}
+        data={props.contractList}
+        setSelectedContractList={setSelectedContractList}
+        setIsSelectedContract={setIsSelectedContract}
+      />
+      {selectedContractList.length > 0 && (
+        <Table
+          columns={columns}
+          dataSource={selectedContractList}
+          rowKey="employeeId"
+          bordered
+          size="small"
+          onRow={(record, index) => {
+            if (record.isSelecting === true)
+              return { style: { background: "#4DC2F7", fontWeight: "bolder" } };
+          }}
+          locale={{
+            emptyText: (
+              <div className="ant-empty ant-empty-normal">
+                <div className="ant-empty-image">
+                  <SearchOutlined style={{ fontSize: "16px", color: "#08c" }} />
+                  <p className="ant-empty-description">Không có kết quả nào</p>
+                </div>
+              </div>
+            ),
+          }}
+        />
+      )}
     </Modal>
   );
 };
