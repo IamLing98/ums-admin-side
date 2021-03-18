@@ -3,7 +3,7 @@ import { Modal, Form, Row, Col, Select, Input, DatePicker } from "antd";
 import { NotificationManager } from "react-notifications";
 import { RollbackOutlined, CheckOutlined } from "@ant-design/icons";
 import { api } from "Api";
-import moment from 'moment';
+import moment from "moment";
 
 const { Option } = Select;
 
@@ -34,11 +34,10 @@ const formItemLayout = {
     endYear: undefined,
     startYear: undefined,
     teacherId: undefined,
-    rangeTime:[]
+    rangeTime: [],
   },
 };
 
- 
 export const YearClassCreate = (props) => {
   const [form] = Form.useForm();
 
@@ -86,7 +85,7 @@ export const YearClassCreate = (props) => {
         onFieldsChange={(changedFields, allFields) => {}}
         preserve={false}
         onValuesChange={(changedValues, allValues) => {}}
-      > 
+      >
         <Form.Item
           name="departmentId"
           label="Khoa"
@@ -94,22 +93,22 @@ export const YearClassCreate = (props) => {
           rules={[{ required: true, message: "Không được để trống khoa" }]}
         >
           <Select allowClear placeholder="Khoa...">
-            {props.departmentList.map((item) => {
-              return (
-                <Option key={item.departmentId} value={item.departmentId}>
-                  {item.departmentName}
-                </Option>
-              );
-            })}
+            {props.departmentList
+              .filter((item) => item.departmentType !== 0)
+              .map((item) => {
+                return (
+                  <Option key={item.departmentId} value={item.departmentId}>
+                    {item.departmentName}
+                  </Option>
+                );
+              })}
           </Select>
         </Form.Item>
         <Form.Item
           name="educationProgramLevel"
           label="Trình độ đào tạo"
           hasFeedback
-          rules={[
-            { required: true, message: "Vui lòng chọn trình độ đào tạo!" },
-          ]}
+          rules={[{ required: true, message: "Vui lòng chọn trình độ đào tạo!" }]}
         >
           <Select allowClear placeholder="Trình độ đào tạo...">
             <Option value={1}>Cao học</Option>
@@ -126,7 +125,18 @@ export const YearClassCreate = (props) => {
           hasFeedback
           rules={[{ required: false, message: "Please select your country!" }]}
         >
-          <Select allowClear placeholder="Giảng viên chủ nhiệm..."></Select>
+          <Select allowClear placeholder="Giảng viên chủ nhiệm...">
+            {props.employeeList.map((employee, index) => {
+              return (
+                <Select.Option
+                  value={employee.employeeId}
+                  key={"employeeIdOption" + index}
+                >
+                  {employee.fullName}
+                </Select.Option>
+              );
+            })}
+          </Select>
         </Form.Item>
       </Form>
     </Modal>

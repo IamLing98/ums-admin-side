@@ -98,8 +98,6 @@ export const StudentHome = (props) => {
     setShowDetail(record);
   };
 
-  
-
   const cancelShowDetail = (record) => {
     let newList = studentList;
     for (var i = 0; i < newList.length; i++) {
@@ -241,6 +239,32 @@ export const StudentHome = (props) => {
       });
   };
 
+  const handleUpload = (fileList) => {
+    console.log(fileList);
+    const formData = new FormData();
+    formData.append("file", fileList); 
+    api
+      .post(`/uploadFile`, formData)
+      .then((response) => { 
+        let  data  = response;
+        let fileDTO ={
+          fileName:data.fileName
+        }
+        api
+          .post(
+            `/students/import`,
+            fileDTO,
+          )
+          .then((res) => {
+            message.success("Tạo mới thành công: ", res);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .catch((err) =>showErrNoti(err));
+  };
+
   useEffect(() => {
     getStudentList();
     getDepartmentList();
@@ -253,7 +277,7 @@ export const StudentHome = (props) => {
 
   if (loading) {
     return (
-      <> 
+      <>
         <RctPageLoader />
       </>
     );
@@ -277,7 +301,10 @@ export const StudentHome = (props) => {
               <div className="table-responsive">
                 <Row>
                   <Col md={12} sm={12} xs={12}>
-                    <div className="tableListOperator" style={{ textAlign: "right", width: "100%" }}>  
+                    <div
+                      className="tableListOperator"
+                      style={{ textAlign: "right", width: "100%" }}
+                    >
                       <Button
                         type="primary"
                         style={{
@@ -419,17 +446,11 @@ export const StudentHome = (props) => {
                 classList={classList}
                 // options={prerequisitesStudent}
               />
-              {/* 
-              <StudentImport
+              <ImportStudent
                 visible={showModalImport}
-                setShowModalImport={setShowModalImport}
-                setRecordUpdate={setRecordUpdate}
-                record={recordUpdate}
-                studentList={studentList}
-                departmentList={departmentList}
-                getStudentList={getStudentList}
-                // options={prerequisitesStudent}
-              /> */}
+                setShowModalImport={setShowModalImport} 
+                handleUpload={handleUpload}
+              />
             </div>
           </div>
         </div>

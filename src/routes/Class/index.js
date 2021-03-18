@@ -6,6 +6,7 @@ import YearClassList from "./YearClassList";
 import YearClassCreate from "./YearClassCreate";
 import YearClassUpdate from "./YearClassUpdate";
 import YearClassDetails from "./YearClassDetails";
+import moment from "moment";
 
 // import SubjectImport from './Import';
 import { Col, Row } from "reactstrap";
@@ -42,6 +43,8 @@ export const YearClassHome = (props) => {
   const [brachList, setBranchList] = useState([]);
 
   const [loading, setLoading] = useState(true);
+
+  const [employeeList, setEmployeeList] = useState([]);
 
   const onSearch = () => {};
 
@@ -99,9 +102,9 @@ export const YearClassHome = (props) => {
 
   const getTeacherList = () => {
     api
-      .get("/departments", true)
+      .get("/employee")
       .then((res) => {
-        setDepartmentList(res);
+        setEmployeeList(res);
       })
       .catch((err) => {
         showErrNoti(err);
@@ -114,11 +117,12 @@ export const YearClassHome = (props) => {
     object.startYear = moment(values.rangeTime[0]).year();
     object.endYear = moment(values.rangeTime[1]).year();
     object.educationProgramLevel = values.educationProgramLevel;
+    object.teacherId = values.teacherId;
     console.log(object);
     api
       .post("/yearClasses", object, true)
       .then((res) => {
-        NotificationManager.success(`Tạo mới ${res} học phần.`);
+        NotificationManager.success(`Tạo mới ${res} lớp niên khoá.`);
         getYearClassList();
       })
       .catch((err) => {
@@ -173,6 +177,7 @@ export const YearClassHome = (props) => {
   useEffect(() => {
     getYearClassList();
     getDepartmentList();
+    getTeacherList();
   }, []);
 
   if (loading) {
@@ -238,6 +243,7 @@ export const YearClassHome = (props) => {
                 getYearClassList={getYearClassList}
                 departmentList={departmentList}
                 handleSubmitForm={handleSubmitForm}
+                employeeList={employeeList}
                 // options={prerequisitesSubject}
               />
               <YearClassUpdate
@@ -246,6 +252,7 @@ export const YearClassHome = (props) => {
                 yearClassList={yearClassList}
                 departmentList={departmentList}
                 getYearClassList={getYearClassList}
+                employeeList={employeeList}
                 // options={prerequisitesSubject}
               />
               <YearClassDetails

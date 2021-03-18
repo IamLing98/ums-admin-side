@@ -88,13 +88,15 @@ export const YearClassCreate = (props) => {
           rules={[{ required: true, message: "Không được để trống khoa" }]}
         >
           <Select allowClear placeholder="Khoa..." disabled>
-            {props.departmentList.map((item) => {
-              return (
-                <Option key={item.departmentId} value={item.departmentId}>
-                  {item.departmentName}
-                </Option>
-              );
-            })}
+            {props.departmentList
+              .filter((item) => item.departmentType !== 0)
+              .map((item) => {
+                return (
+                  <Option key={item.departmentId} value={item.departmentId}>
+                    {item.departmentName}
+                  </Option>
+                );
+              })}
           </Select>
         </Form.Item>
         <Form.Item
@@ -114,7 +116,10 @@ export const YearClassCreate = (props) => {
             style={{ width: "100%" }}
             picker="year"
             disabled
-            value={[moment(`${props.visible.startYear}`, "YYYY"), moment(`${props.visible.endYear}`, "YYYY")]}
+            value={[
+              moment(`${props.visible.startYear}`, "YYYY"),
+              moment(`${props.visible.endYear}`, "YYYY"),
+            ]}
           />
         </Form.Item>
         <Form.Item
@@ -123,7 +128,15 @@ export const YearClassCreate = (props) => {
           hasFeedback
           rules={[{ required: false, message: "Vui lòng chọn cô giáo chủ nhiệm!" }]}
         >
-          <Select allowClear placeholder="Giảng viên chủ nhiệm..."></Select>
+          <Select allowClear placeholder="Giảng viên chủ nhiệm...">
+            {props.employeeList.map((employee, index) => {
+              return (
+                <Select.Option value={employee.employeeId} key={"employeeIdOption" + index}>
+                  {employee.fullName}
+                </Select.Option>
+              );
+            })}
+          </Select>
         </Form.Item>
       </Form>
     </Modal>

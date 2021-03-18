@@ -1,41 +1,53 @@
-/**
- * Module Dashboard
- */
-
-import { InboxOutlined } from "@ant-design/icons";
-import { Modal, Select, Upload, Input } from "antd";
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux"; 
-
-const { Dragger } = Upload;
-
-const { Option } = Select;
+import React, {useState} from 'react'
+import { Space, Button, Tooltip, Modal, Table, Upload, message, Spin } from "antd";
+import { 
+  ImportOutlined,
+  RetweetOutlined,
+  PrinterOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
+import FileSaver from "file-saver";
+import moment from "moment";
 
 export const ImportStudent = (props) => {
-  const [educationProgramId, setEducationProgramId] = useState(null);
 
-  const [educationProgramName, setEducationProgramName] = useState(null);
+  const [fileList, setFileList] = useState(null);
 
-  const [branchId, setBranchId] = useState(null);
-
-  const [educationProgramLevel, setEducationProgramLevel] = useState(null);
-
-  const [educationProgramType, setEducationProgramType] = useState(null);
-
-  const [modalWidth, setModalWidth] = useState("40%");
-
-  const [rows, setRows] = useState([[]]);
-
-  const [cols, setCols] = useState([]);
-
-   
+  const importModalProps = {
+    onRemove: (file) => {
+      setFileList(null);
+    },
+    beforeUpload: (file) => {
+      console.log(file.type);
+      let fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+      setFileList(file);
+      if (file.type !== fileType) {
+        message.error(`${file.name} is not a spread sheet file`);
+      }
+      return false;
+    },
+  };
+ 
   return (
-    <></>
+    <Modal
+      visible={props.visible}
+      centered
+      onCancel={() => props.setShowModalImport(false)}
+      footer={
+        <div>
+          <Button disabled={!fileList} onClick={() => props.handleUpload(fileList)} type="primary">
+            Tải lên
+          </Button>
+        </div>
+      }
+    >
+      <div style={{ width: "100%", display: "grid", justifyContent: "center" }}>
+        <Upload {...importModalProps} maxCount={1}>
+          <Button icon={<UploadOutlined />}>Chọn file định dạng .xls,.xlsx</Button>
+        </Upload>
+      </div>
+    </Modal>
   );
 };
 
-const mapStateToProps = ({ departmentReducer }) => {
-  return { departmentReducer };
-};
-
-export default connect(mapStateToProps, {})(ImportStudent);
+export default ImportStudent;

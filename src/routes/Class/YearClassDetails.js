@@ -42,7 +42,7 @@ const YearClassDetail = (props) => {
       },
       list: values.studentDTOList.map((student, index) => {
         return {
-          id: index,
+          id: index + 1,
           ...student,
           sex: student.sex === 1 ? "Nam" : "Nữ",
         };
@@ -178,15 +178,7 @@ const YearClassDetail = (props) => {
             >
               <RollbackOutlined />
               Đóng
-            </Button>{" "}
-            <Button
-              style={{ width: "108px" }}
-              onClick={() => props.cancelSelecting(subjectClass)}
-              style={{ marginRight: 8 }}
-            >
-              <PrinterFilled />
-              PDF
-            </Button>{" "}
+            </Button> 
             <Button
               style={{ width: "108px" }}
               onClick={() => handleCreateSubjectClassListExcel(subjectClass)}
