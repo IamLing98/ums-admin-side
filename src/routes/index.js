@@ -13,7 +13,7 @@ import {
 } from "Components/AsyncComponent/AsyncComponent";
 
 //config routes
-import { AsyncRoomConfigComponent } from "Components/AsyncComponent/AsyncComponent";
+import { AsyncRoomConfigComponent,AsyncAccountComponent } from "Components/AsyncComponent/AsyncComponent";
 
 //finace routes
 import {
@@ -50,6 +50,7 @@ export const ConfigRoutes = ({ match }) => {
         <Route path={`${match.url}/branchs`} component={AsyncYearClassComponent} />
         <Route path={`${match.url}/rooms`} component={AsyncRoomConfigComponent} />
         <Route path={`${match.url}/time`} component={AsyncYearClassComponent} />
+        <Route path={`${match.url}/accounts`} component={AsyncAccountComponent} />
       </Switch>
     </div>
   );

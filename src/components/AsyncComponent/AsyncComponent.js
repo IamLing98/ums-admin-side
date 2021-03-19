@@ -84,6 +84,12 @@ const AsyncTuiTionFeeComponent = Loadable({
    loading: () => <RctPageLoader />
 });
 
+//ACCOUNT
+const AsyncAccountComponent = Loadable({
+   loader: () => import('Routes/Account'),
+   loading: () => <RctPageLoader />
+});
+
 
 //error
 const AsyncSessionPage404Component = Loadable({
@@ -150,6 +156,9 @@ export {
 
    //SalaryHome
    AsyncSalaryComponent,
+
+   //Account
+   AsyncAccountComponent,
 
    AsyncForgotPassComponent,
    AsyncAdminLoginComponent,

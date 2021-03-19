@@ -49,9 +49,9 @@ export const YearClassHome = (props) => {
   const onSearch = () => {};
 
   const showErrNoti = (err) => {
-    NotificationManager.err(err.response.data.message);
+    NotificationManager.error(err.response.data.message);
     if (err.message === "Forbidden") {
-      NotificationManager.err("Did you forget something? Please activate your account");
+      NotificationManager.error("Did you forget something? Please activate your account");
     } else if (err.message === "Unauthorized") {
       throw new SubmissionError({ _err: "Username or Password Invalid" });
     }
