@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Button, Popconfirm, Space, Table,  Badge } from "antd";
-import {
-  DeleteFilled, 
-  SearchOutlined, 
-  RetweetOutlined,
-} from "@ant-design/icons";
+import { Button, Popconfirm, Space, Table, Badge } from "antd";
+import { DeleteFilled, SearchOutlined, RetweetOutlined } from "@ant-design/icons";
 import { api } from "Api";
 
 const SubjectList = (props) => {
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 15,
-    size:"default"
+    size: "default",
   });
 
   const columns = [
@@ -24,8 +20,19 @@ const SubjectList = (props) => {
     {
       title: "Tên Học Phần ",
       dataIndex: "subjectName",
-      align: "center", 
+      align: "center",
       key: "subjectName",
+    },
+
+    {
+      title: "Loại học phần",
+      dataIndex: "transactionType",
+      align: "center",
+      render: (text) => {
+        if (text === 1) {
+          return <span>Học phần bắt buộc</span>;
+        } else if (text === 0) return <span>Học phần tự chọn</span>;
+      },
     },
     {
       title: "Số Tín Chỉ",

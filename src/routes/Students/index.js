@@ -256,7 +256,7 @@ export const StudentHome = (props) => {
             fileDTO,
           )
           .then((res) => {
-            message.success("Tạo mới thành công: ", res);
+            NotificationManager.success("Tạo mới thành công: ", res);
           })
           .catch((error) => {
             console.log(error);

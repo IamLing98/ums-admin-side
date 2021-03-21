@@ -74,7 +74,7 @@ const Result = (props) => {
       render: (text, record) => {
         return <strong style={{ fontWeight: "700" }}>{text}</strong>;
       },
-      width: "50%",
+      width: "40%",
     },
     {
       title: "Giá trị",
@@ -110,6 +110,11 @@ const Result = (props) => {
           );
         } else return <span> {text}</span>;
       },
+    },
+    {
+      title: "Loại học phần",
+      dataIndex: "eachSubject",
+      align: "center",
     },
     {
       title: "Số tín chỉ",
@@ -172,7 +177,7 @@ const Result = (props) => {
     return (
       <div className="student-description-wrapper">
         <Row>
-          <Col md={5} style={{ display: "block" }}>
+          <Col md={4} style={{ display: "block" }}>
             <Divider>Chương trình đào tạo</Divider>
             <Table
               bordered

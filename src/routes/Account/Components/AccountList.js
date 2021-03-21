@@ -59,7 +59,7 @@ const YearClassList = (props) => {
     <Table
       columns={props.columns}
       dataSource={props.data}
-      rowKey="classId"
+      rowKey="username"
       bordered
       size="small"
       pagination={pagination}

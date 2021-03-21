@@ -10,7 +10,8 @@ import {
 import { Menu } from "antd";
 import StudentAccount from "./StudentAccounts";
 import TeacherAccount from "./TeacherAccount";
-import {api} from 'Api'
+import SystemAccount from "./SystemAccount";
+import { api } from "Api";
 
 const AccountHome = (props) => {
   const [current, setCurrent] = useState("setting:1");
@@ -40,13 +41,13 @@ const AccountHome = (props) => {
   useEffect(() => {
     getDepartmentList();
     getYearClassList();
-  },[]);
+  }, []);
   return (
     <>
       <div className="data-table-wrapper">
         <Helmet>
           <title>Tài khoản</title>
-          <meta name="description" content="Thu Chi Sinh Viên" />
+          <meta name="description" content="Tài khoản" />
         </Helmet>
         <div className="rct-block ">
           <div className="collapse show">
@@ -54,7 +55,7 @@ const AccountHome = (props) => {
               <hr style={{ margin: "0px" }} />
               <div className="table-responsive">
                 <div className="ant-page-header-heading">
-                  <div className=" ant-page-header-heading-left">
+                  <div className="ant-page-header-heading-left">
                     <h4>
                       <span>Tài khoản</span>
                     </h4>
@@ -81,9 +82,20 @@ const AccountHome = (props) => {
                   </span>
                 </div>
                 <hr style={{ margin: "0px", marginBottom: "15px" }} />
-                {current === "setting:2" && <TeacherAccount />}
+                {current === "setting:2" && (
+                  <TeacherAccount
+                    departmentList={departmentList}
+                    yearClassList={yearClassList}
+                  />
+                )}
                 {current === "setting:1" && (
                   <StudentAccount
+                    departmentList={departmentList}
+                    yearClassList={yearClassList}
+                  />
+                )}
+                {current === "setting:3" && (
+                  <SystemAccount
                     departmentList={departmentList}
                     yearClassList={yearClassList}
                   />

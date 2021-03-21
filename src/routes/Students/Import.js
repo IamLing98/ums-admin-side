@@ -7,7 +7,7 @@ import {
   UploadOutlined,
 } from "@ant-design/icons";
 import FileSaver from "file-saver";
-import moment from "moment";
+import moment from "moment"; 
 
 export const ImportStudent = (props) => {
 

@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect,useRef  } from "react";
 import { NotificationManager } from "react-notifications";
 import { api } from "Api";
 import moment from "moment";
-import { Table, Modal, Form, Select, Input, Button, Space } from "antd";
+import { Table, Modal, Form, Select,Input,Button,Space  } from "antd";
 import { SearchOutlined, RollbackOutlined, CheckOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 
@@ -35,22 +35,21 @@ const formItemLayout = {
   },
 };
 
-export const AccountCreate = (props) => {
+export const SystemAccountList = (props) => {
   const [form] = Form.useForm();
 
   const [departmentList, setDepartmentList] = useState([]);
 
-  const [yearClassList, setYearClassList] = useState([]);
-
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-  const [studentList, setStudentList] = useState([]);
+  const [teacherList, setTeacherList] = useState([]);
 
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 15,
     size: "default",
   });
+
   const handleChangeTable = (pagination) => {
     setPagination(pagination);
   };
@@ -69,24 +68,18 @@ export const AccountCreate = (props) => {
         text: "Chọn hết",
         onSelect: (changableRowKeys) => {
           console.log(changableRowKeys);
-          let newSelectedRowKeys = studentList.map((item) => item.studentId);
+          let newSelectedRowKeys = teacherList.map((item) => item.employeeId);
           setSelectedRowKeys(newSelectedRowKeys);
         },
       },
     ],
   };
 
-  const [searchText, setSearchText] = useState("");
-
-  const [searchedColumn, setSearchedColumn] = useState("");
-
-  const searchInput = useRef(null);
-
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
         <Input
-          ref={searchInput.current}
+          ref={searchInput}
           placeholder={`Tìm theo ${dataIndex}`}
           value={selectedKeys[0]}
           onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
@@ -125,7 +118,7 @@ export const AccountCreate = (props) => {
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
-        setTimeout(() => searchInput.current.select(), 100);
+        setTimeout(() => searchInput.select(), 100);
       }
     },
     render: (text) =>
@@ -141,6 +134,12 @@ export const AccountCreate = (props) => {
       ),
   });
 
+  const [searchText, setSearchText] = useState("");
+
+  const [searchedColumn, setSearchedColumn] = useState("");
+
+  const searchInput = useRef(null);
+
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -154,10 +153,10 @@ export const AccountCreate = (props) => {
 
   const columns = [
     {
-      title: "Mã sinh viên",
-      dataIndex: "studentId",
+      title: "Mã giảng viên",
+      dataIndex: "employeeId",
       align: "center",
-      ...getColumnSearchProps("studentId"),
+      ...getColumnSearchProps("employeeId")
     },
     {
       title: "Họ và tên",
@@ -245,15 +244,14 @@ export const AccountCreate = (props) => {
               form.setFieldsValue({
                 ...form.getFieldsValue(),
                 departmentId: value,
-                yearClassId: undefined,
               });
               let newClassList = [];
               if (value) {
-                newClassList = props.yearClassList.filter(
+                newClassList = props.teacherList.filter(
                   (item) => item.departmentId === value,
                 );
               }
-              setYearClassList(newClassList);
+              setTeacherList(newClassList);
             }}
           >
             {departmentList
@@ -267,46 +265,11 @@ export const AccountCreate = (props) => {
               })}
           </Select>
         </Form.Item>
-        <Form.Item
-          name="yearClassId"
-          label="Lớp niên khoá"
-          hasFeedback
-          rules={[{ required: true, message: "Không được để trống" }]}
-        >
-          <Select
-            showSearch
-            allowClear
-            placeholder="Lớp niên khoá..."
-            style={{ width: "50%" }}
-            onChange={(value) => {
-              console.log(value);
-              form.setFieldsValue({
-                ...form.getFieldsValue(),
-                yearClassId: value,
-              });
-              let newClassList = [];
-              if (value) {
-                newClassList = props.studentList.filter(
-                  (item) => item.yearClassId === value,
-                );
-              }
-              setStudentList(newClassList);
-            }}
-          >
-            {yearClassList.map((item) => {
-              return (
-                <Select.Option key={item.classId} value={item.classId}>
-                  {item.classId + " - " + item.className}
-                </Select.Option>
-              );
-            })}
-          </Select>
-        </Form.Item>
       </Form>
       <Table
         columns={columns}
-        dataSource={studentList}
-        rowKey="studentId"
+        dataSource={teacherList}
+        rowKey="employeeId"
         bordered
         size="small"
         pagination={pagination}
@@ -322,7 +285,7 @@ export const AccountCreate = (props) => {
             <div className="ant-empty ant-empty-normal">
               <div className="ant-empty-image">
                 <SearchOutlined style={{ fontSize: "16px", color: "#08c" }} />
-                <p className="ant-empty-description">Không có sinh viên nào</p>
+                <p className="ant-empty-description">Không có giảng viên nào</p>
               </div>
             </div>
           ),
@@ -332,4 +295,4 @@ export const AccountCreate = (props) => {
   );
 };
 
-export default AccountCreate;
+export default SystemAccountList;
